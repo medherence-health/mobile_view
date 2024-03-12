@@ -13,23 +13,23 @@ class CustomBottomNavigationBar extends StatelessWidget {
       backgroundColor: Colors.blue,
       selectedItemColor: Colors.white,
       selectedLabelStyle: const TextStyle(
-        fontSize: (12),
+        fontSize: (15),
         fontWeight: FontWeight.w400,
       ),
-      unselectedItemColor: Colors.grey,
+      unselectedItemColor: Colors.grey.shade300,
       unselectedLabelStyle: const TextStyle(
         fontSize: (12),
         fontWeight: FontWeight.w300,
       ),
       type: BottomNavigationBarType.fixed,
-      iconSize: 30,
+      iconSize: 35,
       currentIndex: model.currentIndex,
       onTap: model.setIndex,
       items: [
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.home_filled,
-            color: Colors.grey.shade200,
+            Icons.home,
+            color: Colors.grey.shade400,
           ),
           activeIcon: Icon(
             Icons.home_filled,
@@ -40,7 +40,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Icon(
             Icons.alarm_sharp,
-            color: Colors.grey.shade200,
+            color: Colors.grey.shade400,
           ),
           activeIcon: Icon(
             Icons.alarm_sharp,
@@ -51,7 +51,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Icon(
             Icons.menu,
-            color: Colors.grey.shade200,
+            color: Colors.grey.shade400,
           ),
           activeIcon: Icon(
             Icons.menu,

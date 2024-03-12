@@ -18,11 +18,13 @@ class _HomeViewState extends State<HomeView> {
         onTap: () {
           buildCompleteProfile();
         },
-        child: Text(
-          'Medherence',
-          style: TextStyle(
-            fontSize: 39,
-            fontWeight: FontWeight.w800,
+        child: Center(
+          child: Text(
+            'Medherence',
+            style: TextStyle(
+              fontSize: 39,
+              fontWeight: FontWeight.w800,
+            ),
           ),
         ),
       ),

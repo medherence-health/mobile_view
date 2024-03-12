@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:medherence/core/shared_widget/buttons.dart';
 import 'package:medherence/features/auth_features/widget/validation_extension.dart';
 import 'package:medherence/features/dashboard_feature/view/dashboard.dart';
-import 'package:medherence/features/home_featue/view/home_view.dart';
 
 import '../../../core/constants_utils/constants.dart';
 import '../widget/textfield.dart';
