@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:medherence/core/shared_widget/buttons.dart';
 import 'package:medherence/features/auth_features/widget/validation_extension.dart';
+import 'package:medherence/features/dashboard_feature/view/dashboard.dart';
+import 'package:medherence/features/home_featue/view/home_view.dart';
 
 import '../../../core/constants_utils/constants.dart';
 import '../widget/textfield.dart';
@@ -155,7 +157,9 @@ class _LoginViewState extends State<LoginView> {
                 buttonConfig: ButtonConfig(
                   text: 'Sign In',
                   action: () {
-                    _buildCompleteProfile();
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => DashboardView()));
+                    // buildCompleteProfile();
                   },
                   disabled: false,
                 ),
@@ -166,16 +170,17 @@ class _LoginViewState extends State<LoginView> {
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Icon(
-                      Icons.info,
+                      Icons.announcement,
                       color: Colors.blue.shade200,
                     ),
                   ),
                   const Flexible(
                     child: Text(
-                        'You don\'t have a Medherence account? Reach out to your Healthcare Provider to enrol you on the platform',
-                        style: TextStyle(
-                          letterSpacing: 0.6,
-                        )),
+                      'You don\'t have a Medherence account? Reach out to your Healthcare Provider to enrol you on the platform',
+                      style: TextStyle(
+                        letterSpacing: 0.6,
+                      ),
+                    ),
                   )
                 ],
               ),
@@ -190,70 +195,5 @@ class _LoginViewState extends State<LoginView> {
     return null;
   }
 
-  _buildCompleteProfile() async {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (ctx) => SimpleDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(
-            (15),
-          ),
-        ),
-        children: [
-          const SizedBox(height: 10),
-          const Padding(
-            padding: EdgeInsets.only(top: 8.0),
-            child: Text(
-              'Complete Profile',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: (20),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(
-              left: 25.0,
-              right: 25.0,
-            ),
-            child: Text(
-              'To unlock the full potential of the Medherence app, you are to complete your user profile',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: (18),
-                color: Colors.black87,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-          const SizedBox(height: 30),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 15.0,
-              right: 15,
-            ),
-            child: PrimaryButton(
-              buttonConfig: ButtonConfig(
-                text: 'Complete Profile',
-                action: () {
-                  Navigator.pop(context);
-                },
-                disabled: false,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-    await Future.delayed(
-      const Duration(
-        seconds: 5,
-      ),
-    );
-  }
+  
 }
