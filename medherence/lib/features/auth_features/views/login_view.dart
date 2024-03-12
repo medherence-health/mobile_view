@@ -42,7 +42,7 @@ class _LoginViewState extends State<LoginView> {
                 height: 10,
               ),
               Text(
-                'Enter  your login details to access the app',
+                'Enter your login details to access the app',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
