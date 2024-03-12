@@ -49,19 +49,19 @@ class TitleAndTextFormField extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: (18),
             color: Colors.black,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: (10),
         ),
         TextFormField(
           controller: formFieldController,
           textInputAction: textInputAction,
           keyboardType: textInputType,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: (18),
             fontWeight: FontWeight.w400,
             color: Colors.grey,
@@ -73,7 +73,7 @@ class TitleAndTextFormField extends StatelessWidget {
           ),
           validator: formFieldValidator,
         ),
-        SizedBox(
+        const SizedBox(
           height: (25),
         ),
       ],

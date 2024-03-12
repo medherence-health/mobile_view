@@ -43,7 +43,7 @@ class _LoginViewState extends State<LoginView> {
         toolbarHeight: 100,
       ),
       body: Padding(
-        padding: EdgeInsets.only(
+        padding: const EdgeInsets.only(
           left: 25.0,
           right: 25,
         ),
@@ -52,17 +52,17 @@ class _LoginViewState extends State<LoginView> {
           child: ListView(
             // crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
+              const Text(
                 'Welcome',
                 style: TextStyle(
                   fontSize: 35,
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              Text(
+              const Text(
                 'Enter your login details to access the app',
                 style: TextStyle(
                   fontSize: 20,
@@ -70,7 +70,7 @@ class _LoginViewState extends State<LoginView> {
                   color: Colors.grey,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               TitleAndTextFormField(
@@ -84,31 +84,31 @@ class _LoginViewState extends State<LoginView> {
                   return value!.emailValidation();
                 },
               ),
-              Text(
+              const Text(
                 'Hospital/Clinical Name',
                 style: TextStyle(
                   fontSize: (18),
                   color: Colors.black,
                 ),
               ),
-              SizedBox(height: (10)),
+              const SizedBox(height: (10)),
               DropdownButtonFormField<dynamic>(
                 // value: _selectedRegionId,
                 onChanged: (newValue) {},
                 items: _buildDropdownItems(),
                 decoration: kProfileInputDecoration,
               ),
-              SizedBox(
+              const SizedBox(
                 height: (20),
               ),
-              Text(
+              const Text(
                 'Password',
                 style: TextStyle(
                   fontSize: (18),
                   color: Colors.black,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: (10),
               ),
               TextFormField(
@@ -130,7 +130,7 @@ class _LoginViewState extends State<LoginView> {
                 ),
                 validator: (value) => value!.validatePassword(),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -142,7 +142,7 @@ class _LoginViewState extends State<LoginView> {
                       });
                     },
                   ),
-                  Text(
+                  const Text(
                     'Remember Me',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
@@ -150,7 +150,7 @@ class _LoginViewState extends State<LoginView> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               PrimaryButton(
                 buttonConfig: ButtonConfig(
                   text: 'Sign In',
@@ -160,7 +160,7 @@ class _LoginViewState extends State<LoginView> {
                   disabled: false,
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Row(
                 children: [
                   Padding(
@@ -170,7 +170,7 @@ class _LoginViewState extends State<LoginView> {
                       color: Colors.blue.shade200,
                     ),
                   ),
-                  Flexible(
+                  const Flexible(
                     child: Text(
                         'You don\'t have a Medherence account? Reach out to your Healthcare Provider to enrol you on the platform',
                         style: TextStyle(
@@ -201,9 +201,9 @@ class _LoginViewState extends State<LoginView> {
           ),
         ),
         children: [
-          SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
+          const SizedBox(height: 10),
+          const Padding(
+            padding: EdgeInsets.only(top: 8.0),
             child: Text(
               'Complete Profile',
               textAlign: TextAlign.center,
@@ -213,11 +213,11 @@ class _LoginViewState extends State<LoginView> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: (20),
           ),
-          Padding(
-            padding: const EdgeInsets.only(
+          const Padding(
+            padding: EdgeInsets.only(
               left: 25.0,
               right: 25.0,
             ),
@@ -231,7 +231,7 @@ class _LoginViewState extends State<LoginView> {
               ),
             ),
           ),
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
           Padding(
             padding: const EdgeInsets.only(
               left: 15.0,

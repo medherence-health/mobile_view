@@ -18,7 +18,7 @@ InputDecoration kFormTextDecoration = InputDecoration(
     borderRadius: BorderRadius.circular(
       (10),
     ),
-    borderSide: BorderSide(
+    borderSide: const BorderSide(
       width: (2),
       color: Colors.black87,
     ),
@@ -32,7 +32,7 @@ InputDecoration kProfileInputDecoration = InputDecoration(
     borderRadius: BorderRadius.circular(
       (10),
     ),
-    borderSide: BorderSide(
+    borderSide: const BorderSide(
       width: (2),
       color: Colors.black87,
     ),
