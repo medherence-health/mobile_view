@@ -95,9 +95,9 @@ class _HomeViewState extends State<HomeView> {
         child: Stack(
           children:[
             Expanded(
-              Row(
+             child: Row(
                 children:[
-                  
+
                 ]
               )
             ),
