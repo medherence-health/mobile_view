@@ -10,28 +10,8 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: InkWell(
-        onTap: () {
-          buildCompleteProfile();
-        },
-        child: Center(
-          child: Text(
-            'Medherence',
-            style: TextStyle(
-              fontSize: 39,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  buildCompleteProfile() async {
+    
+    buildCompleteProfile() async {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -97,4 +77,39 @@ class _HomeViewState extends State<HomeView> {
       ),
     );
   }
+
+  @override
+  void initState() {
+    super.initState();
+    buildCompleteProfile();
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      child: InkWell(
+        onTap: () {
+          
+        },
+        child: Stack(
+          children:[
+            Expanded(
+              Row(
+                children:[
+                  
+                ]
+              )
+            ),
+            Column(
+              children:[
+
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
 }
