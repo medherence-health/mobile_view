@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/shared_widget/buttons.dart';
+import '../widget/progressStreak.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -10,8 +11,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-    
-    buildCompleteProfile() async {
+  buildCompleteProfile() async {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -78,32 +78,83 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
+  int progress = 1;
+  String title = 'ADB'; // Initial title
+
+  void updateProgress() {
+    setState(() {
+      progress++;
+      // Update title based on progress
+      if (progress == 1) {
+        title = 'ADB';
+      } else if (progress == 2) {
+        title = 'Serg';
+      } else if (progress == 3) {
+        title = 'Lt.';
+      } else {
+        // Custom logic for further progress titles
+        title = 'Master ${progress - 2}';
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    buildCompleteProfile();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      buildCompleteProfile();
+    });
   }
-  
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: InkWell(
-        onTap: () {
-          
-        },
-        child: Stack(
-          children:[
-            Expanded(
-             child: Row(
-                children:[
-
-                ]
-              )
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: 25.0,
+        right: 20,
+        left: 20,
+      ),
+      child: Container(
+        color: Colors.white,
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Welcome, $title',
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: "Poppins-bold.ttf",
+                  ),
+                ), // Display dynamic title
+                IconButton(
+                  icon: Icon(
+                    Icons.notifications_none_sharp,
+                    color: Theme.of(context).iconTheme.color,
+                  ),
+                  onPressed: () {
+                    // Handle notification button press
+                  },
+                ),
+              ],
             ),
             Column(
-              children:[
-
+              children: [
+                SizedBox(height: 30),
+                ProgressStreak(
+                    progress: progress), // Display progress streak bar
+                SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    // Simulate completion of an action
+                    if (progress < 10) {
+                      updateProgress();
+                    }
+                  },
+                  child: Text('Complete Action'),
+                ),
               ],
             ),
           ],
@@ -111,5 +162,4 @@ class _HomeViewState extends State<HomeView> {
       ),
     );
   }
-
 }

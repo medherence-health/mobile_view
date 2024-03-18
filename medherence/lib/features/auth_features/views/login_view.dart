@@ -146,7 +146,7 @@ class _LoginViewState extends State<LoginView> {
                   const Text(
                     'Remember Me',
                     style: TextStyle(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],
@@ -156,8 +156,8 @@ class _LoginViewState extends State<LoginView> {
                 buttonConfig: ButtonConfig(
                   text: 'Sign In',
                   action: () {
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => DashboardView()));
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => DashboardView()));
                     // buildCompleteProfile();
                   },
                   disabled: false,
@@ -193,6 +193,4 @@ class _LoginViewState extends State<LoginView> {
   List<DropdownMenuItem<dynamic>>? _buildDropdownItems() {
     return null;
   }
-
-  
 }

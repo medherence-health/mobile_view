@@ -14,7 +14,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
       backgroundColor: AppColors.navBarColor,
       selectedItemColor: AppColors.white,
       selectedLabelStyle: const TextStyle(
-        fontSize: (15),
+        fontSize: (14),
         fontWeight: FontWeight.w500,
       ),
       unselectedItemColor: AppColors.unselectedNavBarColor,
@@ -23,7 +23,8 @@ class CustomBottomNavigationBar extends StatelessWidget {
         fontWeight: FontWeight.w300,
       ),
       type: BottomNavigationBarType.fixed,
-      iconSize: 35,
+      iconSize: 28,
+      unselectedIconTheme: IconThemeData(size: 20),
       currentIndex: model.currentIndex,
       onTap: model.setIndex,
       items: [
@@ -33,7 +34,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             color: AppColors.unselectedNavBarColor,
           ),
           activeIcon: Icon(
-            CupertinoIcons.house_alt,
+            CupertinoIcons.house_alt_fill,
             color: AppColors.white,
           ),
           label: 'Home',

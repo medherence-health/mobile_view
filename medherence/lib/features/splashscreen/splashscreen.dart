@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:medherence/features/auth_features/views/login_view.dart';
 
 import 'package:medherence/features/dashboard_feature/view/dashboard.dart';
 
@@ -10,9 +11,10 @@ class SplashScreen extends StatefulWidget {
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
- late Animation<double> _animation;
+  late Animation<double> _animation;
 
   @override
   void initState() {
@@ -21,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     // Animation controller
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 3),
+      duration: const Duration(milliseconds: 600),
     );
 
     // Animation
@@ -32,11 +34,13 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
     // Start animation
     _animationController.forward();
-
-    Timer(const Duration(seconds: 5), () {
+    _animationController.addListener(() {
+      setState(() {});
+    });
+    Timer(const Duration(milliseconds: 2500), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const DashboardView()),
+        MaterialPageRoute(builder: (context) => const LoginView()),
       );
     });
   }
@@ -59,7 +63,8 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
               animation: _animation,
               builder: (context, child) {
                 return Transform.translate(
-                  offset: Offset(0, 200 * (1 - _animation.value)), // Slide down animation
+                  offset: Offset(
+                      0, 200 * (1 - _animation.value)), // Slide down animation
                   child: Transform.scale(
                     scale: 0.5 + (_animation.value * 0.5), // Enlarge animation
                     child: Opacity(
@@ -69,7 +74,8 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                   ),
                 );
               },
-              child: Image.asset('assets/images/vector.png'), // Your image asset
+              child:
+                  Image.asset('assets/images/vector.png'), // Your image asset
             ),
           ],
         ),
