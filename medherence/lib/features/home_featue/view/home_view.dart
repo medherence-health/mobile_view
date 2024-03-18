@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/shared_widget/buttons.dart';
+import '../widget/medecoin_widget.dart';
 import '../widget/progressStreak.dart';
 
 class HomeView extends StatefulWidget {
@@ -117,6 +118,7 @@ class _HomeViewState extends State<HomeView> {
       child: Container(
         color: Colors.white,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -141,20 +143,31 @@ class _HomeViewState extends State<HomeView> {
               ],
             ),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 30),
                 ProgressStreak(
                     progress: progress), // Display progress streak bar
-                SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    // Simulate completion of an action
-                    if (progress < 10) {
-                      updateProgress();
-                    }
-                  },
-                  child: Text('Complete Action'),
-                ),
+                SizedBox(height: 20),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     // Simulate completion of an action
+                //     if (progress < 10) {
+                //       updateProgress();
+                //     }
+                //   },
+                //   child: Text('Complete Action'),
+                // ),
+                MedhecoinWidget(),
+                SizedBox(height: 40),
+                Text(
+                  'Next Regimen',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontFamily: "Poppins-Bold.ttf",
+                    fontSize: 25,
+                  ),
+                )
               ],
             ),
           ],

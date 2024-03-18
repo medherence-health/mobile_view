@@ -24,17 +24,28 @@ class ProgressStreak extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  Row(
+                  Stack(
+                    // mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Container(
                         height: 20,
-                        width: (progress / 10) * MediaQuery.of(context).size.width,
+                        width:
+                            (progress / 10) * MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
                           color: AppColors.navBarColor,
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      Image.asset('assets/images/avatar_image.png'),
+                      Positioned(
+                        left: (progress / 10) *
+                                MediaQuery.of(context).size.width -
+                            20,
+                        child: Image.asset(
+                          'assets/images/avatar_image.png',
+                          // width: 3,
+                          height: 25,
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -53,7 +64,9 @@ class ProgressStreak extends StatelessWidget {
                       return Text(
                         '${index + 1}',
                         style: TextStyle(
-                          color: index < progress ? AppColors.navBarColor : Colors.grey,
+                          color: index < progress
+                              ? AppColors.navBarColor
+                              : Colors.grey,
                           fontWeight: FontWeight.w200,
                           fontSize: 8,
                         ),
