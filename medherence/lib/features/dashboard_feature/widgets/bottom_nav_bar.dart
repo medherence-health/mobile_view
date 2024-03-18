@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:medherence/core/constants_utils/color_utils.dart';
 
 // ignore: must_be_immutable
 class CustomBottomNavigationBar extends StatelessWidget {
@@ -10,13 +11,13 @@ class CustomBottomNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       elevation: 5,
-      backgroundColor: Colors.blue,
-      selectedItemColor: Colors.white,
+      backgroundColor: AppColors.navBarColor,
+      selectedItemColor: AppColors.white,
       selectedLabelStyle: const TextStyle(
         fontSize: (15),
-        fontWeight: FontWeight.w400,
+        fontWeight: FontWeight.w500,
       ),
-      unselectedItemColor: Colors.grey.shade300,
+      unselectedItemColor: AppColors.unselectedNavBarColor,
       unselectedLabelStyle: const TextStyle(
         fontSize: (12),
         fontWeight: FontWeight.w300,
@@ -28,34 +29,34 @@ class CustomBottomNavigationBar extends StatelessWidget {
       items: [
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.home,
-            color: Colors.grey.shade400,
+            CupertinoIcons.house_alt,
+            color: AppColors.unselectedNavBarColor,
           ),
           activeIcon: Icon(
-            Icons.home_filled,
-            color: Colors.white,
+            CupertinoIcons.house_alt,
+            color: AppColors.white,
           ),
           label: 'Home',
         ),
         BottomNavigationBarItem(
           icon: Icon(
             Icons.alarm_sharp,
-            color: Colors.grey.shade400,
+            color: AppColors.unselectedNavBarColor,
           ),
           activeIcon: Icon(
             Icons.alarm_sharp,
-            color: Colors.white,
+            color: AppColors.white,
           ),
           label: 'Reminder',
         ),
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.menu,
-            color: Colors.grey.shade400,
+            Icons.more_horiz,
+            color: AppColors.unselectedNavBarColor,
           ),
           activeIcon: Icon(
-            Icons.menu,
-            color: Colors.white,
+            Icons.more_horiz,
+            color: AppColors.white,
           ),
           label: 'Menu',
         ),

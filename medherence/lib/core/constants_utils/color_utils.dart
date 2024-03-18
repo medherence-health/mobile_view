@@ -2,7 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const Color mainPrimary = Color.fromARGB(255, 166, 116, 69);
+  static const Color mainPrimaryButton = Color.fromRGBO(171, 122, 26, 1);
+
+  static const Color pressedButton = Color.fromRGBO(142, 102, 22, 1);
+
+  static const Color disabledButton = Color.fromRGBO(213, 188, 140, 1);
+  static const Color navBarColor = Color.fromRGBO(26, 85, 171, 1);
+  static const Color unselectedNavBarColor = Color.fromRGBO(255, 255, 255, 1);
   static const Color fadedOrange = Color(0xFFFFF4F0);
   static const Color midOrange = Color(0xFFF6C8B9);
   static const Color lightRed = Color(0xFFFFEBEB);

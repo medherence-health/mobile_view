@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medherence/core/constants_utils/color_utils.dart';
 
 class PrimaryButton extends StatelessWidget {
   final ButtonConfig buttonConfig;
@@ -13,8 +14,8 @@ class PrimaryButton extends StatelessWidget {
     this.height = 54.0,
     this.margin,
     this.width = double.infinity,
-    this.textColor = Colors.white,
-    this.color = const Color.fromARGB(255, 166, 116, 69),
+    this.textColor = AppColors.white,
+    this.color = AppColors.mainPrimaryButton,
   }) : super(key: key);
 
   @override
@@ -24,7 +25,7 @@ class PrimaryButton extends StatelessWidget {
       width: width,
       margin: margin ?? const EdgeInsets.all(0),
       decoration: BoxDecoration(
-        color: buttonConfig.disabled ? Colors.white70 : color,
+        color: buttonConfig.disabled ? AppColors.disabledButton : color,
         borderRadius: BorderRadius.circular(
           (10),
         ),
@@ -34,7 +35,7 @@ class PrimaryButton extends StatelessWidget {
         child: InkWell(
           onTap: buttonConfig.disabled ? null : buttonConfig.action,
           highlightColor:
-              const Color.fromARGB(255, 166, 116, 69).withOpacity(0.3),
+              AppColors.disabledButton,
           child: Center(
             child: Text(
               buttonConfig.text,
@@ -65,8 +66,8 @@ class OutlinePrimaryButton extends StatelessWidget {
       this.height = 54.0,
       this.margin,
       this.width = double.infinity,
-      this.textColor = const Color.fromARGB(255, 166, 116, 69),
-      this.color = Colors.white})
+      this.textColor = AppColors.mainPrimaryButton,
+      this.color = Colors.white,})
       : super(key: key);
 
   @override
@@ -81,14 +82,14 @@ class OutlinePrimaryButton extends StatelessWidget {
           (10),
         ),
         border: Border.all(
-          color: const Color.fromARGB(255, 166, 116, 69),
+          color: AppColors.pressedButton,
         ),
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: buttonConfig.action,
-          highlightColor: Colors.white.withOpacity(0.3),
+          highlightColor: AppColors.disabledButton,
           child: Center(
             child: Text(
               buttonConfig.text,
