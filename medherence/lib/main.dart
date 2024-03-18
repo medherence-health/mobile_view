@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:medherence/features/auth_features/views/login_view.dart';
+import 'package:medherence/features/splashscreen/splashscreen.dart';
+import '../../core/constants_utils/color_utils.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -14,10 +17,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Medical adherence',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.navBarColor),
         useMaterial3: true,
       ),
-      home: const LoginView(),
+      home: SplashScreen(),
     );
   }
 }

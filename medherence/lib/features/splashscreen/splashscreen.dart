@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:medherence/features/dashboard_feature/view/dashboard.dart';
 
+import '../../core/constants_utils/color_utils.dart';
+
 class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -19,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     // Animation controller
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 2),
+      duration: const Duration(seconds: 3),
     );
 
     // Animation
@@ -31,10 +33,10 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     // Start animation
     _animationController.forward();
 
-    Timer(Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 5), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => DashboardView()),
+        MaterialPageRoute(builder: (context) => const DashboardView()),
       );
     });
   }
@@ -48,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.navBarColor,
       body: Center(
         child: Stack(
           children: [
