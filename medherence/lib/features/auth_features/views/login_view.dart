@@ -89,7 +89,7 @@ class _LoginViewState extends State<LoginView> {
                 controller:
                     TextEditingController(text: _selectedHospital ?? ''),
                 enabled: true, // Disable editing directly in the field
-
+                readOnly: true,
                 decoration: InputDecoration(
                   // ... apply desired styling here
                   hintStyle: kFormTextDecoration.hintStyle,
@@ -118,8 +118,7 @@ class _LoginViewState extends State<LoginView> {
                 textInputAction: TextInputAction.next,
                 textInputType: TextInputType.text,
                 formFieldColor: emailFillColor,
-                formFieldValidator: (value) {
-                },
+                formFieldValidator: (value) {},
               ),
               const SizedBox(
                 height: (20),
@@ -181,7 +180,7 @@ class _LoginViewState extends State<LoginView> {
                     child: GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ForgotPasswordScreen()));
+                            builder: (context) => ForgotPasswordScreen()));
                       },
                       child: Text(
                         'Forgot Password?',

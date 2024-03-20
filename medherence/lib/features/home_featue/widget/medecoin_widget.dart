@@ -51,7 +51,7 @@ class MedhecoinWidget extends StatelessWidget {
                     IconButton(
                       onPressed: () {},
                       icon: const Icon(
-                        Icons.file_upload_outlined,
+                        Icons.open_in_new,
                       ),
                       color: AppColors.white,
                     ),

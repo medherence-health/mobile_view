@@ -145,7 +145,9 @@ class _HomeViewState extends State<HomeView> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 30),
+                SizedBox(height: 10),
+                Text(title),
+                SizedBox(height: 5),
                 ProgressStreak(
                     progress: progress), // Display progress streak bar
                 SizedBox(height: 20),
