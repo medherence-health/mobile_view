@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medherence/core/shared_widget/buttons.dart';
+import 'package:medherence/features/auth_features/views/forgot_password.dart';
 import 'package:medherence/features/auth_features/widget/validation_extension.dart';
 import 'package:medherence/features/dashboard_feature/view/dashboard.dart';
 
@@ -38,8 +39,8 @@ class _LoginViewState extends State<LoginView> {
         title: const Text(
           'Sign In',
           style: TextStyle(
-            fontSize: 26,
-            fontWeight: FontWeight.w600,
+            fontSize: 30,
+            fontWeight: FontWeight.w500,
           ),
         ),
         centerTitle: true,
@@ -87,12 +88,12 @@ class _LoginViewState extends State<LoginView> {
               TextFormField(
                 controller:
                     TextEditingController(text: _selectedHospital ?? ''),
-                enabled: false, // Disable editing directly in the field
+                enabled: true, // Disable editing directly in the field
 
                 decoration: InputDecoration(
                   // ... apply desired styling here
                   hintStyle: kFormTextDecoration.hintStyle,
-                  filled: true,
+                  filled: false,
                   fillColor: kFormTextDecoration.fillColor,
                   errorBorder: kFormTextDecoration.errorBorder,
                   border: kFormTextDecoration.border,
@@ -109,16 +110,15 @@ class _LoginViewState extends State<LoginView> {
                   hintText: "Select your HCP",
                 ),
               ),
-              const SizedBox(height: (10)),
+              const SizedBox(height: (20)),
               TitleAndTextFormField(
                 title: 'Hospital Number',
-                formFieldHint: 'Please type your E-mail',
+                formFieldHint: 'Please type your Hospital Number',
                 formFieldController: hospitalNumberController,
                 textInputAction: TextInputAction.next,
                 textInputType: TextInputType.text,
                 formFieldColor: emailFillColor,
                 formFieldValidator: (value) {
-                  return value!.emailValidation();
                 },
               ),
               const SizedBox(
@@ -138,14 +138,9 @@ class _LoginViewState extends State<LoginView> {
                 obscureText: !obscurePassword,
                 controller: passwordController,
                 cursorHeight: 19,
-                style: const TextStyle(
-                  fontSize: (18),
-                  fontWeight: FontWeight.w400,
-                  color: Colors.grey,
-                ),
                 decoration: InputDecoration(
                   hintStyle: kFormTextDecoration.hintStyle,
-                  filled: true,
+                  filled: false,
                   fillColor: kFormTextDecoration.fillColor,
                   errorBorder: kFormTextDecoration.errorBorder,
                   border: kFormTextDecoration.border,
@@ -181,11 +176,20 @@ class _LoginViewState extends State<LoginView> {
                     ),
                   ),
                   Spacer(),
-                  const Text(
-                    'Forgot Password?',
-                    style: TextStyle(
-                      color: AppColors.navBarColor,
-                      fontWeight: FontWeight.w400,
+                  Padding(
+                    padding: EdgeInsets.only(right: 5.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ForgotPasswordScreen()));
+                      },
+                      child: Text(
+                        'Forgot Password?',
+                        style: TextStyle(
+                          color: AppColors.navBarColor,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -197,7 +201,6 @@ class _LoginViewState extends State<LoginView> {
                   action: () {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (context) => DashboardView()));
-                    // buildCompleteProfile();
                   },
                   disabled: false,
                 ),
@@ -230,7 +233,18 @@ class _LoginViewState extends State<LoginView> {
   }
 
   List<PopupMenuItem<String>> _buildDropdownItems() {
-    List<String> hospitalNames = ['Hospital A', 'Hospital B', 'Hospital C'];
+    List<String> hospitalNames = [
+      'Hospital A',
+      'Hospital B',
+      'Hospital C',
+      'Hospital D',
+      'Hospital E',
+      'Hospital F',
+      'Hospital G',
+      'Hospital H',
+      'Hospital I',
+      'Hospital J',
+    ];
     return hospitalNames.map((String value) {
       return PopupMenuItem<String>(
         value: value,

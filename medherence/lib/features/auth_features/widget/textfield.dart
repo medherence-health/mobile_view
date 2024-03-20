@@ -61,11 +61,6 @@ class TitleAndTextFormField extends StatelessWidget {
           controller: formFieldController,
           textInputAction: textInputAction,
           keyboardType: textInputType,
-          style: const TextStyle(
-            fontSize: (18),
-            fontWeight: FontWeight.w400,
-            color: Colors.grey,
-          ),
           inputFormatters: textInputFormatters,
           decoration: kFormTextDecoration.copyWith(
             hintText: formFieldHint,
@@ -74,9 +69,9 @@ class TitleAndTextFormField extends StatelessWidget {
           ),
           validator: formFieldValidator,
         ),
-        const SizedBox(
-          height: (25),
-        ),
+        // const SizedBox(
+        //   height: (25),
+        // ),
       ],
     );
   }

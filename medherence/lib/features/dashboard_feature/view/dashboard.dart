@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medherence/features/auth_features/views/forgot_password.dart';
 import 'package:medherence/features/auth_features/views/login_view.dart';
 import 'package:stacked/stacked.dart';
 
@@ -14,7 +15,6 @@ class DashboardView extends StatefulWidget {
 }
 
 class _DashboardViewState extends State<DashboardView> {
-  
   @override
   void initState() {
     super.initState();
@@ -22,20 +22,19 @@ class _DashboardViewState extends State<DashboardView> {
 
   @override
   Widget build(BuildContext context) {
-    return  ViewModelBuilder<DashboardViewModel>.reactive(
+    return ViewModelBuilder<DashboardViewModel>.reactive(
       viewModelBuilder: () => DashboardViewModel(),
       builder: (_, model, __) => SafeArea(
-      child: Scaffold(
-        body: _GetDashboardView(
-          dashboardIndex: model.currentIndex,
-        ),
-        bottomNavigationBar: CustomBottomNavigationBar(
-          model: model,
+        child: Scaffold(
+          body: _GetDashboardView(
+            dashboardIndex: model.currentIndex,
+          ),
+          bottomNavigationBar: CustomBottomNavigationBar(
+            model: model,
+          ),
         ),
       ),
-    ),
-    )
-    ;
+    );
   }
 }
 
@@ -52,6 +51,8 @@ class _GetDashboardView extends StatelessWidget {
     switch (dashboardIndex) {
       case 0:
         return const HomeView();
+      case 1:
+        return const ForgotPasswordScreen();
       default:
         return const LoginView();
     }
