@@ -12,6 +12,7 @@ class AppColors {
   static const Color progressBarFill = Color.fromRGBO(209, 221, 238, 1);
   static const Color medMidgradient = Color.fromRGBO(57, 41, 9, 1);
   static const Color medEndColor = Color.fromRGBO(255, 255, 255, 0.81);
+  static const Color textFilledColor = Color.fromRGBO(179, 198, 227, 1);
   static const Color fadedOrange = Color(0xFFFFF4F0);
   static const Color midOrange = Color(0xFFF6C8B9);
   static const Color lightRed = Color(0xFFFFEBEB);

@@ -70,6 +70,7 @@ class TitleAndTextFormField extends StatelessWidget {
           decoration: kFormTextDecoration.copyWith(
             hintText: formFieldHint,
             fillColor: formFieldColor,
+            errorBorder: kFormTextDecoration.errorBorder,
           ),
           validator: formFieldValidator,
         ),

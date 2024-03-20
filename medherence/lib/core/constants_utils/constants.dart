@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
+import 'color_utils.dart';
+
 InputDecoration kFormTextDecoration = InputDecoration(
   hintStyle: TextStyle(
     color: Colors.grey.shade500,
   ),
   filled: true,
+  fillColor: AppColors.textFilledColor,
   border: OutlineInputBorder(
     borderRadius: BorderRadius.circular(
       (10),
@@ -22,6 +25,10 @@ InputDecoration kFormTextDecoration = InputDecoration(
       width: (2),
       color: Colors.black87,
     ),
+  ),
+  errorBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(10),
+    borderSide: BorderSide(color: Colors.red),
   ),
 );
 

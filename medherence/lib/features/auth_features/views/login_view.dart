@@ -3,6 +3,7 @@ import 'package:medherence/core/shared_widget/buttons.dart';
 import 'package:medherence/features/auth_features/widget/validation_extension.dart';
 import 'package:medherence/features/dashboard_feature/view/dashboard.dart';
 
+import '../../../core/constants_utils/color_utils.dart';
 import '../../../core/constants_utils/constants.dart';
 import '../widget/textfield.dart';
 
@@ -16,6 +17,7 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   late TextEditingController hospitalNumberController;
   late TextEditingController passwordController;
+  String? _selectedHospital;
   bool obscurePassword = false;
   bool _rememberMe = false;
   Color emailFillColor = Colors.white70;
@@ -74,6 +76,40 @@ class _LoginViewState extends State<LoginView> {
               const SizedBox(
                 height: 30,
               ),
+              const Text(
+                'Hospital/Clinical Name',
+                style: TextStyle(
+                  fontSize: (18),
+                  color: Colors.black,
+                ),
+              ),
+              const SizedBox(height: (10)),
+              TextFormField(
+                controller:
+                    TextEditingController(text: _selectedHospital ?? ''),
+                enabled: false, // Disable editing directly in the field
+
+                decoration: InputDecoration(
+                  // ... apply desired styling here
+                  hintStyle: kFormTextDecoration.hintStyle,
+                  filled: true,
+                  fillColor: kFormTextDecoration.fillColor,
+                  errorBorder: kFormTextDecoration.errorBorder,
+                  border: kFormTextDecoration.border,
+                  focusedBorder: kFormTextDecoration.focusedBorder,
+                  suffixIcon: PopupMenuButton<String>(
+                    icon: const Icon(Icons.arrow_drop_down),
+                    onSelected: (value) {
+                      setState(() {
+                        _selectedHospital = value;
+                      });
+                    },
+                    itemBuilder: (context) => _buildDropdownItems(),
+                  ),
+                  hintText: "Select your HCP",
+                ),
+              ),
+              const SizedBox(height: (10)),
               TitleAndTextFormField(
                 title: 'Hospital Number',
                 formFieldHint: 'Please type your E-mail',
@@ -84,20 +120,6 @@ class _LoginViewState extends State<LoginView> {
                 formFieldValidator: (value) {
                   return value!.emailValidation();
                 },
-              ),
-              const Text(
-                'Hospital/Clinical Name',
-                style: TextStyle(
-                  fontSize: (18),
-                  color: Colors.black,
-                ),
-              ),
-              const SizedBox(height: (10)),
-              DropdownButtonFormField<dynamic>(
-                // value: _selectedRegionId,
-                onChanged: (newValue) {},
-                items: _buildDropdownItems(),
-                decoration: kProfileInputDecoration,
               ),
               const SizedBox(
                 height: (20),
@@ -116,8 +138,18 @@ class _LoginViewState extends State<LoginView> {
                 obscureText: !obscurePassword,
                 controller: passwordController,
                 cursorHeight: 19,
+                style: const TextStyle(
+                  fontSize: (18),
+                  fontWeight: FontWeight.w400,
+                  color: Colors.grey,
+                ),
                 decoration: InputDecoration(
                   hintStyle: kFormTextDecoration.hintStyle,
+                  filled: true,
+                  fillColor: kFormTextDecoration.fillColor,
+                  errorBorder: kFormTextDecoration.errorBorder,
+                  border: kFormTextDecoration.border,
+                  focusedBorder: kFormTextDecoration.focusedBorder,
                   suffixIcon: IconButton(
                       icon: obscurePassword
                           ? const Icon(Icons.visibility_off)
@@ -126,14 +158,13 @@ class _LoginViewState extends State<LoginView> {
                       onPressed: () => setState(() {
                             obscurePassword = !obscurePassword;
                           })),
-                  border: kFormTextDecoration.border,
                   hintText: "Type in your password",
                 ),
                 validator: (value) => value!.validatePassword(),
               ),
               const SizedBox(height: 10),
               Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Checkbox(
                     value: _rememberMe,
@@ -147,6 +178,14 @@ class _LoginViewState extends State<LoginView> {
                     'Remember Me',
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Spacer(),
+                  const Text(
+                    'Forgot Password?',
+                    style: TextStyle(
+                      color: AppColors.navBarColor,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                 ],
@@ -190,7 +229,13 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  List<DropdownMenuItem<dynamic>>? _buildDropdownItems() {
-    return null;
+  List<PopupMenuItem<String>> _buildDropdownItems() {
+    List<String> hospitalNames = ['Hospital A', 'Hospital B', 'Hospital C'];
+    return hospitalNames.map((String value) {
+      return PopupMenuItem<String>(
+        value: value,
+        child: Text(value),
+      );
+    }).toList();
   }
 }
