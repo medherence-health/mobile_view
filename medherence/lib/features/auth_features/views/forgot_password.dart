@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:medherence/features/auth_features/views/login_view.dart';
 import 'package:medherence/features/auth_features/widget/validation_extension.dart';
 
 import '../../../core/constants_utils/color_utils.dart';
 import '../../../core/shared_widget/buttons.dart';
 import '../widget/textfield.dart';
+import 'verify_password.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -103,13 +103,20 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   const SizedBox(height: 35),
                   PrimaryButton(
                     buttonConfig: ButtonConfig(
-                      text: 'Sign In',
+                      text: 'Send',
                       action: () {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => LoginView()));
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => VerifyForgotPassword(
+                              email: emailController.text,
+                            ),
+                          ),
+                        );
                       },
                       disabled: false,
                     ),
+                    width: double.infinity,
                   ),
                 ],
               ),

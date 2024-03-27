@@ -80,6 +80,7 @@ class MedhecoinWidget extends StatelessWidget {
                               .underline, // Add underline decoration
                         ),
                       ),
+                      // Spacer(),
                       Image.asset(
                         'assets/images/coin.png',
                         height: 35,

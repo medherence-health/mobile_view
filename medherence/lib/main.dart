@@ -8,10 +8,8 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -20,7 +18,6 @@ class MyApp extends StatelessWidget {
       title: 'Medical adherence',
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
-
         // colorScheme: ColorScheme.fromSeed(seedColor: AppColors.navBarColor),
         colorScheme: const ColorScheme.light(
           primary: AppColors.navBarColor,
@@ -34,7 +31,6 @@ class MyApp extends StatelessWidget {
             color: AppColors.navBarColor,
           ),
         ),
-
         textSelectionTheme: TextSelectionThemeData(
           cursorColor: AppColors.pressedButton,
           selectionHandleColor: AppColors.midOrange,

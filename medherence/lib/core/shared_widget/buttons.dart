@@ -13,7 +13,7 @@ class PrimaryButton extends StatelessWidget {
     required this.buttonConfig,
     this.height = 54.0,
     this.margin,
-    this.width = double.infinity,
+    required this.width,
     this.textColor = AppColors.white,
     this.color = AppColors.mainPrimaryButton,
   }) : super(key: key);
@@ -75,32 +75,36 @@ class OutlinePrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: height,
-      width: width,
-      margin: margin ?? const EdgeInsets.all(0),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(
-          (10),
+    return Card(
+      elevation: 3,
+      child: Container(
+        height: height,
+        width: width,
+        margin: margin ?? const EdgeInsets.all(0),
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(
+            (10),
+          ),
+          border: Border.all(
+            color: AppColors.pressedButton,
+            width: 2.0,
+          ),
         ),
-        border: Border.all(
-          color: AppColors.pressedButton,
-        ),
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: buttonConfig.action,
-          highlightColor: AppColors.disabledButton,
-          child: Center(
-            child: Text(
-              buttonConfig.text,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                color: textColor,
-                fontSize: (25),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: buttonConfig.action,
+            highlightColor: AppColors.disabledButton,
+            child: Center(
+              child: Text(
+                buttonConfig.text,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: textColor,
+                  fontSize: (25),
+                ),
               ),
             ),
           ),

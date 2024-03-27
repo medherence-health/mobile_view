@@ -118,7 +118,9 @@ class _LoginViewState extends State<LoginView> {
                 textInputAction: TextInputAction.next,
                 textInputType: TextInputType.text,
                 formFieldColor: emailFillColor,
-                formFieldValidator: (value) {},
+                formFieldValidator: (value) {
+                  return null;
+                },
               ),
               const SizedBox(
                 height: (20),
@@ -179,7 +181,9 @@ class _LoginViewState extends State<LoginView> {
                     padding: EdgeInsets.only(right: 5.0),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute( 
                             builder: (context) => ForgotPasswordScreen()));
                       },
                       child: Text(
@@ -195,6 +199,7 @@ class _LoginViewState extends State<LoginView> {
               ),
               const SizedBox(height: 20),
               PrimaryButton(
+                width: double.infinity,
                 buttonConfig: ButtonConfig(
                   text: 'Sign In',
                   action: () {
@@ -210,15 +215,27 @@ class _LoginViewState extends State<LoginView> {
                   Padding(
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Icon(
-                      Icons.announcement,
+                      Icons.feedback_rounded,
                       color: Colors.blue.shade200,
                     ),
                   ),
-                  const Flexible(
-                    child: Text(
-                      'You don\'t have a Medherence account? Reach out to your Healthcare Provider to enrol you on the platform',
+                   Flexible(
+                    child: RichText(
+                      text: TextSpan(text:  'You don\'t have a Medherence account? ',
                       style: TextStyle(
-                        letterSpacing: 0.6,
+                        letterSpacing: 0.3,
+                        fontStyle: FontStyle.italic,
+                        color: AppColors.darkGrey,
+                      ),
+                      children: [
+                        TextSpan(text: 'Reach out to your Healthcare Provider to enroll you on the platform', style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                        letterSpacing: 0.3,
+                        color: AppColors.black
+                      ),
+                      ),
+                      ],
                       ),
                     ),
                   )

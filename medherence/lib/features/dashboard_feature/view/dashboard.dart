@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:medherence/features/auth_features/views/forgot_password.dart';
 import 'package:medherence/features/auth_features/views/login_view.dart';
+import 'package:medherence/features/dashboard_feature/view/menu.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../home_featue/view/home_view.dart';
+import '../../home_feature/view/home_view.dart';
+import '../../home_feature/widget/history_widget.dart';
 import '../view_model/dashboard_view_model.dart';
 import '../widgets/bottom_nav_bar.dart';
 
@@ -53,6 +55,8 @@ class _GetDashboardView extends StatelessWidget {
         return const HomeView();
       case 1:
         return const ForgotPasswordScreen();
+      case 2:
+        return const MenuScreen();
       default:
         return const LoginView();
     }
