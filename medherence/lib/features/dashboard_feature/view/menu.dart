@@ -118,6 +118,17 @@ class _MenuScreenState extends State<MenuScreen> {
               height: 44,
             ),
             MenuItemCard(
+              icon: Icons.account_circle_rounded,
+              title: 'Profile',
+              subtitle: 'Personalize and setup your experience',
+              onPressed: () {
+                // Navigate to settings screen
+              },
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            MenuItemCard(
               icon: Icons.settings,
               title: 'Settings',
               subtitle: 'Personalize and setup your experience',
