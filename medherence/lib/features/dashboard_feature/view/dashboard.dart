@@ -5,7 +5,6 @@ import 'package:medherence/features/dashboard_feature/view/menu.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../home_feature/view/home_view.dart';
-import '../../home_feature/widget/history_widget.dart';
 import '../view_model/dashboard_view_model.dart';
 import '../widgets/bottom_nav_bar.dart';
 

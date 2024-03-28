@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:medherence/features/home_feature/widget/history_widget.dart';
 
 import '../../../core/constants_utils/color_utils.dart';
 import '../../../core/model/models/history_model.dart';
@@ -18,7 +17,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   bool _showHistory = false;
-  List<HistoryModel> _historyDataList = generateSimulatedData();
+  final List<HistoryModel> _historyDataList = generateSimulatedData();
   List<dynamic> history = [];
 
   // Function to show the history widget
@@ -224,15 +223,15 @@ class _HomeViewState extends State<HomeView> {
               maxChildSize: 0.8,
               expand: false,
               builder: (context, scrollController) {
-                if (historyList == null || historyList.isEmpty) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
+                if (historyList.isEmpty) {
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(
                       horizontal: 30.0,
                       vertical: 10,
                     ),
                     child: Stack(
                       children: [
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.only(top: 25.0),
                           child: Text(
                             'History',
@@ -244,10 +243,10 @@ class _HomeViewState extends State<HomeView> {
                           ),
                         ),
                         Center(
-                          child: Container(
+                          child: SizedBox(
                             height: 150,
                             width: 180,
-                            child: const Column(
+                            child: Column(
                               children: [
                                 SizedBox(
                                   height: 20,
@@ -298,10 +297,10 @@ class _HomeViewState extends State<HomeView> {
                         padding: const EdgeInsets.only(top: 50.0),
                         child: Column(
                           children: [
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
-                            Row(
+                            const Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 SizedBox(
@@ -333,7 +332,7 @@ class _HomeViewState extends State<HomeView> {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             Expanded(
                               child: ListView.separated(
                                 shrinkWrap: true,
@@ -351,8 +350,8 @@ class _HomeViewState extends State<HomeView> {
                                       DateFormat('MMM').format(item.date);
                                   return Container(
                                     height: 55,
-                                    margin: EdgeInsets.symmetric(vertical: 5),
-                                    padding: EdgeInsets.only(left: 10),
+                                    margin: const EdgeInsets.symmetric(vertical: 5),
+                                    padding: const EdgeInsets.only(left: 10),
                                     decoration: BoxDecoration(
                                       color: Colors.grey[200],
                                       borderRadius: BorderRadius.circular(10),
@@ -368,7 +367,7 @@ class _HomeViewState extends State<HomeView> {
                                         ),
                                         Text(
                                           item.regimenName,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: AppColors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w500,
@@ -376,7 +375,7 @@ class _HomeViewState extends State<HomeView> {
                                         ),
                                         Text(
                                           item.dosage,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: AppColors.darkGrey,
                                             fontSize: 13,
                                             fontWeight: FontWeight.w400,
@@ -384,9 +383,9 @@ class _HomeViewState extends State<HomeView> {
                                         ),
                                         Container(
                                           width: 45,
-                                          decoration: BoxDecoration(
+                                          decoration: const BoxDecoration(
                                             borderRadius:
-                                                const BorderRadius.only(
+                                                BorderRadius.only(
                                               topRight: Radius.circular(
                                                 (10),
                                               ),
@@ -401,7 +400,7 @@ class _HomeViewState extends State<HomeView> {
                                             children: [
                                               Text(
                                                 item.date.day.toString(),
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   color: AppColors.white,
                                                   fontSize: 20,
                                                   fontWeight: FontWeight.w500,
@@ -409,7 +408,7 @@ class _HomeViewState extends State<HomeView> {
                                               ),
                                               Text(
                                                 formattedMonth.toString(),
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   color: AppColors.white,
                                                   fontSize: 14,
                                                 ),
@@ -439,7 +438,7 @@ class _HomeViewState extends State<HomeView> {
   }
 
   buildHistoryWidget(List<HistoryModel> historyDataList) {
-    return Column(
+    return const Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

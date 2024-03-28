@@ -10,7 +10,7 @@ class ProgressStreak extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
+        SizedBox(
           width: double.infinity,
           child: Column(
             children: [

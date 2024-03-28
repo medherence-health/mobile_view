@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:medherence/core/constants_utils/constants.dart';
 
-import '../../../core/constants_utils/color_utils.dart';
 
 class OtpTile extends StatelessWidget {
   final dynamic otpSaved;

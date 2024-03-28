@@ -70,7 +70,7 @@ class _MenuScreenState extends State<MenuScreen> {
                     disabled: false,
                   ), width: 150,
                 ),
-                SizedBox(width: 10,),
+                const SizedBox(width: 10,),
                 Expanded(
                   child: OutlinePrimaryButton(
                     buttonConfig: ButtonConfig(
@@ -94,7 +94,7 @@ class _MenuScreenState extends State<MenuScreen> {
     return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: AppColors.white,
       ),
       child: Padding(
@@ -105,16 +105,16 @@ class _MenuScreenState extends State<MenuScreen> {
         ),
         child: Column(
           children: [
-            Text(
+            const Text(
               'Menu',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.w600,
                 fontFamily: "Poppins-bold.ttf",
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(
+            const SizedBox(
               height: 44,
             ),
             MenuItemCard(
@@ -125,7 +125,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 // Navigate to settings screen
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             MenuItemCard(
@@ -136,7 +136,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 // Navigate to settings screen
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             MenuItemCard(
@@ -148,7 +148,7 @@ class _MenuScreenState extends State<MenuScreen> {
               },
               
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             MenuItemCard(
@@ -159,7 +159,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 // Navigate to settings screen
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             MenuItemCard(
@@ -171,16 +171,16 @@ class _MenuScreenState extends State<MenuScreen> {
                 // Navigate to settings screen
               ,
             ),
-            Spacer(),
-            Text(
+            const Spacer(),
+            const Text(
               'Want to rate us? ',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
                 fontFamily: "Poppins-bold.ttf",
               ),
             ),
-            SizedBox(height: 15,),
+            const SizedBox(height: 15,),
             
           ],
         ),
@@ -195,7 +195,7 @@ class MenuItemCard extends StatelessWidget {
   final String subtitle;
   final VoidCallback onPressed;
 
-  const MenuItemCard({
+  const MenuItemCard({super.key, 
     required this.icon,
     required this.title,
     required this.subtitle,
@@ -210,7 +210,7 @@ class MenuItemCard extends StatelessWidget {
       child: InkWell(
         onTap: onPressed,
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: AppColors.white,
             boxShadow: [
               BoxShadow(
@@ -258,7 +258,7 @@ class MenuItemCard extends StatelessWidget {
                     color: AppColors.pillIconColor,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 15,
                 ),
                 Expanded(
@@ -284,7 +284,7 @@ class MenuItemCard extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: onPressed,
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.arrow_forward_ios,
                     color: AppColors.pillIconColor,
                   ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:medherence/features/auth_features/views/login_view.dart';
 import 'package:medherence/features/splashscreen/splashscreen.dart';
 import '../../core/constants_utils/color_utils.dart';
 import 'core/constants_utils/utils.dart';
@@ -24,7 +23,7 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
         fontFamily: StringUtils.poppins,
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           elevation: 0,
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(
@@ -37,7 +36,7 @@ class MyApp extends StatelessWidget {
           selectionColor: AppColors.pressedButton.withOpacity(0.3),
         ),
       ),
-      home: SplashScreen(),
+      home: const SplashScreen(),
     );
   }
 }

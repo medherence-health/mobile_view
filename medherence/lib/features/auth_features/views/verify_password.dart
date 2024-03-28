@@ -37,7 +37,7 @@ int _resendTimer = 60;
   }
 
   void startResendTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_resendTimer > 0) {
         setState(() {
           _resendTimer--;
@@ -61,7 +61,7 @@ int _resendTimer = 60;
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(Icons.arrow_back),),
+            icon: const Icon(Icons.arrow_back),),
       ),
       body: Padding(
         padding: const EdgeInsets.only(
@@ -75,7 +75,7 @@ int _resendTimer = 60;
               CircleAvatar(
                 backgroundColor: AppColors.textFilledColor.withOpacity(0.5),
                 radius: 51,
-                child: CircleAvatar(
+                child: const CircleAvatar(
                   backgroundColor: AppColors.textFilledColor,
                   radius: 45,
                   child: Icon(
@@ -85,7 +85,7 @@ int _resendTimer = 60;
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               const Text(
@@ -111,7 +111,7 @@ int _resendTimer = 60;
                     color: Colors.grey.shade600,
                   ),
                   children: [
-                    TextSpan(text: ' ${widget.email}', style: TextStyle(
+                    TextSpan(text: ' ${widget.email}', style: const TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w400,
                     color: AppColors.black,
@@ -126,7 +126,7 @@ int _resendTimer = 60;
               ),
               Padding(
                     padding: const EdgeInsets.fromLTRB(6.0, 8.0, 6.0, 8.0),
-                    child: Container(
+                    child: SizedBox(
                       height: 120,
                       width: MediaQuery.of(context).size.width - 15,
                       child: Padding(
@@ -141,7 +141,7 @@ int _resendTimer = 60;
                                   otpSaved: () {},
                                   numberController: controller,
                                 ),
-                                SizedBox
+                                const SizedBox
                                 (width: 10,),
                               ],
                             );
@@ -175,7 +175,7 @@ int _resendTimer = 60;
                     children: [
                       TextSpan(
                         text: 'Resend($_resendTimer)',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.w400,
                           color: AppColors.navBarColor,

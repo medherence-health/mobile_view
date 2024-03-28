@@ -2,11 +2,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:medherence/features/auth_features/views/login_view.dart';
 
-import 'package:medherence/features/dashboard_feature/view/dashboard.dart';
 
 import '../../core/constants_utils/color_utils.dart';
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }

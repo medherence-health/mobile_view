@@ -24,10 +24,10 @@ class CustomBottomNavigationBar extends StatelessWidget {
       ),
       type: BottomNavigationBarType.fixed,
       iconSize: 28,
-      unselectedIconTheme: IconThemeData(size: 20),
+      unselectedIconTheme: const IconThemeData(size: 20),
       currentIndex: model.currentIndex,
       onTap: model.setIndex,
-      items: [
+      items: const [
         BottomNavigationBarItem(
           icon: Icon(
             CupertinoIcons.house_alt,

@@ -176,17 +176,17 @@ class _LoginViewState extends State<LoginView> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Padding(
-                    padding: EdgeInsets.only(right: 5.0),
+                    padding: const EdgeInsets.only(right: 5.0),
                     child: GestureDetector(
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute( 
-                            builder: (context) => ForgotPasswordScreen()));
+                            builder: (context) => const ForgotPasswordScreen()));
                       },
-                      child: Text(
+                      child: const Text(
                         'Forgot Password?',
                         style: TextStyle(
                           color: AppColors.navBarColor,
@@ -204,7 +204,7 @@ class _LoginViewState extends State<LoginView> {
                   text: 'Sign In',
                   action: () {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => DashboardView()));
+                        builder: (context) => const DashboardView()));
                   },
                   disabled: false,
                 ),
@@ -221,7 +221,7 @@ class _LoginViewState extends State<LoginView> {
                   ),
                    Flexible(
                     child: RichText(
-                      text: TextSpan(text:  'You don\'t have a Medherence account? ',
+                      text: const TextSpan(text:  'You don\'t have a Medherence account? ',
                       style: TextStyle(
                         letterSpacing: 0.3,
                         fontStyle: FontStyle.italic,

@@ -28,7 +28,7 @@ InputDecoration kFormTextDecoration = InputDecoration(
   ),
   errorBorder: OutlineInputBorder(
     borderRadius: BorderRadius.circular(10),
-    borderSide: BorderSide(color: Colors.red),
+    borderSide: const BorderSide(color: Colors.red),
   ),
 );
 
