@@ -25,14 +25,12 @@ class _DashboardViewState extends State<DashboardView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(
       viewModelBuilder: () => DashboardViewModel(),
-      builder: (_, model, __) => SafeArea(
-        child: Scaffold(
-          body: _GetDashboardView(
-            dashboardIndex: model.currentIndex,
-          ),
-          bottomNavigationBar: CustomBottomNavigationBar(
-            model: model,
-          ),
+      builder: (_, model, __) =>  Scaffold(
+        body: _GetDashboardView(
+          dashboardIndex: model.currentIndex,
+        ),
+        bottomNavigationBar: CustomBottomNavigationBar(
+          model: model,
         ),
       ),
     );

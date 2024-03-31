@@ -146,6 +146,7 @@ class _LoginViewState extends State<LoginView> {
                   errorBorder: kFormTextDecoration.errorBorder,
                   border: kFormTextDecoration.border,
                   focusedBorder: kFormTextDecoration.focusedBorder,
+                  hintText: "Type in your password",
                   suffixIcon: IconButton(
                       icon: obscurePassword
                           ? const Icon(Icons.visibility_off)
@@ -154,7 +155,6 @@ class _LoginViewState extends State<LoginView> {
                       onPressed: () => setState(() {
                             obscurePassword = !obscurePassword;
                           })),
-                  hintText: "Type in your password",
                 ),
                 validator: (value) => value!.validatePassword(),
               ),
@@ -182,9 +182,10 @@ class _LoginViewState extends State<LoginView> {
                     child: GestureDetector(
                       onTap: () {
                         Navigator.push(
-                          context,
-                          MaterialPageRoute( 
-                            builder: (context) => const ForgotPasswordScreen()));
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const ForgotPasswordScreen()));
                       },
                       child: const Text(
                         'Forgot Password?',
@@ -203,8 +204,27 @@ class _LoginViewState extends State<LoginView> {
                 buttonConfig: ButtonConfig(
                   text: 'Sign In',
                   action: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => const DashboardView()));
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => const DashboardView()));
+                    // if (_formKey.currentState!.validate()) {
+                    //   // Password change logic goes here
+                    //   ScaffoldMessenger.of(context).showSnackBar(
+                    //     SnackBar(
+                    //         content: Text('Password changed successfully')),
+                    //   );
+                    // } else {
+                    //   ScaffoldMessenger.of(context).showSnackBar(
+                    //     SnackBar(
+                    //       dismissDirection: DismissDirection.horizontal,
+                    //       elevation: 10,
+                    //       behavior: SnackBarBehavior.floating,
+                    //       margin: EdgeInsets.all(15),
+                    //       content: Text(
+                    //           'Oops, you have inputted the wrong login details.'),
+                    //       backgroundColor: Colors.red,
+                    //     ),
+                    //   );
+                    // }
                   },
                   disabled: false,
                 ),
@@ -219,23 +239,26 @@ class _LoginViewState extends State<LoginView> {
                       color: Colors.blue.shade200,
                     ),
                   ),
-                   Flexible(
+                  Flexible(
                     child: RichText(
-                      text: const TextSpan(text:  'You don\'t have a Medherence account? ',
-                      style: TextStyle(
-                        letterSpacing: 0.3,
-                        fontStyle: FontStyle.italic,
-                        color: AppColors.darkGrey,
-                      ),
-                      children: [
-                        TextSpan(text: 'Reach out to your Healthcare Provider to enroll you on the platform', style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                        letterSpacing: 0.3,
-                        color: AppColors.black
-                      ),
-                      ),
-                      ],
+                      text: const TextSpan(
+                        text: 'You don\'t have a Medherence account? ',
+                        style: TextStyle(
+                          letterSpacing: 0.3,
+                          fontStyle: FontStyle.italic,
+                          color: AppColors.darkGrey,
+                        ),
+                        children: [
+                          TextSpan(
+                            text:
+                                'Reach out to your Healthcare Provider to enroll you on the platform',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontStyle: FontStyle.normal,
+                                letterSpacing: 0.3,
+                                color: AppColors.black),
+                          ),
+                        ],
                       ),
                     ),
                   )

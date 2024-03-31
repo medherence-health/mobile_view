@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:medherence/features/medhecoin_features/view/medhecoin.dart';
 
 import '../../../core/constants_utils/color_utils.dart';
 import '../../../core/model/models/history_model.dart';
 import '../../../core/model/simulated_data/simulated_values.dart';
 import '../../../core/shared_widget/buttons.dart';
+import '../../auth_features/views/new_password.dart';
 import '../widget/medecoin_widget.dart';
 import '../widget/progressStreak.dart';
 
@@ -19,6 +21,7 @@ class _HomeViewState extends State<HomeView> {
   bool _showHistory = false;
   final List<HistoryModel> _historyDataList = generateSimulatedData();
   List<dynamic> history = [];
+  bool _passwordChangePrompted = false;
 
   // Function to show the history widget
   void showHistory() {
@@ -42,7 +45,7 @@ class _HomeViewState extends State<HomeView> {
           const Padding(
             padding: EdgeInsets.only(top: 8.0),
             child: Text(
-              'Complete Profile',
+              'Change Password',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 20,
@@ -59,7 +62,7 @@ class _HomeViewState extends State<HomeView> {
               right: 25.0,
             ),
             child: Text(
-              'To unlock the full potential of the Medherence app, you are to complete your user profile',
+              'There is a need for you to change your password from the default password you were given to a personal one',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: (18),
@@ -76,12 +79,16 @@ class _HomeViewState extends State<HomeView> {
             ),
             child: PrimaryButton(
               buttonConfig: ButtonConfig(
-                text: 'Complete Profile',
+                text: 'Change Password',
                 action: () {
-                  Navigator.pop(context);
+                  Navigator.of(context)
+                      .pushReplacement(MaterialPageRoute(builder: (context) {
+                    return ChangePassword();
+                  }));
                 },
                 disabled: false,
-              ),width: double.infinity,
+              ),
+              width: double.infinity,
             ),
           ),
         ],
@@ -118,15 +125,17 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      buildCompleteProfile();
-      //   Future.delayed(Duration(seconds: 5), () {
-      //   showHistory(); // Call showHistory to display the HistoryWidget
-      // });
+      buildHistorySheet(_historyDataList, context);
+      // if (_passwordChangePrompted == false) {
+      //   buildCompleteProfile();
+      // }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    var index = _historyDataList.length;
+    final itemList = _historyDataList;
     return Padding(
       padding: const EdgeInsets.only(
         top: 25.0,
@@ -181,8 +190,16 @@ class _HomeViewState extends State<HomeView> {
                     //   },
                     //   child: Text('Complete Action'),
                     // ),
-                    const MedhecoinWidget(),
-                    const SizedBox(height: 40),
+                    MedhecoinWidget(
+                        const Icon(
+                          Icons.open_in_new,
+                        ), () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MedhecoinScreen()));
+                    }),
+                    const SizedBox(height: 35),
                     const Text(
                       'Next Regimen',
                       style: TextStyle(
@@ -190,7 +207,117 @@ class _HomeViewState extends State<HomeView> {
                         fontFamily: "Poppins-Bold.ttf",
                         fontSize: 25,
                       ),
-                    )
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Name',
+                          style: TextStyle(
+                            color: AppColors.black,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Container(
+                          height: 40,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: AppColors.progressBarFill,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              itemList.first.regimenName,
+                              style: TextStyle(
+                                color: AppColors.regmentColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Dosage',
+                                  style: TextStyle(
+                                    color: AppColors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  textAlign: TextAlign.start,
+                                ),
+                                SizedBox(height: 5),
+                                Container(
+                                  height: 40,
+                                  width: 200,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: AppColors.progressBarFill,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      itemList.first.dosage,
+                                      style: TextStyle(
+                                        color: AppColors.regmentColor,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(width: 20),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Time',
+                                  style: TextStyle(
+                                    color: AppColors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                SizedBox(height: 5),
+                                Container(
+                                  height: 40,
+                                  width: 150,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: AppColors.progressBarFill,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      '6:00 PM',
+                                      style: TextStyle(
+                                        color: AppColors.regmentColor,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        )
+                      ],
+                    ),
                   ],
                 ),
               ],
@@ -203,86 +330,31 @@ class _HomeViewState extends State<HomeView> {
 
   buildHistorySheet(List<HistoryModel> historyList, BuildContext context) {
     showModalBottomSheet(
+      showDragHandle: true,
       context: context,
+      barrierColor: Colors.transparent,
+      // enableDrag: true,
+      isDismissible: false,
+      scrollControlDisabledMaxHeightRatio: 0.5,
       isScrollControlled: true,
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.historyBackground,
       builder: (context) {
-        return ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topRight: Radius.circular(
-              (25),
-            ),
-            topLeft: Radius.circular(
-              (25),
-            ),
-          ),
-          child: ColoredBox(
-            color: AppColors.historyBackground,
-            child: DraggableScrollableSheet(
-              initialChildSize: 0.4,
-              maxChildSize: 0.8,
-              expand: false,
-              builder: (context, scrollController) {
-                if (historyList.isEmpty) {
-                  return const Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 30.0,
-                      vertical: 10,
-                    ),
-                    child: Stack(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 25.0),
-                          child: Text(
-                            'History',
-                            style: TextStyle(
-                              color: AppColors.black,
-                              fontSize: 25,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        Center(
-                          child: SizedBox(
-                            height: 150,
-                            width: 180,
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Icon(
-                                  Icons.folder_off_outlined,
-                                  color: AppColors.noWidgetText,
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  'You have no adherence history',
-                                  style: TextStyle(
-                                    fontSize: (20),
-                                    fontStyle: FontStyle.italic,
-                                    color: AppColors.noWidgetText,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
+        return ColoredBox(
+          color: AppColors.historyBackground,
+          child: DraggableScrollableSheet(
+            initialChildSize: 0.4,
+            maxChildSize: 0.8,
+            expand: false,
+            builder: (context, scrollController) {
+              if (historyList.isEmpty) {
+                return const Padding(
+                  padding: EdgeInsets.symmetric(
                     horizontal: 30.0,
-                    vertical: 15,
+                    vertical: 10,
                   ),
                   child: Stack(
                     children: [
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.only(top: 25.0),
                         child: Text(
                           'History',
@@ -293,260 +365,197 @@ class _HomeViewState extends State<HomeView> {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 50.0),
-                        child: Column(
-                          children: [
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Text(
-                                  'Regimen',
-                                  style: TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                Text(
-                                  'Dosage',
-                                  style: TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                Text(
-                                  'Date',
-                                  style: TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Expanded(
-                              child: ListView.separated(
-                                shrinkWrap: true,
-                                physics: const BouncingScrollPhysics(),
-                                itemCount: historyList
-                                    .length, // Use the length of your data list
-                                separatorBuilder: (ctx, index) {
-                                  return const SizedBox(
-                                    height: (13),
-                                  );
-                                },
-                                itemBuilder: (context, index) {
-                                  final item = historyList[index];
-                                  final formattedMonth =
-                                      DateFormat('MMM').format(item.date);
-                                  return Container(
-                                    height: 55,
-                                    margin: const EdgeInsets.symmetric(vertical: 5),
-                                    padding: const EdgeInsets.only(left: 10),
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey[200],
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Icon(
-                                          item.icon,
-                                          size: 24,
-                                          color: AppColors.pillIconColor,
-                                        ),
-                                        Text(
-                                          item.regimenName,
-                                          style: const TextStyle(
-                                            color: AppColors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        Text(
-                                          item.dosage,
-                                          style: const TextStyle(
-                                            color: AppColors.darkGrey,
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                        Container(
-                                          width: 45,
-                                          decoration: const BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.only(
-                                              topRight: Radius.circular(
-                                                (10),
-                                              ),
-                                              bottomRight: Radius.circular(
-                                                (10),
-                                              ),
-                                            ),
-                                            color: AppColors.mainPrimaryButton,
-                                          ),
-                                          // color: AppColors.green,
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                item.date.day.toString(),
-                                                style: const TextStyle(
-                                                  color: AppColors.white,
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                              Text(
-                                                formattedMonth.toString(),
-                                                style: const TextStyle(
-                                                  color: AppColors.white,
-                                                  fontSize: 14,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
+                      Center(
+                        child: SizedBox(
+                          height: 150,
+                          width: 180,
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 20,
                               ),
-                            ),
-                          ],
+                              Icon(
+                                Icons.folder_off_outlined,
+                                color: AppColors.noWidgetText,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'You have no adherence history',
+                                style: TextStyle(
+                                  fontSize: (20),
+                                  fontStyle: FontStyle.italic,
+                                  color: AppColors.noWidgetText,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      // buildHistorySheet(historyList, context),
                     ],
                   ),
                 );
-              },
-            ),
+              }
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 30.0,
+                  vertical: 15,
+                ),
+                child: Stack(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(top: 25.0),
+                      child: Text(
+                        'History',
+                        style: TextStyle(
+                          color: AppColors.black,
+                          fontSize: 25,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 50.0),
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Text(
+                                'Regimen',
+                                style: TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              Text(
+                                'Dosage',
+                                style: TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              Text(
+                                'Date',
+                                style: TextStyle(
+                                  color: AppColors.black,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Expanded(
+                            child: ListView.separated(
+                              shrinkWrap: true,
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: historyList
+                                  .length, // Use the length of your data list
+                              separatorBuilder: (ctx, index) {
+                                return const SizedBox(
+                                  height: (13),
+                                );
+                              },
+                              itemBuilder: (context, index) {
+                                final item = historyList[index];
+                                final formattedMonth =
+                                    DateFormat('MMM').format(item.date);
+                                return Container(
+                                  height: 55,
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 5),
+                                  padding: const EdgeInsets.only(left: 10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[200],
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Icon(
+                                        item.icon,
+                                        size: 24,
+                                        color: AppColors.pillIconColor,
+                                      ),
+                                      Text(
+                                        item.regimenName,
+                                        style: const TextStyle(
+                                          color: AppColors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      Text(
+                                        item.dosage,
+                                        style: const TextStyle(
+                                          color: AppColors.darkGrey,
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 45,
+                                        decoration: const BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(
+                                              (10),
+                                            ),
+                                            bottomRight: Radius.circular(
+                                              (10),
+                                            ),
+                                          ),
+                                          color: AppColors.mainPrimaryButton,
+                                        ),
+                                        // color: AppColors.green,
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              item.date.day.toString(),
+                                              style: const TextStyle(
+                                                color: AppColors.white,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            Text(
+                                              formattedMonth.toString(),
+                                              style: const TextStyle(
+                                                color: AppColors.white,
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // buildHistorySheet(historyList, context),
+                  ],
+                ),
+              );
+            },
           ),
         );
       },
-    );
-  }
-
-  buildHistoryWidget(List<HistoryModel> historyDataList) {
-    return const Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Regimen',
-              style: TextStyle(
-                color: AppColors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              'Dosage',
-              style: TextStyle(
-                color: AppColors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              'Date',
-              style: TextStyle(
-                color: AppColors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 10),
-        // ListView.separated(
-        //   shrinkWrap: true,
-        //   physics: const BouncingScrollPhysics(),
-        //   itemCount: historyDataList.length, // Use the length of your data list
-        //   separatorBuilder: (ctx, index) {
-        //     return const SizedBox(
-        //       height: (20),
-        //     );
-        //   },
-        //   itemBuilder: (context, index) {
-        //     final item = historyDataList[index];
-        //     return Container(
-        //       margin: EdgeInsets.symmetric(vertical: 5),
-        //       padding: EdgeInsets.all(10),
-        //       decoration: BoxDecoration(
-        //         color: Colors.grey[200],
-        //         borderRadius: BorderRadius.circular(10),
-        //       ),
-        //       child: Row(
-        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //         children: [
-        //           Icon(
-        //             item.icon,
-        //             size: 24,
-        //             color: AppColors.pillIconColor,
-        //           ),
-        //           Column(
-        //             crossAxisAlignment: CrossAxisAlignment.start,
-        //             children: [
-        //               Text(
-        //                 item.regimenName,
-        //                 style: TextStyle(
-        //                   color: AppColors.black,
-        //                   fontSize: 16,
-        //                   fontWeight: FontWeight.w500,
-        //                 ),
-        //               ),
-        //               Text(
-        //                 item.dosage,
-        //                 style: TextStyle(
-        //                   color: AppColors.darkGrey,
-        //                   fontSize: 10,
-        //                   fontWeight: FontWeight.w400,
-        //                 ),
-        //               ),
-        //             ],
-        //           ),
-        //           Container(
-        //             color: AppColors.green,
-        //             child: Flexible(
-        //               child: Column(
-        //                 children: [
-        //                   Text(
-        //                     item.date.day.toString(),
-        //                     style: TextStyle(
-        //                       color: AppColors.black,
-        //                       fontSize: 20,
-        //                       fontWeight: FontWeight.w500,
-        //                     ),
-        //                   ),
-        //                   Text(
-        //                     item.date.month.toString(),
-        //                     style: TextStyle(
-        //                       color: AppColors.black,
-        //                       fontSize: 14,
-        //                     ),
-        //                   ),
-        //                 ],
-        //               ),
-        //             ),
-        //           ),
-        //         ],
-        //       ),
-        //     );
-        //   },
-        // ),
-      ],
     );
   }
 }

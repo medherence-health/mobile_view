@@ -7,10 +7,12 @@ class PrimaryButton extends StatelessWidget {
   final EdgeInsets? margin;
   final double width;
   final Color color, textColor;
+  final double? textSize; 
 
   const PrimaryButton({
     Key? key,
     required this.buttonConfig,
+    this.textSize = 25.0,
     this.height = 54.0,
     this.margin,
     required this.width,
@@ -45,7 +47,7 @@ class PrimaryButton extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   color:
                       buttonConfig.disabled ? Colors.grey.shade500 : textColor,
-                  fontSize: (25),
+                  fontSize: textSize,
                 ),
               ),
             ),
@@ -62,11 +64,15 @@ class OutlinePrimaryButton extends StatelessWidget {
   final EdgeInsets? margin;
   final double width;
   final Color color, textColor;
+  final Icon? icon;
+  final double? textSize;
 
   const OutlinePrimaryButton({
     Key? key,
     required this.buttonConfig,
+    this.icon,
     this.height = 54.0,
+    this.textSize = 25,
     this.margin,
     this.width = double.infinity,
     this.textColor = AppColors.mainPrimaryButton,
@@ -97,14 +103,20 @@ class OutlinePrimaryButton extends StatelessWidget {
             onTap: buttonConfig.action,
             highlightColor: AppColors.disabledButton,
             child: Center(
-              child: Text(
-                buttonConfig.text,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: textColor,
-                  fontSize: (25),
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  if (icon != null) icon?? Icon(Icons.hourglass_empty),
+                  Text(
+                    buttonConfig.text,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: textColor,
+                      fontSize: textSize,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -118,8 +130,8 @@ class ButtonConfig {
   final String text;
   final VoidCallback action;
   final bool disabled;
-
-  ButtonConfig({
+  ButtonConfig(
+    {
     required this.text,
     required this.action,
     this.disabled = false,

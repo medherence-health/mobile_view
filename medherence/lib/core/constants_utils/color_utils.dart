@@ -10,6 +10,7 @@ class AppColors {
   static const Color noWidgetText = Color.fromRGBO(102, 142, 199, 1);
   static const Color pillIconColor = Color.fromRGBO(26, 85, 171, 1);
   static const Color iconFill = Color.fromRGBO(209, 221, 238, 1);
+  static const Color regmentColor = Color.fromRGBO(136, 138, 140, 1);
   static const Color disabledButton = Color.fromRGBO(213, 188, 140, 1);
   static const Color navBarColor = Color.fromRGBO(26, 85, 171, 1);
   static const Color unselectedNavBarColor = Color.fromRGBO(255, 255, 255, 1);

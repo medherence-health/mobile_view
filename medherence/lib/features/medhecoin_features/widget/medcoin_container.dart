@@ -2,18 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../../../core/constants_utils/color_utils.dart';
 
-class MedhecoinWidget extends StatelessWidget {
-  final Icon? icon;
-  final VoidCallback? onPressed;
+class MedcoinWidget extends StatelessWidget {
 
-   MedhecoinWidget(this.icon, this.onPressed,{super.key});
+   MedcoinWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         Container(
-          height: 150,
+          height: 130,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             color: AppColors.medMidgradient,
@@ -21,7 +19,7 @@ class MedhecoinWidget extends StatelessWidget {
         ),
         Container(
           // Set the width of the container
-          height: 150, // Set the height of the container
+          height: 130, // Set the height of the container
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             gradient: LinearGradient(
@@ -35,7 +33,7 @@ class MedhecoinWidget extends StatelessWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.only(
-                left: 20.0, right: 20.0, top: 10, bottom: 15.0),
+                left: 20.0, right: 20.0, top: 20, bottom: 15.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -51,11 +49,7 @@ class MedhecoinWidget extends StatelessWidget {
                         fontWeight: FontWeight.w400,
                       ),
                     ),
-                    IconButton(
-                      onPressed: onPressed,
-                      icon: icon!,
-                      color: AppColors.white,
-                    ),
+                    Spacer(),
                   ],
                 ),
                 const Text(
