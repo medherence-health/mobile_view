@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:medherence/features/auth_features/views/forgot_password.dart';
 import 'package:medherence/features/auth_features/views/login_view.dart';
 import 'package:medherence/features/dashboard_feature/view/menu.dart';
+import 'package:medherence/features/reminder_feature/view/edit_reminder.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../home_feature/view/home_view.dart';
@@ -25,7 +25,7 @@ class _DashboardViewState extends State<DashboardView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(
       viewModelBuilder: () => DashboardViewModel(),
-      builder: (_, model, __) =>  Scaffold(
+      builder: (_, model, __) => Scaffold(
         body: _GetDashboardView(
           dashboardIndex: model.currentIndex,
         ),
@@ -51,7 +51,7 @@ class _GetDashboardView extends StatelessWidget {
       case 0:
         return const HomeView();
       case 1:
-        return const ForgotPasswordScreen();
+        return const EditReminderScreen();
       case 2:
         return const MenuScreen();
       default:

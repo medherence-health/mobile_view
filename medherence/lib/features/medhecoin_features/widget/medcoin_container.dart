@@ -4,7 +4,7 @@ import '../../../core/constants_utils/color_utils.dart';
 
 class MedcoinWidget extends StatelessWidget {
 
-   MedcoinWidget({super.key});
+   const MedcoinWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +38,10 @@ class MedcoinWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       'Medhecoin Balance',
                       style: TextStyle(
                         color: AppColors.white,

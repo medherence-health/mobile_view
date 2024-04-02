@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medherence/features/auth_features/widget/validation_extension.dart';
 import 'package:medherence/features/dashboard_feature/view/dashboard.dart';
-import 'package:medherence/features/home_feature/view/home_view.dart';
 
 import '../../../core/constants_utils/color_utils.dart';
 import '../../../core/constants_utils/constants.dart';
@@ -29,14 +28,14 @@ class _ChangePasswordState extends State<ChangePassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Change Password',
           style: TextStyle(
             fontSize: 25,
             fontWeight: FontWeight.w500,
           ),
         ),
-        leading: SizedBox(),
+        leading: const SizedBox(),
         centerTitle: true,
       ),
       body: Padding(
@@ -49,8 +48,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   RichText(
-                    textScaleFactor: 1.15,
-                    text: TextSpan(
+                    text: const TextSpan(
                         text:
                             '* Use a combination of uppercase and lowercase letters. \n',
                             style: TextStyle(color: AppColors.black, fontSize: 15,),
@@ -69,9 +67,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                           TextSpan(
                               text:
                                   '* Aim for a minimum length of 8 characters, but longer passwords are generally more secure.'),
-                        ]),
+                        ]), textScaler: const TextScaler.linear(1.15),
                   ),
-                  SizedBox(height: 40),
+                  const SizedBox(height: 40),
                   const Text(
                 'Old Password',
                 style: TextStyle(
@@ -115,7 +113,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       return null;
                     },
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   const Text(
                 'New Password',
                 style: TextStyle(
@@ -156,7 +154,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       return value!.validatePassword();
                     },
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   const Text(
                 'Confirm Password',
                 style: TextStyle(
@@ -200,7 +198,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       return null;
                     },
                   ),
-                  SizedBox(height: 40),
+                  const SizedBox(height: 40),
                   PrimaryButton(
                     buttonConfig: ButtonConfig(
                       text: 'Save Password',
@@ -208,13 +206,13 @@ class _ChangePasswordState extends State<ChangePassword> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => DashboardView(),
+                              builder: (context) => const DashboardView(),
                             ),
                           );
                         if (_formKey.currentState!.validate()) {
                           // Password change logic goes here
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                                 content: Text('Password changed successfully')),
                           );
                         }

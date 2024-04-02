@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../core/constants_utils/color_utils.dart';
 import '../../../core/shared_widget/buttons.dart';
-import '../../home_feature/widget/medecoin_widget.dart';
 import '../widget/medcoin_container.dart';
 
 class MedhecoinScreen extends StatefulWidget {
@@ -17,7 +16,7 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(
+          title: const Text(
             'Medhecoin',
             style: TextStyle(
               fontSize: 25,
@@ -27,20 +26,20 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
           centerTitle: true,
           leading: IconButton(onPressed: (){
             Navigator.pop(context);
-          },icon:Icon(Icons.arrow_back_ios_new),),
+          },icon:const Icon(Icons.arrow_back_ios_new),),
         ),
         body: Padding(
           padding: const EdgeInsets.all(25.0),
           child: ListView(
             children: [
-              MedcoinWidget(),
-              SizedBox(height: 15),
+              const MedcoinWidget(),
+              const SizedBox(height: 15),
               Row(
                 children: [
                   Expanded(
                     child: OutlinePrimaryButton(
                       textSize: 20,
-                      icon: Icon(Icons.account_balance_wallet_outlined,
+                      icon: const Icon(Icons.account_balance_wallet_outlined,
                           color: AppColors.mainPrimaryButton),
                       buttonConfig: ButtonConfig(
                         text: 'Withdraw',
@@ -58,7 +57,7 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                   Expanded(
                     child: OutlinePrimaryButton(
                       textSize: 20,
-                      icon: Icon(Icons.add, color: AppColors.mainPrimaryButton),
+                      icon: const Icon(Icons.add, color: AppColors.mainPrimaryButton),
                       buttonConfig: ButtonConfig(
                         text: 'Add Account',
                         action: () {
@@ -71,13 +70,13 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 15),
-              Text('History',
+              const SizedBox(height: 15),
+              const Text('History',
                   style: TextStyle(
                     fontSize: 23,
                     fontWeight: FontWeight.w500,
                   )),
-              Center(
+              const Center(
                 child: Padding(
                   padding: EdgeInsets.only(top: 170),
                   child: SizedBox(
@@ -106,7 +105,7 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                   ),
                 ),
               ),
-              Column(
+              const Column(
                 children: [],
               )
             ],

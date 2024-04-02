@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:medherence/features/history_features/view/history_screen.dart';
 
 import '../../../core/constants_utils/color_utils.dart';
 import '../../../core/shared_widget/buttons.dart';
@@ -12,7 +13,7 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
-  buildLogOutDialog()async {
+  buildLogOutDialog() async {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -68,9 +69,12 @@ class _MenuScreenState extends State<MenuScreen> {
                       Navigator.pop(context);
                     },
                     disabled: false,
-                  ), width: 150,
+                  ),
+                  width: 150,
                 ),
-                const SizedBox(width: 10,),
+                const SizedBox(
+                  width: 10,
+                ),
                 Expanded(
                   child: OutlinePrimaryButton(
                     buttonConfig: ButtonConfig(
@@ -79,7 +83,8 @@ class _MenuScreenState extends State<MenuScreen> {
                         Navigator.pop(context);
                       },
                       disabled: true,
-                    ),width: 150,
+                    ),
+                    width: 150,
                   ),
                 ),
               ],
@@ -89,6 +94,7 @@ class _MenuScreenState extends State<MenuScreen> {
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -146,7 +152,6 @@ class _MenuScreenState extends State<MenuScreen> {
               onPressed: () {
                 // Navigate to settings screen
               },
-              
             ),
             const SizedBox(
               height: 15,
@@ -166,10 +171,20 @@ class _MenuScreenState extends State<MenuScreen> {
               icon: Icons.logout_rounded,
               title: 'Logout',
               subtitle: 'Logout of your account',
-              onPressed: 
-                ()async => await buildLogOutDialog()
-                // Navigate to settings screen
+              onPressed: () async => await buildLogOutDialog()
+              // Navigate to settings screen
               ,
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            MenuItemCard(
+              icon: Icons.work_history_outlined,
+              title: 'History',
+              subtitle: 'Your history',
+              onPressed: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const HistoryScreen())),
+              // Navigate to settings screen
             ),
             const Spacer(),
             const Text(
@@ -180,8 +195,55 @@ class _MenuScreenState extends State<MenuScreen> {
                 fontFamily: "Poppins-bold.ttf",
               ),
             ),
-            const SizedBox(height: 15,),
-            
+            SizedBox(
+              height: 80,
+              width: MediaQuery.of(context).size.width,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: ListView(
+                    padding: const EdgeInsets.symmetric(horizontal: 60),
+                    scrollDirection: Axis.horizontal,
+                    children: const [
+                      Icon(
+                        Icons.star_rate,
+                        color: AppColors.navBarColor,
+                        size: 40,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Icon(
+                        Icons.star_rate,
+                        color: AppColors.navBarColor,
+                        size: 40,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Icon(
+                        Icons.star_rate,
+                        color: AppColors.navBarColor,
+                        size: 40,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Icon(
+                        Icons.star_half,
+                        color: AppColors.navBarColor,
+                        size: 40,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Icon(
+                        Icons.star_border,
+                        color: AppColors.navBarColor,
+                        size: 40,
+                      ),
+                    ]),
+              ),
+            )
           ],
         ),
       ),
@@ -195,7 +257,8 @@ class MenuItemCard extends StatelessWidget {
   final String subtitle;
   final VoidCallback onPressed;
 
-  const MenuItemCard({super.key, 
+  const MenuItemCard({
+    super.key,
     required this.icon,
     required this.title,
     required this.subtitle,

@@ -7,8 +7,11 @@ import '../../../core/model/models/history_model.dart';
 import '../../../core/model/simulated_data/simulated_values.dart';
 import '../../../core/shared_widget/buttons.dart';
 import '../../auth_features/views/new_password.dart';
+import '../../notification_fetaures/view/notification_view.dart';
+import '../../notification_fetaures/widget/notification_widget.dart';
 import '../widget/medecoin_widget.dart';
 import '../widget/progressStreak.dart';
+import 'medication_details.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -21,7 +24,7 @@ class _HomeViewState extends State<HomeView> {
   bool _showHistory = false;
   final List<HistoryModel> _historyDataList = generateSimulatedData();
   List<dynamic> history = [];
-  bool _passwordChangePrompted = false;
+  final bool _passwordChangePrompted = false;
 
   // Function to show the history widget
   void showHistory() {
@@ -83,7 +86,7 @@ class _HomeViewState extends State<HomeView> {
                 action: () {
                   Navigator.of(context)
                       .pushReplacement(MaterialPageRoute(builder: (context) {
-                    return ChangePassword();
+                    return const ChangePassword();
                   }));
                 },
                 disabled: false,
@@ -125,7 +128,10 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      buildHistorySheet(_historyDataList, context);
+      buildHistorySheet(
+        _historyDataList,
+        context,
+      );
       // if (_passwordChangePrompted == false) {
       //   buildCompleteProfile();
       // }
@@ -149,28 +155,30 @@ class _HomeViewState extends State<HomeView> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Welcome, $title',
-                      style: const TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: "Poppins-bold.ttf",
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Welcome, $title',
+                        style: const TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: "Poppins-bold.ttf",
+                        ),
+                      ), // Display dynamic title
+                      NotificationWidget(
+                        notification: 4,
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const NotificationScreen()));
+                        },
                       ),
-                    ), // Display dynamic title
-                    IconButton(
-                      icon: Icon(
-                        Icons.notifications_none_sharp,
-                        color: Theme.of(context).iconTheme.color,
-                      ),
-                      onPressed: () {
-                        buildHistorySheet(_historyDataList, context);
-                        // Handle notification button press
-                      },
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,7 +205,7 @@ class _HomeViewState extends State<HomeView> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => MedhecoinScreen()));
+                              builder: (context) => const MedhecoinScreen()));
                     }),
                     const SizedBox(height: 35),
                     const Text(
@@ -208,115 +216,23 @@ class _HomeViewState extends State<HomeView> {
                         fontSize: 25,
                       ),
                     ),
-                    const SizedBox(height: 15),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Name',
-                          style: TextStyle(
-                            color: AppColors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        Container(
-                          height: 40,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: AppColors.progressBarFill,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              itemList.first.regimenName,
-                              style: TextStyle(
-                                color: AppColors.regmentColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Dosage',
-                                  style: TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                  textAlign: TextAlign.start,
-                                ),
-                                SizedBox(height: 5),
-                                Container(
-                                  height: 40,
-                                  width: 200,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: AppColors.progressBarFill,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      itemList.first.dosage,
-                                      style: TextStyle(
-                                        color: AppColors.regmentColor,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(width: 20),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Time',
-                                  style: TextStyle(
-                                    color: AppColors.black,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                SizedBox(height: 5),
-                                Container(
-                                  height: 40,
-                                  width: 150,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: AppColors.progressBarFill,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      '6:00 PM',
-                                      style: TextStyle(
-                                        color: AppColors.regmentColor,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        )
-                      ],
+                    const SizedBox(height: 5),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.width,
+                      child: ListView.separated(
+                        shrinkWrap: true,
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: _historyDataList
+                            .length, // the length of the data list
+                        separatorBuilder: (ctx, index) {
+                          return const SizedBox(
+                            height: (3),
+                          );
+                        },
+                        itemBuilder: (context, index) {
+                          return NextRegimen(itemList: itemList);
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -328,7 +244,10 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  buildHistorySheet(List<HistoryModel> historyList, BuildContext context) {
+  buildHistorySheet(
+    List<HistoryModel> historyList,
+    BuildContext context,
+  ) {
     showModalBottomSheet(
       showDragHandle: true,
       context: context,
@@ -471,75 +390,92 @@ class _HomeViewState extends State<HomeView> {
                                 final item = historyList[index];
                                 final formattedMonth =
                                     DateFormat('MMM').format(item.date);
-                                return Container(
-                                  height: 55,
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 5),
-                                  padding: const EdgeInsets.only(left: 10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[200],
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Icon(
-                                        item.icon,
-                                        size: 24,
-                                        color: AppColors.pillIconColor,
-                                      ),
-                                      Text(
-                                        item.regimenName,
-                                        style: const TextStyle(
-                                          color: AppColors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
+                                return InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            MedicationDetailsScreen(
+                                          title: item.regimenName,
                                         ),
                                       ),
-                                      Text(
-                                        item.dosage,
-                                        style: const TextStyle(
-                                          color: AppColors.darkGrey,
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      Container(
-                                        width: 45,
-                                        decoration: const BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                            topRight: Radius.circular(
-                                              (10),
-                                            ),
-                                            bottomRight: Radius.circular(
-                                              (10),
-                                            ),
+                                    );
+                                  },
+                                  child: Container(
+                                    height: 55,
+                                    margin:
+                                        const EdgeInsets.symmetric(vertical: 5),
+                                    padding: const EdgeInsets.only(left: 10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[200],
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 15.0),
+                                          child: Icon(
+                                            item.icon,
+                                            size: 24,
+                                            color: AppColors.pillIconColor,
                                           ),
-                                          color: AppColors.mainPrimaryButton,
                                         ),
-                                        // color: AppColors.green,
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              item.date.day.toString(),
-                                              style: const TextStyle(
-                                                color: AppColors.white,
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w500,
+                                        Text(
+                                          item.regimenName,
+                                          style: const TextStyle(
+                                            color: AppColors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                        Text(
+                                          item.dosage,
+                                          style: const TextStyle(
+                                            color: AppColors.darkGrey,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                        Container(
+                                          width: 45,
+                                          decoration: const BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(
+                                                (10),
+                                              ),
+                                              bottomRight: Radius.circular(
+                                                (10),
                                               ),
                                             ),
-                                            Text(
-                                              formattedMonth.toString(),
-                                              style: const TextStyle(
-                                                color: AppColors.white,
-                                                fontSize: 14,
+                                            color: AppColors.mainPrimaryButton,
+                                          ),
+                                          // color: AppColors.green,
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                item.date.day.toString(),
+                                                style: const TextStyle(
+                                                  color: AppColors.white,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                              Text(
+                                                formattedMonth.toString(),
+                                                style: const TextStyle(
+                                                  color: AppColors.white,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 );
                               },
@@ -556,6 +492,136 @@ class _HomeViewState extends State<HomeView> {
           ),
         );
       },
+    );
+  }
+}
+
+class NextRegimen extends StatelessWidget {
+  const NextRegimen({
+    Key? key,
+    required this.itemList,
+  }) : super(key: key);
+
+  final List<HistoryModel> itemList;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: itemList.map((item) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Name',
+              style: TextStyle(
+                color: AppColors.black,
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            const SizedBox(height: 5),
+            Container(
+              height: 40,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: AppColors.progressBarFill,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  item.regimenName,
+                  style: const TextStyle(
+                    color: AppColors.regmentColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Dosage',
+                      style: TextStyle(
+                        color: AppColors.black,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      textAlign: TextAlign.start,
+                    ),
+                    const SizedBox(height: 5),
+                    Container(
+                      height: 40,
+                      width: 200,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: AppColors.progressBarFill,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          item.dosage,
+                          style: const TextStyle(
+                            color: AppColors.regmentColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Time',
+                      style: TextStyle(
+                        color: AppColors.black,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    Container(
+                      height: 40,
+                      width: 150,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: AppColors.progressBarFill,
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          '6:00 PM',
+                          style: TextStyle(
+                            color: AppColors.regmentColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 26,
+            ),
+          ],
+        );
+      }).toList(),
     );
   }
 }

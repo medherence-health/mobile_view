@@ -6,7 +6,7 @@ class MedhecoinWidget extends StatelessWidget {
   final Icon? icon;
   final VoidCallback? onPressed;
 
-   MedhecoinWidget(this.icon, this.onPressed,{super.key});
+   const MedhecoinWidget(this.icon, this.onPressed,{super.key});
 
   @override
   Widget build(BuildContext context) {

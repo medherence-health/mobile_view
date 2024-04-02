@@ -106,7 +106,7 @@ class OutlinePrimaryButton extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  if (icon != null) icon?? Icon(Icons.hourglass_empty),
+                  if (icon != null) icon?? const Icon(Icons.hourglass_empty),
                   Text(
                     buttonConfig.text,
                     textAlign: TextAlign.center,
