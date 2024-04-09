@@ -94,7 +94,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     Visibility(
                       visible: unreadNotifications.isNotEmpty,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 0.0),
                         child: ListView.separated(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
@@ -148,7 +148,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     Visibility(
                       visible: readNotifications.isNotEmpty,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 0.0),
                         child: ListView.separated(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),

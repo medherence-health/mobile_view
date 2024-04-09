@@ -62,15 +62,17 @@ class _MenuScreenState extends State<MenuScreen> {
             ),
             child: Row(
               children: [
-                PrimaryButton(
-                  buttonConfig: ButtonConfig(
-                    text: 'LogOut',
-                    action: () {
-                      Navigator.pop(context);
-                    },
-                    disabled: false,
+                Expanded(
+                  child: PrimaryButton(
+                    buttonConfig: ButtonConfig(
+                      text: 'LogOut',
+                      action: () {
+                        Navigator.pop(context);
+                      },
+                      disabled: false,
+                    ),
+                    width: 130,
                   ),
-                  width: 150,
                 ),
                 const SizedBox(
                   width: 10,
@@ -84,7 +86,7 @@ class _MenuScreenState extends State<MenuScreen> {
                       },
                       disabled: true,
                     ),
-                    width: 150,
+                    width: 130,
                   ),
                 ),
               ],
@@ -182,8 +184,10 @@ class _MenuScreenState extends State<MenuScreen> {
               icon: Icons.work_history_outlined,
               title: 'History',
               subtitle: 'Your history',
-              onPressed: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const HistoryScreen())),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const HistoryScreen())),
               // Navigate to settings screen
             ),
             const Spacer(),

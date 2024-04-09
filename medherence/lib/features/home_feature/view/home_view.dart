@@ -174,7 +174,8 @@ class _HomeViewState extends State<HomeView> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const NotificationScreen()));
+                                  builder: (context) =>
+                                      const NotificationScreen()));
                         },
                       ),
                     ],
@@ -221,7 +222,7 @@ class _HomeViewState extends State<HomeView> {
                       height: MediaQuery.of(context).size.width,
                       child: ListView.separated(
                         shrinkWrap: true,
-                        physics: const BouncingScrollPhysics(),
+                        physics: const AlwaysScrollableScrollPhysics(),
                         itemCount: _historyDataList
                             .length, // the length of the data list
                         separatorBuilder: (ctx, index) {
@@ -378,7 +379,7 @@ class _HomeViewState extends State<HomeView> {
                           Expanded(
                             child: ListView.separated(
                               shrinkWrap: true,
-                              physics: const BouncingScrollPhysics(),
+                              physics: AlwaysScrollableScrollPhysics(),
                               itemCount: historyList
                                   .length, // Use the length of your data list
                               separatorBuilder: (ctx, index) {
