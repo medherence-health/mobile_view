@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medherence/features/reminder_feature/view_model/reminder_view_model.dart';
 import 'package:provider/provider.dart';
 
 import 'package:medherence/features/splashscreen/splashscreen.dart';
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => NotificationModelItems()),
+          ChangeNotifierProvider(create: (context) => ReminderState()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
