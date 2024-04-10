@@ -19,93 +19,106 @@ class EditReminderScreen extends StatefulWidget {
 }
 
 class _EditReminderScreenState extends State<EditReminderScreen> {
-  bool isDoneClicked = false;
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  late Future<bool> isDoneClicked;
   @override
   void initState() {
     super.initState();
-    _loadIsDoneClicked();
+    isDoneClicked = _prefs.then((SharedPreferences prefs) {
+      return prefs.getBool('isDoneClicked') ?? false;
+    });
   }
 
-  Future<void> _loadIsDoneClicked() async {
-    final prefs = await SharedPreferences.getInstance();
-    isDoneClicked = prefs.getBool('isDoneClicked') ?? false;
-    setState(() {});
-  }
+  // Future<void> _loadIsDoneClicked() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   isDoneClicked = prefs.getBool('isDoneClicked') ?? false;
+  //   setState(() {});
+  // }
 
   Future<void> _saveIsDoneClicked() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isDoneClicked', isDoneClicked);
+    final SharedPreferences prefs = await _prefs;
+    final bool isDoneClick = (prefs.getBool('isDoneClicked') ?? true);
+    isDoneClicked =
+        prefs.setBool('isDoneClicked', isDoneClick).then((bool success) {
+      return isDoneClick;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      color: AppColors.white,
-      width: double.infinity,
-      child: ListView(
-        children: [
-          AppBar(
-            elevation: 2,
-            title: isDoneClicked == false
-                ? const Text(
-                    'Edit Reminder',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  )
-                : const Text(
-                    'Reminder',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-            centerTitle: true,
-            leading: isDoneClicked == false
-                ? IconButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const DashboardView()));
-                    },
-                    icon: const Icon(CupertinoIcons.xmark,
-                        color: AppColors.navBarColor),
-                  )
-                : SizedBox(),
-            actions: [
-              isDoneClicked == false
-                  ? Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              isDoneClicked = true;
-                            });
-                          },
-                          icon: const Icon(
-                            Icons.done,
-                            color: AppColors.navBarColor,
+    return FutureBuilder<bool>(
+        future: isDoneClicked,
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          return Container(
+            height: MediaQuery.of(context).size.height,
+            color: AppColors.white,
+            width: double.infinity,
+            child: ListView(
+              children: [
+                AppBar(
+                  elevation: 2,
+                  title: isDoneClicked == false
+                      ? const Text(
+                          'Edit Reminder',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        )
+                      : const Text(
+                          'Reminder',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
-                        const SizedBox(width: 20),
-                      ],
-                    )
-                  : SizedBox(),
-            ],
-          ),
-          !isDoneClicked
-              ? Expanded(
-                  child: Scrollbar(
-                    child: SingleChildScrollView(
-                        child: EditReminderScreenContent()),
-                  ),
-                )
-              : EditReminderDetails()
-        ],
-      ),
-    );
+                  centerTitle: true,
+                  leading: isDoneClicked == false
+                      ? IconButton(
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const DashboardView()));
+                          },
+                          icon: const Icon(CupertinoIcons.xmark,
+                              color: AppColors.navBarColor),
+                        )
+                      : SizedBox(),
+                  actions: [
+                    isDoneClicked == false
+                        ? Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    // isDoneClicked = true;
+                                    _saveIsDoneClicked();
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.done,
+                                  color: AppColors.navBarColor,
+                                ),
+                              ),
+                              const SizedBox(width: 20),
+                            ],
+                          )
+                        : SizedBox(),
+                  ],
+                ),
+                isDoneClicked == false
+                    ? Expanded(
+                        child: Scrollbar(
+                          child: SingleChildScrollView(
+                              child: EditReminderScreenContent()),
+                        ),
+                      )
+                    : EditReminderDetails()
+              ],
+            ),
+          );
+        });
   }
 }
