@@ -24,16 +24,15 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
   @override
   void initState() {
     super.initState();
+    _loadIsDoneClicked();
+  }
+
+  Future<void> _loadIsDoneClicked() async {
     isDoneClicked = _prefs.then((SharedPreferences prefs) {
       return prefs.getBool('isDoneClicked') ?? false;
     });
+    setState(() {});
   }
-
-  // Future<void> _loadIsDoneClicked() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   isDoneClicked = prefs.getBool('isDoneClicked') ?? false;
-  //   setState(() {});
-  // }
 
   Future<void> _saveIsDoneClicked() async {
     final SharedPreferences prefs = await _prefs;
