@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:medherence/features/auth_features/views/login_view.dart';
 
 import '../../../core/constants_utils/color_utils.dart';
 import '../../../core/shared_widget/buttons.dart';
@@ -24,15 +25,6 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
     super.initState();
     _otpControllers = List.generate(4, (index) => TextEditingController());
     startResendTimer();
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel(); // Cancel the timer when the widget is disposed
-    for (var controller in _otpControllers) {
-      controller.dispose();
-    }
-    super.dispose();
   }
 
   void startResendTimer() {
@@ -163,8 +155,17 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
                   width: double.infinity,
                   buttonConfig: ButtonConfig(
                     text: 'Verify',
-                    action: () async {},
-                    // disabled: !isFormValid || viewModel.isBusy,
+                    action: () async {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => LoginView()));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Otp verified successfully'),
+                          backgroundColor: AppColors.green,
+                        ),
+                      );
+                    },
+                    disabled: !isFormValid,
                   ),
                 ),
               ),
@@ -193,5 +194,14 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel(); // Cancel the timer when the widget is disposed
+    for (var controller in _otpControllers) {
+      controller.dispose();
+    }
+    super.dispose();
   }
 }

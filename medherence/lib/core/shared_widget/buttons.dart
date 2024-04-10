@@ -7,7 +7,7 @@ class PrimaryButton extends StatelessWidget {
   final EdgeInsets? margin;
   final double width;
   final Color color, textColor;
-  final double? textSize; 
+  final double? textSize;
 
   const PrimaryButton({
     Key? key,
@@ -46,7 +46,7 @@ class PrimaryButton extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   color:
-                      buttonConfig.disabled ? Colors.grey.shade500 : textColor,
+                      buttonConfig.disabled ? Colors.grey.shade300 : textColor,
                   fontSize: textSize,
                 ),
               ),
@@ -106,7 +106,7 @@ class OutlinePrimaryButton extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  if (icon != null) icon?? const Icon(Icons.hourglass_empty),
+                  if (icon != null) icon ?? const Icon(Icons.hourglass_empty),
                   Text(
                     buttonConfig.text,
                     textAlign: TextAlign.center,
@@ -130,8 +130,7 @@ class ButtonConfig {
   final String text;
   final VoidCallback action;
   final bool disabled;
-  ButtonConfig(
-    {
+  ButtonConfig({
     required this.text,
     required this.action,
     this.disabled = false,
