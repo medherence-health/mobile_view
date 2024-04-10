@@ -124,42 +124,49 @@ print(formattedDate) {
 
 List<NotificationModel> notificationLists = [
   NotificationModel(
+    id: "1",
     title: "Missed regimen",
     subtitle: "You did not take 2 tablets of Lisinopril",
     read: false,
     notificationDate: formattedDate,
   ),
   NotificationModel(
+    id: "2",
     title: "Medhecoin",
     subtitle: "You have earned 10 Medhecoins",
     read: true,
     notificationDate: formattedDate,
   ),
   NotificationModel(
+    id: "3",
     title: "Medhecoin",
     subtitle: "You have earned 120 Medhecoins",
     read: true,
     notificationDate: formattedDate,
   ),
   NotificationModel(
+    id: "4",
     title: "Medhecoin",
     subtitle: "You have earned 100 Medhecoins",
     read: false,
     notificationDate: formattedDate,
   ),
   NotificationModel(
+    id: "5",
     title: "Reminder",
     subtitle: "You have 2 tablets of Omeprazole left to use",
     read: false,
     notificationDate: formattedDate,
   ),
   NotificationModel(
+    id: "6",
     title: "Medhecoin",
     subtitle: "You have earned 40 Medhecoins",
     read: true,
     notificationDate: formattedDate,
   ),
   NotificationModel(
+    id: "7",
     title: "Motivation",
     subtitle:
         "Taking your medication as prescribed is a crucial step in managing your health and well-being",
@@ -167,10 +174,19 @@ List<NotificationModel> notificationLists = [
     notificationDate: formattedDate,
   ),
   NotificationModel(
+    id: "8",
     title: "Motivation",
     subtitle:
         "Taking your medication as prescribed is a crucial step in managing your health and well-being",
     read: true,
+    notificationDate: formattedDate,
+  ),
+  NotificationModel(
+    id: "9",
+    title: "Motivation",
+    subtitle:
+        "Ensuring a proper intake of medication fastening a good stable and quick growth",
+    read: false,
     notificationDate: formattedDate,
   ),
   // Add more NotificationModel objects as needed

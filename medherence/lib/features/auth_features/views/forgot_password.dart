@@ -105,14 +105,40 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     buttonConfig: ButtonConfig(
                       text: 'Send',
                       action: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => VerifyForgotPassword(
-                              email: emailController.text,
+                        if (_formKey.currentState!.validate()) {
+                          // Password change logic goes here
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Otp sent'),
+                              backgroundColor: AppColors.green,
                             ),
-                          ),
-                        );
+                          );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => VerifyForgotPassword(
+                                email: emailController.text,
+                              ),
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              dismissDirection: DismissDirection.horizontal,
+                              elevation: 10,
+                              behavior: SnackBarBehavior.floating,
+                              margin: EdgeInsets.only(
+                                top: 0,
+                                left: 25,
+                                right: 25,
+                                bottom: 35,
+                              ),
+                              content:
+                                  Text('Ensure to input a valid email address'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
                       },
                       disabled: false,
                     ),

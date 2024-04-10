@@ -1,10 +1,12 @@
 import 'package:stacked/stacked.dart';
 
 import '../../../core/model/models/notification_model.dart';
-import '../../../core/model/simulated_data/simulated_values.dart';
 
 class NotificationViewModel extends BaseViewModel {
-  final List<NotificationModel> _listNotification = notificationLists;
+  late final List<NotificationModel> _listNotification;
+
+  NotificationViewModel(this._listNotification);
+
   List<NotificationModel>? get notificationList {
     return _listNotification;
   }

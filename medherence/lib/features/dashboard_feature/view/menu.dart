@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:medherence/core/shared_widget/snackBar.dart';
 import 'package:medherence/features/history_features/view/history_screen.dart';
 
 import '../../../core/constants_utils/color_utils.dart';
@@ -99,6 +100,21 @@ class _MenuScreenState extends State<MenuScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final snackbar = SnackBar(
+      dismissDirection: DismissDirection.horizontal,
+      elevation: 10,
+      behavior: SnackBarBehavior.floating,
+      margin: EdgeInsets.all(150),
+      content: Text(
+        'Coming Soon',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: AppColors.offWhite,
+          fontWeight: FontWeight.w400,
+        ),
+      ),
+      backgroundColor: AppColors.navBarColor,
+    );
     return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
@@ -131,6 +147,7 @@ class _MenuScreenState extends State<MenuScreen> {
               subtitle: 'Complete and edit your profile',
               onPressed: () {
                 // Navigate to settings screen
+                ScaffoldMessenger.of(context).showSnackBar(snackbar);
               },
             ),
             const SizedBox(
@@ -142,6 +159,7 @@ class _MenuScreenState extends State<MenuScreen> {
               subtitle: 'Personalize and setup your experience',
               onPressed: () {
                 // Navigate to settings screen
+                ScaffoldMessenger.of(context).showSnackBar(snackbar);
               },
             ),
             const SizedBox(
@@ -152,7 +170,7 @@ class _MenuScreenState extends State<MenuScreen> {
               title: 'Help and Support',
               subtitle: 'Report any difficulty you are facing',
               onPressed: () {
-                // Navigate to settings screen
+                ScaffoldMessenger.of(context).showSnackBar(snackbar);
               },
             ),
             const SizedBox(
@@ -164,6 +182,7 @@ class _MenuScreenState extends State<MenuScreen> {
               subtitle: 'Learn more about the app',
               onPressed: () {
                 // Navigate to settings screen
+                ScaffoldMessenger.of(context).showSnackBar(snackbar);
               },
             ),
             const SizedBox(

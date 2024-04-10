@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:medherence/features/splashscreen/splashscreen.dart';
 import '../../core/constants_utils/color_utils.dart';
 import 'core/constants_utils/utils.dart';
+import 'core/model/models/notification_model.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,32 +16,36 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Medical adherence',
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
-        // colorScheme: ColorScheme.fromSeed(seedColor: AppColors.navBarColor),
-        colorScheme: const ColorScheme.light(
-          primary: AppColors.navBarColor,
-        ),
-        useMaterial3: true,
-        fontFamily: StringUtils.poppins,
-        appBarTheme: const AppBarTheme(
-          elevation: 0,
-          backgroundColor: Colors.white,
-          iconTheme: IconThemeData(
-            color: AppColors.navBarColor,
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => NotificationModelItems()),
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Medical adherence',
+          theme: ThemeData(
+            scaffoldBackgroundColor: Colors.white,
+            // colorScheme: ColorScheme.fromSeed(seedColor: AppColors.navBarColor),
+            colorScheme: const ColorScheme.light(
+              primary: AppColors.navBarColor,
+            ),
+            useMaterial3: true,
+            fontFamily: StringUtils.poppins,
+            appBarTheme: const AppBarTheme(
+              elevation: 0,
+              backgroundColor: Colors.white,
+              iconTheme: IconThemeData(
+                color: AppColors.navBarColor,
+              ),
+            ),
+            textSelectionTheme: TextSelectionThemeData(
+              cursorColor: AppColors.pressedButton,
+              selectionHandleColor: AppColors.midOrange,
+              selectionColor: AppColors.pressedButton.withOpacity(0.3),
+            ),
           ),
-        ),
-        textSelectionTheme: TextSelectionThemeData(
-          cursorColor: AppColors.pressedButton,
-          selectionHandleColor: AppColors.midOrange,
-          selectionColor: AppColors.pressedButton.withOpacity(0.3),
-        ),
-      ),
-      home: const SplashScreen(),
-    );
+          home: const SplashScreen(),
+        ));
   }
 }
 

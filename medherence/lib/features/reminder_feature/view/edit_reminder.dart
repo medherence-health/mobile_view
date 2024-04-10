@@ -20,6 +20,9 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
   String selectedSound = 'Aegean Sea'; // Default sound
 
   TimeOfDay selectedTime = TimeOfDay.now();
+  bool isAlarmOn = true;
+
+  bool isDoneClicked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -31,33 +34,49 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
         children: [
           AppBar(
             elevation: 2,
-            title: const Text(
-              'Edit Reminder',
-              style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
+            title: isDoneClicked == false
+                ? const Text(
+                    'Edit Reminder',
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  )
+                : const Text(
+                    'Reminder',
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
             centerTitle: true,
-            leading: IconButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const DashboardView()));
-              },
-              icon: const Icon(CupertinoIcons.xmark,
-                  color: AppColors.navBarColor),
-            ),
+            leading: isDoneClicked == false
+                ? IconButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const DashboardView()));
+                    },
+                    icon: const Icon(CupertinoIcons.xmark,
+                        color: AppColors.navBarColor),
+                  )
+                : SizedBox(),
             actions: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.done,
-                  color: AppColors.navBarColor,
-                ),
-              ),
-              const SizedBox(width: 20),
+              isDoneClicked == false
+                  ? Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.done,
+                            color: AppColors.navBarColor,
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                      ],
+                    )
+                  : SizedBox(),
             ],
           ),
           Expanded(

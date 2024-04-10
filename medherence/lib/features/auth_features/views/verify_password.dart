@@ -16,14 +16,13 @@ class VerifyForgotPassword extends StatefulWidget {
 
 class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
   late final List<TextEditingController> _otpControllers;
-int _resendTimer = 60;
+  int _resendTimer = 60;
   late Timer _timer;
 
   @override
   void initState() {
     super.initState();
-    _otpControllers =
-      List.generate(4, (index) => TextEditingController());
+    _otpControllers = List.generate(4, (index) => TextEditingController());
     startResendTimer();
   }
 
@@ -48,7 +47,6 @@ int _resendTimer = 60;
     });
   }
 
-
   bool get isFormValid {
     return _otpControllers.every((controller) => controller.text.isNotEmpty);
   }
@@ -58,10 +56,11 @@ int _resendTimer = 60;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(Icons.arrow_back),),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.only(
@@ -104,20 +103,24 @@ int _resendTimer = 60;
                   horizontal: 20.0,
                 ),
                 child: RichText(
-                  text: TextSpan(text: 'We sent a 4-digit code to',                 
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.grey.shade600,
+                  text: TextSpan(
+                    text: 'We sent a 4-digit code to',
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w300,
+                      color: Colors.grey.shade600,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: ' ${widget.email}',
+                        style: const TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.black,
+                        ),
+                      ),
+                    ],
                   ),
-                  children: [
-                    TextSpan(text: ' ${widget.email}', style: const TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.black,
-                  ),),
-                  ],
-                   ),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -125,31 +128,32 @@ int _resendTimer = 60;
                 height: 25,
               ),
               Padding(
-                    padding: const EdgeInsets.fromLTRB(6.0, 8.0, 6.0, 8.0),
-                    child: SizedBox(
-                      height: 120,
-                      width: MediaQuery.of(context).size.width - 15,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 7.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: _otpControllers.map((controller) {
-                             _otpControllers.indexOf(controller);
-                            return Row(
-                              children: [
-                                OtpTile(
-                                  otpSaved: () {},
-                                  numberController: controller,
-                                ),
-                                const SizedBox
-                                (width: 10,),
-                              ],
-                            );
-                          }).toList(),
-                        ),
-                      ),
+                padding: const EdgeInsets.fromLTRB(6.0, 8.0, 6.0, 8.0),
+                child: SizedBox(
+                  height: 120,
+                  width: MediaQuery.of(context).size.width - 15,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 7.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: _otpControllers.map((controller) {
+                        _otpControllers.indexOf(controller);
+                        return Row(
+                          children: [
+                            OtpTile(
+                              otpSaved: () {},
+                              numberController: controller,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                          ],
+                        );
+                      }).toList(),
                     ),
                   ),
+                ),
+              ),
               const SizedBox(
                 height: 10,
               ),

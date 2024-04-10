@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/constants_utils/color_utils.dart';
 import '../../../core/model/models/notification_model.dart';
@@ -19,7 +20,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   void initState() {
     super.initState();
-    model = NotificationViewModel();
+    final notificationList =
+        Provider.of<NotificationModelItems>(context, listen: false)
+            .notificationItemList;
+    model = NotificationViewModel(notificationList);
   }
 
   @override
@@ -105,31 +109,15 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             );
                           },
                           itemBuilder: (context, index) {
-                            return Dismissible(
+                            return NotificationContainer(
                               key: Key(unreadNotifications[index]
                                   .hashCode
                                   .toString()),
-                              direction: DismissDirection.endToStart,
-                              background: Container(
-                                color: AppColors.historyBackground,
-                                alignment: Alignment.centerRight,
-                                padding: EdgeInsets.symmetric(horizontal: 20),
-                                child: Icon(
-                                  Icons.delete_outlined,
-                                  color: AppColors.navBarColor,
-                                ),
-                              ),
-                              onDismissed: (direction) {
-                                setState(() {
-                                  unreadNotifications.removeAt(index);
-                                });
+                              notification: unreadNotifications[index],
+                              onPressed: () {
+                                // Handle notification tap
                               },
-                              child: NotificationContainer(
-                                notification: unreadNotifications[index],
-                                onPressed: () {
-                                  // Handle notification tap
-                                },
-                              ),
+                              direction: DismissDirection.endToStart,
                             );
                           },
                         ),
@@ -148,10 +136,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     Visibility(
                       visible: readNotifications.isNotEmpty,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                        padding: const EdgeInsets.only(bottom: 30.0),
                         child: ListView.separated(
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: AlwaysScrollableScrollPhysics(),
                           itemCount: readNotifications.length,
                           separatorBuilder: (ctx, index) {
                             return const SizedBox(
@@ -159,28 +147,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             );
                           },
                           itemBuilder: (context, index) {
-                            return Dismissible(
+                            return NotificationContainer(
                               key: Key(
                                   readNotifications[index].hashCode.toString()),
-                              direction: DismissDirection.endToStart,
-                              background: Container(
-                                color: AppColors.historyBackground,
-                                alignment: Alignment.centerRight,
-                                padding: EdgeInsets.symmetric(horizontal: 20),
-                                child: Icon(Icons.delete_outline,
-                                    color: AppColors.navBarColor),
-                              ),
-                              onDismissed: (direction) {
-                                setState(() {
-                                  readNotifications.removeAt(index);
-                                });
+                              notification: readNotifications[index],
+                              onPressed: () {
+                                // Handle notification tap
                               },
-                              child: NotificationContainer(
-                                notification: readNotifications[index],
-                                onPressed: () {
-                                  // Handle notification tap
-                                },
-                              ),
+                              direction: DismissDirection.endToStart,
                             );
                           },
                         ),
