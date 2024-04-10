@@ -10,12 +10,16 @@ class EditReminderDetails extends StatelessWidget {
     return Consumer<ReminderState>(
       builder: (context, reminderState, _) {
         List<HistoryModel> regimenList = reminderState.regimenList;
-        return ListView.builder(
-          itemCount: regimenList.length,
-          itemBuilder: (context, index) {
-            HistoryModel regimen = regimenList[index];
-            return _buildRegimenDetails(regimen);
-          },
+        return Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: ListView.builder(
+            itemCount: regimenList.length,
+            itemBuilder: (context, index) {
+              HistoryModel regimen = regimenList[index];
+              return _buildRegimenDetails(regimen);
+            },
+          ),
         );
       },
     );
@@ -23,15 +27,20 @@ class EditReminderDetails extends StatelessWidget {
 
   Widget _buildRegimenDetails(HistoryModel regimen) {
     return Card(
-      child: Container(
-        height: 100,
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  SizedBox(
+                    height: 5,
+                  ),
                   Text(
                     '${regimen.regimenName}',
                     style: const TextStyle(
@@ -51,17 +60,18 @@ class EditReminderDetails extends StatelessWidget {
                   ),
                   // Add more details as needed
                   // Switch to indicate reminder status
-                  Switch(
-                    value: true, // Set the value based on reminder status
-                    onChanged: (value) {
-                      // Update reminder status
-                    },
-                  ),
+
                   Divider(),
                 ],
               ),
-            ],
-          ),
+            ),
+            Switch(
+              value: true, // Set the value based on reminder status
+              onChanged: (value) {
+                // Update reminder status
+              },
+            ),
+          ],
         ),
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/constants_utils/color_utils.dart';
 import '../../../core/model/models/history_model.dart';
@@ -19,6 +20,22 @@ class EditReminderScreen extends StatefulWidget {
 
 class _EditReminderScreenState extends State<EditReminderScreen> {
   bool isDoneClicked = false;
+  @override
+  void initState() {
+    super.initState();
+    _loadIsDoneClicked();
+  }
+
+  Future<void> _loadIsDoneClicked() async {
+    final prefs = await SharedPreferences.getInstance();
+    isDoneClicked = prefs.getBool('isDoneClicked') ?? false;
+    setState(() {});
+  }
+
+  Future<void> _saveIsDoneClicked() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isDoneClicked', isDoneClicked);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +43,7 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
       height: MediaQuery.of(context).size.height,
       color: AppColors.white,
       width: double.infinity,
-      child: Column(
+      child: ListView(
         children: [
           AppBar(
             elevation: 2,
