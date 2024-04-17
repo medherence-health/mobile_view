@@ -115,7 +115,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                         onBoardingTitle[currentIndex],
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
-                          fontSize: (25),
+                          fontSize: (28),
                           color: AppColors.black,
                         ),
                         textAlign: TextAlign.start,
@@ -127,7 +127,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                         onBoardingSubTitle[currentIndex],
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
-                          fontSize: (18),
+                          fontSize: (20),
                           color: AppColors.black,
                         ),
                         textAlign: TextAlign.start,
