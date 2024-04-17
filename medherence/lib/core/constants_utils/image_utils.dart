@@ -11,6 +11,7 @@ class ImageUtils {
   static const String faqIcon = 'assets/images/faq_icon.png';
   static const String emailMessageIcon = 'assets/images/email_message_icon.png';
   static const String medherenceAppIcon = 'assets/images/medherence_icon.png';
+  static const String appTour = 'assets/images/app_tour.png';
 
   // Avatars
   static const String avatar1 = 'assets/images/avatars/avatar_1.png';

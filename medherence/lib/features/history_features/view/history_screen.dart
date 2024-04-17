@@ -54,7 +54,10 @@ class _HistoryScreenState extends State<HistoryScreen>
           icon: const Icon(Icons.arrow_back_ios_new),
         ),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.calculate_sharp))
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(onPressed: () {}, icon: const Icon(Icons.filter_list_alt)),
+          )
         ],
       ),
       body: CustomScrollView(

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:medherence/core/shared_widget/snackBar.dart';
+import 'package:medherence/features/help_and_support/view/help_and_support.dart';
 import 'package:medherence/features/history_features/view/history_screen.dart';
 
 import '../../../core/constants_utils/color_utils.dart';
@@ -170,7 +171,12 @@ class _MenuScreenState extends State<MenuScreen> {
               title: 'Help and Support',
               subtitle: 'Report any difficulty you are facing',
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const HelpAndSupport()),
+                );
+                // ScaffoldMessenger.of(context).showSnackBar(snackbar);
               },
             ),
             const SizedBox(
