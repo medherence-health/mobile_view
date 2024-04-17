@@ -8,8 +8,8 @@ import '../../../core/shared_widget/buttons.dart';
 import '../widget/otp_tile.dart';
 
 class VerifyForgotPassword extends StatefulWidget {
-  String email;
-  VerifyForgotPassword({required this.email, super.key});
+  dynamic phoneNumber;
+  VerifyForgotPassword({required this.phoneNumber, super.key});
 
   @override
   State<VerifyForgotPassword> createState() => _VerifyForgotPasswordState();
@@ -104,7 +104,7 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
                     ),
                     children: [
                       TextSpan(
-                        text: ' ${widget.email}',
+                        text: ' ${widget.phoneNumber}',
                         style: const TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.w400,

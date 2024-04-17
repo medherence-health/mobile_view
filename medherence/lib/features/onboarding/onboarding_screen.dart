@@ -1,0 +1,235 @@
+import 'package:flutter/material.dart';
+import 'package:medherence/features/auth_features/views/login_view.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart'
+    as smooth_page_indicator;
+
+import '../../core/constants_utils/color_utils.dart';
+import '../../core/constants_utils/image_utils.dart';
+import '../../core/shared_widget/buttons.dart';
+
+class OnboardingView extends StatefulWidget {
+  const OnboardingView({Key? key}) : super(key: key);
+
+  @override
+  State<OnboardingView> createState() => _OnboardingViewState();
+}
+
+class _OnboardingViewState extends State<OnboardingView> {
+  int currentIndex = 0;
+  late PageController _controller;
+
+  final List<String> onBoardingImages = [
+    ImageUtils.onboarding1,
+    ImageUtils.onboarding2,
+    ImageUtils.onboarding3,
+  ];
+  final List<String> onBoardingTitle = [
+    'Never miss your Meds',
+    'Smart Adherence Monitoring',
+    'Adhere and Earn Coins',
+  ];
+
+  final List<String> onBoardingSubTitle = [
+    'Get daily reminders and pill count reminders to stay up-to-date about your medications',
+    'Stay on track in your adherence journey with smart medication adherence monitoring',
+    'Earn medhecoin everytime you adhere to your medication and redeem them in cash later',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = PageController(initialPage: 0);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        alignment: AlignmentDirectional.bottomStart,
+        children: [
+          PageView.builder(
+            controller: _controller,
+            onPageChanged: (int index) {
+              setState(() {
+                currentIndex = index;
+              });
+            },
+            itemCount: onBoardingImages.length,
+            itemBuilder: (_, int index) {
+              return Container(
+                height: 300,
+                color: AppColors.offWhite,
+                child: Image.asset(
+                  onBoardingImages[index],
+                  // height: (300),
+                  fit: BoxFit.contain,
+                  width: double.infinity,
+                ),
+              );
+            },
+          ),
+          Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 40.0),
+              child: Visibility(
+                visible: (currentIndex == 0),
+                child: GestureDetector(
+                  onTap: () {
+                    _controller.animateToPage(2,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeIn);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(25.0),
+                    child: Text(
+                      'Skip',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: (25),
+                        color: AppColors.navBarColor,
+                      ),
+                      textAlign: TextAlign.right,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 50,
+            child: Column(
+              children: [
+                Container(
+                  alignment: Alignment.bottomCenter,
+                  height: 150,
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.only(
+                    left: 25,
+                    right: 25,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        onBoardingTitle[currentIndex],
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: (25),
+                          color: AppColors.black,
+                        ),
+                        textAlign: TextAlign.start,
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Text(
+                        onBoardingSubTitle[currentIndex],
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: (18),
+                          color: AppColors.black,
+                        ),
+                        textAlign: TextAlign.start,
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 80),
+                  child: smooth_page_indicator.SmoothPageIndicator(
+                    controller: _controller ??= PageController(initialPage: 0),
+                    count: 3,
+                    axisDirection: Axis.horizontal,
+                    onDotClicked: (i) async {
+                      await _controller.animateToPage(
+                        i,
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.ease,
+                      );
+                    },
+                    effect: smooth_page_indicator.ExpandingDotsEffect(
+                      expansionFactor: 2,
+                      spacing: 8,
+                      radius: 16,
+                      dotWidth: 10,
+                      dotHeight: 10,
+                      dotColor: AppColors.progressBarFill,
+                      activeDotColor: AppColors.navBarColor,
+                      paintStyle: PaintingStyle.fill,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Builder(
+            builder: (context) {
+              return Padding(
+                padding: const EdgeInsets.all(25.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Visibility(
+                      visible: currentIndex == 1,
+                      child: GestureDetector(
+                        onTap: () {
+                          _controller.previousPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeIn);
+                        },
+                        child: Icon(
+                          Icons.arrow_back_sharp,
+                          size: 30,
+                          color: AppColors.navBarColor,
+                        ),
+                      ),
+                    ),
+                    currentIndex != 2
+                        ? GestureDetector(
+                            onTap: () {
+                              _controller.nextPage(
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeOut);
+                            },
+                            child: PrimaryButton(
+                              buttonConfig: ButtonConfig(
+                                  text: 'Next',
+                                  action: () {
+                                    _controller.nextPage(
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        curve: Curves.easeOut);
+                                  }),
+                              width: 120,
+                            ),
+                          )
+                        : PrimaryButton(
+                            width: 120,
+                            buttonConfig: ButtonConfig(
+                              text: 'Finish',
+                              action: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const LoginView()),
+                                );
+                              },
+                            ),
+                          ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+}

@@ -14,14 +14,14 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  late TextEditingController emailController;
+  late TextEditingController phoneController;
   Color emailFillColor = Colors.white70;
   final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    emailController = TextEditingController();
+    phoneController = TextEditingController();
   }
 
   @override
@@ -90,14 +90,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     height: 25,
                   ),
                   TitleAndTextFormField(
-                    title: 'E-mail',
-                    formFieldHint: 'Please type your associated E-mail',
-                    formFieldController: emailController,
+                    title: 'Phone Number',
+                    formFieldHint: 'Please type your phone number',
+                    formFieldController: phoneController,
                     textInputAction: TextInputAction.done,
                     textInputType: TextInputType.emailAddress,
                     formFieldColor: emailFillColor,
                     formFieldValidator: (value) {
-                      return value!.emailValidation();
+                      return value!.phoneNumberValidation();
                     },
                   ),
                   const SizedBox(height: 35),
@@ -117,7 +117,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => VerifyForgotPassword(
-                                email: emailController.text,
+                                phoneNumber: phoneController,
                               ),
                             ),
                           );
