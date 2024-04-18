@@ -6,6 +6,8 @@ import 'package:medherence/features/history_features/view/history_screen.dart';
 
 import '../../../core/constants_utils/color_utils.dart';
 import '../../../core/shared_widget/buttons.dart';
+import '../../about_features/view/about_screen.dart';
+import '../../profile_feature/view/profile_view.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -147,8 +149,13 @@ class _MenuScreenState extends State<MenuScreen> {
               title: 'Profile',
               subtitle: 'Complete and edit your profile',
               onPressed: () {
-                // Navigate to settings screen
-                ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                // Navigate to profile screen
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ProfileScreenView()),
+                );
+                // ScaffoldMessenger.of(context).showSnackBar(snackbar);
               },
             ),
             const SizedBox(
@@ -176,6 +183,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   MaterialPageRoute(
                       builder: (context) => const HelpAndSupport()),
                 );
+
                 // ScaffoldMessenger.of(context).showSnackBar(snackbar);
               },
             ),
@@ -187,8 +195,13 @@ class _MenuScreenState extends State<MenuScreen> {
               title: 'About app',
               subtitle: 'Learn more about the app',
               onPressed: () {
-                // Navigate to settings screen
-                ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                // Navigate to about screen
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const AboutScreenView()),
+                );
+                // ScaffoldMessenger.of(context).showSnackBar(snackbar);
               },
             ),
             const SizedBox(
