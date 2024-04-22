@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:medherence/features/help_and_support/view/help_and_support.dart';
-import 'package:medherence/features/history_features/view/history_screen.dart';
+import 'package:medherence/features/history/view/history_screen.dart';
 
-import '../../../core/constants_utils/color_utils.dart';
+import '../../../core/utils/color_utils.dart';
 import '../../../core/shared_widget/buttons.dart';
-import '../../about_features/view/about_screen.dart';
-import '../../profile_feature/view/profile_view.dart';
+import '../../about/view/about_screen.dart';
+import '../../profile/view/profile_view.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});

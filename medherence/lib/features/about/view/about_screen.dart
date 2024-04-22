@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import '../../../core/utils/color_utils.dart';
 import '../../../core/utils/image_utils.dart';
 import '../../dashboard_feature/view/dashboard_view.dart';
-import '../widget/support_widget.dart';
+import '../widgets/about_widget.dart';
 
-class HelpAndSupport extends StatelessWidget {
-  const HelpAndSupport({super.key});
+class AboutScreenView extends StatelessWidget {
+  const AboutScreenView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Help and Support',
+          'About',
           style: TextStyle(
             fontSize: 25,
             fontWeight: FontWeight.w600,
@@ -46,10 +46,10 @@ class HelpAndSupport extends StatelessWidget {
           ),
           child: Column(
             children: [
-              HelpAndSupportWidget(
-                  title: '24/7 Customer care',
-                  subtitle: '09123456789',
-                  icon: Icons.copy,
+              AboutWidget(
+                  title: 'App Version',
+                  subtitle: 'Report any difficulty you are facing',
+                  icon: Icons.arrow_forward_ios_rounded,
                   onPressed: () {
                     // Navigate to settings screen
                     // ScaffoldMessenger.of(context).showSnackBar(snackbar);
@@ -57,7 +57,7 @@ class HelpAndSupport extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Image.asset(
-                      ImageUtils.callIcon,
+                      ImageUtils.appVersionIcon,
                       height: 24,
                       width: 24,
                     ),
@@ -65,10 +65,10 @@ class HelpAndSupport extends StatelessWidget {
               const SizedBox(
                 height: 15,
               ),
-              HelpAndSupportWidget(
-                icon: Icons.copy,
-                title: 'Email us at',
-                subtitle: 'medherence23@gmail.com',
+              AboutWidget(
+                icon: Icons.arrow_forward_ios_rounded,
+                title: 'Privacy Policy',
+                subtitle: 'Data collection, usage and protection',
                 onPressed: () {
                   // Navigate to settings screen
                   // ScaffoldMessenger.of(context).showSnackBar(snackbar);
@@ -76,7 +76,7 @@ class HelpAndSupport extends StatelessWidget {
                 child: Padding(
                     padding: EdgeInsets.all(8),
                     child: Image.asset(
-                      ImageUtils.emailMessageIcon,
+                      ImageUtils.privacyPolicyIcon,
                       height: 24,
                       width: 24,
                     )),
@@ -84,29 +84,10 @@ class HelpAndSupport extends StatelessWidget {
               const SizedBox(
                 height: 15,
               ),
-              HelpAndSupportWidget(
+              AboutWidget(
                 icon: Icons.arrow_forward_ios_rounded,
-                title: 'FAQs',
-                subtitle: 'Answers to frequently asked questions',
-                onPressed: () {
-                  // Navigate to settings screen
-                  // ScaffoldMessenger.of(context).showSnackBar(snackbar);
-                },
-                child: Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Image.asset(
-                      ImageUtils.faqIcon,
-                      height: 24,
-                      width: 24,
-                    )),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              HelpAndSupportWidget(
-                icon: Icons.arrow_forward_ios_rounded,
-                title: 'App Tour',
-                subtitle: 'Tour of the app and its functionalities',
+                title: 'About Medherence',
+                subtitle: 'Learn more about Medherence Ltd.',
                 onPressed: () {
                   // Navigate to settings screen
                   // ScaffoldMessenger.of(context).showSnackBar(snackbar);
@@ -114,7 +95,7 @@ class HelpAndSupport extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.all(8),
                   child: Image.asset(
-                    ImageUtils.appTour,
+                    ImageUtils.medherenceAppIcon,
                     height: 24,
                     width: 24,
                   ),

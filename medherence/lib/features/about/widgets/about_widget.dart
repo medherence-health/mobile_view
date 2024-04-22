@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../../../core/utils/color_utils.dart';
 
-class HelpAndSupportWidget extends StatelessWidget {
+class AboutWidget extends StatelessWidget {
   final String title;
   final String subtitle;
   final VoidCallback onPressed;
   final Widget child;
   final IconData? icon;
 
-  const HelpAndSupportWidget({
+  const AboutWidget({
     super.key,
     required this.icon,
     required this.child,

@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:medherence/features/auth_features/views/login_view.dart';
+import 'package:medherence/features/auth/views/login_view.dart';
 
-import '../../core/constants_utils/color_utils.dart';
+import '../../core/utils/color_utils.dart';
 import '../onboarding/onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {

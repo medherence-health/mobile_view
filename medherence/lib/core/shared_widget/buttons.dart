@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medherence/core/constants_utils/color_utils.dart';
+import 'package:medherence/core/utils/color_utils.dart';
 
 class PrimaryButton extends StatelessWidget {
   final ButtonConfig buttonConfig;
@@ -12,8 +12,8 @@ class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
     Key? key,
     required this.buttonConfig,
-    this.textSize = 25.0,
-    this.height = 54.0,
+    this.textSize = 23.0,
+    this.height = 50.0,
     this.margin,
     required this.width,
     this.textColor = AppColors.white,
@@ -71,8 +71,8 @@ class OutlinePrimaryButton extends StatelessWidget {
     Key? key,
     required this.buttonConfig,
     this.icon,
-    this.height = 54.0,
-    this.textSize = 25,
+    this.height = 50.0,
+    this.textSize = 23,
     this.margin,
     this.width = double.infinity,
     this.textColor = AppColors.mainPrimaryButton,

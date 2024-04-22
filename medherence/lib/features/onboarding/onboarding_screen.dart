@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:medherence/features/auth_features/views/login_view.dart';
+import 'package:medherence/features/auth/views/login_view.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart'
     as smooth_page_indicator;
 
-import '../../core/constants_utils/color_utils.dart';
-import '../../core/constants_utils/image_utils.dart';
+import '../../core/utils/color_utils.dart';
+import '../../core/utils/image_utils.dart';
 import '../../core/shared_widget/buttons.dart';
 
 class OnboardingView extends StatefulWidget {
@@ -41,8 +41,18 @@ class _OnboardingViewState extends State<OnboardingView> {
     _controller = PageController(initialPage: 0);
   }
 
+  double _titleFontSize = 28;
+  double _subtitleFontSize = 20;
+
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    // Calculate font sizes based on screen size
+    _titleFontSize = screenHeight * 0.04; // Adjust this factor as needed
+    _subtitleFontSize = screenHeight * 0.03; // Adjust this factor as needed
+
     return Scaffold(
       body: Stack(
         alignment: AlignmentDirectional.bottomStart,
@@ -115,7 +125,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                         onBoardingTitle[currentIndex],
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
-                          fontSize: (28),
+                          fontSize: _titleFontSize,
                           color: AppColors.black,
                         ),
                         textAlign: TextAlign.start,
@@ -127,7 +137,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                         onBoardingSubTitle[currentIndex],
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
-                          fontSize: (20),
+                          fontSize: _subtitleFontSize,
                           color: AppColors.black,
                         ),
                         textAlign: TextAlign.start,
@@ -205,7 +215,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                             ),
                           )
                         : PrimaryButton(
-                            width: 120,
+                            width: 100,
                             buttonConfig: ButtonConfig(
                               text: 'Finish',
                               action: () {

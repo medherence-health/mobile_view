@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:medherence/features/reminder_feature/view_model/reminder_view_model.dart';
 import 'package:provider/provider.dart';
 
 import 'package:medherence/features/splashscreen/splashscreen.dart';
-import '../../core/constants_utils/color_utils.dart';
-import 'core/constants_utils/utils.dart';
+import 'core/utils/color_utils.dart';
+import 'core/utils/utils.dart';
 import 'core/model/models/notification_model.dart';
+import 'features/reminder/view_model/reminder_view_model.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

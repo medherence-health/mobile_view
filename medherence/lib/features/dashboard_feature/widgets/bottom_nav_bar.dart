@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:medherence/core/constants_utils/color_utils.dart';
+
+import '../../../core/utils/color_utils.dart';
 
 // ignore: must_be_immutable
 class CustomBottomNavigationBar extends StatelessWidget {
