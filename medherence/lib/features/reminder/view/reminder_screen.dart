@@ -104,17 +104,13 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
                 padding: const EdgeInsets.only(top: 80.0),
                 child: ListView(
                   children: [
-                    snapshot.data == false
-                        ? Scrollbar(
-                            child: SingleChildScrollView(
-                                child: EditReminderScreenContent()),
-                          )
-                        : EditReminderDetails(
-                            onTap: () async {
-                              // Update isDoneClicked value when tapped
-                              _saveIsDoneClicked(false); // Update to false
-                            },
-                          )
+                    // snapshot.data == false
+                    //     ? Scrollbar(
+                    //         child: SingleChildScrollView(
+                    //             child: EditReminderScreenContent()),
+                    //       )
+                    //     :
+                    EditReminderDetails()
                   ],
                 ),
               ),

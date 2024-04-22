@@ -29,7 +29,7 @@ class MedhecoinWidget extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          height: SizeMg.height(150),
+          height: SizeMg.height(120),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(
               SizeMg.radius(15),
@@ -39,7 +39,7 @@ class MedhecoinWidget extends StatelessWidget {
         ),
         Container(
           // Set the width of the container
-          height: SizeMg.height(150), // Set the height of the container
+          height: SizeMg.height(120), // Set the height of the container
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(
               SizeMg.radius(15),
@@ -55,7 +55,7 @@ class MedhecoinWidget extends StatelessWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.only(
-                left: 20.0, right: 20.0, top: 10, bottom: 15.0),
+                left: 20.0, right: 20.0, top: 6, bottom: 15.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
