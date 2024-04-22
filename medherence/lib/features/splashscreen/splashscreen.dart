@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:medherence/features/auth/views/login_view.dart';
+import 'package:medherence/features/dashboard_feature/view/dashboard_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/utils/color_utils.dart';
 import '../onboarding/onboarding_screen.dart';
@@ -16,6 +18,27 @@ class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
+  // Function to check if password has been successfully changed
+  Future<bool> isUserSignedIn() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('isSignedIn') ?? false;
+  }
+
+  // Function to show password change prompt if necessary
+  void checkPasswordChangePrompt() async {
+    bool passwordChanged = await isUserSignedIn();
+    if (!passwordChanged) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const OnboardingView()),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const DashboardView()),
+      );
+    }
+  }
 
   @override
   void initState() {
@@ -39,10 +62,7 @@ class _SplashScreenState extends State<SplashScreen>
       setState(() {});
     });
     Timer(const Duration(milliseconds: 2500), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const OnboardingView()),
-      );
+      checkPasswordChangePrompt();
     });
   }
 

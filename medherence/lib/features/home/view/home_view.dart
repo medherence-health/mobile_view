@@ -139,6 +139,15 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
+  bool _amountChanged = false; // Add this variable
+
+  // Function to toggle the amount changed
+  void toggleAmountChanged() {
+    setState(() {
+      _amountChanged = !_amountChanged;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -153,7 +162,6 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    bool dataChanged = false;
     final itemList = _historyDataList;
     SizeMg.init(context);
     return Padding(
@@ -166,14 +174,14 @@ class _HomeViewState extends State<HomeView> {
         color: Colors.white,
         child: Stack(
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+            ListView(
+              // crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Padding(
                   padding: EdgeInsets.only(
                     left: SizeMg.width(8),
                     right: SizeMg.width(8),
-                    top: SizeMg.height(20),
+                    top: SizeMg.height(10),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -181,7 +189,7 @@ class _HomeViewState extends State<HomeView> {
                       Text(
                         'Welcome, $title',
                         style: TextStyle(
-                          fontSize: SizeMg.text(10),
+                          fontSize: SizeMg.text(25),
                           fontWeight: FontWeight.w600,
                           fontFamily: "Poppins-bold.ttf",
                         ),
@@ -225,7 +233,8 @@ class _HomeViewState extends State<HomeView> {
                     MedhecoinWidget(
                       () {
                         setState(() {
-                          dataChanged = !dataChanged;
+                          // Call the function to toggle the amount changed
+                          toggleAmountChanged();
                         });
                       },
                       const Icon(
@@ -237,7 +246,7 @@ class _HomeViewState extends State<HomeView> {
                             MaterialPageRoute(
                                 builder: (context) => const MedhecoinScreen()));
                       },
-                      dataChanged,
+                      _amountChanged,
                     ),
                     SizedBox(
                       height: SizeMg.height(35),

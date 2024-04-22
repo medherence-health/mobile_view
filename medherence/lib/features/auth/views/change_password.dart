@@ -34,10 +34,10 @@ class _ChangePasswordState extends State<ChangePassword> {
   }
 
   // Function to check if password has been successfully changed
-  Future<bool> isPasswordChanged() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('passwordChanged') ?? false;
-  }
+  // Future<bool> isPasswordChanged() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   return prefs.getBool('passwordChanged') ?? false;
+  // }
 
   // Function to navigate back to home screen after password change
   void navigateBackToHome() {

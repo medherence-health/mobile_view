@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:medherence/core/shared_widget/buttons.dart';
 import 'package:medherence/features/auth/views/forgot_password.dart';
 import 'package:medherence/features/auth/widget/validation_extension.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/utils/color_utils.dart';
 import '../../../core/constants/constants.dart';
@@ -24,6 +25,53 @@ class _LoginViewState extends State<LoginView> {
   bool _rememberMe = false;
   Color emailFillColor = Colors.white70;
   final _formKey = GlobalKey<FormState>();
+
+  Future<void> signingIn() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isSignedIn', true);
+  }
+
+  // Function to check if password has been successfully changed
+  // Future<bool> isPasswordChanged() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   return prefs.getBool('passwordChanged') ?? false;
+  // }
+
+  // Function to navigate back to home screen after password change
+  void navigateBackToHome() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const DashboardView()),
+    );
+  }
+
+  // Your validation logic and save password logic here...
+
+  // Function to handle password change submission
+  void handleSignIn() {
+    if (_formKey.currentState!.validate()) {
+      // Perform password change logic here...
+      // If password change is successful, update shared preferences
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Signed In successfully')),
+      );
+      signingIn().then((_) {
+        // Navigate back to home screen
+        navigateBackToHome();
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          dismissDirection: DismissDirection.horizontal,
+          elevation: 10,
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.all(15),
+          content: Text('Oops, you have inputted the wrong login details.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   @override
   void initState() {
@@ -87,31 +135,53 @@ class _LoginViewState extends State<LoginView> {
                 ),
               ),
               const SizedBox(height: (10)),
-              TextFormField(
-                controller:
-                    TextEditingController(text: _selectedHospital ?? ''),
-                enabled: true, // Disable editing directly in the field
-                readOnly: true,
-                decoration: InputDecoration(
-                  // ... apply desired styling here
-                  hintStyle: kFormTextDecoration.hintStyle,
-                  filled: false,
-                  fillColor: kFormTextDecoration.fillColor,
-                  errorBorder: kFormTextDecoration.errorBorder,
-                  border: kFormTextDecoration.border,
-                  focusedBorder: kFormTextDecoration.focusedBorder,
-                  suffixIcon: PopupMenuButton<String>(
-                    icon: const Icon(Icons.arrow_drop_down),
-                    onSelected: (value) {
-                      setState(() {
-                        _selectedHospital = value;
-                      });
-                    },
-                    itemBuilder: (context) => _buildDropdownItems(),
+              Align(
+                alignment: AlignmentDirectional(0, -1),
+                child: DropdownButtonFormField<String>(
+                  value: _selectedHospital,
+                  onChanged: (val) {
+                    setState(() {
+                      _selectedHospital = val;
+                    });
+                  },
+                  items: _buildDropdownItems(),
+                  decoration: InputDecoration(
+                    hintStyle: kFormTextDecoration.hintStyle,
+                    hintText: 'Select your HCP',
+                    filled: true,
+                    fillColor: kFormTextDecoration.fillColor,
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+                    border: kFormTextDecoration.border,
+                    focusedBorder: kFormTextDecoration.focusedBorder,
                   ),
-                  hintText: "Select your HCP",
                 ),
               ),
+              // TextFormField(
+              //   controller:
+              //       TextEditingController(text: _selectedHospital ?? ''),
+              //   enabled: true, // Disable editing directly in the field
+              //   readOnly: true,
+              //   decoration: InputDecoration(
+              //     // ... apply desired styling here
+              //     hintStyle: kFormTextDecoration.hintStyle,
+              //     filled: false,
+              //     fillColor: kFormTextDecoration.fillColor,
+              //     errorBorder: kFormTextDecoration.errorBorder,
+              //     border: kFormTextDecoration.border,
+              //     focusedBorder: kFormTextDecoration.focusedBorder,
+              //     suffixIcon: PopupMenuButton<String>(
+              //       icon: const Icon(Icons.arrow_drop_down),
+              //       onSelected: (value) {
+              //         setState(() {
+              //           _selectedHospital = value;
+              //         });
+              //       },
+              //       itemBuilder: (context) => _buildPopMenuItems(),
+              //     ),
+              //     hintText: "Select your HCP",
+              //   ),
+              // ),
               SizedBox(height: SizeMg.height(20)),
               TitleAndTextFormField(
                 title: 'Hospital Number',
@@ -211,27 +281,7 @@ class _LoginViewState extends State<LoginView> {
                 buttonConfig: ButtonConfig(
                   text: 'Sign In',
                   action: () {
-                    if (_formKey.currentState!.validate()) {
-                      // Password change logic goes here
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                            content: Text('Password changed successfully')),
-                      );
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => const DashboardView()));
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          dismissDirection: DismissDirection.horizontal,
-                          elevation: 10,
-                          behavior: SnackBarBehavior.floating,
-                          margin: EdgeInsets.all(15),
-                          content: Text(
-                              'Oops, you have inputted the wrong login details.'),
-                          backgroundColor: Colors.red,
-                        ),
-                      );
-                    }
+                    handleSignIn();
                   },
                   disabled: (_selectedHospital == '' ||
                       hospitalNumberController.text.isEmpty ||
@@ -281,7 +331,28 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  List<PopupMenuItem<String>> _buildDropdownItems() {
+  List<DropdownMenuItem<String>> _buildDropdownItems() {
+    List<String> hospitalNames = [
+      'Hospital A',
+      'Hospital B',
+      'Hospital C',
+      'Hospital D',
+      'Hospital E',
+      'Hospital F',
+      'Hospital G',
+      'Hospital H',
+      'Hospital I',
+      'Hospital J',
+    ];
+    return hospitalNames.map((String value) {
+      return DropdownMenuItem<String>(
+        value: value,
+        child: Text(value),
+      );
+    }).toList();
+  }
+
+  List<PopupMenuItem<String>> _buildPopMenuItems() {
     List<String> hospitalNames = [
       'Hospital A',
       'Hospital B',

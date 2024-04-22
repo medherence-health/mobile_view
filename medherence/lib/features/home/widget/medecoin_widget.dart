@@ -21,10 +21,10 @@ class MedhecoinWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     String coinTitle = 'Amount in Naira';
     String amount = '000 MDHC';
-    String naira = '\u{20A6}';
+    String naira = '\u20a6';
     if (amountChanged == true) {
       coinTitle = 'Amount in medcoin';
-      amount = '${naira}000.00 ';
+      amount = '$naira 000.00 ';
     }
     return Stack(
       children: [

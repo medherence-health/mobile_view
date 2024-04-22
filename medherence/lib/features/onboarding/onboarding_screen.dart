@@ -99,70 +99,79 @@ class _OnboardingViewState extends State<OnboardingView> {
             ),
           ),
           Positioned(
-            bottom: SizeMg.height(50),
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.bottomCenter,
-                  height: SizeMg.height(150),
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.only(
-                    left: SizeMg.width(25),
-                    right: SizeMg.width(25),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        onBoardingTitle[currentIndex],
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: SizeMg.text(32),
-                          color: AppColors.black,
+            bottom: SizeMg.height(80),
+            child: Container(
+              height: SizeMg.height(180),
+              width: SizeMg.screenWidth,
+              child: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    height: SizeMg.height(180),
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.only(
+                      left: SizeMg.width(25),
+                      right: SizeMg.width(25),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          onBoardingTitle[currentIndex],
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: SizeMg.text(32),
+                            color: AppColors.black,
+                          ),
+                          textAlign: TextAlign.start,
                         ),
-                        textAlign: TextAlign.start,
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Text(
-                        onBoardingSubTitle[currentIndex],
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: SizeMg.text(20),
-                          color: AppColors.black,
+                        SizedBox(
+                          height: 15,
                         ),
-                        textAlign: TextAlign.start,
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 80),
-                  child: smooth_page_indicator.SmoothPageIndicator(
-                    controller: _controller ??= PageController(initialPage: 0),
-                    count: 3,
-                    axisDirection: Axis.horizontal,
-                    onDotClicked: (i) async {
-                      await _controller.animateToPage(
-                        i,
-                        duration: Duration(milliseconds: 500),
-                        curve: Curves.ease,
-                      );
-                    },
-                    effect: smooth_page_indicator.ExpandingDotsEffect(
-                      expansionFactor: 2,
-                      spacing: 8,
-                      radius: SizeMg.radius(16),
-                      dotWidth: SizeMg.width(10),
-                      dotHeight: SizeMg.height(10),
-                      dotColor: AppColors.progressBarFill,
-                      activeDotColor: AppColors.navBarColor,
-                      paintStyle: PaintingStyle.fill,
+                        Expanded(
+                          child: Text(
+                            onBoardingSubTitle[currentIndex],
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: SizeMg.text(20),
+                              color: AppColors.black,
+                            ),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
+                ],
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment(0, 1),
+            child: Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 80),
+              child: smooth_page_indicator.SmoothPageIndicator(
+                controller: _controller ??= PageController(initialPage: 0),
+                count: 3,
+                axisDirection: Axis.horizontal,
+                onDotClicked: (i) async {
+                  await _controller.animateToPage(
+                    i,
+                    duration: Duration(milliseconds: 500),
+                    curve: Curves.ease,
+                  );
+                },
+                effect: smooth_page_indicator.ExpandingDotsEffect(
+                  expansionFactor: 2,
+                  spacing: 8,
+                  radius: SizeMg.radius(16),
+                  dotWidth: SizeMg.width(10),
+                  dotHeight: SizeMg.height(10),
+                  dotColor: AppColors.progressBarFill,
+                  activeDotColor: AppColors.navBarColor,
+                  paintStyle: PaintingStyle.fill,
                 ),
-              ],
+              ),
             ),
           ),
           Builder(

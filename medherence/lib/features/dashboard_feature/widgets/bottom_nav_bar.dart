@@ -13,7 +13,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     SizeMg.init(context);
     return Container(
-      height: SizeMg.height(80),
+      height: SizeMg.height(65),
       color: AppColors.navBarColor,
       child: BottomNavigationBar(
         elevation: 5,
@@ -29,7 +29,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
           fontWeight: FontWeight.w300,
         ),
         type: BottomNavigationBarType.fixed,
-        iconSize: 28,
+        iconSize: 25,
         unselectedIconTheme: IconThemeData(size: SizeMg.radius(20)),
         currentIndex: model.currentIndex,
         onTap: model.setIndex,
