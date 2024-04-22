@@ -204,29 +204,31 @@ class _LoginViewState extends State<LoginView> {
                 buttonConfig: ButtonConfig(
                   text: 'Sign In',
                   action: () {
+                    if (_formKey.currentState!.validate()) {
+                      // Password change logic goes here
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            content: Text('Password changed successfully')),
+                      );
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
                           builder: (context) => const DashboardView()));
-                    // if (_formKey.currentState!.validate()) {
-                    //   // Password change logic goes here
-                    //   ScaffoldMessenger.of(context).showSnackBar(
-                    //     SnackBar(
-                    //         content: Text('Password changed successfully')),
-                    //   );
-                    // } else {
-                    //   ScaffoldMessenger.of(context).showSnackBar(
-                    //     SnackBar(
-                    //       dismissDirection: DismissDirection.horizontal,
-                    //       elevation: 10,
-                    //       behavior: SnackBarBehavior.floating,
-                    //       margin: EdgeInsets.all(15),
-                    //       content: Text(
-                    //           'Oops, you have inputted the wrong login details.'),
-                    //       backgroundColor: Colors.red,
-                    //     ),
-                    //   );
-                    // }
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          dismissDirection: DismissDirection.horizontal,
+                          elevation: 10,
+                          behavior: SnackBarBehavior.floating,
+                          margin: EdgeInsets.all(15),
+                          content: Text(
+                              'Oops, you have inputted the wrong login details.'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
                   },
-                  disabled: false,
+                  disabled: (_selectedHospital == '' ||
+                      passwordController.text.isEmpty ||
+                      hospitalNumberController.text.isEmpty),
                 ),
               ),
               const SizedBox(height: 30),

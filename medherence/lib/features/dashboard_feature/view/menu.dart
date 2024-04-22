@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:medherence/core/shared_widget/snackBar.dart';
 import 'package:medherence/features/help_and_support/view/help_and_support.dart';
 import 'package:medherence/features/history_features/view/history_screen.dart';
 
@@ -162,6 +161,19 @@ class _MenuScreenState extends State<MenuScreen> {
               height: 15,
             ),
             MenuItemCard(
+              icon: Icons.work_history_outlined,
+              title: 'History',
+              subtitle: 'Your history',
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const HistoryScreen())),
+              // Navigate to settings screen
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            MenuItemCard(
               icon: Icons.settings,
               title: 'Settings',
               subtitle: 'Personalize and setup your experience',
@@ -214,19 +226,6 @@ class _MenuScreenState extends State<MenuScreen> {
               onPressed: () async => await buildLogOutDialog()
               // Navigate to settings screen
               ,
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            MenuItemCard(
-              icon: Icons.work_history_outlined,
-              title: 'History',
-              subtitle: 'Your history',
-              onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const HistoryScreen())),
-              // Navigate to settings screen
             ),
             const Spacer(),
             const Text(

@@ -24,7 +24,11 @@ class _EditReminderScreenContentState extends State<EditReminderScreenContent> {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(25),
+                padding: const EdgeInsets.only(
+                  left: 25,
+                  right: 25,
+                  bottom: 25,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,

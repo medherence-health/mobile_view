@@ -117,7 +117,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => VerifyForgotPassword(
-                                phoneNumber: phoneController,
+                                phoneNumber: phoneController.text,
                               ),
                             ),
                           );
@@ -134,7 +134,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                 bottom: 35,
                               ),
                               content:
-                                  Text('Ensure to input a valid email address'),
+                                  Text('Ensure to input a valid phone number'),
                               backgroundColor: Colors.red,
                             ),
                           );

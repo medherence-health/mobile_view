@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:medherence/core/constants_utils/constants.dart';
 
-
 class OtpTile extends StatelessWidget {
   final dynamic otpSaved;
   final TextEditingController numberController;
@@ -26,12 +25,13 @@ class OtpTile extends StatelessWidget {
           }
         },
         textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 30),
         //onSaved: otpSaved,
         decoration: InputDecoration(
           filled: false,
           enabled: true,
-          focusedBorder:  kFormTextDecoration.focusedBorder,
-          enabledBorder:  kFormTextDecoration.enabledBorder,
+          focusedBorder: kFormTextDecoration.focusedBorder,
+          enabledBorder: kFormTextDecoration.enabledBorder,
           fillColor: kFormTextDecoration.fillColor,
           hintText: '0',
           hintStyle: kFormTextDecoration.hintStyle,

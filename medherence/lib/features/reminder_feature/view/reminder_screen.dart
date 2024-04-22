@@ -21,6 +21,7 @@ class EditReminderScreen extends StatefulWidget {
 class _EditReminderScreenState extends State<EditReminderScreen> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   late Future<bool> isDoneClicked;
+
   @override
   void initState() {
     super.initState();
@@ -34,90 +35,96 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
     setState(() {});
   }
 
-  Future<void> _saveIsDoneClicked() async {
+  Future<void> _saveIsDoneClicked(bool value) async {
     final SharedPreferences prefs = await _prefs;
-    final bool isDoneClick = (prefs.getBool('isDoneClicked') ?? true);
-    isDoneClicked =
-        prefs.setBool('isDoneClicked', isDoneClick).then((bool success) {
-      return isDoneClick;
+    await prefs.setBool('isDoneClicked', value);
+    setState(() {
+      isDoneClicked = Future.value(value);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
-        future: isDoneClicked,
-        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-          return Container(
-            height: MediaQuery.of(context).size.height,
-            color: AppColors.white,
-            width: double.infinity,
-            child: ListView(
-              children: [
-                AppBar(
-                  elevation: 2,
-                  title: isDoneClicked == false
-                      ? const Text(
-                          'Edit Reminder',
-                          style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )
-                      : const Text(
-                          'Reminder',
-                          style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                  centerTitle: true,
-                  leading: isDoneClicked == false
-                      ? IconButton(
-                          onPressed: () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const DashboardView()));
-                          },
-                          icon: const Icon(CupertinoIcons.xmark,
-                              color: AppColors.navBarColor),
-                        )
-                      : SizedBox(),
-                  actions: [
-                    isDoneClicked == false
-                        ? Row(
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    // isDoneClicked = true;
-                                    _saveIsDoneClicked();
-                                  });
-                                },
-                                icon: const Icon(
-                                  Icons.done,
-                                  color: AppColors.navBarColor,
-                                ),
-                              ),
-                              const SizedBox(width: 20),
-                            ],
-                          )
-                        : SizedBox(),
-                  ],
-                ),
-                isDoneClicked == false
-                    ? Expanded(
-                        child: Scrollbar(
-                          child: SingleChildScrollView(
-                              child: EditReminderScreenContent()),
+      future: isDoneClicked,
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        return Container(
+          height: MediaQuery.of(context).size.height,
+          color: AppColors.white,
+          width: double.infinity,
+          child: Stack(
+            children: [
+              AppBar(
+                elevation: 2,
+                title: snapshot.data == false
+                    ? const Text(
+                        'Edit Reminder',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w500,
                         ),
                       )
-                    : EditReminderDetails()
-              ],
-            ),
-          );
-        });
+                    : const Text(
+                        'Reminder',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                centerTitle: true,
+                leading: snapshot.data == false
+                    ? IconButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const DashboardView()));
+                        },
+                        icon: const Icon(CupertinoIcons.xmark,
+                            color: AppColors.navBarColor),
+                      )
+                    : SizedBox(),
+                actions: [
+                  snapshot.data == false
+                      ? Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                _saveIsDoneClicked(true); // Update to true
+                              },
+                              icon: const Icon(
+                                Icons.done,
+                                color: AppColors.navBarColor,
+                              ),
+                            ),
+                            const SizedBox(width: 20),
+                          ],
+                        )
+                      : SizedBox(),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 80.0),
+                child: ListView(
+                  children: [
+                    snapshot.data == false
+                        ? Scrollbar(
+                            child: SingleChildScrollView(
+                                child: EditReminderScreenContent()),
+                          )
+                        : EditReminderDetails(
+                            onTap: () async {
+                              // Update isDoneClicked value when tapped
+                              _saveIsDoneClicked(false); // Update to false
+                            },
+                          )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

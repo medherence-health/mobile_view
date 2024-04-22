@@ -1,19 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/constants_utils/color_utils.dart';
+import '../../../core/model/models/notification_model.dart';
+import '../view_model/notification_model.dart';
 
 class NotificationWidget extends StatelessWidget {
-  final int notification;
   final VoidCallback onPressed;
 
-  const NotificationWidget(
-      {Key? key, required this.notification, required this.onPressed})
+  const NotificationWidget({Key? key, required this.onPressed})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (notification < 1) {
+    final notificationList =
+        Provider.of<NotificationModelItems>(context, listen: false)
+            .notificationItemList;
+    int notificationCount = notificationList.length;
+    if (notificationCount < 1) {
       return IconButton(
         icon: const Icon(
           CupertinoIcons.bell,

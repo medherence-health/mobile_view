@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medherence/features/auth_features/widget/validation_extension.dart';
 import 'package:medherence/features/dashboard_feature/view/dashboard.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/constants_utils/color_utils.dart';
 import '../../../core/constants_utils/constants.dart';
@@ -23,6 +24,43 @@ class _ChangePasswordState extends State<ChangePassword> {
   bool _obscureOldPassword = true;
   bool _obscureNewPassword = true;
   bool _obscureConfirmPassword = true;
+
+  // Function to update shared preferences when password is successfully changed
+  Future<void> updatePasswordChangedFlag() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('passwordChanged', true);
+  }
+
+  // Function to check if password has been successfully changed
+  Future<bool> isPasswordChanged() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('passwordChanged') ?? false;
+  }
+
+  // Function to navigate back to home screen after password change
+  void navigateBackToHome() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const DashboardView()),
+    );
+  }
+
+  // Your validation logic and save password logic here...
+
+  // Function to handle password change submission
+  void handlePasswordChange() {
+    if (_formKey.currentState!.validate()) {
+      // Perform password change logic here...
+      // If password change is successful, update shared preferences
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Password changed successfully')),
+      );
+      updatePasswordChangedFlag().then((_) {
+        // Navigate back to home screen
+        navigateBackToHome();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +89,10 @@ class _ChangePasswordState extends State<ChangePassword> {
                     text: const TextSpan(
                         text:
                             '* Use a combination of uppercase and lowercase letters. \n',
-                            style: TextStyle(color: AppColors.black, fontSize: 15,),
+                        style: TextStyle(
+                          color: AppColors.black,
+                          fontSize: 15,
+                        ),
                         children: [
                           TextSpan(
                             text: '* Include at least one number (0-9).\n',
@@ -67,19 +108,20 @@ class _ChangePasswordState extends State<ChangePassword> {
                           TextSpan(
                               text:
                                   '* Aim for a minimum length of 8 characters, but longer passwords are generally more secure.'),
-                        ]), textScaler: const TextScaler.linear(1.15),
+                        ]),
+                    textScaler: const TextScaler.linear(1.15),
                   ),
                   const SizedBox(height: 40),
                   const Text(
-                'Old Password',
-                style: TextStyle(
-                  fontSize: (18),
-                  color: Colors.black,
-                ),
-              ),
-              const SizedBox(
-                height: (10),
-              ),
+                    'Old Password',
+                    style: TextStyle(
+                      fontSize: (18),
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: (10),
+                  ),
                   TextFormField(
                     controller: _oldPasswordController,
                     obscureText: _obscureOldPassword,
@@ -115,15 +157,15 @@ class _ChangePasswordState extends State<ChangePassword> {
                   ),
                   const SizedBox(height: 16),
                   const Text(
-                'New Password',
-                style: TextStyle(
-                  fontSize: (18),
-                  color: Colors.black,
-                ),
-              ),
-              const SizedBox(
-                height: (10),
-              ),
+                    'New Password',
+                    style: TextStyle(
+                      fontSize: (18),
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: (10),
+                  ),
                   TextFormField(
                     controller: _newPasswordController,
                     obscureText: _obscureNewPassword,
@@ -156,15 +198,15 @@ class _ChangePasswordState extends State<ChangePassword> {
                   ),
                   const SizedBox(height: 16),
                   const Text(
-                'Confirm Password',
-                style: TextStyle(
-                  fontSize: (18),
-                  color: Colors.black,
-                ),
-              ),
-              const SizedBox(
-                height: (10),
-              ),
+                    'Confirm Password',
+                    style: TextStyle(
+                      fontSize: (18),
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: (10),
+                  ),
                   TextFormField(
                     controller: _confirmPasswordController,
                     obscureText: _obscureConfirmPassword,
@@ -203,19 +245,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     buttonConfig: ButtonConfig(
                       text: 'Save Password',
                       action: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const DashboardView(),
-                            ),
-                          );
-                        if (_formKey.currentState!.validate()) {
-                          // Password change logic goes here
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text('Password changed successfully')),
-                          );
-                        }
+                        handlePasswordChange();
                       },
                       disabled: false,
                     ),

@@ -8,7 +8,7 @@ import '../../../core/shared_widget/buttons.dart';
 import '../widget/otp_tile.dart';
 
 class VerifyForgotPassword extends StatefulWidget {
-  dynamic phoneNumber;
+  String phoneNumber;
   VerifyForgotPassword({required this.phoneNumber, super.key});
 
   @override

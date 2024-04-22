@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:medherence/features/medhecoin_features/view/medhecoin.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/constants_utils/color_utils.dart';
 import '../../../core/model/models/history_model.dart';
@@ -24,13 +25,26 @@ class _HomeViewState extends State<HomeView> {
   bool _showHistory = false;
   final List<HistoryModel> _historyDataList = generateSimulatedData();
   List<dynamic> history = [];
-  final bool _passwordChangePrompted = false;
 
   // Function to show the history widget
   void showHistory() {
     setState(() {
       _showHistory = true;
     });
+  }
+
+  // Function to check if password has been successfully changed
+  Future<bool> isPasswordChanged() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('passwordChanged') ?? false;
+  }
+
+  // Function to show password change prompt if necessary
+  void checkPasswordChangePrompt() async {
+    bool passwordChanged = await isPasswordChanged();
+    if (!passwordChanged) {
+      buildCompleteProfile();
+    }
   }
 
   buildCompleteProfile() async {
@@ -132,15 +146,12 @@ class _HomeViewState extends State<HomeView> {
         _historyDataList,
         context,
       );
-      // if (_passwordChangePrompted == false) {
-      //   buildCompleteProfile();
-      // }
+      checkPasswordChangePrompt();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    var index = _historyDataList.length;
     final itemList = _historyDataList;
     return Padding(
       padding: const EdgeInsets.only(
@@ -169,7 +180,6 @@ class _HomeViewState extends State<HomeView> {
                         ),
                       ), // Display dynamic title
                       NotificationWidget(
-                        notification: 4,
                         onPressed: () {
                           Navigator.push(
                               context,

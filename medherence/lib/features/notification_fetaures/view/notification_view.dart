@@ -54,17 +54,20 @@ class _NotificationScreenState extends State<NotificationScreen> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 25),
+          padding: EdgeInsets.symmetric(
+            horizontal: 25,
+          ),
           child: model.notificationList!.isEmpty
               ? Center(
                   child: SizedBox(
-                    height: 200,
+                    // height: 500,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        SizedBox(height: 300),
                         Icon(
                           Icons.notifications_off,
-                          color: Colors.grey,
+                          color: AppColors.historyBackground,
                           size: 50,
                         ),
                         SizedBox(
@@ -75,7 +78,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           style: TextStyle(
                             fontSize: 16,
                             fontStyle: FontStyle.italic,
-                            color: Colors.grey,
+                            color: AppColors.pillIconColor,
                           ),
                           textAlign: TextAlign.center,
                         ),
