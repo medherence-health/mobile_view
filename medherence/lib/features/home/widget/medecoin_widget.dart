@@ -1,29 +1,49 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/utils/color_utils.dart';
+import '../../../core/utils/size_manager.dart';
 
 class MedhecoinWidget extends StatelessWidget {
   final Icon? icon;
+  bool amountChanged;
   final VoidCallback? onPressed;
+  VoidCallback onTap;
 
-  const MedhecoinWidget(this.icon, this.onPressed, {super.key});
+  MedhecoinWidget(
+    this.onTap,
+    this.icon,
+    this.onPressed,
+    this.amountChanged, {
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
+    String coinTitle = 'Amount in Naira';
+    String amount = '000 MDHC';
+    String naira = '\u{20A6}';
+    if (amountChanged == true) {
+      coinTitle = 'Amount in medcoin';
+      amount = '${naira}000.00 ';
+    }
     return Stack(
       children: [
         Container(
-          height: 150,
+          height: SizeMg.height(150),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(
+              SizeMg.radius(15),
+            ),
             color: AppColors.medMidgradient,
           ),
         ),
         Container(
           // Set the width of the container
-          height: 150, // Set the height of the container
+          height: SizeMg.height(150), // Set the height of the container
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(
+              SizeMg.radius(15),
+            ),
             gradient: LinearGradient(
               begin: Alignment.centerLeft, // Start the gradient from the left
               end: Alignment.centerRight, // End the gradient to the right
@@ -43,11 +63,11 @@ class MedhecoinWidget extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       'Medhecoin Balance',
                       style: TextStyle(
                         color: AppColors.white,
-                        fontSize: 16,
+                        fontSize: SizeMg.text(16),
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -58,11 +78,11 @@ class MedhecoinWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                const Text(
-                  '00,000.00',
+                Text(
+                  amount,
                   style: TextStyle(
                     color: AppColors.white,
-                    fontSize: 32,
+                    fontSize: SizeMg.text(32),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -70,22 +90,25 @@ class MedhecoinWidget extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Amount in Naira',
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 231, 177, 177),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          decorationColor: AppColors.white,
-                          decoration: TextDecoration
-                              .underline, // Add underline decoration
+                      InkWell(
+                        onTap: onTap,
+                        child: Text(
+                          coinTitle,
+                          style: TextStyle(
+                            color: AppColors.staleWhite,
+                            fontSize: SizeMg.text(16),
+                            fontWeight: FontWeight.w400,
+                            decorationColor: AppColors.white,
+                            decoration: TextDecoration
+                                .underline, // Add underline decoration
+                          ),
                         ),
                       ),
                       // Spacer(),
                       Image.asset(
                         'assets/images/coin.png',
-                        height: 35,
-                        width: 30,
+                        height: SizeMg.height(35),
+                        width: SizeMg.width(30),
                       ),
                     ],
                   ),

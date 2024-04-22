@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:medherence/core/utils/size_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/utils/color_utils.dart';
 import '../../../core/model/models/history_model.dart';
 import '../../../core/model/simulated_data/simulated_values.dart';
 import '../../../core/shared_widget/buttons.dart';
-import '../../auth/views/new_password.dart';
+import '../../auth/views/change_password.dart';
 import '../../medhecoin/view/medhecoin.dart';
 import '../../notification/view/notification_view.dart';
 import '../../notification/widget/notification_widget.dart';
@@ -142,17 +143,19 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      buildHistorySheet(
-        _historyDataList,
-        context,
-      );
+      // buildHistorySheet(
+      //   _historyDataList,
+      //   context,
+      // );
       checkPasswordChangePrompt();
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    bool dataChanged = false;
     final itemList = _historyDataList;
+    SizeMg.init(context);
     return Padding(
       padding: const EdgeInsets.only(
         top: 25.0,
@@ -167,14 +170,18 @@ class _HomeViewState extends State<HomeView> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.only(
+                    left: SizeMg.width(8),
+                    right: SizeMg.width(8),
+                    top: SizeMg.height(20),
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         'Welcome, $title',
-                        style: const TextStyle(
-                          fontSize: 25,
+                        style: TextStyle(
+                          fontSize: SizeMg.text(10),
                           fontWeight: FontWeight.w600,
                           fontFamily: "Poppins-bold.ttf",
                         ),
@@ -194,12 +201,18 @@ class _HomeViewState extends State<HomeView> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 10),
+                    SizedBox(
+                      height: SizeMg.height(10),
+                    ),
                     Text(title),
-                    const SizedBox(height: 5),
+                    SizedBox(
+                      height: SizeMg.height(5),
+                    ),
                     ProgressStreak(
                         progress: progress), // Display progress streak bar
-                    const SizedBox(height: 20),
+                    SizedBox(
+                      height: SizeMg.height(20),
+                    ),
                     // ElevatedButton(
                     //   onPressed: () {
                     //     // Simulate completion of an action
@@ -210,21 +223,31 @@ class _HomeViewState extends State<HomeView> {
                     //   child: Text('Complete Action'),
                     // ),
                     MedhecoinWidget(
-                        const Icon(
-                          Icons.open_in_new,
-                        ), () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const MedhecoinScreen()));
-                    }),
-                    const SizedBox(height: 35),
-                    const Text(
-                      'Next Regimen',
+                      () {
+                        setState(() {
+                          dataChanged = !dataChanged;
+                        });
+                      },
+                      const Icon(
+                        Icons.open_in_new,
+                      ),
+                      () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const MedhecoinScreen()));
+                      },
+                      dataChanged,
+                    ),
+                    SizedBox(
+                      height: SizeMg.height(35),
+                    ),
+                    Text(
+                      'Today\'s Meds',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontFamily: "Poppins-Bold.ttf",
-                        fontSize: 25,
+                        fontSize: SizeMg.text(25),
                       ),
                     ),
                     const SizedBox(height: 5),
@@ -236,8 +259,8 @@ class _HomeViewState extends State<HomeView> {
                         itemCount: _historyDataList
                             .length, // the length of the data list
                         separatorBuilder: (ctx, index) {
-                          return const SizedBox(
-                            height: (3),
+                          return SizedBox(
+                            height: SizeMg.height(3),
                           );
                         },
                         itemBuilder: (context, index) {

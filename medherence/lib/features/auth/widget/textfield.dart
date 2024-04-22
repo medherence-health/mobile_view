@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../core/constants/constants.dart';
+import '../../../core/utils/size_manager.dart';
 
 class TitleAndTextFormField extends StatelessWidget {
   ///The text above the text field
@@ -49,8 +50,8 @@ class TitleAndTextFormField extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
-            fontSize: (18),
+          style: TextStyle(
+            fontSize: SizeMg.text(18),
             color: Colors.black,
           ),
         ),

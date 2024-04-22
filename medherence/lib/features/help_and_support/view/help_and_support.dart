@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medherence/core/utils/size_manager.dart';
 
 import '../../../core/utils/color_utils.dart';
 import '../../../core/utils/image_utils.dart';
@@ -10,12 +11,13 @@ class HelpAndSupport extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeMg.init(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Help and Support',
           style: TextStyle(
-            fontSize: 25,
+            fontSize: SizeMg.text(25),
             fontWeight: FontWeight.w600,
             fontFamily: "Poppins-bold.ttf",
           ),
@@ -58,8 +60,8 @@ class HelpAndSupport extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Image.asset(
                       ImageUtils.callIcon,
-                      height: 24,
-                      width: 24,
+                      height: SizeMg.height(24),
+                      width: SizeMg.width(24),
                     ),
                   )),
               const SizedBox(
@@ -77,8 +79,8 @@ class HelpAndSupport extends StatelessWidget {
                     padding: EdgeInsets.all(8),
                     child: Image.asset(
                       ImageUtils.emailMessageIcon,
-                      height: 24,
-                      width: 24,
+                      height: SizeMg.height(24),
+                      width: SizeMg.width(24),
                     )),
               ),
               const SizedBox(
@@ -96,8 +98,8 @@ class HelpAndSupport extends StatelessWidget {
                     padding: EdgeInsets.all(8),
                     child: Image.asset(
                       ImageUtils.faqIcon,
-                      height: 24,
-                      width: 24,
+                      height: SizeMg.height(24),
+                      width: SizeMg.width(24),
                     )),
               ),
               const SizedBox(
@@ -115,8 +117,8 @@ class HelpAndSupport extends StatelessWidget {
                   padding: EdgeInsets.all(8),
                   child: Image.asset(
                     ImageUtils.appTour,
-                    height: 24,
-                    width: 24,
+                    height: SizeMg.height(24),
+                    width: SizeMg.width(24),
                   ),
                 ),
               ),

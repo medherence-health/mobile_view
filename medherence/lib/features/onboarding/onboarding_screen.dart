@@ -6,6 +6,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart'
 import '../../core/utils/color_utils.dart';
 import '../../core/utils/image_utils.dart';
 import '../../core/shared_widget/buttons.dart';
+import '../../core/utils/size_manager.dart';
 
 class OnboardingView extends StatefulWidget {
   const OnboardingView({Key? key}) : super(key: key);
@@ -41,18 +42,9 @@ class _OnboardingViewState extends State<OnboardingView> {
     _controller = PageController(initialPage: 0);
   }
 
-  double _titleFontSize = 28;
-  double _subtitleFontSize = 20;
-
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
-
-    // Calculate font sizes based on screen size
-    _titleFontSize = screenHeight * 0.04; // Adjust this factor as needed
-    _subtitleFontSize = screenHeight * 0.03; // Adjust this factor as needed
-
+    SizeMg.init(context);
     return Scaffold(
       body: Stack(
         alignment: AlignmentDirectional.bottomStart,
@@ -67,13 +59,13 @@ class _OnboardingViewState extends State<OnboardingView> {
             itemCount: onBoardingImages.length,
             itemBuilder: (_, int index) {
               return Container(
-                height: 300,
+                height: SizeMg.height(300),
                 color: AppColors.offWhite,
                 child: Image.asset(
                   onBoardingImages[index],
                   // height: (300),
                   fit: BoxFit.contain,
-                  width: double.infinity,
+                  width: SizeMg.screenWidth,
                 ),
               );
             },
@@ -96,7 +88,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                       'Skip',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
-                        fontSize: (25),
+                        fontSize: SizeMg.text(25),
                         color: AppColors.navBarColor,
                       ),
                       textAlign: TextAlign.right,
@@ -107,16 +99,16 @@ class _OnboardingViewState extends State<OnboardingView> {
             ),
           ),
           Positioned(
-            bottom: 50,
+            bottom: SizeMg.height(50),
             child: Column(
               children: [
                 Container(
                   alignment: Alignment.bottomCenter,
-                  height: 150,
+                  height: SizeMg.height(150),
                   width: MediaQuery.of(context).size.width,
                   padding: EdgeInsets.only(
-                    left: 25,
-                    right: 25,
+                    left: SizeMg.width(25),
+                    right: SizeMg.width(25),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,7 +117,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                         onBoardingTitle[currentIndex],
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
-                          fontSize: _titleFontSize,
+                          fontSize: SizeMg.text(32),
                           color: AppColors.black,
                         ),
                         textAlign: TextAlign.start,
@@ -137,7 +129,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                         onBoardingSubTitle[currentIndex],
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
-                          fontSize: _subtitleFontSize,
+                          fontSize: SizeMg.text(20),
                           color: AppColors.black,
                         ),
                         textAlign: TextAlign.start,
@@ -161,9 +153,9 @@ class _OnboardingViewState extends State<OnboardingView> {
                     effect: smooth_page_indicator.ExpandingDotsEffect(
                       expansionFactor: 2,
                       spacing: 8,
-                      radius: 16,
-                      dotWidth: 10,
-                      dotHeight: 10,
+                      radius: SizeMg.radius(16),
+                      dotWidth: SizeMg.width(10),
+                      dotHeight: SizeMg.height(10),
                       dotColor: AppColors.progressBarFill,
                       activeDotColor: AppColors.navBarColor,
                       paintStyle: PaintingStyle.fill,
@@ -190,7 +182,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                         },
                         child: Icon(
                           Icons.arrow_back_sharp,
-                          size: 30,
+                          size: SizeMg.radius(30),
                           color: AppColors.navBarColor,
                         ),
                       ),
@@ -211,11 +203,11 @@ class _OnboardingViewState extends State<OnboardingView> {
                                             const Duration(milliseconds: 300),
                                         curve: Curves.easeOut);
                                   }),
-                              width: 120,
+                              width: SizeMg.width(120),
                             ),
                           )
                         : PrimaryButton(
-                            width: 100,
+                            width: SizeMg.width(100),
                             buttonConfig: ButtonConfig(
                               text: 'Finish',
                               action: () {

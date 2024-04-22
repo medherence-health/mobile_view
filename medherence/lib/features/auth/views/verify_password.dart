@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:medherence/features/auth/views/login_view.dart';
 
 import '../../../core/utils/color_utils.dart';
 import '../../../core/shared_widget/buttons.dart';
+import '../../../core/utils/size_manager.dart';
 import '../widget/otp_tile.dart';
 
 class VerifyForgotPassword extends StatefulWidget {
@@ -45,6 +47,7 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
 
   @override
   Widget build(BuildContext context) {
+    SizeMg.init(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -55,10 +58,10 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(
-          left: 20.0,
-          right: 20.0,
-          top: 100,
+        padding: EdgeInsets.only(
+          left: SizeMg.width(20),
+          right: SizeMg.width(20),
+          top: SizeMg.height(100),
         ),
         child: Center(
           child: ListView(
@@ -66,9 +69,9 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
               CircleAvatar(
                 backgroundColor: AppColors.textFilledColor.withOpacity(0.5),
                 radius: 51,
-                child: const CircleAvatar(
+                child: CircleAvatar(
                   backgroundColor: AppColors.textFilledColor,
-                  radius: 45,
+                  radius: SizeMg.radius(24),
                   child: Icon(
                     Icons.mark_email_unread_outlined,
                     size: 30,
@@ -76,37 +79,37 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 50,
+              SizedBox(
+                height: SizeMg.height(50),
               ),
-              const Text(
+              Text(
                 'Check your mail!',
                 style: TextStyle(
-                  fontSize: 35,
+                  fontSize: SizeMg.text(35),
                   fontWeight: FontWeight.w500,
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: SizeMg.height(10),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
+                padding: EdgeInsets.symmetric(
+                  horizontal: SizeMg.width(20),
                 ),
                 child: RichText(
                   text: TextSpan(
                     text: 'We sent a 4-digit code to',
                     style: TextStyle(
-                      fontSize: 17,
+                      fontSize: SizeMg.text(17),
                       fontWeight: FontWeight.w300,
                       color: Colors.grey.shade600,
                     ),
                     children: [
                       TextSpan(
                         text: ' ${widget.phoneNumber}',
-                        style: const TextStyle(
-                          fontSize: 17,
+                        style: TextStyle(
+                          fontSize: SizeMg.text(17),
                           fontWeight: FontWeight.w400,
                           color: AppColors.black,
                         ),
@@ -116,28 +119,30 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
                   textAlign: TextAlign.center,
                 ),
               ),
-              const SizedBox(
-                height: 25,
+              SizedBox(
+                height: SizeMg.height(25),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(6.0, 8.0, 6.0, 8.0),
                 child: SizedBox(
-                  height: 120,
+                  height: SizeMg.height(120),
                   width: MediaQuery.of(context).size.width - 15,
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 7.0),
+                    padding: EdgeInsets.only(left: SizeMg.width(7)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: _otpControllers.map((controller) {
-                        _otpControllers.indexOf(controller);
+                      children: _otpControllers.asMap().entries.map((entry) {
+                        final index = entry.key;
+                        final controller = entry.value;
                         return Row(
                           children: [
                             OtpTile(
+                              index: index,
                               otpSaved: () {},
                               numberController: controller,
                             ),
-                            const SizedBox(
-                              width: 10,
+                            SizedBox(
+                              width: SizeMg.width(10),
                             ),
                           ],
                         );
@@ -146,8 +151,8 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: SizeMg.height(10),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(11.0, 8.0, 6.0, 8.0),
@@ -173,15 +178,28 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
                 text: TextSpan(
                     text: 'Didn’t receive the email? ',
                     style: TextStyle(
-                      fontSize: 17,
+                      fontSize: SizeMg.text(17),
                       fontWeight: FontWeight.w300,
                       color: Colors.grey.shade600,
                     ),
                     children: [
                       TextSpan(
                         text: 'Resend($_resendTimer)',
-                        style: const TextStyle(
-                          fontSize: 17,
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            // Function to show SnackBar
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Otp resent successfully'),
+                                backgroundColor: AppColors.green,
+                              ),
+                            );
+                            setState(() {
+                              _resendTimer = 60;
+                            });
+                          },
+                        style: TextStyle(
+                          fontSize: SizeMg.text(17),
                           fontWeight: FontWeight.w400,
                           color: AppColors.navBarColor,
                         ),

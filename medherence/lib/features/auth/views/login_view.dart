@@ -5,6 +5,7 @@ import 'package:medherence/features/auth/widget/validation_extension.dart';
 
 import '../../../core/utils/color_utils.dart';
 import '../../../core/constants/constants.dart';
+import '../../../core/utils/size_manager.dart';
 import '../widget/textfield.dart';
 import '../../dashboard_feature/view/dashboard_view.dart';
 
@@ -34,42 +35,43 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
+    SizeMg.init(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Sign In',
           style: TextStyle(
-            fontSize: 30,
+            fontSize: SizeMg.text(30),
             fontWeight: FontWeight.w500,
           ),
         ),
         centerTitle: true,
-        toolbarHeight: 100,
+        toolbarHeight: SizeMg.height(100),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(
-          left: 25.0,
-          right: 25,
+        padding: EdgeInsets.only(
+          left: SizeMg.width(25),
+          right: SizeMg.width(25),
         ),
         child: Form(
           key: _formKey,
           child: ListView(
             // crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Text(
+              Text(
                 'Welcome',
                 style: TextStyle(
-                  fontSize: 35,
+                  fontSize: SizeMg.text(35),
                   fontWeight: FontWeight.w700,
                 ),
               ),
               const SizedBox(
                 height: 10,
               ),
-              const Text(
+              Text(
                 'Enter your login details to access the app',
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: SizeMg.text(20),
                   fontWeight: FontWeight.w500,
                   color: Colors.grey,
                 ),
@@ -110,7 +112,7 @@ class _LoginViewState extends State<LoginView> {
                   hintText: "Select your HCP",
                 ),
               ),
-              const SizedBox(height: (20)),
+              SizedBox(height: SizeMg.height(20)),
               TitleAndTextFormField(
                 title: 'Hospital Number',
                 formFieldHint: 'Please type your Hospital Number',
@@ -122,23 +124,23 @@ class _LoginViewState extends State<LoginView> {
                   return null;
                 },
               ),
-              const SizedBox(
-                height: (20),
+              SizedBox(
+                height: SizeMg.height(20),
               ),
-              const Text(
+              Text(
                 'Password',
                 style: TextStyle(
-                  fontSize: (18),
+                  fontSize: SizeMg.text(18),
                   color: Colors.black,
                 ),
               ),
-              const SizedBox(
-                height: (10),
+              SizedBox(
+                height: SizeMg.height(10),
               ),
               TextFormField(
                 obscureText: !obscurePassword,
                 controller: passwordController,
-                cursorHeight: 19,
+                cursorHeight: SizeMg.height(19),
                 decoration: InputDecoration(
                   hintStyle: kFormTextDecoration.hintStyle,
                   filled: false,
@@ -156,9 +158,14 @@ class _LoginViewState extends State<LoginView> {
                             obscurePassword = !obscurePassword;
                           })),
                 ),
-                validator: (value) => value!.validatePassword(),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "The password field must cannot be empty";
+                  }
+                  return null;
+                },
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: SizeMg.height(10)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -198,7 +205,7 @@ class _LoginViewState extends State<LoginView> {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: SizeMg.height(20)),
               PrimaryButton(
                 width: double.infinity,
                 buttonConfig: ButtonConfig(
@@ -227,15 +234,15 @@ class _LoginViewState extends State<LoginView> {
                     }
                   },
                   disabled: (_selectedHospital == '' ||
-                      passwordController.text.isEmpty ||
-                      hospitalNumberController.text.isEmpty),
+                      hospitalNumberController.text.isEmpty ||
+                      passwordController.text.isEmpty),
                 ),
               ),
-              const SizedBox(height: 30),
+              SizedBox(height: SizeMg.height(30)),
               Row(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
+                    padding: EdgeInsets.only(right: SizeMg.width(8)),
                     child: Icon(
                       Icons.feedback_rounded,
                       color: Colors.blue.shade200,
@@ -255,10 +262,11 @@ class _LoginViewState extends State<LoginView> {
                             text:
                                 'Reach out to your Healthcare Provider to enroll you on the platform',
                             style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontStyle: FontStyle.normal,
-                                letterSpacing: 0.3,
-                                color: AppColors.black),
+                              fontWeight: FontWeight.w400,
+                              fontStyle: FontStyle.normal,
+                              letterSpacing: 0.3,
+                              color: AppColors.black,
+                            ),
                           ),
                         ],
                       ),

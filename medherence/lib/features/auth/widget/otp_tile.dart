@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:medherence/core/constants/constants.dart';
 
+import '../../../core/utils/size_manager.dart';
+
 class OtpTile extends StatelessWidget {
+  final int index;
   final dynamic otpSaved;
   final TextEditingController numberController;
   const OtpTile({
+    required this.index,
     required this.otpSaved,
     required this.numberController,
     super.key,
@@ -20,12 +24,18 @@ class OtpTile extends StatelessWidget {
         controller: numberController,
         //cursorColor: Colors.black,
         onChanged: (value) {
-          if (value.length == 1) {
+          if (value.isEmpty) {
+            // If the field is empty, move to the previous field
+            if (index > 0) {
+              FocusScope.of(context).previousFocus();
+            }
+          } else if (value.length == 1) {
+            // If a digit is entered, move to the next field
             FocusScope.of(context).nextFocus();
           }
         },
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 30),
+        style: TextStyle(fontSize: SizeMg.text(30)),
         //onSaved: otpSaved,
         decoration: InputDecoration(
           filled: false,

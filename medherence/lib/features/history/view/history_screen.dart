@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../../../core/utils/color_utils.dart';
 import '../../../core/model/models/history_model.dart';
 import '../../../core/model/simulated_data/simulated_values.dart';
+import '../../../core/utils/size_manager.dart';
 import '../../home/view/medication_details.dart';
 
 class HistoryScreen extends StatefulWidget {
@@ -35,14 +36,15 @@ class _HistoryScreenState extends State<HistoryScreen>
 
   @override
   Widget build(BuildContext context) {
+    SizeMg.init(context);
     return Scaffold(
       backgroundColor: AppColors.historyBackground,
       appBar: AppBar(
         backgroundColor: AppColors.historyBackground,
-        title: const Text(
+        title: Text(
           'History',
           style: TextStyle(
-            fontSize: 25,
+            fontSize: SizeMg.text(25),
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -68,7 +70,7 @@ class _HistoryScreenState extends State<HistoryScreen>
               margin: const EdgeInsets.symmetric(horizontal: 80),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(
-                  (10),
+                  SizeMg.radius(10),
                 ),
                 border: Border.all(
                   color: AppColors.navBarColor,
@@ -83,18 +85,18 @@ class _HistoryScreenState extends State<HistoryScreen>
                 ),
                 labelColor: Colors.white,
                 unselectedLabelColor: AppColors.navBarColor,
-                labelStyle: const TextStyle(
+                labelStyle: TextStyle(
                   fontWeight: FontWeight.w500,
-                  fontSize: (16),
+                  fontSize: SizeMg.text(16),
                 ),
                 indicatorPadding: const EdgeInsets.all(5),
                 indicator: BoxDecoration(
                   color: AppColors.navBarColor,
                   borderRadius: BorderRadius.circular(
-                    (10),
+                    SizeMg.radius(10),
                   ),
                   border: Border.all(
-                    width: 2,
+                    width: SizeMg.width(2),
                     color: AppColors.historyBackground,
                   ),
                 ),
@@ -129,27 +131,27 @@ class _HistoryScreenState extends State<HistoryScreen>
         return historyListBuilder(historyList);
       case 1:
         return Builder(builder: (ctx) {
-          return const Center(
+          return Center(
             child: SizedBox(
-              height: 350,
-              width: 180,
+              height: SizeMg.height(350),
+              width: SizeMg.width(180),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: 100,
+                    height: SizeMg.height(100),
                   ),
                   Icon(
                     Icons.folder_off_outlined,
                     color: AppColors.noWidgetText,
                   ),
                   SizedBox(
-                    height: 10,
+                    height: SizeMg.height(10),
                   ),
                   Text(
                     'You have no adherence history',
                     style: TextStyle(
-                      fontSize: (20),
+                      fontSize: SizeMg.text(20),
                       fontStyle: FontStyle.italic,
                       color: AppColors.noWidgetText,
                     ),
@@ -162,26 +164,26 @@ class _HistoryScreenState extends State<HistoryScreen>
         });
       default:
         return Builder(builder: (ctx) {
-          return const Center(
+          return Center(
             child: SizedBox(
-              height: 150,
-              width: 180,
+              height: SizeMg.height(150),
+              width: SizeMg.width(180),
               child: Column(
                 children: [
                   SizedBox(
-                    height: 20,
+                    height: SizeMg.height(20),
                   ),
                   Icon(
                     Icons.folder_off_outlined,
                     color: AppColors.noWidgetText,
                   ),
                   SizedBox(
-                    height: 10,
+                    height: SizeMg.height(10),
                   ),
                   Text(
                     'You have new adherence history',
                     style: TextStyle(
-                      fontSize: (20),
+                      fontSize: SizeMg.text(20),
                       fontStyle: FontStyle.italic,
                       color: AppColors.noWidgetText,
                     ),
@@ -198,33 +200,33 @@ class _HistoryScreenState extends State<HistoryScreen>
   Builder historyListBuilder(List<HistoryModel> historyList) {
     return Builder(builder: (ctx) {
       if (historyList.isEmpty) {
-        return const Padding(
+        return Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: 30.0,
-            vertical: 10,
+            horizontal: SizeMg.width(30),
+            vertical: SizeMg.height(10),
           ),
           child: Stack(
             children: [
               Center(
                 child: SizedBox(
-                  height: 150,
-                  width: 180,
+                  height: SizeMg.height(150),
+                  width: SizeMg.width(180),
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 20,
+                        height: SizeMg.height(20),
                       ),
                       Icon(
                         Icons.folder_off_outlined,
                         color: AppColors.noWidgetText,
                       ),
                       SizedBox(
-                        height: 10,
+                        height: SizeMg.height(10),
                       ),
                       Text(
                         'You have no adherence history',
                         style: TextStyle(
-                          fontSize: (20),
+                          fontSize: SizeMg.text(20),
                           fontStyle: FontStyle.italic,
                           color: AppColors.noWidgetText,
                         ),
@@ -242,19 +244,19 @@ class _HistoryScreenState extends State<HistoryScreen>
         width: double.infinity,
         height: MediaQuery.of(context).size.height,
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 30.0,
-            vertical: 15,
+          padding: EdgeInsets.symmetric(
+            horizontal: SizeMg.width(30),
+            vertical: SizeMg.height(15),
           ),
           child: Stack(
             children: [
-              const Padding(
-                padding: EdgeInsets.only(top: 25.0),
+              Padding(
+                padding: EdgeInsets.only(top: SizeMg.height(25)),
                 child: Text(
                   'All',
                   style: TextStyle(
                     color: AppColors.black,
-                    fontSize: 25,
+                    fontSize: SizeMg.text(25),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -263,20 +265,20 @@ class _HistoryScreenState extends State<HistoryScreen>
                 padding: const EdgeInsets.only(top: 50.0),
                 child: Column(
                   children: [
-                    const SizedBox(
-                      height: 20,
+                    SizedBox(
+                      height: SizeMg.height(20),
                     ),
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(
-                          width: 20,
+                          width: SizeMg.width(20),
                         ),
                         Text(
                           'Regimen',
                           style: TextStyle(
                             color: AppColors.black,
-                            fontSize: 14,
+                            fontSize: SizeMg.text(14),
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -284,7 +286,7 @@ class _HistoryScreenState extends State<HistoryScreen>
                           'Dosage',
                           style: TextStyle(
                             color: AppColors.black,
-                            fontSize: 14,
+                            fontSize: SizeMg.text(14),
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -292,13 +294,13 @@ class _HistoryScreenState extends State<HistoryScreen>
                           'Date',
                           style: TextStyle(
                             color: AppColors.black,
-                            fontSize: 14,
+                            fontSize: SizeMg.text(14),
                             fontWeight: FontWeight.w400,
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: SizeMg.height(10)),
                     Expanded(
                       child: ListView.separated(
                         shrinkWrap: true,
@@ -306,8 +308,8 @@ class _HistoryScreenState extends State<HistoryScreen>
                         itemCount: historyList
                             .length, // Use the length of your data list
                         separatorBuilder: (ctx, index) {
-                          return const SizedBox(
-                            height: (13),
+                          return SizedBox(
+                            height: SizeMg.height(13),
                           );
                         },
                         itemBuilder: (context, index) {
@@ -326,7 +328,7 @@ class _HistoryScreenState extends State<HistoryScreen>
                               );
                             },
                             child: Container(
-                              height: 55,
+                              height: SizeMg.height(55),
                               margin: const EdgeInsets.symmetric(vertical: 5),
                               padding: const EdgeInsets.only(left: 10),
                               decoration: BoxDecoration(
@@ -347,29 +349,29 @@ class _HistoryScreenState extends State<HistoryScreen>
                                   ),
                                   Text(
                                     item.regimenName,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       color: AppColors.black,
-                                      fontSize: 16,
+                                      fontSize: SizeMg.text(16),
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
                                   Text(
                                     item.dosage,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       color: AppColors.darkGrey,
-                                      fontSize: 13,
+                                      fontSize: SizeMg.text(13),
                                       fontWeight: FontWeight.w400,
                                     ),
                                   ),
                                   Container(
-                                    width: 45,
-                                    decoration: const BoxDecoration(
+                                    width: SizeMg.width(25),
+                                    decoration: BoxDecoration(
                                       borderRadius: BorderRadius.only(
                                         topRight: Radius.circular(
-                                          (10),
+                                          SizeMg.radius(10),
                                         ),
                                         bottomRight: Radius.circular(
-                                          (10),
+                                          SizeMg.radius(10),
                                         ),
                                       ),
                                       color: AppColors.mainPrimaryButton,
@@ -379,17 +381,17 @@ class _HistoryScreenState extends State<HistoryScreen>
                                       children: [
                                         Text(
                                           item.date.day.toString(),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             color: AppColors.white,
-                                            fontSize: 20,
+                                            fontSize: SizeMg.text(20),
                                             fontWeight: FontWeight.w500,
                                           ),
                                         ),
                                         Text(
                                           formattedMonth.toString(),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             color: AppColors.white,
-                                            fontSize: 14,
+                                            fontSize: SizeMg.text(14),
                                           ),
                                         ),
                                       ],

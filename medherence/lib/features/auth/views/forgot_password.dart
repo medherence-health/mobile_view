@@ -3,6 +3,7 @@ import 'package:medherence/features/auth/widget/validation_extension.dart';
 
 import '../../../core/utils/color_utils.dart';
 import '../../../core/shared_widget/buttons.dart';
+import '../../../core/utils/size_manager.dart';
 import '../widget/textfield.dart';
 import 'verify_password.dart';
 
@@ -26,6 +27,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SizeMg.init(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -36,10 +38,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(
-            left: 20.0,
-            right: 20.0,
-            top: 100,
+          padding: EdgeInsets.only(
+            left: SizeMg.width(20.0),
+            right: SizeMg.width(20),
+            top: SizeMg.height(100),
           ),
           child: Center(
             child: Form(
@@ -49,12 +51,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   CircleAvatar(
                     backgroundColor: AppColors.textFilledColor.withOpacity(0.5),
                     radius: 51,
-                    child: const CircleAvatar(
+                    child: CircleAvatar(
                       backgroundColor: AppColors.textFilledColor,
                       radius: 45,
                       child: Icon(
                         Icons.vertical_split_outlined,
-                        size: 30,
+                        size: SizeMg.radius(24),
                         color: AppColors.navBarColor,
                       ),
                     ),
@@ -62,10 +64,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   const SizedBox(
                     height: 50,
                   ),
-                  const Text(
+                  Text(
                     'Forgot password?',
                     style: TextStyle(
-                      fontSize: 35,
+                      fontSize: SizeMg.text(24),
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -73,13 +75,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     height: 10,
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: SizeMg.width(20),
                     ),
                     child: Text(
                       'Don\'t worry! Please enter your associated E-mail address, we would send you reset instructions.',
                       style: TextStyle(
-                        fontSize: 17,
+                        fontSize: SizeMg.text(17),
                         fontWeight: FontWeight.w300,
                         color: Colors.grey.shade600,
                       ),

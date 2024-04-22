@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/utils/color_utils.dart';
 import '../../../core/constants/constants.dart';
 import '../../../core/shared_widget/buttons.dart';
+import '../../../core/utils/size_manager.dart';
 import '../../dashboard_feature/view/dashboard_view.dart';
 
 class ChangePassword extends StatefulWidget {
@@ -65,12 +66,13 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   @override
   Widget build(BuildContext context) {
+    SizeMg.init(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Change Password',
           style: TextStyle(
-            fontSize: 25,
+            fontSize: SizeMg.text(25),
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -87,12 +89,12 @@ class _ChangePasswordState extends State<ChangePassword> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   RichText(
-                    text: const TextSpan(
+                    text: TextSpan(
                         text:
                             '* Use a combination of uppercase and lowercase letters. \n',
                         style: TextStyle(
                           color: AppColors.black,
-                          fontSize: 15,
+                          fontSize: SizeMg.text(15),
                         ),
                         children: [
                           TextSpan(
@@ -113,15 +115,15 @@ class _ChangePasswordState extends State<ChangePassword> {
                     textScaler: const TextScaler.linear(1.15),
                   ),
                   const SizedBox(height: 40),
-                  const Text(
+                  Text(
                     'Old Password',
                     style: TextStyle(
-                      fontSize: (18),
+                      fontSize: SizeMg.text(18),
                       color: Colors.black,
                     ),
                   ),
-                  const SizedBox(
-                    height: (10),
+                  SizedBox(
+                    height: SizeMg.height(10),
                   ),
                   TextFormField(
                     controller: _oldPasswordController,
@@ -141,7 +143,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                               ? Icons.visibility_off
                               : Icons.visibility,
                         ),
-                        iconSize: 24,
+                        iconSize: SizeMg.radius(24),
                         onPressed: () {
                           setState(() {
                             _obscureOldPassword = !_obscureOldPassword;
@@ -157,15 +159,15 @@ class _ChangePasswordState extends State<ChangePassword> {
                     },
                   ),
                   const SizedBox(height: 16),
-                  const Text(
+                  Text(
                     'New Password',
                     style: TextStyle(
-                      fontSize: (18),
+                      fontSize: SizeMg.text(18),
                       color: Colors.black,
                     ),
                   ),
-                  const SizedBox(
-                    height: (10),
+                  SizedBox(
+                    height: SizeMg.height(10),
                   ),
                   TextFormField(
                     controller: _newPasswordController,
@@ -185,7 +187,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                               ? Icons.visibility_off
                               : Icons.visibility,
                         ),
-                        iconSize: 24,
+                        iconSize: SizeMg.radius(24),
                         onPressed: () {
                           setState(() {
                             _obscureNewPassword = !_obscureNewPassword;
@@ -197,16 +199,16 @@ class _ChangePasswordState extends State<ChangePassword> {
                       return value!.validatePassword();
                     },
                   ),
-                  const SizedBox(height: 16),
-                  const Text(
+                  SizedBox(height: SizeMg.height(16)),
+                  Text(
                     'Confirm Password',
                     style: TextStyle(
-                      fontSize: (18),
+                      fontSize: SizeMg.text(18),
                       color: Colors.black,
                     ),
                   ),
-                  const SizedBox(
-                    height: (10),
+                  SizedBox(
+                    height: SizeMg.height(10),
                   ),
                   TextFormField(
                     controller: _confirmPasswordController,
@@ -226,7 +228,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                               ? Icons.visibility_off
                               : Icons.visibility,
                         ),
-                        iconSize: 24,
+                        iconSize: SizeMg.radius(24),
                         onPressed: () {
                           setState(() {
                             _obscureConfirmPassword = !_obscureConfirmPassword;
@@ -241,7 +243,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 40),
+                  SizedBox(height: SizeMg.height(40)),
                   PrimaryButton(
                     buttonConfig: ButtonConfig(
                       text: 'Save Password',
