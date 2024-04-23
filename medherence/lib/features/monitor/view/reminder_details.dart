@@ -1,17 +1,38 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:medherence/core/shared_widget/buttons.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 import '../../../core/model/models/history_model.dart';
 import '../../../core/service/notification_service.dart';
 import '../../../core/utils/color_utils.dart';
 import '../../../core/utils/size_manager.dart';
+import '../../dashboard_feature/view/dashboard_view.dart';
 import '../view_model/reminder_view_model.dart';
 
-class EditReminderDetails extends StatelessWidget {
+class EditReminderDetails extends StatefulWidget {
+  @override
+  _EditReminderDetailsState createState() => _EditReminderDetailsState();
+}
+
+class _EditReminderDetailsState extends State<EditReminderDetails> {
+  // dynamic time;
+
+// Initialize timezone data
+  void initializeTimeZones() {
+    tz.initializeTimeZones();
+  }
+
+  @override
+  void initState() {
+    initializeTimeZones();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ReminderState>(
@@ -19,40 +40,6 @@ class EditReminderDetails extends StatelessWidget {
         List<HistoryModel> regimenList = reminderState.regimenList;
         int checkedCount = reminderState.getCheckedCount();
         bool showButton = checkedCount > 0;
-
-        // Keep track of scheduled regimens to avoid duplicate notifications
-        Set<String> scheduledRegimens = {};
-
-        // Schedule notifications for each regimen
-        for (HistoryModel regimen in regimenList) {
-          // Check if the regimen is checked and has not been scheduled before
-          if (reminderState.isChecked(regimen) &&
-              !scheduledRegimens.contains(regimen.regimenName)) {
-            // Generate a random time between 8:00 AM and 10:00 PM
-            final random = Random();
-            final hour = random.nextInt(15) + 8; // Random hour between 8 and 22
-            final minute = random.nextInt(60); // Random minute between 0 and 59
-
-            // Format the hour to include "AM" or "PM"
-            String formattedHour;
-            if (hour >= 12) {
-              formattedHour = (hour == 12) ? '12' : (hour - 12).toString();
-              formattedHour += ' PM';
-            } else {
-              formattedHour = (hour == 0) ? '12' : hour.toString();
-              formattedHour += ' AM';
-            }
-
-            final time = '$formattedHour:${minute.toString().padLeft(2, '0')}';
-
-            // Schedule notification
-            scheduleNotification(
-                context, regimen.regimenName, regimen.dosage, time);
-
-            // Add the regimen to the set of scheduled regimens
-            scheduledRegimens.add(regimen.regimenName);
-          }
-        }
 
         return Container(
           width: SizeMg.screenWidth,
@@ -64,34 +51,42 @@ class EditReminderDetails extends StatelessWidget {
                   left: 25.0,
                   right: 25,
                 ),
-                child: ListView.builder(
+                child: ListView.separated(
+                  separatorBuilder: (context, index) {
+                    return SizedBox(height: 18);
+                  },
                   itemCount: regimenList.length,
                   itemBuilder: (context, index) {
-                    HistoryModel regimen = regimenList[index];
-                    // Generate a random time between 8:00 AM and 10:00 PM
-                    final random = Random();
-                    final hour =
-                        random.nextInt(15) + 8; // Random hour between 8 and 22
-                    final minute =
-                        random.nextInt(60); // Random minute between 0 and 59
-
-                    // Format the hour to include "AM" or "PM"
-                    String formattedHour;
-                    if (hour >= 12) {
-                      formattedHour =
-                          (hour == 12) ? '12' : (hour - 12).toString();
-                      formattedHour += ' PM';
-                    } else {
-                      formattedHour = (hour == 0) ? '12' : hour.toString();
-                      formattedHour += ' AM';
-                    }
-
-                    final time =
-                        '$formattedHour:${minute.toString().padLeft(2, '0')}';
-
+                    HistoryModel regimen = regimenList[
+                        index]; // Modify this as per your requirement
                     return _buildRegimenTile(
-                        context, regimen, reminderState, time);
+                      context,
+                      regimen,
+                      reminderState,
+                      '12:00pm',
+                    );
                   },
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: InkWell(
+                  onTap: () {
+                    // Handle select all logic here
+                    reminderState.selectAll();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 25.0),
+                    child: Text(
+                      'Select All',
+                      textAlign: TextAlign.end,
+                      style: TextStyle(
+                        color: AppColors.pillIconColor,
+                        fontSize: SizeMg.text(14),
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
                 ),
               ),
               if (showButton)
@@ -137,11 +132,34 @@ class EditReminderDetails extends StatelessWidget {
                           SizedBox(height: 10),
                           Expanded(
                             child: PrimaryButton(
-                              textSize: 18,
+                              textSize: 23,
                               height: SizeMg.height(60),
                               buttonConfig: ButtonConfig(
                                 text: 'Take med ($checkedCount)',
-                                action: () {},
+                                action: () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content:
+                                            Text('Pills taken successfully')),
+                                  );
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const DashboardView()),
+                                  );
+                                  setState(() {
+                                    reminderState
+                                        .clearCheckedItems(); // Clear checked count and uncheck all items
+                                    checkedCount = 0; // Reset the checked count
+                                  });
+
+                                  // scheduleNotification(
+                                  //   context,
+                                  //   'Medication usage',
+                                  //   'Linospiril',
+                                  // );
+                                },
                               ),
                               width: SizeMg.screenWidth,
                             ),
@@ -158,37 +176,81 @@ class EditReminderDetails extends StatelessWidget {
     );
   }
 
-// Inside the _buildRegimenTile method
+  void scheduleNotification(
+    BuildContext context,
+    String regimenName,
+    String dosage,
+  ) {
+    final notificationService =
+        Provider.of<NotificationService>(context, listen: false);
+    final now = DateTime.now();
+    final scheduledTime =
+        now.add(Duration(seconds: 5)); // Example: Schedule after 5 seconds
+    notificationService.showScheduledNotification(
+      regimenName,
+      dosage,
+    );
+  }
+
   Widget _buildRegimenTile(
     BuildContext context,
     HistoryModel regimen,
     ReminderState state,
     String time,
   ) {
-    return CheckboxListTile(
-      value: state.isChecked(regimen), // Check if the regimen is checked
-      onChanged: (value) {
-        state.toggleChecked(regimen); // Toggle regimen checked status
-      },
-      title: Text(
-        '${regimen.regimenName}',
-        style: TextStyle(
-          fontSize: SizeMg.text(20),
-          fontWeight: FontWeight.w500,
-        ),
+    return Container(
+      width: SizeMg.screenWidth,
+      decoration: BoxDecoration(
+        color: AppColors.historyBackground,
+        borderRadius: BorderRadius.circular(10),
       ),
-      subtitle: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Text(
-            '${regimen.dosage}',
-            style: TextStyle(
-              fontSize: SizeMg.text(16),
-              fontWeight: FontWeight.w400,
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 10.0,
+              right: 8,
+            ),
+            child: Checkbox(
+              value:
+                  state.isChecked(regimen), // Check if the regimen is checked
+              onChanged: (value) {
+                state.toggleChecked(regimen); // Toggle regimen checked status
+              },
             ),
           ),
           Padding(
+            padding: const EdgeInsets.only(right: 15.0),
+            child: Image.asset(
+              'assets/images/pill.png',
+              height: 30,
+              width: 30,
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '${regimen.regimenName}',
+                style: TextStyle(
+                  fontSize: SizeMg.text(18),
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Text(
+                '${regimen.dosage}',
+                style: TextStyle(
+                  fontSize: SizeMg.text(14),
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
+          Spacer(),
+          Padding(
             padding: const EdgeInsets.only(
+              top: 20,
               bottom: 20.0,
               right: 10,
             ),
@@ -218,47 +280,5 @@ class EditReminderDetails extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  // void scheduleNotification(
-  //     BuildContext context, String regimenName, String dosage, String time) {
-  //   final notificationService =
-  //       Provider.of<NotificationService>(context, listen: false);
-  //   final now = DateTime.now();
-  //   final scheduledTime =
-  //       now.add(Duration(seconds: 5)); // Example: Schedule after 5 seconds
-  //   notificationService.showScheduledNotification(
-  //     regimenName,
-  //     dosage,
-  //     scheduledTime,
-  //   );
-  // }
-  void scheduleNotification(
-      BuildContext context, String regimenName, String dosage, String time) {
-    final notificationService =
-        Provider.of<NotificationService>(context, listen: false);
-
-    // Split the time string into hour, minute, and AM/PM parts
-    final parts = time.split(' ');
-    final timeParts = parts[0].split(':');
-    var hour = int.parse(timeParts[0]);
-    final minute = int.parse(timeParts[1]);
-
-    // Determine whether it's AM or PM
-    final isPM = parts[1] == 'PM';
-
-    // Adjust the hour if it's PM and not already 12 PM
-    if (isPM && hour != 12) {
-      hour += 12;
-    }
-
-    // Get the current date
-    final now = DateTime.now();
-
-    // Construct the scheduled time
-    final scheduledTime = DateTime(now.year, now.month, now.day, hour, minute);
-
-    notificationService.showScheduledNotification(
-        regimenName, dosage, scheduledTime);
   }
 }

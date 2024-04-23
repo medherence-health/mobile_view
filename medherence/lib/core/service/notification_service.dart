@@ -52,7 +52,7 @@ class NotificationService with ChangeNotifier {
   Future<void> initialize() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings(
-            ImageUtils.medherenceAppIcon); // Replace with your icon
+            '@mipmap/ic_launcher'); // Replace with your icon
 
     final InitializationSettings initializationSettings =
         InitializationSettings(
@@ -66,7 +66,6 @@ class NotificationService with ChangeNotifier {
   Future<void> showScheduledNotification(
     String regimenName,
     String dosage,
-    DateTime scheduledTime,
   ) async {
     const AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails('channel_id', 'channel_name',
@@ -74,12 +73,15 @@ class NotificationService with ChangeNotifier {
     final NotificationDetails notificationDetails = NotificationDetails(
       android: androidNotificationDetails,
     );
+    // Construct the alarm details
+    final now = tz.TZDateTime.now(tz.local);
+    final scheduledTime = now.add(const Duration(seconds: 5));
 
     await _notificationsPlugin.zonedSchedule(
       0, // Notification ID (unique for each notification)
       'Medication Reminder', // Notification Title
       'It\'s time to take your $regimenName medication. Dosage: $dosage', // Notification Body
-      tz.TZDateTime.from(scheduledTime, tz.local), // Scheduled time
+      scheduledTime, // Scheduled time
       notificationDetails,
       androidAllowWhileIdle: true,
       payload: 'data',

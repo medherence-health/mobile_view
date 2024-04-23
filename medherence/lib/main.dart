@@ -8,11 +8,19 @@ import 'core/utils/utils.dart';
 import 'core/model/models/notification_model.dart';
 import 'features/monitor/view/alarm_monitor.dart';
 import 'features/monitor/view_model/reminder_view_model.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  initializeTimeZones();
   NotificationService().initialize();
   runApp(const MyApp());
+}
+
+// Initialize timezone data
+void initializeTimeZones() {
+  tz.initializeTimeZones();
 }
 
 class MyApp extends StatelessWidget {
@@ -24,6 +32,7 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(create: (context) => NotificationModelItems()),
           ChangeNotifierProvider(create: (context) => ReminderState()),
+          ChangeNotifierProvider(create: (context) => NotificationService()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

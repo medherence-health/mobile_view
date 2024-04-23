@@ -12,6 +12,15 @@ class MedhecoinScreen extends StatefulWidget {
 }
 
 class _MedhecoinScreenState extends State<MedhecoinScreen> {
+  bool _amountChanged = false; // Add this variable
+
+  // Function to toggle the amount changed
+  void toggleAmountChanged() {
+    setState(() {
+      _amountChanged = !_amountChanged;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +44,15 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
           padding: const EdgeInsets.all(25.0),
           child: ListView(
             children: [
-              const MedcoinWidget(),
+              MedcoinWidget(
+                () {
+                  setState(() {
+                    // Call the function to toggle the amount changed
+                    toggleAmountChanged();
+                  });
+                },
+                _amountChanged,
+              ),
               const SizedBox(height: 15),
               Row(
                 children: [

@@ -73,4 +73,18 @@ class ReminderState extends ChangeNotifier {
     _isAlarmOn = newIsAlarmOn;
     notifyListeners();
   }
+
+  // Method to select all regimens
+  void selectAll() {
+    for (var i = 0; i < _regimenList.length; i++) {
+      _checkedMap[i] = true;
+    }
+    notifyListeners();
+  }
+
+  void clearCheckedItems() {
+    _checkedMap.clear(); // Clear the checked map
+    _regimenList.clear();
+    notifyListeners(); // Notify listeners of the state change
+  }
 }
