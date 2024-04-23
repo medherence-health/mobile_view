@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:medherence/features/splashscreen/splashscreen.dart';
+import 'core/service/notification_service.dart';
 import 'core/utils/color_utils.dart';
 import 'core/utils/utils.dart';
 import 'core/model/models/notification_model.dart';
-import 'features/reminder/view_model/reminder_view_model.dart';
+import 'features/monitor/view/alarm_monitor.dart';
+import 'features/monitor/view_model/reminder_view_model.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  NotificationService().initialize();
   runApp(const MyApp());
 }
 
@@ -47,6 +50,20 @@ class MyApp extends StatelessWidget {
             ),
           ),
           home: const SplashScreen(),
+          onGenerateRoute: (routeSettings) {
+            if (routeSettings.name == AlarmMonitor.routeName) {
+              final arguments = routeSettings.arguments as Map<String, String>;
+              final regimen = arguments['regimen'] ?? '';
+              final subtitle = arguments['subtitle'] ?? '';
+              return MaterialPageRoute(
+                builder: (context) => AlarmMonitor(
+                  regimen: regimen,
+                  subtitle: subtitle,
+                ),
+              );
+            }
+            return null;
+          },
         ));
   }
 }

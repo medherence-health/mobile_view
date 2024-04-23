@@ -241,7 +241,7 @@ class _HistoryScreenState extends State<HistoryScreen>
         );
       }
       return SizedBox(
-        width: double.infinity,
+        width: SizeMg.screenWidth,
         height: MediaQuery.of(context).size.height,
         child: Padding(
           padding: EdgeInsets.symmetric(
@@ -300,7 +300,7 @@ class _HistoryScreenState extends State<HistoryScreen>
                         ),
                       ],
                     ),
-                    SizedBox(height: SizeMg.height(10)),
+                    SizedBox(height: SizeMg.height(5)),
                     Expanded(
                       child: ListView.separated(
                         shrinkWrap: true,
@@ -364,7 +364,7 @@ class _HistoryScreenState extends State<HistoryScreen>
                                     ),
                                   ),
                                   Container(
-                                    width: SizeMg.width(25),
+                                    width: SizeMg.width(35),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.only(
                                         topRight: Radius.circular(

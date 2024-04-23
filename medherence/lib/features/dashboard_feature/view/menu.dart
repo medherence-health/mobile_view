@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:medherence/core/utils/size_manager.dart';
 import 'package:medherence/features/help_and_support/view/help_and_support.dart';
 import 'package:medherence/features/history/view/history_screen.dart';
 
@@ -127,164 +128,183 @@ class _MenuScreenState extends State<MenuScreen> {
         padding: const EdgeInsets.only(
           left: 15.0,
           right: 15,
-          top: 44,
         ),
-        child: Column(
+        child: Stack(
           children: [
-            const Text(
-              'Menu',
-              style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.w600,
-                fontFamily: "Poppins-bold.ttf",
+            Align(
+              alignment: Alignment.topCenter,
+              child: AppBar(
+                title: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: const Text(
+                    'Menu',
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: "Poppins-bold.ttf",
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                centerTitle: true,
               ),
-              textAlign: TextAlign.center,
             ),
-            const SizedBox(
-              height: 44,
-            ),
-            MenuItemCard(
-              icon: Icons.person_rounded,
-              title: 'Profile',
-              subtitle: 'Complete and edit your profile',
-              onPressed: () {
-                // Navigate to profile screen
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ProfileScreenView()),
-                );
-                // ScaffoldMessenger.of(context).showSnackBar(snackbar);
-              },
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            MenuItemCard(
-              icon: Icons.work_history_outlined,
-              title: 'History',
-              subtitle: 'Your history',
-              onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const HistoryScreen())),
-              // Navigate to settings screen
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            MenuItemCard(
-              icon: Icons.settings,
-              title: 'Settings',
-              subtitle: 'Personalize and setup your experience',
-              onPressed: () {
-                // Navigate to settings screen
-                ScaffoldMessenger.of(context).showSnackBar(snackbar);
-              },
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            MenuItemCard(
-              icon: CupertinoIcons.chat_bubble_2_fill,
-              title: 'Help and Support',
-              subtitle: 'Report any difficulty you are facing',
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const HelpAndSupport()),
-                );
+            Padding(
+              padding: EdgeInsets.only(top: SizeMg.height(60)),
+              child: ListView(
+                children: [
+                  const SizedBox(
+                    height: 44,
+                  ),
+                  MenuItemCard(
+                    icon: Icons.person_rounded,
+                    title: 'Profile',
+                    subtitle: 'Complete and edit your profile',
+                    onPressed: () {
+                      // Navigate to profile screen
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ProfileScreenView()),
+                      );
+                      // ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                    },
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  MenuItemCard(
+                    icon: Icons.history,
+                    title: 'History',
+                    subtitle: 'Your history',
+                    onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HistoryScreen())),
+                    // Navigate to settings screen
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  MenuItemCard(
+                    icon: Icons.settings,
+                    title: 'Settings',
+                    subtitle: 'Personalize and setup your experience',
+                    onPressed: () {
+                      // Navigate to settings screen
+                      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                    },
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  MenuItemCard(
+                    icon: CupertinoIcons.chat_bubble_2_fill,
+                    title: 'Help and Support',
+                    subtitle: 'Report any difficulty you are facing',
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HelpAndSupport()),
+                      );
 
-                // ScaffoldMessenger.of(context).showSnackBar(snackbar);
-              },
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            MenuItemCard(
-              icon: Icons.feedback_rounded,
-              title: 'About app',
-              subtitle: 'Learn more about the app',
-              onPressed: () {
-                // Navigate to about screen
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const AboutScreenView()),
-                );
-                // ScaffoldMessenger.of(context).showSnackBar(snackbar);
-              },
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            MenuItemCard(
-              icon: Icons.logout_rounded,
-              title: 'Logout',
-              subtitle: 'Logout of your account',
-              onPressed: () async => await buildLogOutDialog()
-              // Navigate to settings screen
-              ,
-            ),
-            const Spacer(),
-            const Text(
-              'Want to rate us? ',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-                fontFamily: "Poppins-bold.ttf",
+                      // ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                    },
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  MenuItemCard(
+                    icon: Icons.feedback_rounded,
+                    title: 'About app',
+                    subtitle: 'Learn more about the app',
+                    onPressed: () {
+                      // Navigate to about screen
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AboutScreenView()),
+                      );
+                      // ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                    },
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  MenuItemCard(
+                    icon: Icons.logout_rounded,
+                    title: 'Logout',
+                    subtitle: 'Logout of your account',
+                    onPressed: () async => await buildLogOutDialog()
+                    // Navigate to settings screen
+                    ,
+                  ),
+                  SizedBox(height: SizeMg.height(30)),
+                  const Spacer(),
+                  Text(
+                    'Want to rate us? ',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: SizeMg.text(20),
+                      fontWeight: FontWeight.w500,
+                      fontFamily: "Poppins-bold.ttf",
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      height: SizeMg.height(50),
+                      width: MediaQuery.of(context).size.width,
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(
+                                Icons.star_rate,
+                                color: AppColors.navBarColor,
+                                size: 40,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Icon(
+                                Icons.star_rate,
+                                color: AppColors.navBarColor,
+                                size: 40,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Icon(
+                                Icons.star_rate,
+                                color: AppColors.navBarColor,
+                                size: 40,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Icon(
+                                Icons.star_half,
+                                color: AppColors.navBarColor,
+                                size: 40,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Icon(
+                                Icons.star_border,
+                                color: AppColors.navBarColor,
+                                size: 40,
+                              ),
+                            ]),
+                      ),
+                    ),
+                  )
+                ],
               ),
             ),
-            SizedBox(
-              height: 80,
-              width: MediaQuery.of(context).size.width,
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: ListView(
-                    padding: const EdgeInsets.symmetric(horizontal: 60),
-                    scrollDirection: Axis.horizontal,
-                    children: const [
-                      Icon(
-                        Icons.star_rate,
-                        color: AppColors.navBarColor,
-                        size: 40,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Icon(
-                        Icons.star_rate,
-                        color: AppColors.navBarColor,
-                        size: 40,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Icon(
-                        Icons.star_rate,
-                        color: AppColors.navBarColor,
-                        size: 40,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Icon(
-                        Icons.star_half,
-                        color: AppColors.navBarColor,
-                        size: 40,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Icon(
-                        Icons.star_border,
-                        color: AppColors.navBarColor,
-                        size: 40,
-                      ),
-                    ]),
-              ),
-            )
           ],
         ),
       ),

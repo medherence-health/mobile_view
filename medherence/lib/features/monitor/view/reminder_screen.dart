@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/utils/color_utils.dart';
+import '../../../core/utils/size_manager.dart';
 import '../../dashboard_feature/view/dashboard_view.dart';
 import 'reminder_details.dart';
 import 'reminder_edit_content.dart';
@@ -48,7 +49,7 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
         return Container(
           height: MediaQuery.of(context).size.height,
           color: AppColors.white,
-          width: double.infinity,
+          width: SizeMg.screenWidth,
           child: Stack(
             children: [
               AppBar(
@@ -62,7 +63,7 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
                         ),
                       )
                     : const Text(
-                        'Reminder',
+                        'Today\'s Meds',
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.w500,
@@ -101,19 +102,11 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 80.0),
-                child: ListView(
-                  children: [
-                    // snapshot.data == false
-                    //     ? Scrollbar(
-                    //         child: SingleChildScrollView(
-                    //             child: EditReminderScreenContent()),
-                    //       )
-                    //     :
-                    EditReminderDetails()
-                  ],
-                ),
-              ),
+                  padding: const EdgeInsets.only(
+                    top: 80.0,
+                    bottom: 40,
+                  ),
+                  child: EditReminderDetails()),
             ],
           ),
         );

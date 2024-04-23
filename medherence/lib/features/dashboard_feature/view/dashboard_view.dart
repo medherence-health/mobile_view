@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:medherence/features/auth/views/login_view.dart';
-import 'package:medherence/features/reminder/view/reminder_screen.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../home/view/home_view.dart';
+import '../../monitor/view/reminder_screen.dart';
 import '../view_model/dashboard_view_model.dart';
 import '../widgets/bottom_nav_bar.dart';
 import 'menu.dart';

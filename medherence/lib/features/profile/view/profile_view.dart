@@ -103,6 +103,7 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                         ),
                       ),
                     ),
+                    SizedBox(height: 10),
                   ],
                 ),
               ),
