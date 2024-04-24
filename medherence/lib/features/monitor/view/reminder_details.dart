@@ -153,12 +153,6 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                                         .clearCheckedItems(); // Clear checked count and uncheck all items
                                     checkedCount = 0; // Reset the checked count
                                   });
-
-                                  // scheduleNotification(
-                                  //   context,
-                                  //   'Medication usage',
-                                  //   'Linospiril',
-                                  // );
                                 },
                               ),
                               width: SizeMg.screenWidth,
@@ -173,22 +167,6 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
           ),
         );
       },
-    );
-  }
-
-  void scheduleNotification(
-    BuildContext context,
-    String regimenName,
-    String dosage,
-  ) {
-    final notificationService =
-        Provider.of<NotificationService>(context, listen: false);
-    final now = DateTime.now();
-    final scheduledTime =
-        now.add(Duration(seconds: 5)); // Example: Schedule after 5 seconds
-    notificationService.showScheduledNotification(
-      regimenName,
-      dosage,
     );
   }
 
@@ -282,3 +260,18 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
     );
   }
 }
+  // void scheduleNotification(
+  //   BuildContext context,
+  //   String regimenName,
+  //   String dosage,
+  // ) {
+  //   final notificationService =
+  //       Provider.of<NotificationService>(context, listen: false);
+  //   final now = DateTime.now();
+  //   final scheduledTime =
+  //       now.add(Duration(seconds: 5)); // Example: Schedule after 5 seconds
+  //   notificationService.showScheduledNotification(
+  //     regimenName,
+  //     dosage,
+  //   );
+  // }
