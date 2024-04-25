@@ -1,4 +1,3 @@
-
 class RegimenDescriptionModel {
   final String medicationForm;
   final String dose;
@@ -15,4 +14,26 @@ class RegimenDescriptionModel {
     required this.duration,
     required this.notes,
   });
+
+  factory RegimenDescriptionModel.fromJson(Map<String, dynamic> json) {
+    return RegimenDescriptionModel(
+      medicationForm: json['medicationForm'],
+      dose: json['dose'],
+      pillTime: json['pillTime'],
+      pillFrequency: json['pillFrequency'],
+      duration: json['duration'],
+      notes: json['notes'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'medicationForm': medicationForm,
+      'dose': dose,
+      'pillTime': pillTime,
+      'pillFrequency': pillFrequency,
+      'duration': duration,
+      'notes': notes,
+    };
+  }
 }

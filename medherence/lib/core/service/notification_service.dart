@@ -1,117 +1,140 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:medherence/core/model/models/history_model.dart';
 import 'package:medherence/core/utils/image_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/timezone.dart' as tz;
 
-class NotificationService with ChangeNotifier {
-  static final _notificationsPlugin = FlutterLocalNotificationsPlugin();
-  // final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  //     FlutterLocalNotificationsPlugin();
+import '../../features/monitor/view/alarm_monitor.dart';
+import '../model/simulated_data/simulated_values.dart';
 
-  // Future<void> initializeNotifications() async {
-  //   final AndroidInitializationSettings initializationSettingsAndroid =
-  //       AndroidInitializationSettings('app_icon');
-  //   final InitializationSettings initializationSettings =
-  //       InitializationSettings(
-  //     android: initializationSettingsAndroid,
-  //   );
-  //   await flutterLocalNotificationsPlugin.initialize(
-  //     initializationSettings,
-  // onSelectNotification: (String? payload) async {
-  //   // Navigate to the AlarmMonitor screen when notification is tapped
+class NotificationService extends ChangeNotifier {
+  late SharedPreferences preferences;
 
-  // },
-  //   );
-  // }
+  List<HistoryModel> modelist = generateSimulatedData();
 
-  // Future<void> scheduleAlarm(DateTime alarmTime) async {
-  //   final AndroidNotificationDetails androidPlatformChannelSpecifics =
-  //       AndroidNotificationDetails(
-  //     'alarm_channel_id',
-  //     'Alarm notifications',
-  //     'Shows alarm notifications',
-  //     importance: Importance.max,
-  //     priority: Priority.high,
-  //     sound: RawResourceAndroidNotificationSound('alarm_sound'),
-  //   );
-  //   final NotificationDetails platformChannelSpecifics = NotificationDetails(
-  //     android: androidPlatformChannelSpecifics,
-  //   );
-  //   await flutterLocalNotificationsPlugin.zonedSchedule(
-  //     0,
-  //     'Alarm',
-  //     'Time to take your medication!',
-  //     tz.TZDateTime.from(alarmTime, tz.local),
-  //     platformChannelSpecifics,
-  //     androidAllowWhileIdle: true,
-  //     uiLocalNotificationDateInterpretation:
-  //         UILocalNotificationDateInterpretation.absoluteTime,
-  //   );
-  // }
+  List<String> listofstring = [];
 
-  Future<void> initialize() async {
-    const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings(
-            '@mipmap/ic_launcher'); // Replace with your icon
+  FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
 
-    final InitializationSettings initializationSettings =
-        InitializationSettings(
-      android: initializationSettingsAndroid,
-    );
+  late BuildContext context;
+  GetData() async {
+    preferences = await SharedPreferences.getInstance();
+    List<String>? cominglist = await preferences.getStringList("data");
+    if (cominglist == null) {
+    } else {
+      modelist =
+          cominglist.map((e) => HistoryModel.fromJson(json.decode(e))).toList();
+      notifyListeners();
+    }
+  }
 
-    await _notificationsPlugin.initialize(initializationSettings);
+  SetData() {
+    List<String> listofstring =
+        modelist.map((e) => json.encode(e.toJson())).toList();
+    preferences.setStringList("data", listofstring);
     notifyListeners();
   }
 
-  Future<void> showScheduledNotification(
-    String regimenName,
-    String dosage,
-  ) async {
-    const AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails('channel_id', 'channel_name',
-            importance: Importance.high, priority: Priority.high);
-    final NotificationDetails notificationDetails = NotificationDetails(
-      android: androidNotificationDetails,
-    );
-    // Construct the alarm details
-    final now = tz.TZDateTime.now(tz.local);
-    final scheduledTime = now.add(const Duration(seconds: 5));
+  Future<void> init() async {
+    var androidInitilize = AndroidInitializationSettings('@mipmap/ic_launcher');
+    var iOSinitilize = DarwinInitializationSettings();
+    var initilizationsSettings =
+        InitializationSettings(android: androidInitilize, iOS: iOSinitilize);
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    await flutterLocalNotificationsPlugin!.initialize(initilizationsSettings,
+        onDidReceiveNotificationResponse: onDidReceiveNotificationResponse);
+    // Schedule alarms from saved reminders
+    await scheduleAlarmsFromSavedReminders();
+  }
 
-    await _notificationsPlugin.zonedSchedule(
-      0, // Notification ID (unique for each notification)
-      'Medication Reminder', // Notification Title
-      'It\'s time to take your $regimenName medication. Dosage: $dosage', // Notification Body
-      scheduledTime, // Scheduled time
+  void onDidReceiveNotificationResponse(
+    NotificationResponse notificationResponse,
+  ) async {
+    final String? payload = notificationResponse.payload;
+    if (notificationResponse.payload != null) {
+      debugPrint('notification payload: $payload');
+      // Parse the payload to get the ID of the reminder
+      int reminderId = int.parse(payload!); // Assuming the payload is the ID
+      // Find the corresponding HistoryModel instance
+      HistoryModel? model = modelist.firstWhere(
+        (element) => element.id == reminderId,
+      );
+      if (model != null) {
+        // If the model is found, navigate to the AlarmMonitor with the corresponding data
+        await Navigator.pushReplacement(
+          context,
+          MaterialPageRoute<void>(
+            builder: (context) => AlarmMonitor(
+              subtitle: model.message,
+              regimen: model.regimenName,
+            ),
+          ),
+        );
+      }
+    }
+  }
+
+  ShowNotification(HistoryModel model) async {
+    const AndroidNotificationDetails androidNotificationDetails =
+        AndroidNotificationDetails(
+      'your channel id',
+      'your channel name',
+      channelDescription: 'your channel description',
+      importance: Importance.max,
+      priority: Priority.high,
+      ticker: 'ticker',
+    );
+
+    const NotificationDetails notificationDetails =
+        NotificationDetails(android: androidNotificationDetails);
+    await flutterLocalNotificationsPlugin!.show(
+      model.id, // Use the ID of the HistoryModel as the notification ID
+      model.regimenName, // Use the regimen name as the notification title
+      model.message,
       notificationDetails,
-      androidAllowWhileIdle: true,
-      payload: 'data',
+      payload: model.id.toString(),
+    );
+  }
+
+  Future<void> scheduleAlarmsFromSavedReminders() async {
+    for (var reminder in modelist) {
+      scheduleNotification(reminder);
+    }
+  }
+
+  Future<void> scheduleNotification(HistoryModel reminder) async {
+    int notificationId = reminder.id;
+    DateTime dateTime = reminder.date;
+
+    int newTime =
+        dateTime.millisecondsSinceEpoch - DateTime.now().millisecondsSinceEpoch;
+
+    await flutterLocalNotificationsPlugin!.zonedSchedule(
+      notificationId,
+      'Alarm',
+      reminder.message,
+      tz.TZDateTime.now(tz.local).add(Duration(milliseconds: newTime)),
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'your channel id',
+          'your channel name',
+          channelDescription: 'your channel description',
+          sound: RawResourceAndroidNotificationSound('alarm'),
+          autoCancel: false,
+          playSound: true,
+          priority: Priority.max,
+        ),
+      ),
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
-    ); // Optional data to pass to the screen
-    notifyListeners();
+    );
   }
 
-  // Future<void> showScheduledNotification(
-  //   String regimen,
-  //   DateTime scheduledTime,
-  // ) async {
-  //   const AndroidNotificationDetails androidNotificationDetails =
-  //       AndroidNotificationDetails('channel_id', 'channel_name',
-  //           importance: Importance.high, priority: Priority.high);
-  //   final NotificationDetails notificationDetails = NotificationDetails(
-  //     android: androidNotificationDetails,
-  //   );
-
-  //   await _notificationsPlugin.zonedSchedule(
-  //     0, // Notification ID (unique for each notification)
-  //     'Medication Reminder', // Notification Title
-  //     'It\'s time to take your $regimen medication.', // Notification Body
-  //     tz.TZDateTime.from(scheduledTime, tz.local), // Scheduled time
-  //     notificationDetails,
-  //     androidAllowWhileIdle: true,
-  //     payload: 'data',
-  //     uiLocalNotificationDateInterpretation:
-  //         UILocalNotificationDateInterpretation.absoluteTime,
-  //   ); // Optional data to pass to the screen
-  // }
+  Future<void> cancelNotification(int notificationId) async {
+    await flutterLocalNotificationsPlugin!.cancel(notificationId);
+  }
 }

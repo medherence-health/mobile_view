@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:medherence/core/service/notification_service.dart';
 import 'package:medherence/core/utils/size_manager.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/utils/color_utils.dart';
@@ -157,6 +159,8 @@ class _HomeViewState extends State<HomeView> {
       //   context,
       // );
       checkPasswordChangePrompt();
+      context.read<NotificationService>().GetData();
+      context.read<NotificationService>().scheduleAlarmsFromSavedReminders();
     });
   }
 

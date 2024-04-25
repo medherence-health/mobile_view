@@ -41,7 +41,6 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
         List<HistoryModel> regimenList = reminderState.regimenList;
         int checkedCount = reminderState.getCheckedCount();
         bool showButton = checkedCount > 0;
-
         return Container(
           width: SizeMg.screenWidth,
           height: MediaQuery.of(context).size.height,
@@ -175,18 +174,6 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
     HistoryModel regimen,
     ReminderState state,
   ) {
-    final random = math.Random();
-    final int randomHour = random.nextInt(12) + 1;
-    final int randomMinute = random.nextInt(60);
-    final String formattedTime = DateFormat('hh:mm a').format(
-      DateTime(
-        DateTime.now().year,
-        DateTime.now().month,
-        DateTime.now().day,
-        randomHour,
-        randomMinute,
-      ),
-    );
     return Container(
       width: SizeMg.screenWidth,
       decoration: BoxDecoration(
@@ -256,7 +243,7 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                   bottom: 8,
                 ),
                 child: Text(
-                  formattedTime,
+                  regimen.time,
                   style: TextStyle(
                     color: AppColors.navBarColor,
                     fontSize: SizeMg.text(16),

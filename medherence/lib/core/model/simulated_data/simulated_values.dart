@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -28,7 +28,6 @@ List<HistoryModel> generateSimulatedData() {
       default:
         icon = Icons.local_hospital;
     }
-
     // Select a random regimen description
     RegimenDescriptionModel regimenDescription =
         regimenDescriptions[index % regimenDescriptions.length];
@@ -45,10 +44,25 @@ List<HistoryModel> generateSimulatedData() {
     // Generate random dosages
     List<String> dosages = ['1 Capsule', '2 Tablets', '1 Syrup'];
     String randomDosage = dosages[index % 3];
+    final random = math.Random();
+    final int randomHour = random.nextInt(12) + 1;
+    final int randomMinute = random.nextInt(60);
+    final String formattedTime = DateFormat('hh:mm a').format(
+      DateTime(
+        DateTime.now().year,
+        DateTime.now().month,
+        DateTime.now().day,
+        randomHour,
+        randomMinute,
+      ),
+    );
+    // Generate random reminder information
+    int id = index + 1; // Example: 1, 2, 3, ...
+    String message = 'Take $randomDosage of $randomRegimenName medication';
 
     DateTime generateRandomDate() {
       final now = DateTime.now();
-      final random = Random();
+      final random = math.Random();
 
       // Generate random year within a specific range (adjust as needed)
       final year =
@@ -71,6 +85,9 @@ List<HistoryModel> generateSimulatedData() {
       date: generateRandomDate(),
       regimenDescription:
           regimenDescription, // Include regimen description in HistoryModel
+      id: id, // Include id field
+      time: formattedTime, // Include time field
+      message: message,
     );
   });
 }
