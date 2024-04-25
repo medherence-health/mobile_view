@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 
 import 'package:medherence/features/splashscreen/splashscreen.dart';
 import 'core/service/notification_service.dart';
@@ -13,8 +14,8 @@ import 'package:timezone/timezone.dart' as tz;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  initializeTimeZones();
-  NotificationService().initialize();
+  // initializeTimeZones();
+  // NotificationService().initialize();
   runApp(const MyApp());
 }
 

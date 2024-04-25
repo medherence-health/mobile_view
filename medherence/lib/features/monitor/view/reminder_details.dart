@@ -1,6 +1,7 @@
-import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:medherence/core/shared_widget/buttons.dart';
 import 'package:provider/provider.dart';
@@ -63,7 +64,6 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                       context,
                       regimen,
                       reminderState,
-                      '12:00pm',
                     );
                   },
                 ),
@@ -174,8 +174,19 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
     BuildContext context,
     HistoryModel regimen,
     ReminderState state,
-    String time,
   ) {
+    final random = math.Random();
+    final int randomHour = random.nextInt(12) + 1;
+    final int randomMinute = random.nextInt(60);
+    final String formattedTime = DateFormat('hh:mm a').format(
+      DateTime(
+        DateTime.now().year,
+        DateTime.now().month,
+        DateTime.now().day,
+        randomHour,
+        randomMinute,
+      ),
+    );
     return Container(
       width: SizeMg.screenWidth,
       decoration: BoxDecoration(
@@ -245,7 +256,7 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                   bottom: 8,
                 ),
                 child: Text(
-                  time,
+                  formattedTime,
                   style: TextStyle(
                     color: AppColors.navBarColor,
                     fontSize: SizeMg.text(16),
@@ -260,18 +271,3 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
     );
   }
 }
-  // void scheduleNotification(
-  //   BuildContext context,
-  //   String regimenName,
-  //   String dosage,
-  // ) {
-  //   final notificationService =
-  //       Provider.of<NotificationService>(context, listen: false);
-  //   final now = DateTime.now();
-  //   final scheduledTime =
-  //       now.add(Duration(seconds: 5)); // Example: Schedule after 5 seconds
-  //   notificationService.showScheduledNotification(
-  //     regimenName,
-  //     dosage,
-  //   );
-  // }
