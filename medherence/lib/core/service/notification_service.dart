@@ -22,23 +22,24 @@ class NotificationService extends ChangeNotifier {
   FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
 
   late BuildContext context;
-  GetData() async {
-    preferences = await SharedPreferences.getInstance();
-    List<String>? cominglist = await preferences.getStringList("data");
-    if (cominglist == null) {
-    } else {
-      modelList =
-          cominglist.map((e) => HistoryModel.fromJson(json.decode(e))).toList();
-      notifyListeners();
-    }
-  }
+  // GetData() async {
+  //   preferences = await SharedPreferences.getInstance();
+  //   List<String>? cominglist = await preferences.getStringList("data");
+  //   if (cominglist == null) {
+  //   } else {
+  //     modelList =
+  //         cominglist.map((e) => HistoryModel.fromJson(json.decode(e))).toList();
+  //     debugPrint('Model list is $modelList');
+  //     notifyListeners();
+  //   }
+  // }
 
-  SetData() {
-    List<String> listofstring =
-        modelList.map((e) => json.encode(e.toJson())).toList();
-    preferences.setStringList("data", listofstring);
-    notifyListeners();
-  }
+  // SetData() {
+  //   List<String> listofstring =
+  //       modelList.map((e) => json.encode(e.toJson())).toList();
+  //   preferences.setStringList("data", listofstring);
+  //   notifyListeners();
+  // }
 
   Future<void> init() async {
     var androidInitilize = AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -99,22 +100,29 @@ class NotificationService extends ChangeNotifier {
       notificationDetails,
       payload: model.id.toString(),
     );
+    notifyListeners();
   }
 
   Future<void> scheduleAlarmsFromSavedReminders() async {
     for (var reminder in modelList) {
       scheduleNotification(reminder);
+      debugPrint('reminder in the model list is : $reminder');
     }
+    notifyListeners();
   }
 
   Future<void> scheduleNotification(HistoryModel reminder) async {
     int notificationId = reminder.id;
-    DateTime dateTime = reminder.date;
 
-    int newTime =
-        dateTime.millisecondsSinceEpoch - DateTime.now().millisecondsSinceEpoch;
-
-    await flutterLocalNotificationsPlugin!.zonedSchedule(
+    DateTime futureDateTime = reminder.date; // Schedule for tomorrow
+    if (futureDateTime.isBefore(now)) {
+      futureDateTime = futureDateTime.add(const Duration(days: 1));
+    }
+    int newTime = futureDateTime.millisecondsSinceEpoch -
+        DateTime.now().millisecondsSinceEpoch;
+    debugPrint('future time is: $futureDateTime');
+    debugPrint('The new time is: $newTime');
+    await flutterLocalNotificationsPlugin?.zonedSchedule(
       notificationId,
       'Alarm',
       reminder.message,
@@ -134,6 +142,7 @@ class NotificationService extends ChangeNotifier {
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
     );
+    notifyListeners();
   }
 
   Future<void> cancelNotification(int notificationId) async {

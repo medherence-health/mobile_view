@@ -24,13 +24,9 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
   // dynamic time;
 
 // Initialize timezone data
-  void initializeTimeZones() {
-    tz.initializeTimeZones();
-  }
 
   @override
   void initState() {
-    initializeTimeZones();
     super.initState();
   }
 
@@ -69,23 +65,38 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
               ),
               Align(
                 alignment: Alignment.bottomRight,
-                child: InkWell(
-                  onTap: () {
-                    // Handle select all logic here
-                    reminderState.selectAll();
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 25.0),
-                    child: Text(
-                      'Select All',
-                      textAlign: TextAlign.end,
-                      style: TextStyle(
-                        color: AppColors.pillIconColor,
-                        fontSize: SizeMg.text(14),
-                        fontWeight: FontWeight.w400,
+                child: Column(
+                  children: [
+                    Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 15.0),
+                      child: ElevatedButton(
+                          onPressed: () {
+                            context
+                                .read<NotificationService>()
+                                .scheduleAlarmsFromSavedReminders();
+                          },
+                          child: Text("Set Alarm")),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        // Handle select all logic here
+                        reminderState.selectAll();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 25.0),
+                        child: Text(
+                          'Select All',
+                          textAlign: TextAlign.end,
+                          style: TextStyle(
+                            color: AppColors.pillIconColor,
+                            fontSize: SizeMg.text(14),
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
               ),
               if (showButton)

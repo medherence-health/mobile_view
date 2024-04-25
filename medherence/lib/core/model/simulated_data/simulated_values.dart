@@ -47,34 +47,31 @@ List<HistoryModel> generateSimulatedData() {
     final random = math.Random();
     final int randomHour = random.nextInt(12) + 1;
     final int randomMinute = random.nextInt(60);
-    final String formattedTime = DateFormat('hh:mm a').format(
-      DateTime(
-        DateTime.now().year,
-        DateTime.now().month,
-        DateTime.now().day,
-        randomHour,
-        randomMinute,
-      ),
-    );
+    final now = DateTime.now();
+    final oneMinuteFromNow =
+        now.add(const Duration(minutes: 1)); // Add 1 minute
+    final String formattedTime = DateFormat('hh:mm a').format(oneMinuteFromNow);
+    // final String formattedTime = DateFormat('hh:mm a').format(
+    //   DateTime(
+    //     DateTime.now().year,
+    //     DateTime.now().month,
+    //     DateTime.now().day,
+    //     randomHour,
+    //     randomMinute,
+    //   ),
+    // );
     // Generate random reminder information
     int id = index + 1; // Example: 1, 2, 3, ...
     String message = 'Take $randomDosage of $randomRegimenName medication';
 
     DateTime generateRandomDate() {
       final now = DateTime.now();
-      final random = math.Random();
 
-      // Generate random year within a specific range (adjust as needed)
-      final year =
-          now.year + random.nextInt(5) - 2; // -2 to +2 years from current year
+      // Generate a random number of days in the future (adjust as needed)
+      final int futureDays =
+          random.nextInt(365) + 1; // 1 to 365 days in the future
 
-      // Generate random month within a specific range (adjust as needed)
-      final month = random.nextInt(12) + 1; // 1 to 12 (inclusive)
-
-      // Generate a random day within the chosen month
-      final day = random.nextInt(DateTime(year, month, 0).day) +
-          1; // 1 to last day of chosen month
-      return DateTime(year, month, day);
+      return now.add(Duration(days: futureDays));
     }
 
 // Usage in your HistoryModel constructor:
