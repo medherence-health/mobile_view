@@ -9,6 +9,7 @@ import 'package:timezone/timezone.dart' as tz;
 
 import '../../features/monitor/view/alarm_monitor.dart';
 import '../model/simulated_data/simulated_values.dart';
+import '../../features/dashboard_feature/view/dashboard_view.dart';
 
 class NotificationService extends ChangeNotifier {
   late SharedPreferences preferences;
@@ -54,31 +55,41 @@ class NotificationService extends ChangeNotifier {
   }
 
   void onDidReceiveNotificationResponse(
-    NotificationResponse notificationResponse,
-  ) async {
+      NotificationResponse notificationResponse) async {
     final String? payload = notificationResponse.payload;
     if (notificationResponse.payload != null) {
       debugPrint('notification payload: $payload');
-      // Parse the payload to get the ID of the reminder
-      int reminderId = int.parse(payload!); // Assuming the payload is the ID
-      // Find the corresponding HistoryModel instance
-      HistoryModel? model = modelList.firstWhere(
-        (element) => element.id == reminderId,
-      );
-      if (model != null) {
-        // If the model is found, navigate to the AlarmMonitor with the corresponding data
-        await Navigator.pushReplacement(
-          context,
-          MaterialPageRoute<void>(
-            builder: (context) => AlarmMonitor(
-              subtitle: model.message,
-              regimen: model.regimenName,
-            ),
-          ),
-        );
-      }
     }
+    await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => DashboardView()));
   }
+
+  // void onDidReceiveNotificationResponse(
+  //   NotificationResponse notificationResponse,
+  // ) async {
+  //   final String? payload = notificationResponse.payload;
+  //   if (notificationResponse.payload != null) {
+  //     debugPrint('notification payload: $payload');
+  //     // Parse the payload to get the ID of the reminder
+  //     int reminderId = int.parse(payload!); // Assuming the payload is the ID
+  //     // Find the corresponding HistoryModel instance
+  //     HistoryModel? model = modelList.firstWhere(
+  //       (element) => element.id == reminderId,
+  //     );
+  //     if (model != null) {
+  //       // If the model is found, navigate to the AlarmMonitor with the corresponding data
+  //       await Navigator.pushReplacement(
+  //         context,
+  //         MaterialPageRoute<void>(
+  //           builder: (context) => AlarmMonitor(
+  //             subtitle: model.message,
+  //             regimen: model.regimenName,
+  //           ),
+  //         ),
+  //       );
+  //     }
+  //   }
+  // }
 
   ShowNotification(HistoryModel model) async {
     const AndroidNotificationDetails androidNotificationDetails =
