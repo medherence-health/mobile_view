@@ -13,7 +13,9 @@ import '../model/simulated_data/simulated_values.dart';
 class NotificationService extends ChangeNotifier {
   late SharedPreferences preferences;
 
-  List<HistoryModel> modelist = generateSimulatedData();
+  List<HistoryModel> modelList = generateSimulatedData();
+
+  // List<HistoryModel> get modelList => modelList;
 
   List<String> listofstring = [];
 
@@ -25,7 +27,7 @@ class NotificationService extends ChangeNotifier {
     List<String>? cominglist = await preferences.getStringList("data");
     if (cominglist == null) {
     } else {
-      modelist =
+      modelList =
           cominglist.map((e) => HistoryModel.fromJson(json.decode(e))).toList();
       notifyListeners();
     }
@@ -33,7 +35,7 @@ class NotificationService extends ChangeNotifier {
 
   SetData() {
     List<String> listofstring =
-        modelist.map((e) => json.encode(e.toJson())).toList();
+        modelList.map((e) => json.encode(e.toJson())).toList();
     preferences.setStringList("data", listofstring);
     notifyListeners();
   }
@@ -59,7 +61,7 @@ class NotificationService extends ChangeNotifier {
       // Parse the payload to get the ID of the reminder
       int reminderId = int.parse(payload!); // Assuming the payload is the ID
       // Find the corresponding HistoryModel instance
-      HistoryModel? model = modelist.firstWhere(
+      HistoryModel? model = modelList.firstWhere(
         (element) => element.id == reminderId,
       );
       if (model != null) {
@@ -100,7 +102,7 @@ class NotificationService extends ChangeNotifier {
   }
 
   Future<void> scheduleAlarmsFromSavedReminders() async {
-    for (var reminder in modelist) {
+    for (var reminder in modelList) {
       scheduleNotification(reminder);
     }
   }
