@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:medherence/core/shared_widget/buttons.dart';
 import 'package:medherence/core/utils/color_utils.dart';
 import 'package:medherence/core/utils/image_utils.dart';
+import 'package:medherence/features/dashboard_feature/view/dashboard_view.dart';
 
 import '../../../core/utils/size_manager.dart';
 
@@ -57,7 +58,7 @@ class _AlarmMonitorState extends State<AlarmMonitor> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: AppColors.black,
-                  fontSize: SizeMg.text(20),
+                  fontSize: SizeMg.text(22),
                 ),
               ),
               Text(
@@ -70,7 +71,16 @@ class _AlarmMonitorState extends State<AlarmMonitor> {
               ),
               Spacer(),
               PrimaryButton(
-                buttonConfig: ButtonConfig(text: 'Take Regimen', action: () {}),
+                buttonConfig: ButtonConfig(
+                  text: 'Take Regimen',
+                  action: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const DashboardView()),
+                    );
+                  },
+                ),
                 width: SizeMg.screenWidth,
               ),
               SizedBox(height: SizeMg.height(15)),
