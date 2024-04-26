@@ -100,6 +100,9 @@ class NotificationService extends ChangeNotifier {
       channelDescription: 'your channel description',
       importance: Importance.max,
       priority: Priority.high,
+      sound: RawResourceAndroidNotificationSound('alarm'),
+      autoCancel: false,
+      playSound: true,
       ticker: 'ticker',
     );
 

@@ -73,9 +73,16 @@ List<HistoryModel> generateSimulatedData() {
 
     //   return now.add(Duration(days: futureDays));
     // }
-    final List<int> desiredHours = [9, 13, 17]; // Example: 9 AM, 1 PM, 5 PM
+    final List<int> desiredHours = [
+      11,
+      13,
+      17,
+      20
+    ]; // Example: 9 AM, 1 PM, 5 PM
     final List<int> desiredMinutes = [
       0,
+      10,
+      15,
       30
     ]; // Example: 0 minutes past the hour, 30 minutes past the hour
 
