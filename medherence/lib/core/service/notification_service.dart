@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/intl.dart';
 import 'package:medherence/core/model/models/history_model.dart';
 import 'package:medherence/core/utils/image_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -91,7 +92,7 @@ class NotificationService extends ChangeNotifier {
   //   }
   // }
 
-  ShowNotification(HistoryModel model) async {
+  ShowNotification() async {
     const AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails(
       'your channel id',
@@ -105,11 +106,11 @@ class NotificationService extends ChangeNotifier {
     const NotificationDetails notificationDetails =
         NotificationDetails(android: androidNotificationDetails);
     await flutterLocalNotificationsPlugin!.show(
-      model.id, // Use the ID of the HistoryModel as the notification ID
-      model.regimenName, // Use the regimen name as the notification title
-      model.message,
+      0, // Use the ID of the HistoryModel as the notification ID
+      'plain title', // Use the regimen name as the notification title
+      'plain body',
       notificationDetails,
-      payload: model.id.toString(),
+      payload: 'item x',
     );
     notifyListeners();
   }
@@ -124,13 +125,41 @@ class NotificationService extends ChangeNotifier {
 
   Future<void> scheduleNotification(HistoryModel reminder) async {
     int notificationId = reminder.id;
+    // Get current date and time
+    final now = DateTime.now();
 
-    DateTime futureDateTime = reminder.date; // Schedule for tomorrow
-    if (futureDateTime.isBefore(now)) {
-      futureDateTime = futureDateTime.add(const Duration(days: 1));
+    // Calculate target time (desired minutes from now)
+    final int targetMinutesFromNow =
+        2; // Replace with desired minutes (e.g., 1 or 2)
+    var targetTime = now.add(Duration(minutes: targetMinutesFromNow));
+
+    // Check for past time (optional)
+    if (targetTime.isBefore(now)) {
+      targetTime = targetTime.add(const Duration(days: 1));
     }
+    final futureDateTime = targetTime;
     int newTime = futureDateTime.millisecondsSinceEpoch -
         DateTime.now().millisecondsSinceEpoch;
+//     final String formattedTimeString = DateFormat('hh:mm a').format(DateTime(
+//       DateTime.now().year,
+//       DateTime.now().month,
+//       DateTime.now().day,
+//       reminder.time.hour,
+//       reminder.time.minute,
+//     ));
+
+// // Optional: Parse formatted string back to DateTime (for readability)
+//     DateTime scheduledTime;
+//     try {
+//       scheduledTime = DateTime.parse(formattedTimeString);
+//     } catch (e) {
+//       // Handle parsing error
+//       return;
+//     }
+
+// // Calculate milliseconds difference
+//     final int addNewTime = scheduledTime.millisecondsSinceEpoch -
+//         DateTime.now().millisecondsSinceEpoch;
     debugPrint('future time is: $futureDateTime');
     debugPrint('The new time is: $newTime');
     await flutterLocalNotificationsPlugin?.zonedSchedule(

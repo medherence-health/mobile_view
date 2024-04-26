@@ -9,7 +9,7 @@ class HistoryModel {
   RegimenDescriptionModel regimenDescription;
   // Fields representing reminder information
   int id; // Unique identifier for the reminder
-  String time; // Time of the reminder
+  TimeOfDay time; // Time of the reminder
   String message; // Message associated with the reminder
 
   HistoryModel({
@@ -32,7 +32,7 @@ class HistoryModel {
       regimenDescription:
           RegimenDescriptionModel.fromJson(json['regimenDescription']),
       id: json['id'],
-      time: json['time'],
+      time: TimeOfDay.fromDateTime(DateTime.parse(json['time'])),
       message: json['message'],
     );
   }
@@ -45,7 +45,7 @@ class HistoryModel {
       'date': date.toIso8601String(),
       'regimenDescription': regimenDescription.toJson(),
       'id': id,
-      'time': time,
+      'time': '${time.hour}:${time.minute}', // Convert TimeOfDay to String
       'message': message,
     };
   }

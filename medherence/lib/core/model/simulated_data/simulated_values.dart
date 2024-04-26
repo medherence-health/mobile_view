@@ -64,26 +64,50 @@ List<HistoryModel> generateSimulatedData() {
     int id = index + 1; // Example: 1, 2, 3, ...
     String message = 'Take $randomDosage of $randomRegimenName medication';
 
-    DateTime generateRandomDate() {
-      final now = DateTime.now();
+    // DateTime generateRandomDate() {
+    //   final now = DateTime.now();
 
-      // Generate a random number of days in the future (adjust as needed)
-      final int futureDays =
-          random.nextInt(365) + 1; // 1 to 365 days in the future
+    //   // Generate a random number of days in the future (adjust as needed)
+    //   final int futureDays =
+    //       random.nextInt(365) + 1; // 1 to 365 days in the future
 
-      return now.add(Duration(days: futureDays));
-    }
+    //   return now.add(Duration(days: futureDays));
+    // }
+    final List<int> desiredHours = [9, 13, 17]; // Example: 9 AM, 1 PM, 5 PM
+    final List<int> desiredMinutes = [
+      0,
+      30
+    ]; // Example: 0 minutes past the hour, 30 minutes past the hour
+
+    final int randomHourIndex = random.nextInt(desiredHours.length);
+    final int randomMinuteIndex = random.nextInt(desiredMinutes.length);
+
+    final int desiredHour = desiredHours[randomHourIndex];
+    final int desiredMinute = desiredMinutes[randomMinuteIndex];
+
+    // final now = DateTime.now();
+    final notificationTime =
+        TimeOfDay(hour: desiredHour, minute: desiredMinute);
+
+    // Combine date and time for notification
+    final futureDateTime = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      notificationTime.hour,
+      notificationTime.minute,
+    );
 
 // Usage in your HistoryModel constructor:
     return HistoryModel(
       icon: icon,
       regimenName: randomRegimenName,
       dosage: randomDosage,
-      date: generateRandomDate(),
+      date: futureDateTime,
       regimenDescription:
           regimenDescription, // Include regimen description in HistoryModel
       id: id, // Include id field
-      time: formattedTime, // Include time field
+      time: notificationTime, // Include time field
       message: message,
     );
   });

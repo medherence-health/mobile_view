@@ -68,16 +68,14 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                 child: Column(
                   children: [
                     Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 15.0),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            context
-                                .read<NotificationService>()
-                                .scheduleAlarmsFromSavedReminders();
-                          },
-                          child: Text("Set Alarm")),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(right: 15.0),
+                    //   child: ElevatedButton(
+                    //       onPressed: () {
+
+                    //       },
+                    //       child: Text("Set Alarm")),
+                    // ),
                     InkWell(
                       onTap: () {
                         // Handle select all logic here
@@ -254,7 +252,13 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                   bottom: 8,
                 ),
                 child: Text(
-                  regimen.time,
+                  DateFormat('hh:mm a').format(DateTime(
+                    DateTime.now().year,
+                    DateTime.now().month,
+                    DateTime.now().day,
+                    regimen.time.hour,
+                    regimen.time.minute,
+                  )),
                   style: TextStyle(
                     color: AppColors.navBarColor,
                     fontSize: SizeMg.text(16),
