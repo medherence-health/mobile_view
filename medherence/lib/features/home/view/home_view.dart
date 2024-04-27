@@ -159,7 +159,7 @@ class _HomeViewState extends State<HomeView> {
       //   context,
       // );
       checkPasswordChangePrompt();
-      context.read<NotificationService>().scheduleAlarmsFromSavedReminders();
+      // context.read<NotificationService>().scheduleAlarmsFromSavedReminders();
     });
   }
 

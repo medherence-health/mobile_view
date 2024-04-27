@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -93,20 +94,28 @@ class NotificationService extends ChangeNotifier {
   // }
 
   ShowNotification() async {
-    const AndroidNotificationDetails androidNotificationDetails =
+    AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails(
-      'your channel id',
-      'your channel name',
-      channelDescription: 'your channel description',
+      'Alarm channel',
+      'Alarms ',
+      channelDescription: 'Alarm Notification',
       importance: Importance.max,
       priority: Priority.high,
-      sound: RawResourceAndroidNotificationSound('alarm'),
+      sound: const RawResourceAndroidNotificationSound('alarm'),
       autoCancel: false,
       playSound: true,
       ticker: 'ticker',
+      icon: '@mipmap/ic_launcher',
+      audioAttributesUsage: AudioAttributesUsage.alarm,
+      enableVibration: true,
+      vibrationPattern: Int64List.fromList([0, 1000, 500, 1000]),
+      fullScreenIntent: true,
+      additionalFlags: Int32List.fromList(<int>[
+        0x00000001, // FLAG_INSISTENT (Requires VIBRATE permission)
+      ]),
     );
 
-    const NotificationDetails notificationDetails =
+    NotificationDetails notificationDetails =
         NotificationDetails(android: androidNotificationDetails);
     await flutterLocalNotificationsPlugin!.show(
       0, // Use the ID of the HistoryModel as the notification ID
@@ -122,6 +131,7 @@ class NotificationService extends ChangeNotifier {
     for (var reminder in modelList) {
       scheduleNotification(reminder);
       debugPrint('reminder in the model list is : $reminder');
+      debugPrint('alarms scheduled successfully!!!!!!');
     }
     notifyListeners();
   }
@@ -130,7 +140,6 @@ class NotificationService extends ChangeNotifier {
     int notificationId = reminder.id;
     // Get current date and time
     final now = DateTime.now();
-
     // Calculate target time (desired minutes from now)
     final int targetMinutesFromNow =
         2; // Replace with desired minutes (e.g., 1 or 2)
@@ -170,7 +179,7 @@ class NotificationService extends ChangeNotifier {
       'Alarm',
       reminder.message,
       tz.TZDateTime.now(tz.local).add(Duration(milliseconds: newTime)),
-      const NotificationDetails(
+      NotificationDetails(
         android: AndroidNotificationDetails(
           'your channel id',
           'your channel name',
@@ -179,9 +188,18 @@ class NotificationService extends ChangeNotifier {
           autoCancel: false,
           playSound: true,
           priority: Priority.max,
+          icon: '@mipmap/ic_launcher',
+          audioAttributesUsage: AudioAttributesUsage.alarm,
+          enableVibration: true,
+          vibrationPattern: Int64List.fromList([0, 1000, 500, 1000]),
+          fullScreenIntent: true,
+          additionalFlags: Int32List.fromList(<int>[
+            0x00000001, // FLAG_INSISTENT (Requires VIBRATE permission)
+          ]),
         ),
       ),
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      androidScheduleMode: AndroidScheduleMode.alarmClock,
+      // androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
     );
