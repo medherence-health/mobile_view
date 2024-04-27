@@ -153,13 +153,14 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       // buildHistorySheet(
       //   _historyDataList,
       //   context,
       // );
       checkPasswordChangePrompt();
-      context.read<NotificationService>().scheduleAlarmsFromSavedReminders();
+      await NotificationService(context).init();
+      // context.read<NotificationService>().scheduleAlarmsFromSavedReminders();
     });
   }
 

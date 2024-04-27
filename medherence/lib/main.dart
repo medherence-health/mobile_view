@@ -24,8 +24,7 @@ void main() async {
       .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()!
       .requestNotificationsPermission();
-  // final notificationService = NotificationService(context);
-  // await notificationService.init();
+  // await NotificationService().init();
   runApp(const MyApp());
 }
 
