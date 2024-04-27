@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
@@ -23,8 +24,10 @@ class NotificationService extends ChangeNotifier {
   List<String> listofstring = [];
 
   FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
+  late BuildContext context; // Define context here
 
-  late BuildContext context;
+  // Constructor to pass the BuildContext
+  NotificationService(this.context);
   // GetData() async {
   //   preferences = await SharedPreferences.getInstance();
   //   List<String>? cominglist = await preferences.getStringList("data");
@@ -102,7 +105,7 @@ class NotificationService extends ChangeNotifier {
       importance: Importance.max,
       priority: Priority.high,
       sound: const RawResourceAndroidNotificationSound('alarm'),
-      autoCancel: false,
+      autoCancel: true,
       playSound: true,
       ticker: 'ticker',
       icon: '@mipmap/ic_launcher',
@@ -185,7 +188,7 @@ class NotificationService extends ChangeNotifier {
           'your channel name',
           channelDescription: 'your channel description',
           sound: RawResourceAndroidNotificationSound('alarm'),
-          autoCancel: false,
+          autoCancel: true,
           playSound: true,
           priority: Priority.max,
           icon: '@mipmap/ic_launcher',
@@ -198,6 +201,7 @@ class NotificationService extends ChangeNotifier {
           ]),
         ),
       ),
+      payload: notificationId.toString(),
       androidScheduleMode: AndroidScheduleMode.alarmClock,
       // androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
@@ -208,5 +212,12 @@ class NotificationService extends ChangeNotifier {
 
   Future<void> cancelNotification(int notificationId) async {
     await flutterLocalNotificationsPlugin!.cancel(notificationId);
+  }
+
+  // Callback function for the action
+  Future<void> stopAlarmAction(int notificationId) async {
+    // Stop the alarm here
+    // For example:
+    await AndroidAlarmManager.cancel(notificationId);
   }
 }

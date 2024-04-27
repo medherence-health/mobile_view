@@ -24,7 +24,8 @@ void main() async {
       .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()!
       .requestNotificationsPermission();
-  await NotificationService().init();
+  // final notificationService = NotificationService(context);
+  // await notificationService.init();
   runApp(const MyApp());
 }
 
@@ -37,7 +38,8 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(create: (context) => NotificationModelItems()),
           ChangeNotifierProvider(create: (context) => ReminderState()),
-          ChangeNotifierProvider(create: (context) => NotificationService()),
+          ChangeNotifierProvider(
+              create: (context) => NotificationService(context)),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
