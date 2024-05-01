@@ -150,8 +150,8 @@ class _MenuScreenState extends State<MenuScreen> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: SizeMg.height(60)),
-              child: ListView(
+              padding: EdgeInsets.only(top: SizeMg.height(80)),
+              child: Column(
                 children: [
                   const SizedBox(
                     height: 44,
@@ -241,14 +241,16 @@ class _MenuScreenState extends State<MenuScreen> {
                     ,
                   ),
                   SizedBox(height: SizeMg.height(30)),
-                  const Spacer(),
-                  Text(
-                    'Want to rate us? ',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: SizeMg.text(20),
-                      fontWeight: FontWeight.w500,
-                      fontFamily: "Poppins-bold.ttf",
+                  Expanded(child: const Spacer()),
+                  Flexible(
+                    child: Text(
+                      'Want to rate us? ',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: SizeMg.text(20),
+                        fontWeight: FontWeight.w500,
+                        fontFamily: "Poppins-bold.ttf",
+                      ),
                     ),
                   ),
                   Padding(
@@ -378,7 +380,7 @@ class MenuItemCard extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Icon(
                     icon,
-                    size: 24,
+                    size: 22,
                     color: AppColors.pillIconColor,
                   ),
                 ),
@@ -391,15 +393,15 @@ class MenuItemCard extends StatelessWidget {
                     children: [
                       Text(
                         title,
-                        style: const TextStyle(
-                          fontSize: 20,
+                        style: TextStyle(
+                          fontSize: SizeMg.text(16),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       Text(
                         subtitle,
-                        style: const TextStyle(
-                          fontSize: 14,
+                        style: TextStyle(
+                          fontSize: SizeMg.text(12),
                           fontWeight: FontWeight.w400,
                         ),
                       ),

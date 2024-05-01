@@ -29,7 +29,7 @@ class MedhecoinWidget extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          height: SizeMg.height(130),
+          height: SizeMg.height(120),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(
               SizeMg.radius(15),
@@ -39,7 +39,7 @@ class MedhecoinWidget extends StatelessWidget {
         ),
         Container(
           // Set the width of the container
-          height: SizeMg.height(130), // Set the height of the container
+          height: SizeMg.height(120), // Set the height of the container
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(
               SizeMg.radius(15),
@@ -67,7 +67,7 @@ class MedhecoinWidget extends StatelessWidget {
                       'Medhecoin Balance',
                       style: TextStyle(
                         color: AppColors.white,
-                        fontSize: SizeMg.text(16),
+                        fontSize: SizeMg.text(14),
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -82,7 +82,7 @@ class MedhecoinWidget extends StatelessWidget {
                   amount,
                   style: TextStyle(
                     color: AppColors.white,
-                    fontSize: SizeMg.text(32),
+                    fontSize: SizeMg.text(30),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -96,7 +96,7 @@ class MedhecoinWidget extends StatelessWidget {
                           coinTitle,
                           style: TextStyle(
                             color: AppColors.staleWhite,
-                            fontSize: SizeMg.text(16),
+                            fontSize: SizeMg.text(14),
                             fontWeight: FontWeight.w400,
                             decorationColor: AppColors.white,
                             decoration: TextDecoration
@@ -107,8 +107,8 @@ class MedhecoinWidget extends StatelessWidget {
                       // Spacer(),
                       Image.asset(
                         'assets/images/coin.png',
-                        height: SizeMg.height(35),
-                        width: SizeMg.width(30),
+                        height: SizeMg.height(30),
+                        width: SizeMg.width(28),
                       ),
                     ],
                   ),

@@ -260,7 +260,7 @@ class _HomeViewState extends State<HomeView> {
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontFamily: "Poppins-Bold.ttf",
-                        fontSize: SizeMg.text(25),
+                        fontSize: SizeMg.text(23),
                       ),
                     ),
                     const SizedBox(height: 5),

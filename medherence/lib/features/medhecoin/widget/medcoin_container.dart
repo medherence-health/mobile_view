@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/utils/color_utils.dart';
+import '../../../core/utils/size_manager.dart';
 
 class MedcoinWidget extends StatelessWidget {
   bool amountChanged;
@@ -14,6 +15,7 @@ class MedcoinWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeMg.init(context);
     String coinTitle = 'Amount in Naira';
     String amount = '000 MDHC';
     String naira = '\u20a6';
@@ -24,7 +26,7 @@ class MedcoinWidget extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          height: 130,
+          height: SizeMg.height(120),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             color: AppColors.medMidgradient,
@@ -32,7 +34,7 @@ class MedcoinWidget extends StatelessWidget {
         ),
         Container(
           // Set the width of the container
-          height: 130, // Set the height of the container
+          height: SizeMg.height(120), // Set the height of the container
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             gradient: LinearGradient(
@@ -51,14 +53,14 @@ class MedcoinWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       'Medhecoin Balance',
                       style: TextStyle(
                         color: AppColors.white,
-                        fontSize: 16,
+                        fontSize: SizeMg.text(14),
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -69,7 +71,7 @@ class MedcoinWidget extends StatelessWidget {
                   amount,
                   style: TextStyle(
                     color: AppColors.white,
-                    fontSize: 32,
+                    fontSize: SizeMg.text(30),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -83,7 +85,7 @@ class MedcoinWidget extends StatelessWidget {
                           coinTitle,
                           style: TextStyle(
                             color: AppColors.offWhite,
-                            fontSize: 16,
+                            fontSize: SizeMg.text(14),
                             fontWeight: FontWeight.w400,
                             decorationColor: AppColors.white,
                             decoration: TextDecoration
@@ -94,8 +96,8 @@ class MedcoinWidget extends StatelessWidget {
                       // Spacer(),
                       Image.asset(
                         'assets/images/coin.png',
-                        height: 35,
-                        width: 30,
+                        height: SizeMg.height(30),
+                        width: SizeMg.width(28),
                       ),
                     ],
                   ),
