@@ -140,8 +140,8 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                           SizedBox(height: 10),
                           Expanded(
                             child: PrimaryButton(
-                              textSize: 20,
-                              height: SizeMg.height(55),
+                              textSize: SizeMg.text(23),
+                              height: SizeMg.height(65),
                               buttonConfig: ButtonConfig(
                                 text: 'Take med ($checkedCount)',
                                 action: () {

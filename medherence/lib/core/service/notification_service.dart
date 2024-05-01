@@ -104,7 +104,7 @@ class NotificationService extends ChangeNotifier {
       channelDescription: 'Alarm Notification',
       importance: Importance.max,
       priority: Priority.high,
-      sound: const RawResourceAndroidNotificationSound('alarm.mp3'),
+      sound: RawResourceAndroidNotificationSound('alarm'),
       autoCancel: false,
       playSound: true,
       ticker: 'ticker',
@@ -175,6 +175,7 @@ class NotificationService extends ChangeNotifier {
 // // Calculate milliseconds difference
 //     final int addNewTime = scheduledTime.millisecondsSinceEpoch -
 //         DateTime.now().millisecondsSinceEpoch;
+
     debugPrint('future time is: $futureDateTime');
     debugPrint('The new time is: $newTime');
     await flutterLocalNotificationsPlugin?.zonedSchedule(
@@ -187,18 +188,21 @@ class NotificationService extends ChangeNotifier {
           'med id',
           'medherence',
           channelDescription: 'Medical adherence reminder',
-          sound: RawResourceAndroidNotificationSound('alarm.mp3'),
+          sound: RawResourceAndroidNotificationSound('alarm'),
           autoCancel: false,
           playSound: true,
-          priority: Priority.max,
+          importance: Importance.max,
+          priority: Priority.high,
           icon: '@mipmap/ic_launcher',
           audioAttributesUsage: AudioAttributesUsage.alarm,
           enableVibration: true,
           vibrationPattern: Int64List.fromList([0, 1000, 500, 1000]),
           fullScreenIntent: true,
-          additionalFlags: Int32List.fromList(<int>[
-            0x00000001, // FLAG_INSISTENT (Requires VIBRATE permission)
-          ]),
+          additionalFlags: Int32List.fromList(
+            <int>[
+              0x00000001, // FLAG_INSISTENT (Requires VIBRATE permission)
+            ],
+          ),
         ),
       ),
       payload: notificationId.toString(),

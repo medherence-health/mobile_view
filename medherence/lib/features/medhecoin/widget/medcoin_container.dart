@@ -71,7 +71,7 @@ class MedcoinWidget extends StatelessWidget {
                   amount,
                   style: TextStyle(
                     color: AppColors.white,
-                    fontSize: SizeMg.text(30),
+                    fontSize: SizeMg.text(28),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
