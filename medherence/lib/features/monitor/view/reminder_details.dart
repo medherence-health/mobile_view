@@ -49,7 +49,7 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                 ),
                 child: ListView.separated(
                   separatorBuilder: (context, index) {
-                    return SizedBox(height: 18);
+                    return SizedBox(height: 15);
                   },
                   itemCount: regimenList.length,
                   itemBuilder: (context, index) {
@@ -101,7 +101,7 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Container(
-                    height: SizeMg.height(100),
+                    height: SizeMg.height(85),
                     color: AppColors.offWhite,
                     child: Padding(
                       padding: EdgeInsets.only(
@@ -140,8 +140,8 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                           SizedBox(height: 10),
                           Expanded(
                             child: PrimaryButton(
-                              textSize: 23,
-                              height: SizeMg.height(60),
+                              textSize: 20,
+                              height: SizeMg.height(55),
                               buttonConfig: ButtonConfig(
                                 text: 'Take med ($checkedCount)',
                                 action: () {
@@ -206,11 +206,11 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 15.0),
+            padding: const EdgeInsets.only(right: 18.0),
             child: Image.asset(
               'assets/images/pill.png',
-              height: 30,
-              width: 30,
+              height: 28,
+              width: 28,
             ),
           ),
           Column(
@@ -219,14 +219,14 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
               Text(
                 '${regimen.regimenName}',
                 style: TextStyle(
-                  fontSize: SizeMg.text(18),
+                  fontSize: SizeMg.text(16),
                   fontWeight: FontWeight.w500,
                 ),
               ),
               Text(
                 '${regimen.dosage}',
                 style: TextStyle(
-                  fontSize: SizeMg.text(14),
+                  fontSize: SizeMg.text(12),
                   fontWeight: FontWeight.w400,
                 ),
               ),
@@ -249,7 +249,7 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                   left: 15.0,
                   right: 15,
                   top: 8,
-                  bottom: 8,
+                  bottom: 0,
                 ),
                 child: Text(
                   DateFormat('hh:mm a').format(DateTime(
@@ -261,7 +261,7 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                   )),
                   style: TextStyle(
                     color: AppColors.navBarColor,
-                    fontSize: SizeMg.text(16),
+                    fontSize: SizeMg.text(14),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
