@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medherence/core/utils/color_utils.dart';
+import 'package:medherence/core/utils/size_manager.dart';
 
 class ProgressStreak extends StatelessWidget {
   final int progress;
@@ -8,52 +9,34 @@ class ProgressStreak extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeMg.init(context);
     return Stack(
       children: [
         SizedBox(
-          width: double.infinity,
-          child: Column(
+          width: SizeMg.screenWidth,
+          child: Stack(
             children: [
-              Stack(
+              Container(
+                height: 20,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: AppColors.progressBarFill,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              Row(
                 children: [
                   Container(
                     height: 20,
-                    width: MediaQuery.of(context).size.width,
+                    width: (progress / 30) * MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
-                      color: AppColors.progressBarFill,
+                      color: AppColors.navBarColor,
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  Stack(
-                    // mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            height: 20,
-                            width: (progress / 30) *
-                                MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              color: AppColors.navBarColor,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          Positioned(
-                            left: (progress / 30) *
-                                    MediaQuery.of(context).size.width -
-                                20,
-                            child: Image.asset(
-                              'assets/images/avatar_image.png',
-                              // width: 3,
-                              height: 25,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
                 ],
               ),
+
               // Padding(
               //   padding: const EdgeInsets.only(
               //     left: 10.0,
@@ -80,6 +63,14 @@ class ProgressStreak extends StatelessWidget {
               //   ),
               // ),
             ],
+          ),
+        ),
+        Positioned(
+          left: (progress / 30) * MediaQuery.of(context).size.width - 10,
+          child: Image.asset(
+            'assets/images/avatar_image.png',
+            // width: 3,
+            height: 25,
           ),
         ),
       ],

@@ -327,9 +327,9 @@ class _HomeViewState extends State<HomeView> {
                                         const HistoryScreen()));
                           },
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                              top: 10,
-                              bottom: 15.0,
+                            padding: EdgeInsets.only(
+                              top: 5,
+                              bottom: SizeMg.height(35.0),
                             ),
                             child: Text(
                               'View Adherence History',
@@ -624,7 +624,12 @@ class NextRegimen extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.only(
+            top: 15.0,
+            bottom: 8,
+            left: 20,
+            right: 20,
+          ),
           child: Row(
             children: [
               Padding(
@@ -643,16 +648,19 @@ class NextRegimen extends StatelessWidget {
                     style: const TextStyle(
                       color: AppColors.black,
                       fontSize: 22,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   const SizedBox(height: 5),
-                  Text(
-                    itemModel.dosage,
-                    style: const TextStyle(
-                      color: AppColors.darkGrey,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text(
+                      itemModel.dosage,
+                      style: const TextStyle(
+                        color: AppColors.darkGrey,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -660,8 +668,8 @@ class NextRegimen extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.alarm,
-                        color: const Color.fromRGBO(26, 85, 171, 1),
-                        size: 25,
+                        color: AppColors.navBarColor,
+                        size: 20,
                       ),
                       SizedBox(width: 10),
                       Text(
@@ -693,7 +701,7 @@ class NextRegimen extends StatelessWidget {
                   style: TextStyle(
                     color: AppColors.navBarColor,
                     fontSize: SizeMg.text(15),
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               )

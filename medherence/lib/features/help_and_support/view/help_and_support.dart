@@ -26,10 +26,7 @@ class HelpAndSupport extends StatelessWidget {
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const DashboardView()),
-            );
+            Navigator.pop(context);
           },
           icon: const Icon(Icons.arrow_back_ios_new),
         ),

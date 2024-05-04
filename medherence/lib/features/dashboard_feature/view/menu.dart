@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:medherence/core/utils/size_manager.dart';
 import 'package:medherence/features/help_and_support/view/help_and_support.dart';
 import 'package:medherence/features/history/view/history_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/utils/color_utils.dart';
 import '../../../core/shared_widget/buttons.dart';
 import '../../about/view/about_screen.dart';
+import '../../auth/views/login_view.dart';
 import '../../profile/view/profile_view.dart';
+import '../../settings_feature/view/settings_view.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -17,6 +20,11 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
+  Future<void> signingOut() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isSignedIn', false);
+  }
+
   buildLogOutDialog() async {
     showDialog(
       context: context,
@@ -70,8 +78,16 @@ class _MenuScreenState extends State<MenuScreen> {
                   child: PrimaryButton(
                     buttonConfig: ButtonConfig(
                       text: 'LogOut',
-                      action: () {
-                        Navigator.pop(context);
+                      action: () async {
+                        CircularProgressIndicator();
+                        await signingOut().then((_) {
+                          // Navigate back to home screen
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LoginView()),
+                          );
+                        });
                       },
                       disabled: false,
                     ),
@@ -120,7 +136,6 @@ class _MenuScreenState extends State<MenuScreen> {
     );
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.historyBackground,
         title: const Text(
           'Menu',
           style: TextStyle(
@@ -133,7 +148,6 @@ class _MenuScreenState extends State<MenuScreen> {
         centerTitle: true,
       ),
       body: Container(
-        height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         decoration: const BoxDecoration(
           color: AppColors.white,
@@ -144,7 +158,7 @@ class _MenuScreenState extends State<MenuScreen> {
             right: 15,
           ),
           child: Padding(
-            padding: EdgeInsets.only(top: SizeMg.height(80)),
+            padding: EdgeInsets.only(top: SizeMg.height(5)),
             child: Column(
               children: [
                 const SizedBox(
@@ -156,7 +170,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   subtitle: 'Complete and edit your profile',
                   onPressed: () {
                     // Navigate to profile screen
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const ProfileScreenView()),
@@ -186,7 +200,10 @@ class _MenuScreenState extends State<MenuScreen> {
                   subtitle: 'Personalize and setup your experience',
                   onPressed: () {
                     // Navigate to settings screen
-                    ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SettingsView()));
                   },
                 ),
                 const SizedBox(
@@ -197,7 +214,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   title: 'Help and Support',
                   subtitle: 'Report any difficulty you are facing',
                   onPressed: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const HelpAndSupport()),
@@ -215,7 +232,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   subtitle: 'Learn more about the app',
                   onPressed: () {
                     // Navigate to about screen
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const AboutScreenView()),
@@ -236,15 +253,13 @@ class _MenuScreenState extends State<MenuScreen> {
                 ),
                 SizedBox(height: SizeMg.height(30)),
                 Expanded(child: const Spacer()),
-                Flexible(
-                  child: Text(
-                    'Want to rate us? ',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: SizeMg.text(20),
-                      fontWeight: FontWeight.w500,
-                      fontFamily: "Poppins-bold.ttf",
-                    ),
+                Text(
+                  'Want to rate us? ',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: SizeMg.text(20),
+                    fontWeight: FontWeight.w500,
+                    fontFamily: "Poppins-bold.ttf",
                   ),
                 ),
                 Padding(

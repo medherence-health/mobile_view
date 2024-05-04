@@ -43,37 +43,29 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<bool>(
-      future: isDoneClicked,
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        return Container(
-          height: MediaQuery.of(context).size.height,
-          color: AppColors.white,
-          width: SizeMg.screenWidth,
-          child: Stack(
-            children: [
-              AppBar(
-                elevation: 2,
-                title: const Text(
-                  'Today\'s Medication',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                centerTitle: true,
-                leading: SizedBox(),
-              ),
-              Padding(
-                  padding: const EdgeInsets.only(
-                    top: 80.0,
-                    bottom: 40,
-                  ),
-                  child: EditReminderDetails()),
-            ],
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      appBar: AppBar(
+        elevation: 0,
+        title: const Text(
+          'Today\'s Medication',
+          style: TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.w500,
           ),
-        );
-      },
+        ),
+        centerTitle: true,
+        leading: SizedBox(),
+      ),
+      body: Container(
+        color: AppColors.white,
+        child: Padding(
+            padding: const EdgeInsets.only(
+              top: 10.0,
+              bottom: 40,
+            ),
+            child: EditReminderDetails()),
+      ),
     );
   }
 }
