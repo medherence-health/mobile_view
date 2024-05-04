@@ -17,7 +17,8 @@ class ReminderState extends ChangeNotifier {
   String get selectedSound => _selectedSound;
   TimeOfDay get selectedTime => _selectedTime;
   bool get isAlarmOn => _isAlarmOn;
-  Map<int, bool> _checkedMap = {}; // Map to store checked status of regimens
+  final Map<int, bool> _checkedMap =
+      {}; // Map to store checked status of regimens
 
   // Method to get the number of checked regimens
   int getCheckedCount() {
@@ -84,7 +85,6 @@ class ReminderState extends ChangeNotifier {
 
   void clearCheckedItems() {
     _checkedMap.clear(); // Clear the checked map
-    _regimenList.clear();
     notifyListeners(); // Notify listeners of the state change
   }
 }

@@ -143,39 +143,15 @@ class NotificationService extends ChangeNotifier {
     int notificationId = reminder.id;
     // Get current date and time
     final now = DateTime.now();
-    // Calculate target time (desired minutes from now)
-    final int targetMinutesFromNow =
-        2; // Replace with desired minutes (e.g., 1 or 2)
-    var targetTime = now.add(Duration(minutes: targetMinutesFromNow));
+    // var targetTime;
+    var futureDateTime = reminder.date;
 
     // Check for past time (optional)
-    if (targetTime.isBefore(now)) {
-      targetTime = targetTime.add(const Duration(days: 1));
+    if (futureDateTime.isBefore(now)) {
+      futureDateTime = futureDateTime.add(const Duration(days: 1));
     }
-    final futureDateTime = targetTime;
     int newTime = futureDateTime.millisecondsSinceEpoch -
         DateTime.now().millisecondsSinceEpoch;
-//     final String formattedTimeString = DateFormat('hh:mm a').format(DateTime(
-//       DateTime.now().year,
-//       DateTime.now().month,
-//       DateTime.now().day,
-//       reminder.time.hour,
-//       reminder.time.minute,
-//     ));
-
-// // Optional: Parse formatted string back to DateTime (for readability)
-//     DateTime scheduledTime;
-//     try {
-//       scheduledTime = DateTime.parse(formattedTimeString);
-//     } catch (e) {
-//       // Handle parsing error
-//       return;
-//     }
-
-// // Calculate milliseconds difference
-//     final int addNewTime = scheduledTime.millisecondsSinceEpoch -
-//         DateTime.now().millisecondsSinceEpoch;
-
     debugPrint('future time is: $futureDateTime');
     debugPrint('The new time is: $newTime');
     await flutterLocalNotificationsPlugin?.zonedSchedule(
@@ -225,3 +201,25 @@ class NotificationService extends ChangeNotifier {
     await AndroidAlarmManager.cancel(notificationId);
   }
 }
+
+//     final String formattedTimeString = DateFormat('hh:mm a').format(DateTime(
+//       DateTime.now().year,
+//       DateTime.now().month,
+//       DateTime.now().day,
+//       reminder.time.hour,
+//       reminder.time.minute,
+//     ));
+
+// // Optional: Parse formatted string back to DateTime (for readability)
+//     DateTime scheduledTime;
+//     try {
+//       scheduledTime = DateTime.parse(formattedTimeString);
+//     } catch (e) {
+//       // Handle parsing error
+//       return;
+//     }
+
+// // Calculate milliseconds difference
+//     final int addNewTime = scheduledTime.millisecondsSinceEpoch -
+//         DateTime.now().millisecondsSinceEpoch;
+
