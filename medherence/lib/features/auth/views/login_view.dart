@@ -3,6 +3,7 @@ import 'package:medherence/core/shared_widget/buttons.dart';
 import 'package:medherence/features/auth/views/forgot_password.dart';
 import 'package:medherence/features/auth/widget/validation_extension.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:drop_down_search_field/drop_down_search_field.dart';
 
 import '../../../core/utils/color_utils.dart';
 import '../../../core/constants/constants.dart';
@@ -20,6 +21,8 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   late TextEditingController hospitalNumberController;
   late TextEditingController passwordController;
+  final TextEditingController _dropDownSearchController =
+      TextEditingController();
   String? _selectedHospital;
   bool obscurePassword = false;
   bool _rememberMe = false;
@@ -45,8 +48,6 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  // Your validation logic and save password logic here...
-
   // Function to handle password change submission
   void handleSignIn() {
     if (_formKey.currentState!.validate()) {
@@ -71,6 +72,49 @@ class _LoginViewState extends State<LoginView> {
         ),
       );
     }
+  }
+
+  String? selectedHospital;
+  SuggestionsBoxController suggestionBoxController = SuggestionsBoxController();
+  static final List<String> hospitalNames = [
+    'Hospital A',
+    'Hospital B',
+    'Hospital C',
+    'Hospital D',
+    'Hospital E',
+    'Hospital F',
+    'Hospital G',
+    'Hospital H',
+    'Hospital I',
+    'Hospital J',
+    'Willowbrook General Hospital',
+    'Havenridge Medical Center',
+    'Serenity Health Clinic',
+    'Crestview Regional Hospital',
+    'Oakwood Community Hospital',
+    'Meadowbrook Memorial Hospital',
+    'Summitview Medical Center',
+    'Pinecrest Hospital',
+    'Harborview Healthcare Center',
+    'Maplewood Clinic',
+    'Sunridge Regional Hospital',
+    'Lakeside Medical Center',
+    'Rosewood General Hospital',
+    'Valleyview Health Services',
+    'Greenfield Community Hospital',
+    'Riverside Medical Center',
+    'Brookside Clinic',
+    'Clearwater Hospital',
+    'Mountainview Healthcare Center',
+    'Fairview Regional Hospital'
+  ];
+
+  static List<String> getSuggestions(String query) {
+    List<String> matches = <String>[];
+    matches.addAll(hospitalNames);
+
+    matches.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
+    return matches;
   }
 
   @override
@@ -135,16 +179,9 @@ class _LoginViewState extends State<LoginView> {
                 ),
               ),
               const SizedBox(height: (10)),
-              Align(
-                alignment: AlignmentDirectional(0, -1),
-                child: DropdownButtonFormField<String>(
-                  value: _selectedHospital,
-                  onChanged: (val) {
-                    setState(() {
-                      _selectedHospital = val;
-                    });
-                  },
-                  items: _buildDropdownItems(),
+              DropDownSearchFormField(
+                textFieldConfiguration: TextFieldConfiguration(
+                  controller: this._dropDownSearchController,
                   decoration: InputDecoration(
                     hintStyle: kFormTextDecoration.hintStyle,
                     hintText: 'Select your HCP',
@@ -156,7 +193,51 @@ class _LoginViewState extends State<LoginView> {
                     focusedBorder: kFormTextDecoration.focusedBorder,
                   ),
                 ),
+                suggestionsCallback: (pattern) {
+                  return getSuggestions(pattern);
+                },
+                itemBuilder: (context, suggestion) {
+                  return ListTile(
+                    title: Text(suggestion),
+                  );
+                },
+                transitionBuilder: (context, suggestionsBox, controller) {
+                  return suggestionsBox;
+                },
+                onSuggestionSelected: (suggestion) {
+                  _dropDownSearchController.text = suggestion;
+                },
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please select an hospital';
+                  }
+                  return null;
+                },
+                onSaved: (value) => selectedHospital = value,
+                displayAllSuggestionWhenTap: true,
               ),
+              // Align(
+              //   alignment: AlignmentDirectional(0, -1),
+              //   child: DropdownButtonFormField<String>(
+              //     value: _selectedHospital,
+              //     onChanged: (val) {
+              //       setState(() {
+              //         _selectedHospital = val;
+              //       });
+              //     },
+              //     items: _buildDropdownItems(),
+              //     decoration: InputDecoration(
+              //       hintStyle: kFormTextDecoration.hintStyle,
+              //       hintText: 'Select your HCP',
+              //       filled: true,
+              //       fillColor: kFormTextDecoration.fillColor,
+              //       contentPadding:
+              //           EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+              //       border: kFormTextDecoration.border,
+              //       focusedBorder: kFormTextDecoration.focusedBorder,
+              //     ),
+              //   ),
+              // ),
               // TextFormField(
               //   controller:
               //       TextEditingController(text: _selectedHospital ?? ''),
@@ -331,45 +412,24 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  List<DropdownMenuItem<String>> _buildDropdownItems() {
-    List<String> hospitalNames = [
-      'Hospital A',
-      'Hospital B',
-      'Hospital C',
-      'Hospital D',
-      'Hospital E',
-      'Hospital F',
-      'Hospital G',
-      'Hospital H',
-      'Hospital I',
-      'Hospital J',
-    ];
-    return hospitalNames.map((String value) {
-      return DropdownMenuItem<String>(
-        value: value,
-        child: Text(value),
-      );
-    }).toList();
-  }
-
-  List<PopupMenuItem<String>> _buildPopMenuItems() {
-    List<String> hospitalNames = [
-      'Hospital A',
-      'Hospital B',
-      'Hospital C',
-      'Hospital D',
-      'Hospital E',
-      'Hospital F',
-      'Hospital G',
-      'Hospital H',
-      'Hospital I',
-      'Hospital J',
-    ];
-    return hospitalNames.map((String value) {
-      return PopupMenuItem<String>(
-        value: value,
-        child: Text(value),
-      );
-    }).toList();
-  }
+  // List<PopupMenuItem<String>> _buildPopMenuItems() {
+  //   List<String> hospitalNames = [
+  //     'Hospital A',
+  //     'Hospital B',
+  //     'Hospital C',
+  //     'Hospital D',
+  //     'Hospital E',
+  //     'Hospital F',
+  //     'Hospital G',
+  //     'Hospital H',
+  //     'Hospital I',
+  //     'Hospital J',
+  //   ];
+  //   return hospitalNames.map((String value) {
+  //     return PopupMenuItem<String>(
+  //       value: value,
+  //       child: Text(value),
+  //     );
+  //   }).toList();
+  // }
 }

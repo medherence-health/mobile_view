@@ -8,6 +8,7 @@ import '../../../core/utils/color_utils.dart';
 import '../../../core/shared_widget/buttons.dart';
 import '../../../core/utils/size_manager.dart';
 import '../widget/otp_tile.dart';
+import 'new_password.dart';
 
 class VerifyForgotPassword extends StatefulWidget {
   String phoneNumber;
@@ -161,8 +162,10 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
                   buttonConfig: ButtonConfig(
                     text: 'Verify',
                     action: () async {
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => LoginView()));
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => NewPassword()));
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Otp verified successfully'),

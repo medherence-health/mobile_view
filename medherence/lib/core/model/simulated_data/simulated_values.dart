@@ -48,18 +48,18 @@ List<HistoryModel> generateSimulatedData() {
     final int randomHour = random.nextInt(12) + 1;
     final int randomMinute = random.nextInt(60);
     final now = DateTime.now();
-    final oneMinuteFromNow =
-        now.add(const Duration(minutes: 1)); // Add 1 minute
-    final String formattedTime = DateFormat('hh:mm a').format(oneMinuteFromNow);
-    // final String formattedTime = DateFormat('hh:mm a').format(
-    //   DateTime(
-    //     DateTime.now().year,
-    //     DateTime.now().month,
-    //     DateTime.now().day,
-    //     randomHour,
-    //     randomMinute,
-    //   ),
-    // );
+    // final oneMinuteFromNow =
+    //     now.add(const Duration(minutes: 1)); // Add 1 minute
+    // final String formattedTime = DateFormat('hh:mm a').format(oneMinuteFromNow);
+    final String formattedTime = DateFormat('hh:mm a').format(
+      DateTime(
+        DateTime.now().year,
+        DateTime.now().month,
+        DateTime.now().day,
+        randomHour,
+        randomMinute,
+      ),
+    );
     // Generate random reminder information
     int id = index + 1; // Example: 1, 2, 3, ...
     String message = 'Take $randomDosage of $randomRegimenName medication';
