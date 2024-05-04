@@ -10,6 +10,7 @@ import '../../../core/model/models/history_model.dart';
 import '../../../core/model/simulated_data/simulated_values.dart';
 import '../../../core/shared_widget/buttons.dart';
 import '../../auth/views/change_password.dart';
+import '../../history/view/history_screen.dart';
 import '../../medhecoin/view/medhecoin.dart';
 import '../../notification/view/notification_view.dart';
 import '../../notification/widget/notification_widget.dart';
@@ -159,7 +160,7 @@ class _HomeViewState extends State<HomeView> {
       //   context,
       // );
       checkPasswordChangePrompt();
-      await NotificationService(context).init();
+      // await NotificationService(context).init();
       // context.read<NotificationService>().scheduleAlarmsFromSavedReminders();
     });
   }
@@ -318,9 +319,17 @@ class _HomeViewState extends State<HomeView> {
                       alignment: Alignment.bottomCenter,
                       child: Visibility(
                         child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const HistoryScreen()));
+                          },
                           child: Padding(
                             padding: const EdgeInsets.only(
-                              bottom: 25.0,
+                              top: 10,
+                              bottom: 15.0,
                             ),
                             child: Text(
                               'View Adherence History',
@@ -615,7 +624,7 @@ class NextRegimen extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(25.0),
+          padding: const EdgeInsets.all(10.0),
           child: Row(
             children: [
               Padding(
@@ -633,26 +642,28 @@ class NextRegimen extends StatelessWidget {
                     itemModel.regimenName,
                     style: const TextStyle(
                       color: AppColors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   const SizedBox(height: 5),
                   Text(
                     itemModel.dosage,
                     style: const TextStyle(
-                      color: AppColors.regmentColor,
-                      fontSize: 14,
+                      color: AppColors.darkGrey,
+                      fontSize: 16,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
+                  const SizedBox(height: 10),
                   Row(
                     children: [
                       Icon(
                         Icons.alarm,
-                        color: AppColors.navBarColor,
+                        color: const Color.fromRGBO(26, 85, 171, 1),
                         size: 25,
                       ),
+                      SizedBox(width: 10),
                       Text(
                         DateFormat('hh:mm a').format(DateTime(
                           DateTime.now().year,
@@ -663,8 +674,8 @@ class NextRegimen extends StatelessWidget {
                         )),
                         style: TextStyle(
                           color: AppColors.navBarColor,
-                          fontSize: SizeMg.text(12),
-                          fontWeight: FontWeight.w400,
+                          fontSize: SizeMg.text(15),
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ],
@@ -674,13 +685,15 @@ class NextRegimen extends StatelessWidget {
               ),
               Spacer(),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  debugPrint('Regimen taken');
+                },
                 child: Text(
                   'Take',
                   style: TextStyle(
                     color: AppColors.navBarColor,
-                    fontSize: SizeMg.text(14),
-                    fontWeight: FontWeight.w500,
+                    fontSize: SizeMg.text(15),
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               )

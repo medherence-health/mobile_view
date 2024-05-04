@@ -27,54 +27,58 @@ class ProgressStreak extends StatelessWidget {
                   Stack(
                     // mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Container(
-                        height: 20,
-                        width:
-                            (progress / 10) * MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          color: AppColors.navBarColor,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      Positioned(
-                        left: (progress / 10) *
-                                MediaQuery.of(context).size.width -
-                            20,
-                        child: Image.asset(
-                          'assets/images/avatar_image.png',
-                          // width: 3,
-                          height: 25,
-                        ),
+                      Row(
+                        children: [
+                          Container(
+                            height: 20,
+                            width: (progress / 30) *
+                                MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              color: AppColors.navBarColor,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          Positioned(
+                            left: (progress / 30) *
+                                    MediaQuery.of(context).size.width -
+                                20,
+                            child: Image.asset(
+                              'assets/images/avatar_image.png',
+                              // width: 3,
+                              height: 25,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 10.0,
-                  right: 10,
-                  top: 4,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: List.generate(
-                    10,
-                    (index) {
-                      return Text(
-                        '${index + 1}',
-                        style: TextStyle(
-                          color: index < progress
-                              ? AppColors.navBarColor
-                              : Colors.grey,
-                          fontWeight: FontWeight.w200,
-                          fontSize: 8,
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(
+              //     left: 10.0,
+              //     right: 10,
+              //     top: 4,
+              //   ),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: List.generate(
+              //       10,
+              //       (index) {
+              //         return Text(
+              //           '${index + 1}',
+              //           style: TextStyle(
+              //             color: index < progress
+              //                 ? AppColors.navBarColor
+              //                 : Colors.grey,
+              //             fontWeight: FontWeight.w200,
+              //             fontSize: 8,
+              //           ),
+              //         );
+              //       },
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

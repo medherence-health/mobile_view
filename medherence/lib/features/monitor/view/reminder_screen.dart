@@ -23,7 +23,7 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
   @override
   void initState() {
     super.initState();
-    _loadIsDoneClicked();
+    // _loadIsDoneClicked();
   }
 
   Future<void> _loadIsDoneClicked() async {
@@ -54,52 +54,15 @@ class _EditReminderScreenState extends State<EditReminderScreen> {
             children: [
               AppBar(
                 elevation: 2,
-                title: snapshot.data == false
-                    ? const Text(
-                        'Edit Reminder',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      )
-                    : const Text(
-                        'Today\'s Meds',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
+                title: const Text(
+                  'Today\'s Medication',
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
                 centerTitle: true,
-                leading: snapshot.data == false
-                    ? IconButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const DashboardView()));
-                        },
-                        icon: const Icon(CupertinoIcons.xmark,
-                            color: AppColors.navBarColor),
-                      )
-                    : SizedBox(),
-                actions: [
-                  snapshot.data == false
-                      ? Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                _saveIsDoneClicked(true); // Update to true
-                              },
-                              icon: const Icon(
-                                Icons.done,
-                                color: AppColors.navBarColor,
-                              ),
-                            ),
-                            const SizedBox(width: 20),
-                          ],
-                        )
-                      : SizedBox(),
-                ],
+                leading: SizedBox(),
               ),
               Padding(
                   padding: const EdgeInsets.only(

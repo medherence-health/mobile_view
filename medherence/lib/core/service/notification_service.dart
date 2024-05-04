@@ -27,7 +27,7 @@ class NotificationService extends ChangeNotifier {
   late BuildContext context; // Define context here
 
   // Constructor to pass the BuildContext
-  NotificationService(this.context);
+  NotificationService();
   // GetData() async {
   //   preferences = await SharedPreferences.getInstance();
   //   List<String>? cominglist = await preferences.getStringList("data");
