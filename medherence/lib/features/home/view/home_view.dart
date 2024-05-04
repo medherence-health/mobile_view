@@ -253,10 +253,10 @@ class _HomeViewState extends State<HomeView> {
                       _amountChanged,
                     ),
                     SizedBox(
-                      height: SizeMg.height(35),
+                      height: SizeMg.height(30),
                     ),
                     Text(
-                      'Today\'s Meds',
+                      'Today\'s Medications',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontFamily: "Poppins-Bold.ttf",
@@ -277,8 +277,62 @@ class _HomeViewState extends State<HomeView> {
                           );
                         },
                         itemBuilder: (context, index) {
-                          return NextRegimen(itemList: itemList);
+                          HistoryModel regimenItem = _historyDataList[index];
+                          if (_historyDataList.isEmpty) {
+                            return Center(
+                              child: SizedBox(
+                                height: 150,
+                                width: 180,
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    Icon(
+                                      Icons.check_circle_outline,
+                                      color: AppColors.noWidgetText,
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      'Yayy, You have taken all medications for today',
+                                      style: TextStyle(
+                                        fontSize: (20),
+                                        fontStyle: FontStyle.italic,
+                                        color: AppColors.noWidgetText,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }
+                          return NextRegimen(itemModel: regimenItem);
                         },
+                      ),
+                    ),
+
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Visibility(
+                        child: GestureDetector(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 25.0,
+                            ),
+                            child: Text(
+                              'View Adherence History',
+                              style: TextStyle(
+                                color: AppColors.navBarColor,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: "Poppins-Bold.ttf",
+                                fontSize: SizeMg.text(18),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -546,129 +600,94 @@ class _HomeViewState extends State<HomeView> {
 class NextRegimen extends StatelessWidget {
   const NextRegimen({
     Key? key,
-    required this.itemList,
+    required this.itemModel,
   }) : super(key: key);
 
-  final List<HistoryModel> itemList;
+  final HistoryModel itemModel;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: itemList.map((item) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Name',
-              style: TextStyle(
-                color: AppColors.black,
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
+    return Card(
+      child: Container(
+        width: SizeMg.screenWidth,
+        decoration: BoxDecoration(
+          color: AppColors.historyBackground,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(25.0),
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 18.0),
+                child: Image.asset(
+                  'assets/images/pill.png',
+                  height: 28,
+                  width: 28,
+                ),
               ),
-            ),
-            const SizedBox(height: 5),
-            Container(
-              height: 40,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: AppColors.progressBarFill,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    itemModel.regimenName,
+                    style: const TextStyle(
+                      color: AppColors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    itemModel.dosage,
+                    style: const TextStyle(
+                      color: AppColors.regmentColor,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.alarm,
+                        color: AppColors.navBarColor,
+                        size: 25,
+                      ),
+                      Text(
+                        DateFormat('hh:mm a').format(DateTime(
+                          DateTime.now().year,
+                          DateTime.now().month,
+                          DateTime.now().day,
+                          itemModel.time.hour,
+                          itemModel.time.minute,
+                        )),
+                        style: TextStyle(
+                          color: AppColors.navBarColor,
+                          fontSize: SizeMg.text(12),
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 5),
+                ],
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+              Spacer(),
+              InkWell(
+                onTap: () {},
                 child: Text(
-                  item.regimenName,
-                  style: const TextStyle(
-                    color: AppColors.regmentColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
+                  'Take',
+                  style: TextStyle(
+                    color: AppColors.navBarColor,
+                    fontSize: SizeMg.text(14),
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Dosage',
-                      style: TextStyle(
-                        color: AppColors.black,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      textAlign: TextAlign.start,
-                    ),
-                    const SizedBox(height: 5),
-                    Container(
-                      height: 40,
-                      width: 200,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: AppColors.progressBarFill,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          item.dosage,
-                          style: const TextStyle(
-                            color: AppColors.regmentColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(width: 20),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Time',
-                      style: TextStyle(
-                        color: AppColors.black,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Container(
-                      height: 40,
-                      width: 150,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: AppColors.progressBarFill,
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(
-                          '6:00 PM',
-                          style: TextStyle(
-                            color: AppColors.regmentColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 26,
-            ),
-          ],
-        );
-      }).toList(),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

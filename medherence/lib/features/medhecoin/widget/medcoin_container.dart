@@ -17,11 +17,10 @@ class MedcoinWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     SizeMg.init(context);
     String coinTitle = 'Amount in Naira';
-    String amount = '000 MDHC';
-    String naira = '\u20a6';
+    String amount = '500 MDHC';
     if (amountChanged == true) {
       coinTitle = 'Amount in medcoin';
-      amount = '$naira 000.00 ';
+      amount = '1000.00 ';
     }
     return Stack(
       children: [
@@ -67,14 +66,32 @@ class MedcoinWidget extends StatelessWidget {
                     Spacer(),
                   ],
                 ),
-                Text(
-                  amount,
-                  style: TextStyle(
-                    color: AppColors.white,
-                    fontSize: SizeMg.text(28),
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+                amountChanged == true
+                    ? RichText(
+                        text: TextSpan(
+                          text: '\u{20A6}',
+                          style: TextStyle(
+                            fontSize: SizeMg.text(25),
+                            color: Colors.white,
+                            letterSpacing: 1.5,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: amount,
+                            ),
+                          ],
+                        ),
+                      )
+                    : Text(
+                        amount,
+                        style: TextStyle(
+                          fontSize: SizeMg.text(25),
+                          color: Colors.white,
+                          letterSpacing: 1.5,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                 Expanded(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
