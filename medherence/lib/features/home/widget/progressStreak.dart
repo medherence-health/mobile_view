@@ -36,7 +36,6 @@ class ProgressStreak extends StatelessWidget {
                   ),
                 ],
               ),
-
               // Padding(
               //   padding: const EdgeInsets.only(
               //     left: 10.0,
@@ -67,6 +66,7 @@ class ProgressStreak extends StatelessWidget {
         ),
         Positioned(
           left: (progress / 30) * MediaQuery.of(context).size.width - 10,
+          top: 0,
           child: Image.asset(
             'assets/images/avatar_image.png',
             // width: 3,

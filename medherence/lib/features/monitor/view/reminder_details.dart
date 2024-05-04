@@ -141,7 +141,7 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                           Expanded(
                             child: PrimaryButton(
                               textSize: SizeMg.text(23),
-                              height: SizeMg.height(65),
+                              height: SizeMg.height(85),
                               buttonConfig: ButtonConfig(
                                 text: 'Take med ($checkedCount)',
                                 action: () {
@@ -150,17 +150,17 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                                         content:
                                             Text('Pills taken successfully')),
                                   );
+                                  reminderState.clearCheckedItems();
+                                  setState(() {
+                                    // Clear checked count and uncheck all items
+                                    checkedCount = 0; // Reset the checked count
+                                  });
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
                                             const DashboardView()),
                                   );
-                                  setState(() {
-                                    reminderState
-                                        .clearCheckedItems(); // Clear checked count and uncheck all items
-                                    checkedCount = 0; // Reset the checked count
-                                  });
                                 },
                               ),
                               width: SizeMg.screenWidth,

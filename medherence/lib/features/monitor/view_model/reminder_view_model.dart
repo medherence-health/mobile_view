@@ -42,6 +42,7 @@ class ReminderState extends ChangeNotifier {
     int index = _regimenList.indexOf(regimen);
     bool isChecked = _checkedMap[index] ?? false;
     _checkedMap[index] = !isChecked;
+    debugPrint(_checkedMap.toString());
     notifyListeners();
   }
 

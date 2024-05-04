@@ -171,6 +171,8 @@ class _HomeViewState extends State<HomeView> {
     SizeMg.init(context);
     return Consumer<ReminderState>(builder: (context, reminderState, _) {
       List<HistoryModel> regimenList = reminderState.regimenList;
+      int remainingMedications =
+          regimenList.length - reminderState.getCheckedCount();
       return Padding(
         padding: const EdgeInsets.only(
           top: 25.0,
@@ -274,7 +276,7 @@ class _HomeViewState extends State<HomeView> {
                           shrinkWrap: true,
                           physics: const AlwaysScrollableScrollPhysics(),
                           itemCount:
-                              regimenList.length, // the length of the data list
+                              remainingMedications, // the length of the data list
                           separatorBuilder: (ctx, index) {
                             return SizedBox(
                               height: SizeMg.height(3),
