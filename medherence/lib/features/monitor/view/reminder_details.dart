@@ -37,11 +37,42 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
         List<HistoryModel> regimenList = reminderState.regimenList;
         int checkedCount = reminderState.getCheckedCount();
         bool showButton = checkedCount > 0;
+
         return Container(
           width: SizeMg.screenWidth,
           height: MediaQuery.of(context).size.height,
           child: Stack(
             children: [
+              if (regimenList.isEmpty)
+                Center(
+                  child: SizedBox(
+                    height: 150,
+                    width: 180,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Icon(
+                          Icons.check_circle_outline,
+                          color: AppColors.noWidgetText,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          'Yayy, You have taken all medications for today',
+                          style: TextStyle(
+                            fontSize: (20),
+                            fontStyle: FontStyle.italic,
+                            color: AppColors.noWidgetText,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               Padding(
                 padding: const EdgeInsets.only(
                   left: 25.0,
@@ -63,40 +94,33 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                   },
                 ),
               ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Column(
-                  children: [
-                    Spacer(),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(right: 15.0),
-                    //   child: ElevatedButton(
-                    //       onPressed: () {
-
-                    //       },
-                    //       child: Text("Set Alarm")),
-                    // ),
-                    InkWell(
-                      onTap: () {
-                        // Handle select all logic here
-                        reminderState.selectAll();
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 25.0),
-                        child: Text(
-                          'Select All',
-                          textAlign: TextAlign.end,
-                          style: TextStyle(
-                            color: AppColors.pillIconColor,
-                            fontSize: SizeMg.text(14),
-                            fontWeight: FontWeight.w400,
+              if (regimenList.isNotEmpty)
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Column(
+                    children: [
+                      Spacer(),
+                      InkWell(
+                        onTap: () {
+                          // Handle select all logic here
+                          reminderState.selectAll();
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 25.0),
+                          child: Text(
+                            'Select All',
+                            textAlign: TextAlign.end,
+                            style: TextStyle(
+                              color: AppColors.pillIconColor,
+                              fontSize: SizeMg.text(14),
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
               if (showButton)
                 Align(
                   alignment: Alignment.bottomCenter,
@@ -150,11 +174,14 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                                         content:
                                             Text('Pills taken successfully')),
                                   );
+                                  List<HistoryModel> updatedList = regimenList
+                                      .where((regimen) =>
+                                          !reminderState.isChecked(regimen))
+                                      .toList();
+                                  // Update the ReminderState with the filtered list
+                                  reminderState.updateRegimenList(updatedList);
                                   reminderState.clearCheckedItems();
-                                  setState(() {
-                                    // Clear checked count and uncheck all items
-                                    checkedCount = 0; // Reset the checked count
-                                  });
+
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(

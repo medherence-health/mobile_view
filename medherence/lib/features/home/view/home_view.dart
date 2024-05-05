@@ -270,6 +270,37 @@ class _HomeViewState extends State<HomeView> {
                         ),
                       ),
                       const SizedBox(height: 5),
+                      if (regimenList.isEmpty)
+                        Center(
+                          child: SizedBox(
+                            height: 150,
+                            width: 180,
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Icon(
+                                  Icons.check_circle_outline,
+                                  color: AppColors.noWidgetText,
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  'Yayy, You have taken all medications for today',
+                                  style: TextStyle(
+                                    fontSize: (20),
+                                    fontStyle: FontStyle.italic,
+                                    color: AppColors.noWidgetText,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
                       SizedBox(
                         height: MediaQuery.of(context).size.width,
                         child: ListView.separated(
@@ -284,37 +315,6 @@ class _HomeViewState extends State<HomeView> {
                           },
                           itemBuilder: (context, index) {
                             HistoryModel regimenItem = regimenList[index];
-                            if (regimenList.isEmpty) {
-                              return Center(
-                                child: SizedBox(
-                                  height: 150,
-                                  width: 180,
-                                  child: Column(
-                                    children: [
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      Icon(
-                                        Icons.check_circle_outline,
-                                        color: AppColors.noWidgetText,
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        'Yayy, You have taken all medications for today',
-                                        style: TextStyle(
-                                          fontSize: (20),
-                                          fontStyle: FontStyle.italic,
-                                          color: AppColors.noWidgetText,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }
                             return NextRegimen(itemModel: regimenItem);
                           },
                         ),

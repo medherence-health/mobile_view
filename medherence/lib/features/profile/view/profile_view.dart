@@ -106,7 +106,7 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
               ),
               Padding(
                 padding: const EdgeInsets.only(
-                  top: 180.0,
+                  top: 200.0,
                 ),
                 child: ListView(
                   padding: EdgeInsets.only(
