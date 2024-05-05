@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../../core/utils/color_utils.dart';
 import '../../../core/utils/size_manager.dart';
+import '../view_model.dart/help_view_model.dart';
 
 class HelpAndSupportWidget extends StatelessWidget {
-  final String title;
-  final String subtitle;
+  final HelpAndSupportModel model;
   final VoidCallback onPressed;
   final Widget child;
   final IconData? icon;
@@ -14,8 +14,7 @@ class HelpAndSupportWidget extends StatelessWidget {
     super.key,
     required this.icon,
     required this.child,
-    required this.title,
-    required this.subtitle,
+    required this.model,
     required this.onPressed,
   });
 
@@ -80,14 +79,14 @@ class HelpAndSupportWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        title,
+                        model.title,
                         style: TextStyle(
                           fontSize: SizeMg.text(18),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       Text(
-                        subtitle,
+                        model.subtitle,
                         style: TextStyle(
                           fontSize: SizeMg.text(12),
                           fontWeight: FontWeight.w400,

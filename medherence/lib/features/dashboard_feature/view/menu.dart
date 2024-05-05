@@ -216,8 +216,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const HelpAndSupport()),
+                      MaterialPageRoute(builder: (context) => HelpAndSupport()),
                     );
 
                     // ScaffoldMessenger.of(context).showSnackBar(snackbar);

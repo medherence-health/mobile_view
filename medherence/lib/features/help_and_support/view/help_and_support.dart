@@ -4,11 +4,30 @@ import 'package:medherence/core/utils/size_manager.dart';
 import '../../../core/utils/color_utils.dart';
 import '../../../core/utils/image_utils.dart';
 import '../../dashboard_feature/view/dashboard_view.dart';
+import '../view_model.dart/help_view_model.dart';
 import '../widget/support_widget.dart';
 
 class HelpAndSupport extends StatelessWidget {
-  const HelpAndSupport({super.key});
+  HelpAndSupport({super.key});
+  HelpAndSupportModel customerCareModel = HelpAndSupportModel(
+    title: '24/7 Customer care',
+    subtitle: '09123456789',
+  );
 
+  HelpAndSupportModel emailModel = HelpAndSupportModel(
+    title: 'Email us at',
+    subtitle: 'medherence23@gmail.com',
+  );
+
+  HelpAndSupportModel faqsModel = HelpAndSupportModel(
+    title: 'FAQs',
+    subtitle: 'Answers to frequently asked questions',
+  );
+
+  HelpAndSupportModel appTourModel = HelpAndSupportModel(
+    title: 'App Tour',
+    subtitle: 'Tour of the app and its functionalities',
+  );
   @override
   Widget build(BuildContext context) {
     SizeMg.init(context);
@@ -46,10 +65,10 @@ class HelpAndSupport extends StatelessWidget {
           child: Column(
             children: [
               HelpAndSupportWidget(
-                  title: '24/7 Customer care',
-                  subtitle: '09123456789',
+                  model: customerCareModel,
                   icon: Icons.copy,
                   onPressed: () {
+                    customerCareModel.copySubtitle(context);
                     // Navigate to settings screen
                     // ScaffoldMessenger.of(context).showSnackBar(snackbar);
                   },
@@ -66,27 +85,27 @@ class HelpAndSupport extends StatelessWidget {
               ),
               HelpAndSupportWidget(
                 icon: Icons.copy,
-                title: 'Email us at',
-                subtitle: 'medherence23@gmail.com',
+                model: emailModel,
                 onPressed: () {
+                  emailModel.copySubtitle(context);
                   // Navigate to settings screen
                   // ScaffoldMessenger.of(context).showSnackBar(snackbar);
                 },
                 child: Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Image.asset(
-                      ImageUtils.emailMessageIcon,
-                      height: SizeMg.height(24),
-                      width: SizeMg.width(24),
-                    )),
+                  padding: EdgeInsets.all(8),
+                  child: Image.asset(
+                    ImageUtils.emailMessageIcon,
+                    height: SizeMg.height(24),
+                    width: SizeMg.width(24),
+                  ),
+                ),
               ),
               const SizedBox(
                 height: 15,
               ),
               HelpAndSupportWidget(
                 icon: Icons.arrow_forward_ios_rounded,
-                title: 'FAQs',
-                subtitle: 'Answers to frequently asked questions',
+                model: faqsModel,
                 onPressed: () {
                   // Navigate to settings screen
                   // ScaffoldMessenger.of(context).showSnackBar(snackbar);
@@ -104,8 +123,7 @@ class HelpAndSupport extends StatelessWidget {
               ),
               HelpAndSupportWidget(
                 icon: Icons.arrow_forward_ios_rounded,
-                title: 'App Tour',
-                subtitle: 'Tour of the app and its functionalities',
+                model: appTourModel,
                 onPressed: () {
                   // Navigate to settings screen
                   // ScaffoldMessenger.of(context).showSnackBar(snackbar);

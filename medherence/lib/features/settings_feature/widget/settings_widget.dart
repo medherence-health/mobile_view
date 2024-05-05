@@ -5,17 +5,13 @@ import '../../../core/utils/size_manager.dart';
 
 class SettingsWidgetList extends StatelessWidget {
   final String title;
-  final String subtitle;
   final VoidCallback onPressed;
   final Widget child;
-  final IconData? icon;
 
   const SettingsWidgetList({
     super.key,
-    required this.icon,
     required this.child,
     required this.title,
-    required this.subtitle,
     required this.onPressed,
   });
 

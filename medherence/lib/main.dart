@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -26,6 +27,9 @@ void main() async {
           AndroidFlutterLocalNotificationsPlugin>()!
       .requestNotificationsPermission();
   await NotificationService().init();
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+    statusBarColor: Colors.white, // Example: Set status bar color
+  ));
   runApp(const MyApp());
 }
 
@@ -45,6 +49,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Medical adherence',
           theme: ThemeData(
+            brightness: Brightness.light,
             scaffoldBackgroundColor: Colors.white,
             // colorScheme: ColorScheme.fromSeed(seedColor: AppColors.navBarColor),
             colorScheme: const ColorScheme.light(
