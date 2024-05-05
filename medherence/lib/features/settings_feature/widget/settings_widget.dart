@@ -69,7 +69,7 @@ class SettingsWidgetList extends StatelessWidget {
                   child: child,
                 ),
                 SizedBox(
-                  width: SizeMg.width(24),
+                  width: SizeMg.width(10),
                 ),
                 Expanded(
                   child: Column(
@@ -78,7 +78,7 @@ class SettingsWidgetList extends StatelessWidget {
                       Text(
                         title,
                         style: TextStyle(
-                          fontSize: SizeMg.text(20),
+                          fontSize: SizeMg.text(16),
                           fontWeight: FontWeight.w500,
                         ),
                       ),

@@ -70,7 +70,8 @@ class ProgressStreak extends StatelessWidget {
           child: Image.asset(
             'assets/images/avatar_image.png',
             // width: 3,
-            height: 25,
+            height: 18,
+            width: 20,
           ),
         ),
       ],

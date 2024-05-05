@@ -259,7 +259,7 @@ class _HomeViewState extends State<HomeView> {
                         _amountChanged,
                       ),
                       SizedBox(
-                        height: SizeMg.height(30),
+                        height: SizeMg.height(15),
                       ),
                       Text(
                         'Today\'s Medications',
@@ -273,16 +273,17 @@ class _HomeViewState extends State<HomeView> {
                       if (regimenList.isEmpty)
                         Center(
                           child: SizedBox(
-                            height: 150,
-                            width: 180,
+                            height: 250,
+                            width: 300,
                             child: Column(
                               children: [
                                 SizedBox(
-                                  height: 20,
+                                  height: 100,
                                 ),
                                 Icon(
-                                  Icons.check_circle_outline,
-                                  color: AppColors.noWidgetText,
+                                  Icons.check_circle_outline_sharp,
+                                  color: AppColors.historyBackground,
+                                  size: 30,
                                 ),
                                 SizedBox(
                                   height: 10,
@@ -290,7 +291,7 @@ class _HomeViewState extends State<HomeView> {
                                 Text(
                                   'Yayy, You have taken all medications for today',
                                   style: TextStyle(
-                                    fontSize: (20),
+                                    fontSize: (18),
                                     fontStyle: FontStyle.italic,
                                     color: AppColors.noWidgetText,
                                   ),
@@ -301,57 +302,63 @@ class _HomeViewState extends State<HomeView> {
                           ),
                         ),
 
-                      SizedBox(
-                        height: MediaQuery.of(context).size.width,
-                        child: ListView.separated(
-                          shrinkWrap: true,
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          itemCount:
-                              remainingMedications, // the length of the data list
-                          separatorBuilder: (ctx, index) {
-                            return SizedBox(
-                              height: SizeMg.height(3),
-                            );
-                          },
-                          itemBuilder: (context, index) {
-                            HistoryModel regimenItem = regimenList[index];
-                            return NextRegimen(itemModel: regimenItem);
-                          },
-                        ),
-                      ),
-
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Visibility(
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const HistoryScreen()));
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 20.0),
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.width,
+                          child: ListView.separated(
+                            shrinkWrap: true,
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            itemCount:
+                                remainingMedications, // the length of the data list
+                            separatorBuilder: (ctx, index) {
+                              return SizedBox(
+                                height: SizeMg.height(3),
+                              );
                             },
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                top: 5,
-                                bottom: SizeMg.height(35.0),
-                              ),
-                              child: Text(
-                                'View Adherence History',
-                                style: TextStyle(
-                                  color: AppColors.navBarColor,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: "Poppins-Bold.ttf",
-                                  fontSize: SizeMg.text(18),
-                                ),
-                              ),
-                            ),
+                            itemBuilder: (context, index) {
+                              HistoryModel regimenItem = regimenList[index];
+                              return NextRegimen(itemModel: regimenItem);
+                            },
                           ),
                         ),
                       ),
                     ],
                   ),
                 ],
+              ),
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Visibility(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HistoryScreen()));
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          top: 5,
+                          bottom: SizeMg.height(5.0),
+                        ),
+                        child: Text(
+                          'View Adherence History',
+                          style: TextStyle(
+                            color: AppColors.navBarColor,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: "Poppins-Bold.ttf",
+                            fontSize: SizeMg.text(18),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),

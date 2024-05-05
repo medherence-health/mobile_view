@@ -60,11 +60,12 @@ class _SettingsViewState extends State<SettingsView> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(
-            left: 15.0,
-            right: 15,
+            left: 25.0,
+            right: 25,
             top: 15,
           ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'General',
@@ -113,6 +114,8 @@ class _SettingsViewState extends State<SettingsView> {
                 padding: EdgeInsets.only(
                   top: 15,
                   bottom: 15,
+                  left: 10,
+                  right: 10,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -120,8 +123,8 @@ class _SettingsViewState extends State<SettingsView> {
                     Text(
                       'Sound',
                       style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                     InkWell(

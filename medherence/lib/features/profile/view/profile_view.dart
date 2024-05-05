@@ -57,7 +57,7 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                     backgroundColor: AppColors.progressBarFill,
                     radius: 60,
                     child: Image.asset(
-                      ImageUtils.avatar4,
+                      context.watch<ProfileViewModel>().selectedAvatar,
                       fit: BoxFit.contain,
                     ),
                   ),
@@ -71,8 +71,7 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                           return Center(
                             child: AvatarSelectionOverlay(
                               onAvatarSelected: (avatar) {
-                                Provider.of<ProfileViewModel>(context,
-                                        listen: false)
+                                Provider.of<ProfileViewModel>(context)
                                     .setAvatar(avatar);
                               },
                             ),
@@ -245,65 +244,66 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                           Text('Others', style: TextStyle(fontSize: 16))
                         ],
                       ),
-                      const Text(
-                        'Next of Kin information',
-                        style: TextStyle(
-                          fontSize: (16),
-                          color: AppColors.darkGrey,
-                        ),
-                      ),
-                      SizedBox(height: SizeMg.height(15)),
-                      TitleAndTextFormField(
-                        title: 'First Name',
-                        formFieldHint: 'Type your NOK\'s first name',
-                        formFieldController: model.nicknameController,
-                        textInputAction: TextInputAction.next,
-                        textInputType: TextInputType.text,
-                        formFieldColor: model.nicknameFillColor,
-                        formFieldValidator: (value) {
-                          return value.nameValidation();
-                        },
-                      ),
-                      SizedBox(height: 10),
-                      TitleAndTextFormField(
-                        title: 'Last Name',
-                        formFieldHint: 'Type your NOK\'s last name',
-                        formFieldController: model.nicknameController,
-                        textInputAction: TextInputAction.next,
-                        textInputType: TextInputType.text,
-                        formFieldColor: model.nicknameFillColor,
-                        formFieldValidator: (value) {
-                          return value.nameValidation();
-                        },
-                      ),
-                      SizedBox(height: 10),
-                      TitleAndTextFormField(
-                        title: 'Phone Number',
-                        formFieldHint: 'Type your NOK\'s number',
-                        formFieldController: model.nicknameController,
-                        textInputAction: TextInputAction.next,
-                        textInputType: TextInputType.number,
-                        formFieldColor: model.nicknameFillColor,
-                        formFieldValidator: (value) {
-                          return value.phoneNumberValidation();
-                        },
-                      ),
-                      SizedBox(height: 10),
-                      TitleAndTextFormField(
-                        title: 'Relationship',
-                        formFieldHint: 'e.g Mother',
-                        formFieldController: model.nicknameController,
-                        textInputAction: TextInputAction.done,
-                        textInputType: TextInputType.text,
-                        formFieldColor: model.nicknameFillColor,
-                        formFieldValidator: (value) {
-                          return value.nameValidation();
-                        },
-                      ),
-                      SizedBox(height: 10),
                     ],
                   ),
                 ),
+                const SizedBox(height: (10)),
+                const Text(
+                  'Next of Kin information',
+                  style: TextStyle(
+                    fontSize: (16),
+                    color: AppColors.darkGrey,
+                  ),
+                ),
+                SizedBox(height: SizeMg.height(15)),
+                TitleAndTextFormField(
+                  title: 'First Name',
+                  formFieldHint: 'Type your NOK\'s first name',
+                  formFieldController: model.nokFirstNameController,
+                  textInputAction: TextInputAction.next,
+                  textInputType: TextInputType.text,
+                  formFieldColor: model.nicknameFillColor,
+                  formFieldValidator: (value) {
+                    return value.nameValidation();
+                  },
+                ),
+                SizedBox(height: 10),
+                TitleAndTextFormField(
+                  title: 'Last Name',
+                  formFieldHint: 'Type your NOK\'s last name',
+                  formFieldController: model.nokLastNameController,
+                  textInputAction: TextInputAction.next,
+                  textInputType: TextInputType.text,
+                  formFieldColor: model.nicknameFillColor,
+                  formFieldValidator: (value) {
+                    return value.nameValidation();
+                  },
+                ),
+                SizedBox(height: 10),
+                TitleAndTextFormField(
+                  title: 'Phone Number',
+                  formFieldHint: 'Type your NOK\'s number',
+                  formFieldController: model.nokPhoneNumberController,
+                  textInputAction: TextInputAction.next,
+                  textInputType: TextInputType.number,
+                  formFieldColor: model.nicknameFillColor,
+                  formFieldValidator: (value) {
+                    return value.phoneNumberValidation();
+                  },
+                ),
+                SizedBox(height: 10),
+                TitleAndTextFormField(
+                  title: 'Relationship',
+                  formFieldHint: 'e.g Mother',
+                  formFieldController: model.nokRelationController,
+                  textInputAction: TextInputAction.done,
+                  textInputType: TextInputType.text,
+                  formFieldColor: model.nicknameFillColor,
+                  formFieldValidator: (value) {
+                    return value.nameValidation();
+                  },
+                ),
+                SizedBox(height: 10),
               ],
             ),
           ),

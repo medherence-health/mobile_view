@@ -37,8 +37,7 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   void _validateForm() {
-    if (nicknameController.text.isNotEmpty &&
-        gender != 0 &&
+    if (gender != 0 &&
         nokFirstNameController.text.isNotEmpty &&
         nokLastNameController.text.isNotEmpty &&
         nokPhoneNumberController.text.isNotEmpty &&
@@ -59,10 +58,11 @@ class ProfileViewModel extends ChangeNotifier {
       );
 
       // Redirect to DashboardView
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => DashboardView()),
-      );
+      Navigator.pop(context);
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => DashboardView()),
+      // );
     }
   }
 }

@@ -46,16 +46,17 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
               if (regimenList.isEmpty)
                 Center(
                   child: SizedBox(
-                    height: 150,
-                    width: 180,
+                    height: 250,
+                    width: 300,
                     child: Column(
                       children: [
                         SizedBox(
                           height: 20,
                         ),
                         Icon(
-                          Icons.check_circle_outline,
+                          Icons.check_circle_outline_sharp,
                           color: AppColors.noWidgetText,
+                          size: 30,
                         ),
                         SizedBox(
                           height: 10,
@@ -63,7 +64,7 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                         Text(
                           'Yayy, You have taken all medications for today',
                           style: TextStyle(
-                            fontSize: (20),
+                            fontSize: (18),
                             fontStyle: FontStyle.italic,
                             color: AppColors.noWidgetText,
                           ),
