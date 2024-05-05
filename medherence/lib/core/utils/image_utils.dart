@@ -13,8 +13,8 @@ class ImageUtils {
   static const String medherenceAppIcon = 'assets/images/medherence_icon.png';
   static const String appTour = 'assets/images/app_tour.png';
   static const String privacyPolicyIcon = 'assets/images/privacy_policy.png';
-  static const String biometricIcon = '';
-  static const String lockIcon = '';
+  static const String biometricIcon = 'assets/images/finger_scan.png';
+  static const String lockIcon = 'assets/images/unlock.png';
 
   // Avatars
   static const String avatar1 = 'assets/images/avatars/avatar_1.png';
