@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import '../../../core/utils/color_utils.dart';
 import '../../../core/utils/size_manager.dart';
 
-class HelpAndSupportWidget extends StatelessWidget {
+class SettingsWidgetList extends StatelessWidget {
   final String title;
   final String subtitle;
   final VoidCallback onPressed;
   final Widget child;
   final IconData? icon;
 
-  const HelpAndSupportWidget({
+  const SettingsWidgetList({
     super.key,
     required this.icon,
     required this.child,
@@ -82,15 +82,8 @@ class HelpAndSupportWidget extends StatelessWidget {
                       Text(
                         title,
                         style: TextStyle(
-                          fontSize: SizeMg.text(18),
+                          fontSize: SizeMg.text(20),
                           fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      Text(
-                        subtitle,
-                        style: TextStyle(
-                          fontSize: SizeMg.text(12),
-                          fontWeight: FontWeight.w400,
                         ),
                       ),
                     ],
@@ -99,7 +92,7 @@ class HelpAndSupportWidget extends StatelessWidget {
                 IconButton(
                   onPressed: onPressed,
                   icon: Icon(
-                    icon,
+                    Icons.arrow_forward_ios_rounded,
                     color: AppColors.pillIconColor,
                   ),
                 ),

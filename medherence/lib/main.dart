@@ -12,6 +12,7 @@ import 'core/utils/utils.dart';
 import 'core/model/models/notification_model.dart';
 import 'features/monitor/view/alarm_monitor.dart';
 import 'features/monitor/view_model/reminder_view_model.dart';
+import 'features/profile/view_model/profile_view_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,8 +38,8 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(create: (context) => NotificationModelItems()),
           ChangeNotifierProvider(create: (context) => ReminderState()),
-          ChangeNotifierProvider(
-              create: (context) => NotificationService()),
+          ChangeNotifierProvider(create: (context) => NotificationService()),
+          ChangeNotifierProvider(create: (context) => ProfileViewModel()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

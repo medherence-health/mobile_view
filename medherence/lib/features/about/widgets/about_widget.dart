@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/utils/color_utils.dart';
+import '../../../core/utils/size_manager.dart';
 
 class AboutWidget extends StatelessWidget {
   final String title;
@@ -20,6 +21,7 @@ class AboutWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeMg.init(context);
     return Card(
       surfaceTintColor: AppColors.shadowColor,
       shadowColor: AppColors.progressBarFill,
@@ -79,15 +81,15 @@ class AboutWidget extends StatelessWidget {
                     children: [
                       Text(
                         title,
-                        style: const TextStyle(
-                          fontSize: 20,
+                        style: TextStyle(
+                          fontSize: SizeMg.text(18),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       Text(
                         subtitle,
-                        style: const TextStyle(
-                          fontSize: 14,
+                        style: TextStyle(
+                          fontSize: SizeMg.text(12),
                           fontWeight: FontWeight.w400,
                         ),
                       ),
