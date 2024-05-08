@@ -6,6 +6,7 @@ import '../../../core/utils/size_manager.dart';
 import '../../dashboard_feature/view/dashboard_view.dart';
 import '../widgets/about_widget.dart';
 import 'about_view.dart';
+import '../../more_features/privacy_policy/privacy_policy_view.dart';
 
 class AboutScreenView extends StatelessWidget {
   const AboutScreenView({super.key});
@@ -51,7 +52,7 @@ class AboutScreenView extends StatelessWidget {
                   subtitle: 'Report any difficulty you are facing',
                   icon: Icons.arrow_forward_ios_rounded,
                   onPressed: () {
-                    // Navigate to settings screen
+                    // Navigate to app version control screen
                     // ScaffoldMessenger.of(context).showSnackBar(snackbar);
                   },
                   child: Padding(
@@ -70,8 +71,13 @@ class AboutScreenView extends StatelessWidget {
                 title: 'Privacy Policy',
                 subtitle: 'Data collection, usage and protection',
                 onPressed: () {
-                  // Navigate to settings screen
+                  // Navigate to privacy policy screen
                   // ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => PrivacyPolicyView()),
+                  );
                 },
                 child: Padding(
                     padding: EdgeInsets.all(8),
@@ -89,7 +95,7 @@ class AboutScreenView extends StatelessWidget {
                 title: 'About Medherence',
                 subtitle: 'Learn more about Medherence Ltd.',
                 onPressed: () {
-                  // Navigate to settings screen
+                  // Navigate to about app screen
                   // ScaffoldMessenger.of(context).showSnackBar(snackbar);
                   Navigator.push(
                     context,

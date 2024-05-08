@@ -29,7 +29,7 @@ void main() async {
       .requestNotificationsPermission();
   await NotificationService().init();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-    statusBarColor: Colors.white, // Example: Set status bar color
+    statusBarColor: Colors.transparent, // Example: Set status bar color
   ));
   runApp(const MyApp());
 }

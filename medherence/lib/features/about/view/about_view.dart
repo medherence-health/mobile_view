@@ -38,9 +38,9 @@ class AboutAppView extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                'Medherence mobile application is an Artificial Intelligence enabled healthcare solution designed to improve medication adherence and patient outcomes in people with chronic diseases. Our app is a revolutionary medication adherence platform seamlessly integrated with hospitals, allowing healthcare providers to input patient details and prescribed medications directly. Patients are incentivized to adhere to their medication schedules through a unique rewards system where they earn coins for each successful daily adherence. These coins can be redeemed for a variety of rewards, promoting better health outcomes and encouraging medication compliance. Additionally, patients are monitored using an artificial intelligence model that scans them while they take their medications, ensuring that they\'ve successfully taken their medications. With our app, managing your medications has never been more rewarding and effortless.',
+                'Medherence mobile application is an Artificial Intelligence enabled healthcare solution designed to improve medication adherence and patient outcomes in people with chronic diseases. Our app is a revolutionary medication adherence platform seamlessly integrated with hospitals, allowing healthcare providers to input patient details and prescribed medications directly.\n\n\nPatients are incentivized to adhere to their medication schedules through a unique rewards system where they earn coins for each successful daily adherence. These coins can be redeemed for a variety of rewards, promoting better health outcomes and encouraging medication compliance. \n\n\nAdditionally, patients are monitored using an artificial intelligence model that scans them while they take their medications, ensuring that they\'ve successfully taken their medications. With our app, managing your medications has never been more rewarding and effortless.',
                 style: TextStyle(
-                  fontSize: SizeMg.text(16),
+                  fontSize: SizeMg.text(18),
                   fontWeight: FontWeight.w400,
                   fontFamily: "Poppins-bold.ttf",
                 ),
