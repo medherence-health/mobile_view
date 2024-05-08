@@ -4,6 +4,7 @@ import '../../../core/utils/color_utils.dart';
 import '../../../core/utils/image_utils.dart';
 import '../../../core/utils/size_manager.dart';
 import '../../dashboard_feature/view/dashboard_view.dart';
+import '../../more_features/app_version/app_version.dart';
 import '../widgets/about_widget.dart';
 import 'about_view.dart';
 import '../../more_features/privacy_policy/privacy_policy_view.dart';
@@ -48,21 +49,26 @@ class AboutScreenView extends StatelessWidget {
           child: Column(
             children: [
               AboutWidget(
-                  title: 'App Version',
-                  subtitle: 'Report any difficulty you are facing',
-                  icon: Icons.arrow_forward_ios_rounded,
-                  onPressed: () {
-                    // Navigate to app version control screen
-                    // ScaffoldMessenger.of(context).showSnackBar(snackbar);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(
-                      ImageUtils.appVersionIcon,
-                      height: SizeMg.height(24),
-                      width: SizeMg.width(24),
-                    ),
-                  )),
+                title: 'App Version',
+                subtitle: 'Report any difficulty you are facing',
+                icon: Icons.arrow_forward_ios_rounded,
+                onPressed: () {
+                  // Navigate to app version control screen
+                  // ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AppVersionView()),
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.asset(
+                    ImageUtils.appVersionIcon,
+                    height: SizeMg.height(24),
+                    width: SizeMg.width(24),
+                  ),
+                ),
+              ),
               SizedBox(
                 height: SizeMg.height(15),
               ),
