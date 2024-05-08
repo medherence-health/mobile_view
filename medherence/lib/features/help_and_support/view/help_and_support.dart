@@ -4,6 +4,7 @@ import 'package:medherence/core/utils/size_manager.dart';
 import '../../../core/utils/color_utils.dart';
 import '../../../core/utils/image_utils.dart';
 import '../../dashboard_feature/view/dashboard_view.dart';
+import '../../more_features/faqs/faq_view.dart';
 import '../view_model.dart/help_view_model.dart';
 import '../widget/support_widget.dart';
 
@@ -109,6 +110,10 @@ class HelpAndSupport extends StatelessWidget {
                 onPressed: () {
                   // Navigate to settings screen
                   // ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => FAQView()),
+                  );
                 },
                 child: Padding(
                     padding: EdgeInsets.all(8),
