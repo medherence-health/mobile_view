@@ -6,6 +6,7 @@ import '../../../core/utils/image_utils.dart';
 import '../../../core/utils/size_manager.dart';
 import '../../dashboard_feature/view/dashboard_view.dart';
 import '../../monitor/view_model/reminder_view_model.dart';
+import '../../more_features/Biometric/biometric_auth.dart';
 import '../widget/settings_widget.dart';
 
 class SettingsView extends StatefulWidget {
@@ -217,7 +218,13 @@ class _SettingsViewState extends State<SettingsView> {
                         ),
                       ),
                       title: 'Biometric authentication',
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    BiometricAuthenticationView()));
+                      },
                     )
                   ],
                 ),
