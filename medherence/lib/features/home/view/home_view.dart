@@ -15,6 +15,7 @@ import '../../medhecoin/view/medhecoin.dart';
 import '../../monitor/view_model/reminder_view_model.dart';
 import '../../notification/view/notification_view.dart';
 import '../../notification/widget/notification_widget.dart';
+import '../../profile/view_model/profile_view_model.dart';
 import '../widget/medecoin_widget.dart';
 import '../widget/progressStreak.dart';
 import 'medication_details.dart';
@@ -196,7 +197,7 @@ class _HomeViewState extends State<HomeView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Welcome, $title',
+                          'Welcome, ${context.watch<ProfileViewModel>().nickName}',
                           style: TextStyle(
                             fontSize: SizeMg.text(25),
                             fontWeight: FontWeight.w600,
@@ -221,7 +222,7 @@ class _HomeViewState extends State<HomeView> {
                       SizedBox(
                         height: SizeMg.height(10),
                       ),
-                      Text(title),
+                      Text(context.watch<ProfileViewModel>().nickName),
                       SizedBox(
                         height: SizeMg.height(5),
                       ),

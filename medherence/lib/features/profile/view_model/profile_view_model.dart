@@ -13,6 +13,7 @@ class ProfileViewModel extends ChangeNotifier {
   int gender = 1; // Default to Male
   bool isFormValid = false;
   String selectedAvatar = '';
+  String nickName = '';
 
   ProfileViewModel() {
     nicknameController = TextEditingController();
@@ -21,10 +22,16 @@ class ProfileViewModel extends ChangeNotifier {
     nokPhoneNumberController = TextEditingController();
     nokRelationController = TextEditingController();
     selectedAvatar = ImageUtils.avatar4; // Default avatar
+    nickName = 'ADB';
   }
 
   void setAvatar(String avatar) {
     selectedAvatar = avatar;
+    notifyListeners();
+  }
+
+  void setNickName(String name) {
+    nickName = name;
     notifyListeners();
   }
 

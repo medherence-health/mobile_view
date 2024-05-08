@@ -19,7 +19,12 @@ class _FAQItemState extends State<FAQItem> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(25.0),
+      padding: const EdgeInsets.only(
+        left: 20.0,
+        right: 20,
+        bottom: 5,
+        top: 5,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -44,11 +49,11 @@ class _FAQItemState extends State<FAQItem> {
           ),
           if (isExpanded)
             Padding(
-              padding: const EdgeInsets.only(left: 30.0),
+              padding: const EdgeInsets.only(left: 50.0),
               child: Text(
                 widget.faq.answer,
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 16,
                   fontWeight: FontWeight.w400,
                   color: AppColors.darkGrey,
                   fontFamily: "Poppins-bold.ttf",

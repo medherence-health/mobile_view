@@ -36,11 +36,12 @@ class FAQView extends StatelessWidget {
         itemCount: faqs.length,
         itemBuilder: (context, index) {
           final faq = faqs[index];
-
           return Column(
             children: [
               FAQItem(faq: faq),
-              Divider(color: AppColors.darkGrey,),
+              Divider(
+                color: AppColors.darkGrey.withOpacity(0.3),
+              ),
             ],
           );
         },

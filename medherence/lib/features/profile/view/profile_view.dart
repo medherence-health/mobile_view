@@ -312,10 +312,14 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
             textSize: SizeMg.text(25),
             buttonConfig: ButtonConfig(
               action: () {
+                Provider.of<ProfileViewModel>(context)
+                    .setNickName(model.nicknameController.text.trim());
                 model.saveProfile(context);
+                Navigator.pop(context);
               },
               text: 'Save Changes',
-              disabled: !model.isFormValid,
+              disabled: false,
+              // !model.isFormValid,
             ),
             width: double.infinity,
           ),
