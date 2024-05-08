@@ -7,6 +7,7 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_all.dart' as tz;
 
 import 'package:medherence/features/splashscreen/splashscreen.dart';
+import 'core/providers/faq_provider.dart';
 import 'core/service/notification_service.dart';
 import 'core/utils/color_utils.dart';
 import 'core/utils/utils.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (context) => ReminderState()),
           ChangeNotifierProvider(create: (context) => NotificationService()),
           ChangeNotifierProvider(create: (context) => ProfileViewModel()),
+          ChangeNotifierProvider(create: (context) => FAQProvider()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
