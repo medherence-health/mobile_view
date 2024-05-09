@@ -12,6 +12,18 @@ extension StringExtension on String? {
     }
     return null;
   }
+  String? validatePin() {
+    if (this == null || this!.isEmpty) {
+      return 'PIN cannot be empty';
+    }
+    if (this!.length != 4) {
+      return 'PIN must be 4 digits long';
+    }
+    if (!RegExp(r'^[0-9]+$').hasMatch(this!)) {
+      return 'PIN must be numeric';
+    }
+    return null;
+  }
 
   String? phoneNumberValidation() {
     if (this == null || this!.isEmpty) {
@@ -56,5 +68,4 @@ extension StringExtension on String? {
     // You can add more specific password validation rules here
     return null;
   }
-
 }

@@ -7,6 +7,7 @@ import '../../../core/utils/size_manager.dart';
 import '../../dashboard_feature/view/dashboard_view.dart';
 import '../../monitor/view_model/reminder_view_model.dart';
 import '../../more_features/Biometric/biometric_auth.dart';
+import '../../more_features/wallet/view/wallet_pin_view.dart';
 import '../widget/settings_widget.dart';
 
 class SettingsView extends StatefulWidget {
@@ -206,7 +207,13 @@ class _SettingsViewState extends State<SettingsView> {
                         ),
                       ),
                       title: 'Change wallet Pin',
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => WalletPinView()),
+                        );
+                      },
                     ),
                     SettingsWidgetList(
                       child: Padding(
@@ -220,10 +227,11 @@ class _SettingsViewState extends State<SettingsView> {
                       title: 'Biometric authentication',
                       onPressed: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    BiometricAuthenticationView()));
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  BiometricAuthenticationView()),
+                        );
                       },
                     )
                   ],

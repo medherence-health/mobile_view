@@ -43,8 +43,11 @@ class _BiometricAuthenticationViewState
           children: [
             Text(
               'Enhance Your Wallet Security: Enable biometric authentication to Safeguard Your Earnings and Transactions',
+              style: TextStyle(
+                fontSize: 14,
+              ),
             ),
-            SizedBox(height: 50),
+            SizedBox(height: 20),
             SwitchListTile(
               title: Text(
                 'Enable Fingerprint',

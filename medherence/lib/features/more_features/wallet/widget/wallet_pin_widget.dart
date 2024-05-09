@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:medherence/core/utils/color_utils.dart';
 
 import '../../../../core/utils/size_manager.dart';
@@ -25,33 +27,38 @@ class _WalletPinWidgetState extends State<WalletPinWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      backgroundColor: AppColors.historyBackground,
+    return CupertinoAlertDialog(
       content: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Text('Enter your Wallet Pin to enable fingerprint'),
-            SizedBox(height: 16),
-            Container(
-              width: SizeMg.width(200),
-              height: SizeMg.height(50),
-              padding: EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(5),
+        child: Container(
+          height: 100,
+          child: Column(
+            children: [
+              Text(
+                'Enter your Wallet Pin to enable fingerprint',
+                
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(
-                  4,
-                  (index) => Expanded(
-                    child: _buildPinTextField(index),
+              SizedBox(height: 16),
+              Container(
+                width: SizeMg.width(200),
+                height: SizeMg.height(50),
+                padding: EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: List.generate(
+                    4,
+                    (index) => Expanded(
+                      child: _buildPinTextField(index),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -59,12 +66,13 @@ class _WalletPinWidgetState extends State<WalletPinWidget> {
 
   Widget _buildPinTextField(int index) {
     return Container(
-      width: SizeMg.width(36),
-      height: SizeMg.height(36),
+      width: SizeMg.width(28),
+      height: SizeMg.height(28),
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color:
-            _controllers[index].text.isNotEmpty ? AppColors.white : Colors.grey,
+        color: _controllers[index].text.isNotEmpty
+            ? AppColors.historyBackground
+            : Colors.grey,
         shape: BoxShape.circle,
       ),
       child: TextField(
@@ -73,8 +81,24 @@ class _WalletPinWidgetState extends State<WalletPinWidget> {
         obscureText: true,
         textAlign: TextAlign.center,
         keyboardType: TextInputType.number,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+        ),
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(1),
+          FilteringTextInputFormatter.digitsOnly
+        ],
         onChanged: (value) {
-          if (index == 3 && value.length == 1) {
+          if (value.isEmpty) {
+            // If the field is empty, move to the previous field
+            if (index > 0) {
+              FocusScope.of(context).previousFocus();
+            }
+          } else if (value.length == 1) {
+            // If a digit is entered, move to the next field
+            FocusScope.of(context).nextFocus();
+          }
+          if (index == 3) {
             // Last digit entered, perform verification
             _verifyPinAndCloseDialog();
           }
