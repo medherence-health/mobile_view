@@ -49,6 +49,7 @@ class _WalletPinViewState extends State<WalletPinView> {
               ),
               child: Form(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                         'Enter your account password to verify that it is you'),

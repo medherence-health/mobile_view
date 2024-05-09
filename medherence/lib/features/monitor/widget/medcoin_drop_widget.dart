@@ -5,6 +5,7 @@ import 'package:medherence/core/shared_widget/buttons.dart';
 import 'package:medherence/core/utils/color_utils.dart';
 
 import '../../../../core/utils/size_manager.dart';
+import '../../dashboard_feature/view/dashboard_view.dart';
 
 class MedCoinDropWidget extends StatelessWidget {
   const MedCoinDropWidget({super.key});
@@ -59,10 +60,21 @@ class MedCoinDropWidget extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              OutlinePrimaryButton(
-                buttonConfig: ButtonConfig(
-                  text: 'Yaayy!!!',
-                  action: () {},
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: OutlinePrimaryButton(
+                  width: 200,
+                  buttonConfig: ButtonConfig(
+                    text: 'Yaayy!!!',
+                    action: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const DashboardView()),
+                      );
+                      // Navigator.pop(context);
+                    },
+                  ),
                 ),
               ),
             ],

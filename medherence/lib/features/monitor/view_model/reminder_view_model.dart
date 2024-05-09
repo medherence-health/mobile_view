@@ -62,9 +62,10 @@ class ReminderState extends ChangeNotifier {
   }
 
   void updateSelectedSound(String newSound) {
-    _selectedSound = newSound;
-    notifyListeners();
-  }
+  _selectedSound = newSound;
+  print('Selected sound updated to: $_selectedSound');
+  notifyListeners();
+}
 
   void updateSelectedTime(TimeOfDay newTime) {
     _selectedTime = newTime;

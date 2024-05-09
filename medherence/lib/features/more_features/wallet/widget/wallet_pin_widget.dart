@@ -36,23 +36,22 @@ class _WalletPinWidgetState extends State<WalletPinWidget> {
             children: [
               Text(
                 'Enter your Wallet Pin to enable fingerprint',
-                
               ),
               SizedBox(height: 16),
-              Container(
-                width: SizeMg.width(200),
-                height: SizeMg.height(50),
-                padding: EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: List.generate(
-                    4,
-                    (index) => Expanded(
-                      child: _buildPinTextField(index),
+              Expanded(
+                child: Container(
+                  width: SizeMg.width(200),
+                  height: SizeMg.height(50),
+                  padding: EdgeInsets.all(0),
+                  decoration: BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: List.generate(
+                      4,
+                      (index) => Flexible(child: _buildPinTextField(index)),
                     ),
                   ),
                 ),
@@ -75,14 +74,14 @@ class _WalletPinWidgetState extends State<WalletPinWidget> {
             : Colors.grey,
         shape: BoxShape.circle,
       ),
-      child: TextField(
+      child: CupertinoTextField(
         controller: _controllers[index],
         focusNode: index == 3 ? _lastFocusNode : null,
         obscureText: true,
         textAlign: TextAlign.center,
         keyboardType: TextInputType.number,
-        decoration: InputDecoration(
-          border: InputBorder.none,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.transparent),
         ),
         inputFormatters: [
           LengthLimitingTextInputFormatter(1),

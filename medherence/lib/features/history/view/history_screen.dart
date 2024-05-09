@@ -6,6 +6,7 @@ import '../../../core/model/models/history_model.dart';
 import '../../../core/model/simulated_data/simulated_values.dart';
 import '../../../core/utils/size_manager.dart';
 import '../../home/view/medication_details.dart';
+import '../widget/filter_widget.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
@@ -59,7 +60,11 @@ class _HistoryScreenState extends State<HistoryScreen>
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: IconButton(
-                onPressed: () {}, icon: const Icon(Icons.filter_list_alt)),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => FilterView()));
+                },
+                icon: const Icon(Icons.filter_list_alt)),
           )
         ],
       ),

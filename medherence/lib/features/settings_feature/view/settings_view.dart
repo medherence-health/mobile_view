@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/utils/color_utils.dart';
 import '../../../core/utils/image_utils.dart';
@@ -39,7 +41,7 @@ class _SettingsViewState extends State<SettingsView> {
 
   @override
   Widget build(BuildContext context) {
-    ReminderState reminderState = ReminderState();
+    // ReminderState reminderState = ReminderState();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -134,32 +136,37 @@ class _SettingsViewState extends State<SettingsView> {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return AlertDialog(
+                            return CupertinoAlertDialog(
                               title: Text('Select Sound'),
                               content: Padding(
                                 padding: const EdgeInsets.only(bottom: 38.0),
-                                child: DropdownButton<String>(
-                                  value: reminderState.selectedSound,
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      reminderState
-                                          .updateSelectedSound(newValue!);
-                                      Navigator.of(context)
-                                          .pop(); // Close the dialog after selecting a sound
-                                    });
-                                  },
-                                  items: <String>[
-                                    'Aegean Sea',
-                                    'Bird Chirping',
-                                    'Wind Blowing',
-                                    'Water Splash'
-                                  ].map<DropdownMenuItem<String>>(
-                                      (String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
+                                child: Consumer<ReminderState>(
+                                  builder: (context, reminderState, _) {
+                                    return DropdownButton<String>(
+                                      value: reminderState.selectedSound,
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          reminderState
+                                              .updateSelectedSound(newValue!);
+                                          Navigator.of(context)
+                                              .pop(); // Close the dialog after selecting a sound
+                                        });
+                                      },
+                                      items: <String>[
+                                        'Aegean Sea',
+                                        'Bird Chirping',
+                                        'Wind Blowing',
+                                        'Water Splash'
+                                      ].map<DropdownMenuItem<String>>(
+                                        (String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        },
+                                      ).toList(),
                                     );
-                                  }).toList(),
+                                  },
                                 ),
                               ),
                             );
@@ -169,7 +176,7 @@ class _SettingsViewState extends State<SettingsView> {
                       child: Row(
                         children: [
                           Text(
-                            reminderState.selectedSound,
+                            ReminderState().selectedSound,
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w300,

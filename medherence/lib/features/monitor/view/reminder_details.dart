@@ -14,6 +14,7 @@ import '../../../core/utils/color_utils.dart';
 import '../../../core/utils/size_manager.dart';
 import '../../dashboard_feature/view/dashboard_view.dart';
 import '../view_model/reminder_view_model.dart';
+import '../widget/medcoin_drop_widget.dart';
 
 class EditReminderDetails extends StatefulWidget {
   @override
@@ -165,8 +166,8 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                           SizedBox(height: 10),
                           Expanded(
                             child: PrimaryButton(
-                              textSize: SizeMg.text(23),
-                              height: SizeMg.height(85),
+                              textSize: SizeMg.text(25),
+                              // height: SizeMg.height(85),
                               buttonConfig: ButtonConfig(
                                 text: 'Take med ($checkedCount)',
                                 action: () {
@@ -182,13 +183,7 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                                   // Update the ReminderState with the filtered list
                                   reminderState.updateRegimenList(updatedList);
                                   reminderState.clearCheckedItems();
-
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const DashboardView()),
-                                  );
+                                  const MedCoinDropWidget();
                                 },
                               ),
                               width: SizeMg.screenWidth,

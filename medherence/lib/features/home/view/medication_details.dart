@@ -81,7 +81,7 @@ class MedicationDetailsScreen extends StatelessWidget {
                       width: 10,
                     ),
                     const Text(
-                      'Tablets used',
+                      'Capsule used',
                       style: TextStyle(
                         fontSize: 19,
                         fontWeight: FontWeight.w400,
@@ -102,7 +102,7 @@ class MedicationDetailsScreen extends StatelessWidget {
                       width: 10,
                     ),
                     const Text(
-                      'Tablets missed',
+                      'Capsule missed',
                       style: TextStyle(
                         fontSize: 19,
                         fontWeight: FontWeight.w400,

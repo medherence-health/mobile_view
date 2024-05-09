@@ -12,6 +12,7 @@ import 'core/service/notification_service.dart';
 import 'core/utils/color_utils.dart';
 import 'core/utils/utils.dart';
 import 'core/model/models/notification_model.dart';
+import 'features/history/view_model/filter_model.dart';
 import 'features/monitor/view/alarm_monitor.dart';
 import 'features/monitor/view_model/reminder_view_model.dart';
 import 'features/profile/view_model/profile_view_model.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (context) => NotificationService()),
           ChangeNotifierProvider(create: (context) => ProfileViewModel()),
           ChangeNotifierProvider(create: (context) => FAQProvider()),
+          ChangeNotifierProvider(create: (context) => FilterViewModel()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
