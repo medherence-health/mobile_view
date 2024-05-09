@@ -312,7 +312,7 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
             textSize: SizeMg.text(25),
             buttonConfig: ButtonConfig(
               action: () {
-                Provider.of<ProfileViewModel>(context)
+                Provider.of<ProfileViewModel>(context, listen: false)
                     .setNickName(model.nicknameController.text.trim());
                 model.saveProfile(context);
                 Navigator.pop(context);
