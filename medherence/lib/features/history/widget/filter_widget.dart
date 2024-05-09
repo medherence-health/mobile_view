@@ -1,6 +1,6 @@
-import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:drop_down_search_field/drop_down_search_field.dart';
 
 import '../../../core/constants/constants.dart';
 import '../../../core/utils/color_utils.dart';
@@ -8,13 +8,13 @@ import '../../../core/utils/size_manager.dart';
 import '../view_model/filter_model.dart';
 
 class FilterView extends StatelessWidget {
-  FilterView({super.key});
+  FilterView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final model = FilterViewModel();
-    String formattedTime = model.formatTimeOfDay(model.firstTime);
-    String secondFormattedTime = model.formatTimeOfDay(model.lastTime);
+    String formattedDate = model.formatDate(model.selectedDate);
+    String secondFormattedDate = model.formatDate(model.secondSelectedDate);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -48,12 +48,7 @@ class FilterView extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(
-            left: 25.0,
-            right: 25,
-            bottom: 25,
-            top: 10,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -64,58 +59,14 @@ class FilterView extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              Container(
-                width: SizeMg.screenWidth - 25,
-                height: 50,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  children: [
-                    Row(
-                      children: [
-                        Radio(
-                          value: 1,
-                          groupValue: model.status,
-                          onChanged: model.setStatus,
-                        ),
-                        Text(' All', style: TextStyle(fontSize: 16))
-                      ],
-                    ),
-                    SizedBox(width: 5),
-                    Row(
-                      children: [
-                        Radio(
-                          value: 2,
-                          groupValue: model.status,
-                          onChanged: model.setStatus,
-                        ),
-                        Text(' Taken', style: TextStyle(fontSize: 16))
-                      ],
-                    ),
-                    SizedBox(width: 5),
-                    Row(
-                      children: [
-                        Radio(
-                          value: 3,
-                          groupValue: model.status,
-                          onChanged: model.setStatus,
-                        ),
-                        Text(' Late', style: TextStyle(fontSize: 16))
-                      ],
-                    ),
-                    SizedBox(width: 5),
-                    Row(
-                      children: [
-                        Radio(
-                          value: 4,
-                          groupValue: model.status,
-                          onChanged: model.setStatus,
-                        ),
-                        Text(' Missed', style: TextStyle(fontSize: 16))
-                      ],
-                    ),
-                  ],
-                ),
+              SizedBox(height: 10),
+              Wrap(
+                children: [
+                  _buildStatusRadio(model, 1, 'All'),
+                  _buildStatusRadio(model, 2, 'Taken'),
+                  _buildStatusRadio(model, 3, 'Late'),
+                  _buildStatusRadio(model, 4, 'Missed'),
+                ],
               ),
               SizedBox(height: 20),
               Text(
@@ -125,111 +76,37 @@ class FilterView extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
+              SizedBox(height: 10),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'From',
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 2,
-                              color: AppColors.darkGrey.withOpacity(0.4),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Text(
-                                  formattedTime,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: AppColors.darkGrey,
-                                  ),
-                                ),
-                                IconButton(
-                                  onPressed: () async {
-                                    final TimeOfDay? pickedTime =
-                                        await showTimePicker(
-                                      context: context,
-                                      initialTime: model.firstTime,
-                                    );
-                                    if (pickedTime != null &&
-                                        pickedTime != model.firstTime)
-                                      model.updateSelectedTime(pickedTime);
-                                  },
-                                  icon: Icon(
-                                    Icons.calendar_month,
-                                    color: AppColors.navBarColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                  Expanded(
+                    child: _buildDatePicker(
+                      context,
+                      model,
+                      'From',
+                      formattedDate,
+                      model.selectedDate,
+                      (pickedDate) {
+                        if (pickedDate != null &&
+                            pickedDate != model.selectedDate)
+                          model.updateSelectedDate(pickedDate);
+                      },
+                    ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'To',
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 2,
-                              color: AppColors.darkGrey.withOpacity(0.4),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Text(
-                                  secondFormattedTime,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: AppColors.darkGrey,
-                                  ),
-                                ),
-                                IconButton(
-                                  onPressed: () async {
-                                    final TimeOfDay? secondPickedTime =
-                                        await showTimePicker(
-                                      context: context,
-                                      initialTime: model.lastTime,
-                                    );
-                                    if (secondPickedTime != null &&
-                                        secondPickedTime != model.lastTime)
-                                      model
-                                          .updateSelectedTime(secondPickedTime);
-                                  },
-                                  icon: Icon(
-                                    Icons.calendar_month,
-                                    color: AppColors.navBarColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                  SizedBox(width: 10), // Add some space between the pickers
+                  Expanded(
+                    child: _buildDatePicker(
+                      context,
+                      model,
+                      'To',
+                      secondFormattedDate,
+                      model.secondSelectedDate,
+                      (pickedDate) {
+                        if (pickedDate != null &&
+                            pickedDate != model.secondSelectedDate)
+                          model.updateSecondSelectedDate(pickedDate);
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -241,13 +118,14 @@ class FilterView extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
+              SizedBox(height: 10),
               DropDownSearchFormField(
                 textFieldConfiguration: TextFieldConfiguration(
                   controller: model.dropDownSearchController,
                   decoration: InputDecoration(
                     hintStyle: kFormTextDecoration.hintStyle,
                     hintText: 'Type in and select the medication',
-                    filled: true,
+                    filled: false,
                     fillColor: kFormTextDecoration.fillColor,
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 15, vertical: 12),
@@ -282,6 +160,86 @@ class FilterView extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildStatusRadio(FilterViewModel model, int? value, String label) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Radio(
+          activeColor: AppColors.navBarColor,
+          value: value,
+          groupValue: model.status,
+          onChanged: model.setStatus(value),
+        ),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 16,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDatePicker(
+      BuildContext context,
+      FilterViewModel model,
+      String label,
+      String date,
+      DateTime initialDate,
+      void Function(DateTime?) onDatePicked) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 14,
+          ),
+        ),
+        SizedBox(height: 5),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              width: 2,
+              color: AppColors.darkGrey.withOpacity(0.4),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  date,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: AppColors.darkGrey,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () async {
+                    final DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: model.selectedDate ?? DateTime.now(),
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2100),
+                    );
+                    onDatePicked(pickedDate);
+                  },
+                  icon: Icon(
+                    Icons.calendar_today,
+                    color: AppColors.navBarColor,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
