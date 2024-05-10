@@ -168,7 +168,7 @@ class _FilterViewState extends State<FilterView> {
     );
   }
 
-  Widget _buildStatusRadio(FilterViewModel model, int? value, String label) {
+  Widget _buildStatusRadio(FilterViewModel model, int value, String label) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -176,7 +176,7 @@ class _FilterViewState extends State<FilterView> {
           activeColor: AppColors.navBarColor,
           value: value,
           groupValue: model.status,
-          onChanged: model.setStatus(value),
+          onChanged: model.setStatus,
         ),
         Text(
           label,

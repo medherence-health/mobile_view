@@ -17,7 +17,7 @@ class FilterViewModel extends ChangeNotifier {
     return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
   }
 
-  setStatus(int? value) {
+  void setStatus(int? value) {
     if (value != null) {
       status = value;
       notifyListeners();
