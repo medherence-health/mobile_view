@@ -26,11 +26,13 @@ class FilterViewModel extends ChangeNotifier {
 
   updateSelectedDate(DateTime pickedDate) {
     _selectedDate = pickedDate;
+    debugPrint(_selectedDate.toString());
     notifyListeners();
   }
 
   updateSecondSelectedDate(DateTime pickedDate) {
     _secondSelectedDate = pickedDate;
+    debugPrint(_secondSelectedDate.toString());
     notifyListeners();
   }
 

@@ -7,12 +7,17 @@ import '../../../core/utils/color_utils.dart';
 import '../../../core/utils/size_manager.dart';
 import '../view_model/filter_model.dart';
 
-class FilterView extends StatelessWidget {
+class FilterView extends StatefulWidget {
   FilterView({Key? key}) : super(key: key);
 
   @override
+  State<FilterView> createState() => _FilterViewState();
+}
+
+class _FilterViewState extends State<FilterView> {
+  FilterViewModel model = FilterViewModel();
+  @override
   Widget build(BuildContext context) {
-    final model = FilterViewModel();
     String formattedDate = model.formatDate(model.selectedDate);
     String secondFormattedDate = model.formatDate(model.secondSelectedDate);
     return Scaffold(
