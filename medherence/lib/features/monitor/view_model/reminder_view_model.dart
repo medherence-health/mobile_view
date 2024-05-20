@@ -37,6 +37,12 @@ class ReminderState extends ChangeNotifier {
     return _checkedMap[index] ?? false;
   }
 
+  bool areAllSelected() {
+    return _regimenList.isNotEmpty &&
+        _checkedMap.length == _regimenList.length &&
+        _checkedMap.values.every((isChecked) => isChecked);
+  }
+
   // Method to toggle the checked status of a regimen at a specific index
   void toggleChecked(HistoryModel regimen) {
     int index = _regimenList.indexOf(regimen);
@@ -62,10 +68,10 @@ class ReminderState extends ChangeNotifier {
   }
 
   void updateSelectedSound(String newSound) {
-  _selectedSound = newSound;
-  print('Selected sound updated to: $_selectedSound');
-  notifyListeners();
-}
+    _selectedSound = newSound;
+    print('Selected sound updated to: $_selectedSound');
+    notifyListeners();
+  }
 
   void updateSelectedTime(TimeOfDay newTime) {
     _selectedTime = newTime;

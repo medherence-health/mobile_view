@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medherence/core/utils/color_utils.dart';
+import 'package:medherence/core/utils/image_utils.dart';
 import 'package:medherence/core/utils/size_manager.dart';
 import 'package:provider/provider.dart';
 
@@ -68,10 +69,10 @@ class ProgressStreak extends StatelessWidget {
           ),
         ),
         Positioned(
-          left: (progress / 30) * MediaQuery.of(context).size.width - 10,
+          left: 0,
           top: 0,
           child: Image.asset(
-            context.watch<ProfileViewModel>().selectedAvatar,
+            ImageUtils.avatar16,
             // width: 3,
             height: 23,
           ),

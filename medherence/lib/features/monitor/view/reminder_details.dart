@@ -38,7 +38,7 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
         List<HistoryModel> regimenList = reminderState.regimenList;
         int checkedCount = reminderState.getCheckedCount();
         bool showButton = checkedCount > 0;
-
+        bool allSelected = reminderState.areAllSelected();
         return Container(
           width: SizeMg.screenWidth,
           height: MediaQuery.of(context).size.height,
@@ -86,8 +86,7 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                   },
                   itemCount: regimenList.length,
                   itemBuilder: (context, index) {
-                    HistoryModel regimen = regimenList[
-                        index]; // Modify this as per your requirement
+                    HistoryModel regimen = regimenList[index];
                     return _buildRegimenTile(
                       context,
                       regimen,
@@ -96,7 +95,7 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                   },
                 ),
               ),
-              if (regimenList.isNotEmpty)
+              if (regimenList.isNotEmpty && !allSelected)
                 Align(
                   alignment: Alignment.bottomRight,
                   child: Column(
@@ -126,71 +125,71 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
               if (showButton)
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: Container(
-                    height: SizeMg.height(85),
-                    color: AppColors.offWhite,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        // bottom: SizeMg.height(60.0),
-                        left: SizeMg.width(10.0),
-                        right: SizeMg.width(10.0),
-                      ),
-                      child: Column(
-                        children: [
-                          SizedBox(height: 10),
-                          Row(
-                            children: [
-                              Padding(
-                                padding:
-                                    EdgeInsets.only(right: SizeMg.width(8)),
-                                child: Icon(
-                                  Icons.feedback_rounded,
-                                  color: Colors.blue.shade200,
-                                ),
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      // bottom: SizeMg.height(60.0),
+                      left: SizeMg.width(20.0),
+                      right: SizeMg.width(20.0),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(right: SizeMg.width(8)),
+                              child: Icon(
+                                Icons.feedback_rounded,
+                                color: Colors.blue.shade200,
                               ),
-                              Flexible(
-                                child: RichText(
-                                  text: TextSpan(
-                                    text:
-                                        'Select multiple medications if you\'ll be using them together, and select them singly if you\'ll be using them separately.',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: SizeMg.text(12),
-                                      color: AppColors.black,
-                                    ),
+                            ),
+                            Flexible(
+                              child: RichText(
+                                text: TextSpan(
+                                  text:
+                                      'Select multiple medications if you\'ll be using them together, and select them singly if you\'ll be using them separately.',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: SizeMg.text(12),
+                                    color: AppColors.black,
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
-                          SizedBox(height: 10),
-                          Expanded(
-                            child: PrimaryButton(
-                              textSize: SizeMg.text(25),
-                              // height: SizeMg.height(85),
-                              buttonConfig: ButtonConfig(
-                                text: 'Take med ($checkedCount)',
-                                action: () {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content:
-                                            Text('Pills taken successfully')),
-                                  );
-                                  List<HistoryModel> updatedList = regimenList
-                                      .where((regimen) =>
-                                          !reminderState.isChecked(regimen))
-                                      .toList();
-                                  // Update the ReminderState with the filtered list
-                                  reminderState.updateRegimenList(updatedList);
-                                  reminderState.clearCheckedItems();
-                                  const MedCoinDropWidget();
-                                },
-                              ),
-                              width: SizeMg.screenWidth,
                             ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        PrimaryButton(
+                          height: SizeMg.height(45),
+                          textSize: SizeMg.text(23),
+                          // height: SizeMg.height(85),
+                          buttonConfig: ButtonConfig(
+                            text: 'Take med',
+                            extraText: ' ($checkedCount)',
+                            action: () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text('Pills taken successfully')),
+                              );
+                              List<HistoryModel> updatedList = regimenList
+                                  .where((regimen) =>
+                                      !reminderState.isChecked(regimen))
+                                  .toList();
+                              // Update the ReminderState with the filtered list
+                              reminderState.updateRegimenList(updatedList);
+                              reminderState.clearCheckedItems();
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return const MedCoinDropWidget();
+                                },
+                              );
+                            },
                           ),
-                        ],
-                      ),
+                          width: SizeMg.screenWidth,
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -206,10 +205,12 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
     HistoryModel regimen,
     ReminderState state,
   ) {
+    bool isChecked = state.isChecked(regimen);
     return Container(
       width: SizeMg.screenWidth,
       decoration: BoxDecoration(
-        color: AppColors.historyBackground,
+        color:
+            isChecked ? AppColors.historyBackground : AppColors.unToggledColor,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
@@ -221,6 +222,15 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
               right: 8,
             ),
             child: Checkbox(
+              activeColor: isChecked ? AppColors.navBarColor : AppColors.white,
+              fillColor: isChecked
+                  ? MaterialStateProperty.all<Color>(AppColors.navBarColor)
+                  : MaterialStateProperty.all<Color>(AppColors.white),
+
+              side: BorderSide(
+                color: AppColors.navBarColor,
+                width: 2.5,
+              ),
               value:
                   state.isChecked(regimen), // Check if the regimen is checked
               onChanged: (value) {

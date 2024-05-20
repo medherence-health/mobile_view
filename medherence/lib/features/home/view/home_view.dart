@@ -174,165 +174,157 @@ class _HomeViewState extends State<HomeView> {
       List<HistoryModel> regimenList = reminderState.regimenList;
       int remainingMedications =
           regimenList.length - reminderState.getCheckedCount();
-      return Padding(
-        padding: const EdgeInsets.only(
-          top: 25.0,
-          right: 20,
-          left: 20,
-        ),
-        child: Container(
-          color: Colors.white,
-          child: Stack(
-            children: [
-              ListView(
-                // crossAxisAlignment: CrossAxisAlignment.stretch,
+      return Scaffold(
+        appBar: AppBar(
+          title: Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: Text(
+              'Welcome, ${context.watch<ProfileViewModel>().nickName}',
+              style: TextStyle(
+                fontSize: SizeMg.text(25),
+                fontWeight: FontWeight.w600,
+                fontFamily: "Poppins-bold.ttf",
+              ),
+            ),
+          ),
+          actions: [
+            Padding(
+              padding: EdgeInsets.only(
+                left: SizeMg.width(8),
+                right: SizeMg.width(8),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: SizeMg.width(8),
-                      right: SizeMg.width(8),
-                      top: SizeMg.height(10),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Welcome, ${context.watch<ProfileViewModel>().nickName}',
-                          style: TextStyle(
-                            fontSize: SizeMg.text(25),
-                            fontWeight: FontWeight.w600,
-                            fontFamily: "Poppins-bold.ttf",
-                          ),
-                        ), // Display dynamic title
-                        NotificationWidget(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const NotificationScreen()));
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: SizeMg.height(10),
-                      ),
-                      Text(context.watch<ProfileViewModel>().nickName),
-                      SizedBox(
-                        height: SizeMg.height(5),
-                      ),
-                      ProgressStreak(
-                          progress: progress), // Display progress streak bar
-                      SizedBox(
-                        height: SizeMg.height(20),
-                      ),
-                      // ElevatedButton(
-                      //   onPressed: () {
-                      //     // Simulate completion of an action
-                      //     if (progress < 10) {
-                      //       updateProgress();
-                      //     }
-                      //   },
-                      //   child: Text('Complete Action'),
-                      // ),
-                      MedhecoinWidget(
-                        () {
-                          setState(() {
-                            // Call the function to toggle the amount changed
-                            toggleAmountChanged();
-                          });
-                        },
-                        const Icon(
-                          Icons.open_in_new,
-                        ),
-                        () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const MedhecoinScreen()));
-                        },
-                        _amountChanged,
-                      ),
-                      SizedBox(
-                        height: SizeMg.height(15),
-                      ),
-                      Text(
-                        'Today\'s Medications',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontFamily: "Poppins-Bold.ttf",
-                          fontSize: SizeMg.text(23),
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      if (regimenList.isEmpty)
-                        Center(
-                          child: SizedBox(
-                            height: 250,
-                            width: 300,
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 100,
-                                ),
-                                Icon(
-                                  Icons.check_circle_outline_sharp,
-                                  color: AppColors.historyBackground,
-                                  size: 30,
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  'Yayy, You have taken all medications for today',
-                                  style: TextStyle(
-                                    fontSize: (18),
-                                    fontStyle: FontStyle.italic,
-                                    color: AppColors.noWidgetText,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 20.0),
-                        child: SizedBox(
-                          height: MediaQuery.of(context).size.width,
-                          child: ListView.separated(
-                            shrinkWrap: true,
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            itemCount:
-                                remainingMedications, // the length of the data list
-                            separatorBuilder: (ctx, index) {
-                              return SizedBox(
-                                height: SizeMg.height(3),
-                              );
-                            },
-                            itemBuilder: (context, index) {
-                              HistoryModel regimenItem = regimenList[index];
-                              return NextRegimen(itemModel: regimenItem);
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
+                  // Display dynamic title
+                  NotificationWidget(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const NotificationScreen()),
+                      );
+                    },
                   ),
                 ],
               ),
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: Align(
+            ),
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.only(
+            right: 20,
+            left: 20,
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(
+                  height: SizeMg.height(5),
+                ),
+                ProgressStreak(
+                    progress: progress), // Display progress streak bar
+                SizedBox(
+                  height: SizeMg.height(20),
+                ),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     // Simulate completion of an action
+                //     if (progress < 10) {
+                //       updateProgress();
+                //     }
+                //   },
+                //   child: Text('Complete Action'),
+                // ),
+                MedhecoinWidget(
+                  () {
+                    setState(() {
+                      // Call the function to toggle the amount changed
+                      toggleAmountChanged();
+                    });
+                  },
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MedhecoinScreen()));
+                    },
+                    icon: Icon(Icons.open_in_new),
+                    iconSize: 28,
+                    color: AppColors.white,
+                  ),
+                  () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MedhecoinScreen()));
+                  },
+                  _amountChanged,
+                ),
+                SizedBox(
+                  height: SizeMg.height(15),
+                ),
+                Text(
+                  'Today\'s Medications',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontFamily: "Poppins-Bold.ttf",
+                    fontSize: SizeMg.text(22),
+                  ),
+                ),
+                const SizedBox(height: 5),
+                if (regimenList.isEmpty)
+                  Center(
+                    child: SizedBox(
+                      height: 250,
+                      width: 300,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 100,
+                          ),
+                          Icon(
+                            Icons.check_circle_outline_sharp,
+                            color: AppColors.historyBackground,
+                            size: 30,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            'Yayy, You have taken all medications for today',
+                            style: TextStyle(
+                              fontSize: (18),
+                              fontStyle: FontStyle.italic,
+                              color: AppColors.noWidgetText,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                SizedBox(
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemCount:
+                        remainingMedications, // the length of the data list
+                    separatorBuilder: (ctx, index) {
+                      return SizedBox(
+                        height: SizeMg.height(3),
+                      );
+                    },
+                    itemBuilder: (context, index) {
+                      HistoryModel regimenItem = regimenList[index];
+                      return NextRegimen(itemModel: regimenItem);
+                    },
+                  ),
+                ),
+                Align(
                   alignment: Alignment.bottomCenter,
                   child: Visibility(
                     child: GestureDetector(
@@ -344,7 +336,7 @@ class _HomeViewState extends State<HomeView> {
                       },
                       child: Padding(
                         padding: EdgeInsets.only(
-                          top: 5,
+                          top: 10,
                           bottom: SizeMg.height(5.0),
                         ),
                         child: Text(
@@ -360,8 +352,8 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       );
@@ -640,7 +632,6 @@ class NextRegimen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.only(
             top: 10.0,
-            bottom: 5,
             left: 20,
             right: 20,
           ),
@@ -661,26 +652,26 @@ class NextRegimen extends StatelessWidget {
                     itemModel.regimenName,
                     style: const TextStyle(
                       color: AppColors.black,
-                      fontSize: 22,
+                      fontSize: 20,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 2),
                   Text(
                     itemModel.dosage,
                     style: const TextStyle(
                       color: AppColors.darkGrey,
-                      fontSize: 14,
+                      fontSize: 12,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 6),
                   Row(
                     children: [
                       Icon(
                         Icons.alarm,
                         color: AppColors.navBarColor,
-                        size: 16,
+                        size: 14,
                       ),
                       SizedBox(width: 10),
                       Text(
@@ -693,7 +684,7 @@ class NextRegimen extends StatelessWidget {
                         )),
                         style: TextStyle(
                           color: AppColors.navBarColor,
-                          fontSize: SizeMg.text(14),
+                          fontSize: SizeMg.text(12),
                           fontWeight: FontWeight.w500,
                         ),
                       ),

@@ -305,6 +305,7 @@ class PrivacyPolicyView extends StatelessWidget {
               HelpAndSupportWidget(
                 model: HelpAndSupport().customerCareModel,
                 icon: Icons.copy,
+                copyButton: true,
                 onPressed: () {
                   HelpAndSupport().customerCareModel.copySubtitle(context);
                   // Navigate to settings screen
@@ -325,6 +326,7 @@ class PrivacyPolicyView extends StatelessWidget {
               HelpAndSupportWidget(
                 icon: Icons.copy,
                 model: HelpAndSupport().emailModel,
+                copyButton: true,
                 onPressed: () {
                   HelpAndSupport().emailModel.copySubtitle(context);
                   // Navigate to settings screen

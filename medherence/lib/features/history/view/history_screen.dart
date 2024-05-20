@@ -94,7 +94,7 @@ class _HistoryScreenState extends State<HistoryScreen>
                   fontWeight: FontWeight.w500,
                   fontSize: SizeMg.text(16),
                 ),
-                indicatorPadding: const EdgeInsets.all(5),
+                indicatorPadding: const EdgeInsets.all(0),
                 indicator: BoxDecoration(
                   color: AppColors.navBarColor,
                   borderRadius: BorderRadius.circular(

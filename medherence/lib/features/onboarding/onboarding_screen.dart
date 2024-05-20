@@ -59,7 +59,7 @@ class _OnboardingViewState extends State<OnboardingView> {
             itemCount: onBoardingImages.length,
             itemBuilder: (_, int index) {
               return Container(
-                height: SizeMg.height(300),
+                height: SizeMg.height(280),
                 color: AppColors.offWhite,
                 child: Image.asset(
                   onBoardingImages[index],
@@ -88,7 +88,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                       'Skip',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
-                        fontSize: SizeMg.text(25),
+                        fontSize: SizeMg.text(20),
                         color: AppColors.navBarColor,
                       ),
                       textAlign: TextAlign.right,
@@ -120,7 +120,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                           onBoardingTitle[currentIndex],
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
-                            fontSize: SizeMg.text(32),
+                            fontSize: SizeMg.text(25),
                             color: AppColors.black,
                           ),
                           textAlign: TextAlign.start,
@@ -133,7 +133,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                             onBoardingSubTitle[currentIndex],
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
-                              fontSize: SizeMg.text(20),
+                              fontSize: SizeMg.text(16),
                               color: AppColors.black,
                             ),
                             textAlign: TextAlign.start,

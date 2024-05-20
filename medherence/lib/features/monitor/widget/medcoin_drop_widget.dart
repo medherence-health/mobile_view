@@ -12,7 +12,7 @@ class MedCoinDropWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoAlertDialog(
+    return AlertDialog(
       title: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(
@@ -24,18 +24,19 @@ class MedCoinDropWidget extends StatelessWidget {
           ),
         ),
       ),
-      content: Padding(
-        padding: const EdgeInsets.only(
-          left: 20.0,
-          right: 20,
-          bottom: 20,
-        ),
-        child: Container(
+      content: SizedBox(
+        height: SizeMg.height(300),
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: 20.0,
+            right: 20,
+          ),
           child: Column(
             children: [
               Image.asset(
                 'assets/images/coin_drop.png',
-                height: SizeMg.height(100),
+                height: SizeMg.height(200),
+                width: SizeMg.width(250),
               ),
               SizedBox(height: 10),
               RichText(
@@ -44,6 +45,7 @@ class MedCoinDropWidget extends StatelessWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 16,
+                      color: AppColors.darkGrey,
                     ),
                     children: [
                       TextSpan(
@@ -64,6 +66,7 @@ class MedCoinDropWidget extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 child: OutlinePrimaryButton(
                   width: 200,
+                  textSize: SizeMg.text(16),
                   buttonConfig: ButtonConfig(
                     text: 'Yaayy!!!',
                     action: () {

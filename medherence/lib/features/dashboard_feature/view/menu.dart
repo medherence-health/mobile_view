@@ -152,13 +152,13 @@ class _MenuScreenState extends State<MenuScreen> {
         decoration: const BoxDecoration(
           color: AppColors.white,
         ),
-        child: Padding(
-          padding: const EdgeInsets.only(
-            left: 15.0,
-            right: 15,
-          ),
+        child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.only(top: SizeMg.height(5)),
+            padding: EdgeInsets.only(
+              top: SizeMg.height(5),
+              left: 15.0,
+              right: 15,
+            ),
             child: Column(
               children: [
                 const SizedBox(
@@ -195,7 +195,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   height: 15,
                 ),
                 MenuItemCard(
-                  icon: Icons.settings,
+                  icon: CupertinoIcons.gear_alt_fill,
                   title: 'Settings',
                   subtitle: 'Personalize and setup your experience',
                   onPressed: () {
@@ -250,68 +250,43 @@ class _MenuScreenState extends State<MenuScreen> {
                   // Navigate to settings screen
                   ,
                 ),
-                SizedBox(height: SizeMg.height(30)),
-                Expanded(child: const Spacer()),
-                Text(
-                  'Want to rate us? ',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: SizeMg.text(20),
-                    fontWeight: FontWeight.w500,
-                    fontFamily: "Poppins-bold.ttf",
+                SizedBox(height: SizeMg.height(100)),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        'Want to rate us? ',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: SizeMg.text(16),
+                          fontWeight: FontWeight.w500,
+                          fontFamily: "Poppins-bold.ttf",
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.star_rate,
+                              color: AppColors.navBarColor, size: 30),
+                          SizedBox(width: 10),
+                          Icon(Icons.star_rate,
+                              color: AppColors.navBarColor, size: 30),
+                          SizedBox(width: 10),
+                          Icon(Icons.star_rate,
+                              color: AppColors.navBarColor, size: 30),
+                          SizedBox(width: 10),
+                          Icon(Icons.star_half,
+                              color: AppColors.navBarColor, size: 30),
+                          SizedBox(width: 10),
+                          Icon(Icons.star_border,
+                              color: AppColors.navBarColor, size: 30),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    height: SizeMg.height(50),
-                    width: MediaQuery.of(context).size.width,
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(
-                              Icons.star_rate,
-                              color: AppColors.navBarColor,
-                              size: 40,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Icon(
-                              Icons.star_rate,
-                              color: AppColors.navBarColor,
-                              size: 40,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Icon(
-                              Icons.star_rate,
-                              color: AppColors.navBarColor,
-                              size: 40,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Icon(
-                              Icons.star_half,
-                              color: AppColors.navBarColor,
-                              size: 40,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Icon(
-                              Icons.star_border,
-                              color: AppColors.navBarColor,
-                              size: 40,
-                            ),
-                          ]),
-                    ),
-                  ),
-                )
               ],
             ),
           ),

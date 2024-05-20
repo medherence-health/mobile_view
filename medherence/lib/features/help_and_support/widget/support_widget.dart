@@ -9,9 +9,11 @@ class HelpAndSupportWidget extends StatelessWidget {
   final VoidCallback onPressed;
   final Widget child;
   final IconData? icon;
+  final bool? copyButton;
 
   const HelpAndSupportWidget({
     super.key,
+    this.copyButton = false,
     required this.icon,
     required this.child,
     required this.model,
@@ -27,40 +29,55 @@ class HelpAndSupportWidget extends StatelessWidget {
       child: InkWell(
         onTap: onPressed,
         child: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: AppColors.white,
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 3,
-                spreadRadius: 0,
-                offset: Offset(1, 1),
-                color: AppColors.shadowColor,
-              ),
-              BoxShadow(
-                blurRadius: 6,
-                spreadRadius: 0,
-                offset: Offset(4, 5),
-                color: Color.fromRGBO(26, 85, 171, 0.06),
-              ),
-              BoxShadow(
-                blurRadius: 9,
-                spreadRadius: 0,
-                offset: Offset(10, 10),
-                color: Color.fromRGBO(26, 85, 171, 0.04),
-              ),
-              BoxShadow(
-                blurRadius: 10,
-                spreadRadius: 0,
-                offset: Offset(17, 18),
-                color: Color.fromRGBO(26, 85, 171, 0.01),
-              ),
-              BoxShadow(
-                blurRadius: 11,
-                spreadRadius: 0,
-                offset: Offset(27, 29),
-                color: Color.fromRGBO(26, 85, 171, 0),
-              ),
-            ],
+            boxShadow: copyButton == false
+                ? [
+                    BoxShadow(
+                      blurRadius: 3,
+                      spreadRadius: 0,
+                      offset: Offset(1, 1),
+                      color: AppColors.shadowColor,
+                    ),
+                    BoxShadow(
+                      blurRadius: 6,
+                      spreadRadius: 0,
+                      offset: Offset(4, 5),
+                      color: Color.fromRGBO(26, 85, 171, 0.06),
+                    ),
+                    BoxShadow(
+                      blurRadius: 9,
+                      spreadRadius: 0,
+                      offset: Offset(10, 10),
+                      color: Color.fromRGBO(26, 85, 171, 0.04),
+                    ),
+                    BoxShadow(
+                      blurRadius: 10,
+                      spreadRadius: 0,
+                      offset: Offset(17, 18),
+                      color: Color.fromRGBO(26, 85, 171, 0.01),
+                    ),
+                    BoxShadow(
+                      blurRadius: 11,
+                      spreadRadius: 0,
+                      offset: Offset(27, 29),
+                      color: Color.fromRGBO(26, 85, 171, 0),
+                    ),
+                  ]
+                : [
+                    BoxShadow(
+                      blurRadius: 10,
+                      spreadRadius: 0,
+                      offset: Offset(17, 18),
+                      color: Color.fromRGBO(26, 85, 171, 0.01),
+                    ),
+                    BoxShadow(
+                      blurRadius: 11,
+                      spreadRadius: 0,
+                      offset: Offset(27, 29),
+                      color: Color.fromRGBO(26, 85, 171, 0),
+                    ),
+                  ],
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),

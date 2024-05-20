@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medherence/core/utils/color_utils.dart';
+import 'package:medherence/core/utils/size_manager.dart';
 
 class PrimaryButton extends StatelessWidget {
   final ButtonConfig buttonConfig;
@@ -40,15 +41,26 @@ class PrimaryButton extends StatelessWidget {
             onTap: buttonConfig.disabled ? null : buttonConfig.action,
             highlightColor: AppColors.disabledButton,
             child: Center(
-              child: Text(
-                buttonConfig.text,
+              child: RichText(
+                text: TextSpan(
+                    text: buttonConfig.text,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: buttonConfig.disabled
+                          ? Colors.grey.shade300
+                          : textColor,
+                      fontSize: textSize,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: buttonConfig.extraText,
+                        style: TextStyle(
+                          fontSize: SizeMg.text(20),
+                          color: AppColors.inactiveGrey,
+                        ),
+                      )
+                    ]),
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color:
-                      buttonConfig.disabled ? Colors.grey.shade300 : textColor,
-                  fontSize: textSize,
-                ),
               ),
             ),
           ),
@@ -107,14 +119,23 @@ class OutlinePrimaryButton extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   if (icon != null) icon ?? const Icon(Icons.hourglass_empty),
-                  Text(
-                    buttonConfig.text,
+                  RichText(
+                    text: TextSpan(
+                        text: buttonConfig.text,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: textColor,
+                          fontSize: textSize,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: buttonConfig.extraText,
+                            style: TextStyle(
+                              color: AppColors.inactiveGrey,
+                            ),
+                          )
+                        ]),
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      color: textColor,
-                      fontSize: textSize,
-                    ),
                   ),
                 ],
               ),
@@ -128,9 +149,11 @@ class OutlinePrimaryButton extends StatelessWidget {
 
 class ButtonConfig {
   final String text;
+  String extraText;
   final VoidCallback action;
   final bool disabled;
   ButtonConfig({
+    this.extraText = '',
     required this.text,
     required this.action,
     this.disabled = false,

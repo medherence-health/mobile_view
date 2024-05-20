@@ -29,6 +29,7 @@ void main() async {
           AndroidFlutterLocalNotificationsPlugin>()!
       .requestNotificationsPermission();
   await NotificationService().init();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
     statusBarColor: Colors.transparent, // Example: Set status bar color
   ));

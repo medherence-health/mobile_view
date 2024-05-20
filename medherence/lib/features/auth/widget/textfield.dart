@@ -21,13 +21,16 @@ class TitleAndTextFormField extends StatelessWidget {
   final TextInputAction textInputAction;
 
   ///The filled color of the form field
-  final Color formFieldColor;
+  final Color? formFieldColor;
 
   ///The validator function of the form field
   final String? Function(String?) formFieldValidator;
 
   ///List of text input formatters
   final List<TextInputFormatter>? textInputFormatters;
+
+  ///Callback for onChanged event of the form field
+  final void Function(String)? onChanged;
 
   ///Places a [Text] above a [TextFormField] in a [Column] widget
   const TitleAndTextFormField({
@@ -40,6 +43,7 @@ class TitleAndTextFormField extends StatelessWidget {
     required this.formFieldColor,
     required this.formFieldValidator,
     this.textInputFormatters,
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -69,6 +73,7 @@ class TitleAndTextFormField extends StatelessWidget {
             errorBorder: kFormTextDecoration.errorBorder,
           ),
           validator: formFieldValidator,
+          onChanged: onChanged,
         ),
         // const SizedBox(
         //   height: (25),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/utils/color_utils.dart';
 import '../../../core/shared_widget/buttons.dart';
+import '../../home/widget/medecoin_widget.dart';
 import '../widget/medcoin_container.dart';
 
 class MedhecoinScreen extends StatefulWidget {
@@ -41,16 +42,22 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(25.0),
+          padding: const EdgeInsets.only(
+            left: 25.0,
+            right: 25,
+            bottom: 10,
+          ),
           child: ListView(
             children: [
-              MedcoinWidget(
+              MedhecoinWidget(
                 () {
                   setState(() {
                     // Call the function to toggle the amount changed
                     toggleAmountChanged();
                   });
                 },
+                null,
+                null,
                 _amountChanged,
               ),
               const SizedBox(height: 15),
@@ -58,7 +65,7 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                 children: [
                   Expanded(
                     child: OutlinePrimaryButton(
-                      textSize: 20,
+                      textSize: 18,
                       icon: const Icon(Icons.account_balance_wallet_outlined,
                           color: AppColors.mainPrimaryButton),
                       buttonConfig: ButtonConfig(
@@ -66,7 +73,7 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                         action: () {
                           // Navigator.pop(context);
                         },
-                        disabled: true,
+                        disabled: false,
                       ),
                       width: MediaQuery.of(context).size.width / 2,
                     ),
@@ -76,7 +83,7 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                   ),
                   Expanded(
                     child: OutlinePrimaryButton(
-                      textSize: 20,
+                      textSize: 18,
                       icon: const Icon(Icons.add,
                           color: AppColors.mainPrimaryButton),
                       buttonConfig: ButtonConfig(
@@ -84,7 +91,7 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                         action: () {
                           // Navigator.pop(context);
                         },
-                        disabled: true,
+                        disabled: false,
                       ),
                       width: MediaQuery.of(context).size.width / 2,
                     ),

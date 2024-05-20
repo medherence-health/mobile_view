@@ -68,6 +68,7 @@ class HelpAndSupport extends StatelessWidget {
               HelpAndSupportWidget(
                   model: customerCareModel,
                   icon: Icons.copy,
+                  copyButton: true,
                   onPressed: () {
                     customerCareModel.copySubtitle(context);
                     // Navigate to settings screen
@@ -86,6 +87,7 @@ class HelpAndSupport extends StatelessWidget {
               ),
               HelpAndSupportWidget(
                 icon: Icons.copy,
+                copyButton: true,
                 model: emailModel,
                 onPressed: () {
                   emailModel.copySubtitle(context);
