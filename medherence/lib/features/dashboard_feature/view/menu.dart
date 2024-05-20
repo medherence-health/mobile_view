@@ -82,11 +82,10 @@ class _MenuScreenState extends State<MenuScreen> {
                         CircularProgressIndicator();
                         await signingOut().then((_) {
                           // Navigate back to home screen
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LoginView()),
-                          );
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => LoginView()),
+                              (Route<dynamic> route) => false);
                         });
                       },
                       disabled: false,

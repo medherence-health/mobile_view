@@ -73,6 +73,7 @@ class _BiometricAuthenticationViewState
 
   void _showWalletPinDialog() {
     showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (context) => WalletPinWidget(),
     );

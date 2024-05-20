@@ -71,7 +71,8 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                           return Center(
                             child: AvatarSelectionOverlay(
                               onAvatarSelected: (avatar) {
-                                Provider.of<ProfileViewModel>(context)
+                                Provider.of<ProfileViewModel>(context,
+                                        listen: false)
                                     .setAvatar(avatar);
                               },
                             ),
@@ -127,6 +128,19 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                   formFieldColor: model.nicknameFillColor,
                   formFieldValidator: (value) {
                     return value.nameValidation();
+                  },
+                  onChanged: (value) {
+                    setState(() {
+                      // Check if the value is not empty
+                      if (value.isNotEmpty) {
+                        // If there is input, set filled to true
+                        model.nicknameFillColor =
+                            kFormTextDecoration.fillColor!;
+                      } else {
+                        // If no input, set filled to false
+                        model.nicknameFillColor = Colors.white70;
+                      }
+                    });
                   },
                 ),
                 SizedBox(height: 10),
@@ -262,9 +276,21 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                   formFieldController: model.nokFirstNameController,
                   textInputAction: TextInputAction.next,
                   textInputType: TextInputType.text,
-                  formFieldColor: model.nicknameFillColor,
+                  formFieldColor: model.nokFirstFillColor,
                   formFieldValidator: (value) {
                     return value.nameValidation();
+                  },
+                  onChanged: (value) {
+                    setState(() {
+                      // Check if the value is not empty
+                      if (value.isNotEmpty) {
+                        // If there is input, set filled to true
+                        model.nokFirstFillColor = kFormTextDecoration.fillColor;
+                      } else {
+                        // If no input, set filled to false
+                        model.nokFirstFillColor = Colors.white70;
+                      }
+                    });
                   },
                 ),
                 SizedBox(height: 10),
@@ -274,9 +300,21 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                   formFieldController: model.nokLastNameController,
                   textInputAction: TextInputAction.next,
                   textInputType: TextInputType.text,
-                  formFieldColor: model.nicknameFillColor,
+                  formFieldColor: model.nokLastFillColor,
                   formFieldValidator: (value) {
                     return value.nameValidation();
+                  },
+                  onChanged: (value) {
+                    setState(() {
+                      // Check if the value is not empty
+                      if (value.isNotEmpty) {
+                        // If there is input, set filled to true
+                        model.nokLastFillColor = kFormTextDecoration.fillColor;
+                      } else {
+                        // If no input, set filled to false
+                        model.nokLastFillColor = Colors.white70;
+                      }
+                    });
                   },
                 ),
                 SizedBox(height: 10),
@@ -286,9 +324,21 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                   formFieldController: model.nokPhoneNumberController,
                   textInputAction: TextInputAction.next,
                   textInputType: TextInputType.number,
-                  formFieldColor: model.nicknameFillColor,
+                  formFieldColor: model.nokPhoneFillColor,
                   formFieldValidator: (value) {
                     return value.phoneNumberValidation();
+                  },
+                  onChanged: (value) {
+                    setState(() {
+                      // Check if the value is not empty
+                      if (value.isNotEmpty) {
+                        // If there is input, set filled to true
+                        model.nokPhoneFillColor = kFormTextDecoration.fillColor;
+                      } else {
+                        // If no input, set filled to false
+                        model.nokPhoneFillColor = Colors.white70;
+                      }
+                    });
                   },
                 ),
                 SizedBox(height: 10),
@@ -298,9 +348,22 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                   formFieldController: model.nokRelationController,
                   textInputAction: TextInputAction.done,
                   textInputType: TextInputType.text,
-                  formFieldColor: model.nicknameFillColor,
+                  formFieldColor: model.nokRelationFillColor,
                   formFieldValidator: (value) {
                     return value.nameValidation();
+                  },
+                  onChanged: (value) {
+                    setState(() {
+                      // Check if the value is not empty
+                      if (value.isNotEmpty) {
+                        // If there is input, set filled to true
+                        model.nokRelationFillColor =
+                            kFormTextDecoration.fillColor;
+                      } else {
+                        // If no input, set filled to false
+                        model.nokRelationFillColor = Colors.white70;
+                      }
+                    });
                   },
                 ),
                 SizedBox(height: 10),

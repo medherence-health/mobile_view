@@ -15,13 +15,14 @@ class WalletPinWidget extends StatefulWidget {
 class _WalletPinWidgetState extends State<WalletPinWidget> {
   final List<TextEditingController> _controllers =
       List.generate(4, (_) => TextEditingController());
-  final FocusNode _lastFocusNode = FocusNode();
+  final FocusNode _focusNode = FocusNode();
 
   @override
   void dispose() {
     for (final controller in _controllers) {
       controller.dispose();
     }
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -76,7 +77,7 @@ class _WalletPinWidgetState extends State<WalletPinWidget> {
       ),
       child: CupertinoTextField(
         controller: _controllers[index],
-        focusNode: index == 3 ? _lastFocusNode : null,
+        focusNode: index == 0 ? _focusNode : null,
         obscureText: true,
         textAlign: TextAlign.center,
         keyboardType: TextInputType.number,
@@ -93,7 +94,7 @@ class _WalletPinWidgetState extends State<WalletPinWidget> {
             if (index > 0) {
               FocusScope.of(context).previousFocus();
             }
-          } else if (value.length == 1) {
+          } else if (value.length == 1 || index < 3) {
             // If a digit is entered, move to the next field
             FocusScope.of(context).nextFocus();
           }

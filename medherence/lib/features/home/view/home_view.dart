@@ -181,7 +181,7 @@ class _HomeViewState extends State<HomeView> {
             child: Text(
               'Welcome, ${context.watch<ProfileViewModel>().nickName}',
               style: TextStyle(
-                fontSize: SizeMg.text(25),
+                fontSize: SizeMg.text(22),
                 fontWeight: FontWeight.w600,
                 fontFamily: "Poppins-bold.ttf",
               ),
@@ -271,7 +271,7 @@ class _HomeViewState extends State<HomeView> {
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontFamily: "Poppins-Bold.ttf",
-                    fontSize: SizeMg.text(22),
+                    fontSize: SizeMg.text(20),
                   ),
                 ),
                 const SizedBox(height: 5),

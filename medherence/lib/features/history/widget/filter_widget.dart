@@ -176,7 +176,7 @@ class _FilterViewState extends State<FilterView> {
           activeColor: AppColors.navBarColor,
           value: value,
           groupValue: model.status,
-          onChanged: model.setStatus,
+          onChanged: (value) => model.setStatus(value),
         ),
         Text(
           label,

@@ -70,11 +70,10 @@ class MedCoinDropWidget extends StatelessWidget {
                   buttonConfig: ButtonConfig(
                     text: 'Yaayy!!!',
                     action: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const DashboardView()),
-                      );
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => DashboardView()),
+                          (Route<dynamic> route) => false);
                       // Navigator.pop(context);
                     },
                   ),

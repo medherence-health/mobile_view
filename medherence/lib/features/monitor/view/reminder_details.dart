@@ -181,6 +181,7 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                               reminderState.clearCheckedItems();
                               showDialog(
                                 context: context,
+                                barrierDismissible: false,
                                 builder: (BuildContext context) {
                                   return const MedCoinDropWidget();
                                 },

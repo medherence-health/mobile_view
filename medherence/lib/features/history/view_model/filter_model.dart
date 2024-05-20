@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/model/models/history_model.dart';
+import '../../../core/model/simulated_data/simulated_values.dart';
+
 class FilterViewModel extends ChangeNotifier {
   int status = 1; // All selected by default
   DateTime _selectedDate = DateTime.now();
@@ -39,6 +42,7 @@ class FilterViewModel extends ChangeNotifier {
   // Replace this with your logic to fetch suggestions based on the pattern
   List<String> getSuggestions(String pattern) {
     // Implement your logic to fetch suggestions based on pattern (e.g., search from a list)
+    List<HistoryModel> _regimenList = generateSimulatedData();
     return ["Suggestion 1", "Suggestion 2", "Suggestion 3"];
   }
 }

@@ -26,7 +26,7 @@ class _LoginViewState extends State<LoginView> {
   String? _selectedHospital;
   bool obscurePassword = false;
   bool _rememberMe = false;
-  Color? emailFillColor = Colors.white70;
+  Color? hospitalNumberFillColor = Colors.white70;
   Color? passwordFillColor = Colors.white70;
   Color? dropdownFill;
   final _formKey = GlobalKey<FormState>();
@@ -310,7 +310,7 @@ class _LoginViewState extends State<LoginView> {
                 formFieldController: hospitalNumberController,
                 textInputAction: TextInputAction.next,
                 textInputType: TextInputType.text,
-                formFieldColor: emailFillColor,
+                formFieldColor: hospitalNumberFillColor,
                 formFieldValidator: (value) {
                   return null;
                 },
@@ -319,10 +319,10 @@ class _LoginViewState extends State<LoginView> {
                     // Check if the value is not empty
                     if (value.isNotEmpty) {
                       // If there is input, set filled to true
-                      emailFillColor = kFormTextDecoration.fillColor;
+                      hospitalNumberFillColor = kFormTextDecoration.fillColor;
                     } else {
                       // If no input, set filled to false
-                      emailFillColor = Colors.white70;
+                      hospitalNumberFillColor = Colors.white70;
                     }
                   });
                 },

@@ -9,7 +9,11 @@ class ProfileViewModel extends ChangeNotifier {
   TextEditingController nokLastNameController = TextEditingController();
   TextEditingController nokPhoneNumberController = TextEditingController();
   TextEditingController nokRelationController = TextEditingController();
-  Color nicknameFillColor = Colors.white70;
+  Color? nicknameFillColor = Colors.white70;
+  Color? nokFirstFillColor = Colors.white70;
+  Color? nokLastFillColor = Colors.white70;
+  Color? nokPhoneFillColor = Colors.white70;
+  Color? nokRelationFillColor = Colors.white70;
   int gender = 1; // Default to Male
   bool isFormValid = false;
   String selectedAvatar = '';
