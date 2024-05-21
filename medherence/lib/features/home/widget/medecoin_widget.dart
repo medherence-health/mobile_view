@@ -4,27 +4,25 @@ import '../../../core/utils/color_utils.dart';
 import '../../../core/utils/size_manager.dart';
 
 class MedhecoinWidget extends StatelessWidget {
-  IconButton? iconData;
-  bool amountChanged;
+  final IconButton? iconData;
+  final bool amountChanged;
   final VoidCallback? onPressed;
-  VoidCallback onTap;
+  final VoidCallback onTap;
+  final String coinTitle;
+  final String amount;
 
-  MedhecoinWidget(
-    this.onTap,
-    this.iconData,
-    this.onPressed,
-    this.amountChanged, {
+  MedhecoinWidget({
+    required this.onTap,
+    required this.iconData,
+    required this.onPressed,
+    required this.amountChanged,
+    required this.coinTitle,
+    required this.amount,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    String coinTitle = 'Amount in Naira';
-    String amount = '500';
-    if (amountChanged == true) {
-      coinTitle = 'Amount in MDHC';
-      amount = '1000.00 ';
-    }
     return GestureDetector(
       onTap: onPressed,
       child: Stack(

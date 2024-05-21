@@ -26,7 +26,7 @@ class _DashboardViewState extends State<DashboardView> {
     return ViewModelBuilder<DashboardViewModel>.reactive(
       viewModelBuilder: () => DashboardViewModel(),
       builder: (_, model, __) => Scaffold(
-        body: _GetDashboardView(
+        body: GetDashboardView(
           dashboardIndex: model.currentIndex,
         ),
         bottomNavigationBar: CustomBottomNavigationBar(
@@ -37,10 +37,10 @@ class _DashboardViewState extends State<DashboardView> {
   }
 }
 
-class _GetDashboardView extends StatelessWidget {
+class GetDashboardView extends StatelessWidget {
   final int dashboardIndex;
 
-  const _GetDashboardView({
+  const GetDashboardView({
     Key? key,
     required this.dashboardIndex,
   }) : super(key: key);
@@ -51,7 +51,7 @@ class _GetDashboardView extends StatelessWidget {
       case 0:
         return const HomeView();
       case 1:
-        return const EditReminderScreen();
+        return const MedicationListScreen();
       case 2:
         return const MenuScreen();
       default:

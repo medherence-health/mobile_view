@@ -8,7 +8,10 @@ import '../../../../core/utils/size_manager.dart';
 import '../../dashboard_feature/view/dashboard_view.dart';
 
 class MedCoinDropWidget extends StatelessWidget {
-  const MedCoinDropWidget({super.key});
+  final int medhecoinEarned;
+
+  const MedCoinDropWidget({Key? key, required this.medhecoinEarned})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +52,7 @@ class MedCoinDropWidget extends StatelessWidget {
                     ),
                     children: [
                       TextSpan(
-                        text: '100',
+                        text: '$medhecoinEarned',
                         style: TextStyle(
                           color: AppColors.navBarColor,
                         ),
@@ -59,9 +62,7 @@ class MedCoinDropWidget extends StatelessWidget {
                       ),
                     ]),
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: OutlinePrimaryButton(
@@ -74,7 +75,6 @@ class MedCoinDropWidget extends StatelessWidget {
                           MaterialPageRoute(
                               builder: (context) => DashboardView()),
                           (Route<dynamic> route) => false);
-                      // Navigator.pop(context);
                     },
                   ),
                 ),

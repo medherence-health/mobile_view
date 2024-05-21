@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/utils/color_utils.dart';
 import '../../../core/shared_widget/buttons.dart';
 import '../../home/widget/medecoin_widget.dart';
+import '../../monitor/view_model/reminder_view_model.dart';
 import '../widget/medcoin_container.dart';
 
 class MedhecoinScreen extends StatefulWidget {
@@ -24,6 +26,16 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ReminderState reminderState = Provider.of<ReminderState>(context);
+
+    int medcoinBalance = reminderState.medcoin;
+    double medcoinInNaira = reminderState.medcoinInNaira;
+
+    String coinTitle = _amountChanged ? 'Amount in Naira' : 'Amount in MDHC';
+    String amount = _amountChanged
+        ? medcoinInNaira.toStringAsFixed(2)
+        : medcoinBalance.toString();
+
     return Scaffold(
         appBar: AppBar(
           title: const Text(
@@ -50,15 +62,12 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
           child: ListView(
             children: [
               MedhecoinWidget(
-                () {
-                  setState(() {
-                    // Call the function to toggle the amount changed
-                    toggleAmountChanged();
-                  });
-                },
-                null,
-                null,
-                _amountChanged,
+                onTap: toggleAmountChanged,
+                iconData: null,
+                onPressed: null,
+                amountChanged: _amountChanged,
+                coinTitle: coinTitle,
+                amount: amount,
               ),
               const SizedBox(height: 15),
               Row(

@@ -5,14 +5,10 @@ import 'package:intl/intl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:medherence/core/shared_widget/buttons.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/data/latest.dart' as tz;
 
 import '../../../core/model/models/history_model.dart';
-import '../../../core/service/notification_service.dart';
 import '../../../core/utils/color_utils.dart';
 import '../../../core/utils/size_manager.dart';
-import '../../dashboard_feature/view/dashboard_view.dart';
 import '../view_model/reminder_view_model.dart';
 import '../widget/medcoin_drop_widget.dart';
 
@@ -22,10 +18,6 @@ class EditReminderDetails extends StatefulWidget {
 }
 
 class _EditReminderDetailsState extends State<EditReminderDetails> {
-  // dynamic time;
-
-// Initialize timezone data
-
   @override
   void initState() {
     super.initState();
@@ -39,6 +31,7 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
         int checkedCount = reminderState.getCheckedCount();
         bool showButton = checkedCount > 0;
         bool allSelected = reminderState.areAllSelected();
+
         return Container(
           width: SizeMg.screenWidth,
           height: MediaQuery.of(context).size.height,
@@ -51,17 +44,13 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                     width: 300,
                     child: Column(
                       children: [
-                        SizedBox(
-                          height: 20,
-                        ),
+                        SizedBox(height: 20),
                         Icon(
                           Icons.check_circle_outline_sharp,
                           color: AppColors.noWidgetText,
                           size: 30,
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
+                        SizedBox(height: 10),
                         Text(
                           'Yayy, You have taken all medications for today',
                           style: TextStyle(
@@ -76,10 +65,7 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                   ),
                 ),
               Padding(
-                padding: const EdgeInsets.only(
-                  left: 25.0,
-                  right: 25,
-                ),
+                padding: const EdgeInsets.only(left: 25.0, right: 25),
                 child: ListView.separated(
                   separatorBuilder: (context, index) {
                     return SizedBox(height: 15);
@@ -103,7 +89,6 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                       Spacer(),
                       InkWell(
                         onTap: () {
-                          // Handle select all logic here
                           reminderState.selectAll();
                         },
                         child: Padding(
@@ -127,7 +112,6 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                   alignment: Alignment.bottomCenter,
                   child: Padding(
                     padding: EdgeInsets.only(
-                      // bottom: SizeMg.height(60.0),
                       left: SizeMg.width(20.0),
                       right: SizeMg.width(20.0),
                     ),
@@ -163,11 +147,12 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                         PrimaryButton(
                           height: SizeMg.height(45),
                           textSize: SizeMg.text(23),
-                          // height: SizeMg.height(85),
                           buttonConfig: ButtonConfig(
                             text: 'Take med',
                             extraText: ' ($checkedCount)',
                             action: () {
+                              int medhecoinEarned = checkedCount * 100;
+                              reminderState.addMedcoin(medhecoinEarned);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                     content: Text('Pills taken successfully')),
@@ -176,14 +161,14 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                                   .where((regimen) =>
                                       !reminderState.isChecked(regimen))
                                   .toList();
-                              // Update the ReminderState with the filtered list
                               reminderState.updateRegimenList(updatedList);
                               reminderState.clearCheckedItems();
                               showDialog(
                                 context: context,
-                                barrierDismissible: false,
                                 builder: (BuildContext context) {
-                                  return const MedCoinDropWidget();
+                                  return MedCoinDropWidget(
+                                    medhecoinEarned: medhecoinEarned,
+                                  );
                                 },
                               );
                             },
@@ -218,24 +203,19 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(
-              left: 10.0,
-              right: 8,
-            ),
+            padding: const EdgeInsets.only(left: 10.0, right: 8),
             child: Checkbox(
               activeColor: isChecked ? AppColors.navBarColor : AppColors.white,
               fillColor: isChecked
                   ? MaterialStateProperty.all<Color>(AppColors.navBarColor)
                   : MaterialStateProperty.all<Color>(AppColors.white),
-
               side: BorderSide(
                 color: AppColors.navBarColor,
                 width: 2.5,
               ),
-              value:
-                  state.isChecked(regimen), // Check if the regimen is checked
+              value: state.isChecked(regimen),
               onChanged: (value) {
-                state.toggleChecked(regimen); // Toggle regimen checked status
+                state.toggleChecked(regimen);
               },
             ),
           ),
@@ -273,11 +253,7 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
               bottom: 20.0,
               right: 10,
             ),
-            child: Container(
-              decoration: BoxDecoration(
-                color: AppColors.historyBackground,
-                borderRadius: BorderRadius.circular(10),
-              ),
+            child: FittedBox(
               child: Padding(
                 padding: const EdgeInsets.only(
                   left: 15.0,

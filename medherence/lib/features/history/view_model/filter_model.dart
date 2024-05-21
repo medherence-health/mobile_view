@@ -43,6 +43,13 @@ class FilterViewModel extends ChangeNotifier {
   List<String> getSuggestions(String pattern) {
     // Implement your logic to fetch suggestions based on pattern (e.g., search from a list)
     List<HistoryModel> _regimenList = generateSimulatedData();
-    return ["Suggestion 1", "Suggestion 2", "Suggestion 3"];
+    int index = 0;
+    dynamic items = _regimenList[index];
+    List<String> matches = <String>[];
+    matches.addAll(items);
+
+    matches.retainWhere((s) => s.toLowerCase().contains(pattern.toLowerCase()));
+    return matches;
+    // return ["Suggestion 1", "Suggestion 2", "Suggestion 3"];
   }
 }

@@ -112,7 +112,7 @@ class MedicationDetailsScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 30),
-              Expanded(
+              Flexible(
                 child: Container(
                   height: MediaQuery.of(context).size.height,
                   alignment: Alignment.bottomCenter,

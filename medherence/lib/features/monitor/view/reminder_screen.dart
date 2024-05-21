@@ -9,14 +9,14 @@ import '../../dashboard_feature/view/dashboard_view.dart';
 import 'reminder_details.dart';
 import 'reminder_edit_content.dart';
 
-class EditReminderScreen extends StatefulWidget {
-  const EditReminderScreen({Key? key}) : super(key: key);
+class MedicationListScreen extends StatefulWidget {
+  const MedicationListScreen({Key? key}) : super(key: key);
 
   @override
-  State<EditReminderScreen> createState() => _EditReminderScreenState();
+  State<MedicationListScreen> createState() => _MedicationListScreenState();
 }
 
-class _EditReminderScreenState extends State<EditReminderScreen> {
+class _MedicationListScreenState extends State<MedicationListScreen> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   late Future<bool> isDoneClicked;
 

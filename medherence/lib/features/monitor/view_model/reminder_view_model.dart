@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/model/models/history_model.dart';
 import '../../../core/model/simulated_data/simulated_values.dart';
 
@@ -19,6 +19,39 @@ class ReminderState extends ChangeNotifier {
   bool get isAlarmOn => _isAlarmOn;
   final Map<int, bool> _checkedMap =
       {}; // Map to store checked status of regimens
+
+  int _medcoin = 0; // To store medcoin balance
+
+  int get medcoin => _medcoin;
+  double get medcoinToNairaRate =>
+      0.1; // 100 Medcoin = 10 Naira, so 1 Medcoin = 0.1 Naira
+  ReminderState() {
+    _loadMedcoin();
+  }
+
+  Future<void> _loadMedcoin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _medcoin = prefs.getInt('medcoin') ?? 0;
+    notifyListeners();
+  }
+
+  Future<void> _saveMedcoin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('medcoin', _medcoin);
+  }
+
+  double get medcoinInNaira => _medcoin * medcoinToNairaRate;
+
+  void addMedcoin(int amount) {
+    _medcoin += amount;
+    _saveMedcoin();
+    notifyListeners();
+  }
+
+  void updateMedcoin(int amount) {
+    _medcoin = amount;
+    notifyListeners();
+  }
 
   // Method to get the number of checked regimens
   int getCheckedCount() {
@@ -48,7 +81,6 @@ class ReminderState extends ChangeNotifier {
     int index = _regimenList.indexOf(regimen);
     bool isChecked = _checkedMap[index] ?? false;
     _checkedMap[index] = !isChecked;
-    debugPrint(_checkedMap.toString());
     notifyListeners();
   }
 
@@ -69,7 +101,6 @@ class ReminderState extends ChangeNotifier {
 
   void updateSelectedSound(String newSound) {
     _selectedSound = newSound;
-    print('Selected sound updated to: $_selectedSound');
     notifyListeners();
   }
 

@@ -4,14 +4,17 @@ import 'package:medherence/core/service/notification_service.dart';
 import 'package:medherence/core/utils/size_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stacked/stacked.dart';
 
 import '../../../core/utils/color_utils.dart';
 import '../../../core/model/models/history_model.dart';
 import '../../../core/model/simulated_data/simulated_values.dart';
 import '../../../core/shared_widget/buttons.dart';
 import '../../auth/views/change_password.dart';
+import '../../dashboard_feature/view/dashboard_view.dart';
 import '../../history/view/history_screen.dart';
 import '../../medhecoin/view/medhecoin.dart';
+import '../../monitor/view/reminder_screen.dart';
 import '../../monitor/view_model/reminder_view_model.dart';
 import '../../notification/view/notification_view.dart';
 import '../../notification/widget/notification_widget.dart';
@@ -174,6 +177,13 @@ class _HomeViewState extends State<HomeView> {
       List<HistoryModel> regimenList = reminderState.regimenList;
       int remainingMedications =
           regimenList.length - reminderState.getCheckedCount();
+      int medcoinBalance = reminderState.medcoin;
+      double medcoinInNaira = reminderState.medcoinInNaira;
+      String coinTitle = _amountChanged ? 'Amount in Naira' : 'Amount in MDHC';
+      String amount = _amountChanged
+          ? medcoinInNaira.toStringAsFixed(2)
+          : medcoinBalance.toString();
+
       return Scaffold(
         appBar: AppBar(
           title: Padding(
@@ -238,30 +248,30 @@ class _HomeViewState extends State<HomeView> {
                 //   child: Text('Complete Action'),
                 // ),
                 MedhecoinWidget(
-                  () {
-                    setState(() {
-                      // Call the function to toggle the amount changed
-                      toggleAmountChanged();
-                    });
-                  },
-                  IconButton(
+                  onTap: toggleAmountChanged,
+                  iconData: IconButton(
                     onPressed: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const MedhecoinScreen()));
-                    },
-                    icon: Icon(Icons.open_in_new),
-                    iconSize: 28,
-                    color: AppColors.white,
-                  ),
-                  () {
-                    Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const MedhecoinScreen()));
+                            builder: (context) => MedhecoinScreen()),
+                      );
+                    },
+                    icon: Icon(
+                      Icons.open_in_new,
+                      color: AppColors.white,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MedhecoinScreen()),
+                    );
                   },
-                  _amountChanged,
+                  amountChanged: _amountChanged,
+                  coinTitle: coinTitle,
+                  amount: amount,
                 ),
                 SizedBox(
                   height: SizeMg.height(15),
@@ -697,6 +707,13 @@ class NextRegimen extends StatelessWidget {
               InkWell(
                 onTap: () {
                   debugPrint('Regimen taken');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => GetDashboardView(
+                              dashboardIndex: 1,
+                            )),
+                  );
                 },
                 child: Text(
                   'Take',
