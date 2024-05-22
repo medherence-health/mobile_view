@@ -7,6 +7,8 @@ import '../../../core/model/models/wallet_model.dart';
 class WalletViewModel extends ChangeNotifier {
   final List<WalletModel> _walletModels = [
     WalletModel(
+      firstName: 'Mark',
+      lastName: 'Davids',
       src: 'assets/images/bank_logo/firstbank_logo.png',
       title: 'Withdrawal',
       dateTime: '20240418 19:20',
@@ -14,6 +16,8 @@ class WalletViewModel extends ChangeNotifier {
       debit: true,
     ),
     WalletModel(
+      firstName: 'Rachael',
+      lastName: 'Smith',
       src: 'assets/images/bank_logo/medherence_icon.png',
       title: 'Adherence Bonus',
       dateTime: '20240417 23:20',
@@ -21,6 +25,8 @@ class WalletViewModel extends ChangeNotifier {
       debit: false,
     ),
     WalletModel(
+      firstName: 'Filo',
+      lastName: 'Andre',
       src: 'assets/images/bank_logo/firstbank_logo.png',
       title: 'Withdrawal',
       dateTime: '20240410 14:43',
@@ -28,6 +34,8 @@ class WalletViewModel extends ChangeNotifier {
       debit: true,
     ),
     WalletModel(
+      firstName: 'John',
+      lastName: 'Pickel',
       src: 'assets/images/bank_logo/medherence_icon.png',
       title: 'Adherence Bonus',
       dateTime: '20240809 10:00',

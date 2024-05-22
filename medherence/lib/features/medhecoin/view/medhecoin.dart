@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:medherence/core/utils/size_manager.dart';
+import 'package:medherence/features/more_features/withdrawal/view/withdrawal_view.dart';
 import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 
@@ -163,11 +164,21 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                         textSize: 18,
                         // icon: const Icon(Icons.account_balance_wallet_outlined,
                         //     color: AppColors.mainPrimaryButton),
-                        child: Image.asset('assets/images/withdrawal_icon.png',
-                            height: 20),
+                        child: Image.asset(
+                          'assets/images/withdrawal_icon.png',
+                          height: 30,
+                          width: 30,
+                        ),
                         buttonConfig: ButtonConfig(
                           text: 'Withdraw',
                           action: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: ((context) =>
+                                    MedhecoinWithdrawalView()),
+                              ),
+                            );
                             // Navigator.pop(context);
                           },
                           disabled: false,

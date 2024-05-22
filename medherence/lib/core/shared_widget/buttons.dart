@@ -122,7 +122,8 @@ class OutlinePrimaryButton extends StatelessWidget {
                 children: [
                   if (icon != null)
                     icon ??
-                        Container(
+                        SizedBox(
+                          width: 40,
                           child: child,
                         ),
                   RichText(
