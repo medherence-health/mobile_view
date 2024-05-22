@@ -32,7 +32,7 @@ class WalletViewModel extends ChangeNotifier {
       title: 'Adherence Bonus',
       dateTime: '20240809 10:00',
       price: 9567.77,
-      debit: true,
+      debit: false,
     ),
   ];
 

@@ -17,43 +17,45 @@ class MedhecoinWalletHistory extends StatelessWidget {
     return SizedBox(
       child: ListTile(
         leading: CircleAvatar(
-          radius: SizeMg.radius(35),
-          child: FittedBox(
-            child: Image.asset(model.src),
-          ),
+          radius: SizeMg.radius(30),
+          child: Image.asset(model.src, fit: BoxFit.fitHeight),
         ),
         title: Text(
           model.title,
         ),
         titleTextStyle: TextStyle(
-          fontSize: SizeMg.text(14),
+          fontSize: SizeMg.text(16),
           fontWeight: FontWeight.w400,
+          color: AppColors.black,
         ),
         subtitle: Row(
           children: [
             Text(
-              Jiffy.parse(model.dateTime, pattern: 'EEEE, do MMMM, yyyy')
-                  .format(pattern: 'EEEE, do MMMM, yyyy'),
+              StringUtils.formatTime12(DateTime.parse(model.dateTime)),
             ),
-            CircleAvatar(
-              radius: 4,
-              backgroundColor: AppColors.black,
+            Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: CircleAvatar(
+                radius: 2,
+                backgroundColor: AppColors.black,
+              ),
             ),
             Text(
-              StringUtils.formatTime12(DateTime.parse(model.dateTime)),
+              StringUtils.checkToday(DateTime.parse(model.dateTime)),
             )
           ],
         ),
         subtitleTextStyle: TextStyle(
-          fontSize: SizeMg.text(10),
-          fontWeight: FontWeight.w400,
-        ),
+            fontSize: SizeMg.text(12),
+            fontWeight: FontWeight.w400,
+            color: AppColors.darkGrey,
+            overflow: TextOverflow.ellipsis),
         trailing: RichText(
           text: TextSpan(
-            text: '\u{20A6}',
+            text: model.debit ? '-\u{20A6}' : '+\u{20A6}',
             style: TextStyle(
               fontWeight: FontWeight.w500,
-              fontSize: SizeMg.text(16),
+              fontSize: SizeMg.text(14),
               color: model.debit ? AppColors.red : AppColors.green,
             ),
             children: [

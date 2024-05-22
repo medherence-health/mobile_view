@@ -4,13 +4,24 @@ import '../constants/constants.dart';
 
 class StringUtils {
   static String poppins = 'Poppins';
+
+  static String formatDateTime(DateTime dateTime) {
+    // Format the date and time as required
+    return Jiffy.parseFromDateTime(dateTime).format(pattern: 'hh:mma');
+  }
+
+  // static String formatDate(DateTime dateTime) {
+  //   // Format the date and time as required
+  //   return Jiffy.parseFromDateTime(dateTime).format(pattern: 'dd/MM/yy');
+  // }
+
   static String checkToday(DateTime time) {
     Jiffy today = Jiffy.now();
     Jiffy dateTime = Jiffy.parseFromDateTime(time);
     if (dateTime.isSame(today, unit: Unit.day)) {
       return 'Today';
     }
-    return dateTime.format(pattern: 'dd-MM-yyyy');
+    return dateTime.format(pattern: 'dd/MM/yyyy');
   }
 
   static String checkTime(DateTime time) {
@@ -47,7 +58,7 @@ class StringUtils {
     return kNumFormatDecimal.format(number);
   }
 
-  static String formatCompletedOrderDate(DateTime dateTime) {
+  static String formatCompletedPaymentDate(DateTime dateTime) {
     return Jiffy.parseFromDateTime(dateTime)
         .format(pattern: 'do MMM, yyyy h:mm a');
   }

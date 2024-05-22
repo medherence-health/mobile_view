@@ -78,10 +78,12 @@ class OutlinePrimaryButton extends StatelessWidget {
   final Color color, textColor;
   final Icon? icon;
   final double? textSize;
+  final Widget? child;
 
   const OutlinePrimaryButton({
     Key? key,
     required this.buttonConfig,
+    this.child,
     this.icon,
     this.height = 50.0,
     this.textSize = 23,
@@ -118,7 +120,11 @@ class OutlinePrimaryButton extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  if (icon != null) icon ?? const Icon(Icons.hourglass_empty),
+                  if (icon != null)
+                    icon ??
+                        Container(
+                          child: child,
+                        ),
                   RichText(
                     text: TextSpan(
                         text: buttonConfig.text,
