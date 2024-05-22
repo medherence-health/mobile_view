@@ -181,7 +181,7 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
                 text: TextSpan(
                     text: 'Didn’t receive the email? ',
                     style: TextStyle(
-                      fontSize: SizeMg.text(17),
+                      fontSize: SizeMg.text(15),
                       fontWeight: FontWeight.w300,
                       color: Colors.grey.shade600,
                     ),
@@ -202,8 +202,8 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
                             });
                           },
                         style: TextStyle(
-                          fontSize: SizeMg.text(17),
-                          fontWeight: FontWeight.w400,
+                          fontSize: SizeMg.text(15),
+                          fontWeight: FontWeight.w500,
                           color: AppColors.navBarColor,
                         ),
                       )

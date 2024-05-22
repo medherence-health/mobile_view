@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../utils/color_utils.dart';
 
@@ -45,3 +46,7 @@ InputDecoration kProfileInputDecoration = InputDecoration(
     ),
   ),
 );
+
+NumberFormat kNumFormatNoDecimal = NumberFormat('#,###');
+
+NumberFormat kNumFormatDecimal = NumberFormat('#,###.0#');

@@ -412,7 +412,7 @@ class _LoginViewState extends State<LoginView> {
                         'Forgot Password?',
                         style: TextStyle(
                           color: AppColors.navBarColor,
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),

@@ -42,7 +42,11 @@ List<HistoryModel> generateSimulatedData() {
     String randomRegimenName = regimenNames[index % 3];
 
     // Generate random dosages
-    List<String> dosages = ['1 Capsule', '2 Tablets', '1 Syrup'];
+    List<String> dosages = [
+      '50mg, Take 2 pill',
+      '150mg, Take 1 pill',
+      '50mg, Take 1 pill'
+    ];
     String randomDosage = dosages[index % 3];
     final random = math.Random();
     final int randomHour = random.nextInt(12) + 1;

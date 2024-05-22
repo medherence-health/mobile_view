@@ -710,9 +710,10 @@ class NextRegimen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => GetDashboardView(
-                              dashboardIndex: 1,
-                            )),
+                      builder: (context) => GetDashboardView(
+                        dashboardIndex: 1,
+                      ),
+                    ),
                   );
                 },
                 child: Text(

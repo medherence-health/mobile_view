@@ -12,6 +12,7 @@ extension StringExtension on String? {
     }
     return null;
   }
+
   String? validatePin() {
     if (this == null || this!.isEmpty) {
       return 'PIN cannot be empty';
@@ -31,6 +32,9 @@ extension StringExtension on String? {
     }
     if (this!.length < 11) {
       return 'Phone number cannot be less than 11 numbers';
+    }
+    if (this!.length > 11) {
+      return 'Phone number cannot be greater than 11 numbers';
     }
     return null;
   }

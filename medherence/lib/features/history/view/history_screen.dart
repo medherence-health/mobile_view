@@ -314,7 +314,7 @@ class _HistoryScreenState extends State<HistoryScreen>
                             .length, // Use the length of your data list
                         separatorBuilder: (ctx, index) {
                           return SizedBox(
-                            height: SizeMg.height(13),
+                            height: SizeMg.height(8),
                           );
                         },
                         itemBuilder: (context, index) {
@@ -338,7 +338,9 @@ class _HistoryScreenState extends State<HistoryScreen>
                               padding: const EdgeInsets.only(left: 10),
                               decoration: BoxDecoration(
                                 color: Colors.grey[200],
-                                borderRadius: BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(
+                                  SizeMg.radius(10),
+                                ),
                               ),
                               child: Row(
                                 mainAxisAlignment:
@@ -383,12 +385,14 @@ class _HistoryScreenState extends State<HistoryScreen>
                                     ),
                                     // color: AppColors.green,
                                     child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
                                           item.date.day.toString(),
                                           style: TextStyle(
                                             color: AppColors.white,
-                                            fontSize: SizeMg.text(20),
+                                            fontSize: SizeMg.text(18),
                                             fontWeight: FontWeight.w500,
                                           ),
                                         ),

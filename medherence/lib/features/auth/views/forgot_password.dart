@@ -79,9 +79,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       horizontal: SizeMg.width(20),
                     ),
                     child: Text(
-                      'Don\'t worry! Please enter your associated E-mail address, we would send you reset instructions.',
+                      'Don’t worry! Please enter your associated whatsapp phone number, we would send you reset instructions.',
                       style: TextStyle(
-                        fontSize: SizeMg.text(17),
+                        fontSize: SizeMg.text(15),
                         fontWeight: FontWeight.w300,
                         color: Colors.grey.shade600,
                       ),
