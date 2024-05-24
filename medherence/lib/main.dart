@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:medherence/features/medhecoin/view_model/medhecoin_wallet_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (context) => ProfileViewModel()),
           ChangeNotifierProvider(create: (context) => FAQProvider()),
           ChangeNotifierProvider(create: (context) => FilterViewModel()),
+          ChangeNotifierProvider(create: (context) => WalletViewModel()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

@@ -16,11 +16,11 @@ class StringUtils {
   // }
 
   static String checkToday(DateTime time) {
-    Jiffy today = Jiffy.now();
+    // Jiffy today = Jiffy.now();
     Jiffy dateTime = Jiffy.parseFromDateTime(time);
-    if (dateTime.isSame(today, unit: Unit.day)) {
-      return 'Today';
-    }
+    // if (dateTime.isSame(today, unit: Unit.day)) {
+    //   return 'Today';
+    // }
     return dateTime.format(pattern: 'dd/MM/yyyy');
   }
 

@@ -18,7 +18,7 @@ class MedhecoinWalletHistory extends StatelessWidget {
       child: ListTile(
         leading: CircleAvatar(
           radius: SizeMg.radius(30),
-          child: Image.asset(model.src, fit: BoxFit.fitHeight),
+          child: Image.asset(model.src, width: 55, fit: BoxFit.fitHeight),
         ),
         title: Text(
           model.title,

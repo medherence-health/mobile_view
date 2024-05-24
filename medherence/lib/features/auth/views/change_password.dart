@@ -41,10 +41,9 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   // Function to navigate back to home screen after password change
   void navigateBackToHome() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const DashboardView()),
-    );
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => const DashboardView()),
+        (Route<dynamic> route) => false);
   }
 
   // Your validation logic and save password logic here...
