@@ -99,7 +99,8 @@ class WalletViewModel extends ChangeNotifier {
     if (bank == "Access Bank" && accountNumber == "1234567890") {
       accountOwnerName = "John Doe";
     } else {
-      accountOwnerName = null; // Simulate invalid account or bank
+      accountOwnerName =
+          "Account number not found"; // Simulate invalid account or bank
     }
     notifyListeners();
   }

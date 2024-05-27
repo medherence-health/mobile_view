@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/service/biometric_service.dart';
 import '../../../../core/shared_widget/buttons.dart';
 import '../../../../core/utils/color_utils.dart';
 import '../../../../core/utils/size_manager.dart';
@@ -12,6 +13,7 @@ class BiometricWidget extends StatefulWidget {
 }
 
 class _BiometricWidgetState extends State<BiometricWidget> {
+  final BiometricService _biometricService = BiometricService();
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -78,14 +80,26 @@ class _BiometricWidgetState extends State<BiometricWidget> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset(
-                'assets/images/fingerprint_sensor.png',
-                height: SizeMg.height(60),
-                width: SizeMg.width(60),
+              InkWell(
+                onTap: () async {
+                  bool isAuthenticated = await _biometricService.authenticate();
+                  if (isAuthenticated) {
+                    Navigator.pop(
+                        context); // Close the dialog if authentication is successful
+                    // Proceed with your action after successful biometric authentication
+                  } else {
+                    // Handle failed authentication
+                  }
+                },
+                child: Image.asset(
+                  'assets/images/fingerprint_sensor.png',
+                  height: SizeMg.height(60),
+                  width: SizeMg.width(60),
+                ),
               ),
               SizedBox(height: 10),
               Text(
-                'Touch your fingerprint sensor',
+                'Touch the fingerprint sensor',
                 style: TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 16,
@@ -101,7 +115,9 @@ class _BiometricWidgetState extends State<BiometricWidget> {
                   buttonConfig: ButtonConfig(
                     text: 'Cancel',
                     action: () {
-                      Navigator.of(context).pop;
+                      if (mounted) {
+                        Navigator.pop(context);
+                      }
                     },
                   ),
                 ),

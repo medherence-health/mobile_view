@@ -10,6 +10,7 @@ import '../../../core/shared_widget/buttons.dart';
 import '../../home/widget/medecoin_widget.dart';
 import '../../monitor/view_model/reminder_view_model.dart';
 import '../../more_features/wallet/view/wallet_pin_view.dart';
+import '../../more_features/withdrawal/view/add_account_view.dart';
 import '../view_model/medhecoin_wallet_view_model.dart';
 import '../widget/medcoin_wallet_history.dart';
 
@@ -197,6 +198,12 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                         buttonConfig: ButtonConfig(
                           text: 'Add Account',
                           action: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: ((context) => AddAccountView()),
+                              ),
+                            );
                             // Navigator.pop(context);
                           },
                           disabled: false,
