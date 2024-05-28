@@ -102,7 +102,7 @@ class WalletViewModel extends ChangeNotifier {
       accountOwnerName =
           "Account number not found"; // Simulate invalid account or bank
     }
-    notifyListeners();
+    // notifyListeners();
   }
 
   // Method to check if the amount is within the allowed limit

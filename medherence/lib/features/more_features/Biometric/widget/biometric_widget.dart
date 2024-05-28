@@ -87,6 +87,7 @@ class _BiometricWidgetState extends State<BiometricWidget> {
                     Navigator.pop(
                         context); // Close the dialog if authentication is successful
                     // Proceed with your action after successful biometric authentication
+                    LinearProgressIndicator();
                   } else {
                     // Handle failed authentication
                   }

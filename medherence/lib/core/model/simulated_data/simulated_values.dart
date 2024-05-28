@@ -66,7 +66,7 @@ List<HistoryModel> generateSimulatedData() {
     );
     // Generate random reminder information
     int id = index + 1; // Example: 1, 2, 3, ...
-    String message = 'Take $randomDosage of $randomRegimenName medication';
+    String message = '$randomDosage of $randomRegimenName medication';
 
     // DateTime generateRandomDate() {
     //   final now = DateTime.now();
@@ -127,8 +127,8 @@ List<HistoryModel> generateSimulatedData() {
 List<RegimenDescriptionModel> generateSimulatedRegimenDescriptions() {
   return [
     RegimenDescriptionModel(
-      medicationForm: 'Tablet',
-      dose: '2 tablets',
+      medicationForm: 'Capsule',
+      dose: '150 mg',
       pillTime: '2:00 pm',
       pillFrequency: 'Once a day',
       duration: '30 days',
@@ -136,7 +136,7 @@ List<RegimenDescriptionModel> generateSimulatedRegimenDescriptions() {
     ),
     RegimenDescriptionModel(
       medicationForm: 'Capsule',
-      dose: '1 capsule',
+      dose: '60 mg',
       pillTime: '8:00 am',
       pillFrequency: 'Twice a day',
       duration: '14 days',
@@ -152,7 +152,7 @@ List<RegimenDescriptionModel> generateSimulatedRegimenDescriptions() {
     ),
     RegimenDescriptionModel(
       medicationForm: 'Tablet',
-      dose: '2 tablets',
+      dose: '700 mg',
       pillTime: '9:00 pm',
       pillFrequency: 'Thrice a day',
       duration: '14 days',

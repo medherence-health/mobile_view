@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:medherence/core/utils/size_manager.dart';
+import 'package:medherence/features/dashboard_feature/view/dashboard_view.dart';
 import 'package:medherence/features/more_features/withdrawal/view/withdrawal_view.dart';
 import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
@@ -12,6 +13,7 @@ import '../../monitor/view_model/reminder_view_model.dart';
 import '../../more_features/wallet/view/wallet_pin_view.dart';
 import '../../more_features/withdrawal/view/add_account_view.dart';
 import '../view_model/medhecoin_wallet_view_model.dart';
+import '../widget/med_wallet_pin_widget.dart';
 import '../widget/medcoin_wallet_history.dart';
 
 class MedhecoinScreen extends StatefulWidget {
@@ -55,7 +57,10 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => DashboardView()),
+                (Route<dynamic> route) => false);
+            // Navigator.pop(context);
           },
           icon: const Icon(Icons.arrow_back_ios_new),
         ),
@@ -66,7 +71,7 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => WalletPinView()),
+                  MaterialPageRoute(builder: (context) => MedWalletPin()),
                 );
               },
               child: Icon(
@@ -118,7 +123,7 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                             ),
                             children: [
                               TextSpan(
-                                text: '15',
+                                text: ' 0',
                                 style: TextStyle(
                                   fontSize: (6),
                                   fontWeight: FontWeight.w600,
@@ -145,7 +150,7 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                             ),
                             children: [
                               TextSpan(
-                                text: '2',
+                                text: ' 0',
                                 style: TextStyle(
                                   fontSize: (6),
                                   fontWeight: FontWeight.w600,
@@ -193,8 +198,7 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                     Expanded(
                       child: OutlinePrimaryButton(
                         textSize: 18,
-                        icon: const Icon(Icons.add,
-                            color: AppColors.mainPrimaryButton),
+                        icon: (Icons.add),
                         buttonConfig: ButtonConfig(
                           text: 'Add Account',
                           action: () {

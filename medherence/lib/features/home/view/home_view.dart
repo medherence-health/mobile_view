@@ -189,7 +189,7 @@ class _HomeViewState extends State<HomeView> {
           title: Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: Text(
-              'Welcome, ${context.watch<ProfileViewModel>().nickName}',
+              'Welcome, ${context.watch<ProfileViewModel>().nickName.isNotEmpty ? context.watch<ProfileViewModel>().nickName : 'ADB'}',
               style: TextStyle(
                 fontSize: SizeMg.text(22),
                 fontWeight: FontWeight.w600,

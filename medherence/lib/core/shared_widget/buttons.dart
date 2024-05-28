@@ -76,7 +76,7 @@ class OutlinePrimaryButton extends StatelessWidget {
   final EdgeInsets? margin;
   final double width;
   final Color color, textColor;
-  final Icon? icon;
+  final IconData? icon;
   final double? textSize;
   final Widget? child;
 
@@ -84,7 +84,7 @@ class OutlinePrimaryButton extends StatelessWidget {
     Key? key,
     required this.buttonConfig,
     this.child,
-    this.icon,
+    this.icon = null,
     this.height = 50.0,
     this.textSize = 23,
     this.margin,
@@ -118,14 +118,17 @@ class OutlinePrimaryButton extends StatelessWidget {
             highlightColor: AppColors.disabledButton,
             child: Center(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  if (icon == null)
+                    FittedBox(
+                      child: child,
+                    ),
                   if (icon != null)
-                    icon ??
-                        SizedBox(
-                          width: 40,
-                          child: child,
-                        ),
+                    Icon(
+                      icon,
+                      color: AppColors.mainPrimaryButton,
+                    ),
                   RichText(
                     text: TextSpan(
                         text: buttonConfig.text,
