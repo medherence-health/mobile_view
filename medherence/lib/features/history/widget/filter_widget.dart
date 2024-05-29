@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:drop_down_search_field/drop_down_search_field.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/constants/constants.dart';
 import '../../../core/utils/color_utils.dart';
 import '../../../core/utils/size_manager.dart';
+import '../../monitor/view_model/reminder_view_model.dart';
 import '../view_model/filter_model.dart';
 
 class FilterView extends StatefulWidget {
@@ -15,11 +17,27 @@ class FilterView extends StatefulWidget {
 }
 
 class _FilterViewState extends State<FilterView> {
-  FilterViewModel model = FilterViewModel();
+  @override
+  void initState() {
+    super.initState();
+    // Fetch regimen list from ReminderState
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ReminderState reminderState =
+          Provider.of<ReminderState>(context, listen: false);
+      List<String> regimenNames = reminderState.regimenList
+          .map((regimen) => regimen.regimenName)
+          .toList();
+      Provider.of<FilterViewModel>(context, listen: false)
+          .setRegimenNames(regimenNames);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final model = Provider.of<FilterViewModel>(context);
     String formattedDate = model.formatDate(model.selectedDate);
     String secondFormattedDate = model.formatDate(model.secondSelectedDate);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -43,7 +61,9 @@ class _FilterViewState extends State<FilterView> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context, true);
+            },
             icon: Icon(
               Icons.check,
               color: AppColors.navBarColor,
@@ -67,10 +87,10 @@ class _FilterViewState extends State<FilterView> {
               SizedBox(height: 10),
               Wrap(
                 children: [
-                  _buildStatusRadio(model, 1, 'All'),
-                  _buildStatusRadio(model, 2, 'Taken'),
-                  _buildStatusRadio(model, 3, 'Late'),
-                  _buildStatusRadio(model, 4, 'Missed'),
+                  _buildStatusRadio(model, Status.all, 'All'),
+                  _buildStatusRadio(model, Status.taken, 'Taken'),
+                  _buildStatusRadio(model, Status.late, 'Late'),
+                  _buildStatusRadio(model, Status.missed, 'Missed'),
                 ],
               ),
               SizedBox(height: 20),
@@ -93,8 +113,9 @@ class _FilterViewState extends State<FilterView> {
                       model.selectedDate,
                       (pickedDate) {
                         if (pickedDate != null &&
-                            pickedDate != model.selectedDate)
+                            pickedDate != model.selectedDate) {
                           model.updateSelectedDate(pickedDate);
+                        }
                       },
                     ),
                   ),
@@ -108,8 +129,9 @@ class _FilterViewState extends State<FilterView> {
                       model.secondSelectedDate,
                       (pickedDate) {
                         if (pickedDate != null &&
-                            pickedDate != model.secondSelectedDate)
+                            pickedDate != model.secondSelectedDate) {
                           model.updateSecondSelectedDate(pickedDate);
+                        }
                       },
                     ),
                   ),
@@ -150,7 +172,7 @@ class _FilterViewState extends State<FilterView> {
                   return suggestionsBox;
                 },
                 onSuggestionSelected: (suggestion) {
-                  model.dropDownSearchController.text = model.suggestion;
+                  model.dropDownSearchController.text = suggestion;
                 },
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -168,15 +190,19 @@ class _FilterViewState extends State<FilterView> {
     );
   }
 
-  Widget _buildStatusRadio(FilterViewModel model, int value, String label) {
+  Widget _buildStatusRadio(FilterViewModel model, Status status, String label) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Radio(
+        Radio<Status>(
           activeColor: AppColors.navBarColor,
-          value: value,
+          value: status,
           groupValue: model.status,
-          onChanged: (value) => model.setStatus(value),
+          onChanged: (Status? value) {
+            if (value != null) {
+              model.setStatus(value);
+            }
+          },
         ),
         Text(
           label,
@@ -229,7 +255,7 @@ class _FilterViewState extends State<FilterView> {
                   onPressed: () async {
                     final DateTime? pickedDate = await showDatePicker(
                       context: context,
-                      initialDate: model.selectedDate ?? DateTime.now(),
+                      initialDate: initialDate,
                       firstDate: DateTime(2000),
                       lastDate: DateTime(2100),
                     );

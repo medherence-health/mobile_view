@@ -12,6 +12,7 @@ class ReminderState extends ChangeNotifier {
   bool _isAlarmOn = true;
 
   List<HistoryModel> get regimenList => _regimenList;
+
   bool get val => _val;
   bool get pillCount => _pillCount;
   String get selectedSound => _selectedSound;

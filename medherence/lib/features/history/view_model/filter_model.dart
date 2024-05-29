@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/model/models/history_model.dart';
-import '../../../core/model/simulated_data/simulated_values.dart';
+enum Status { all, taken, late, missed }
 
 class FilterViewModel extends ChangeNotifier {
-  int status = 1; // All selected by default
+  Status status = Status.all;
   DateTime _selectedDate = DateTime.now();
   DateTime _secondSelectedDate = DateTime.now()
       .add(Duration(days: 1)); // Default: 1 day after selectedDate
   TextEditingController dropDownSearchController = TextEditingController();
   String suggestion = "";
   String? selectedMedication;
+  List<String> regimenNames = [];
 
   DateTime get selectedDate => _selectedDate;
   DateTime get secondSelectedDate => _secondSelectedDate;
@@ -20,7 +20,7 @@ class FilterViewModel extends ChangeNotifier {
     return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
   }
 
-  void setStatus(int? value) {
+  void setStatus(Status? value) {
     if (value != null) {
       status = value;
       notifyListeners();
@@ -29,27 +29,24 @@ class FilterViewModel extends ChangeNotifier {
 
   updateSelectedDate(DateTime pickedDate) {
     _selectedDate = pickedDate;
-    debugPrint(_selectedDate.toString());
     notifyListeners();
   }
 
   updateSecondSelectedDate(DateTime pickedDate) {
     _secondSelectedDate = pickedDate;
-    debugPrint(_secondSelectedDate.toString());
     notifyListeners();
   }
 
-  // Replace this with your logic to fetch suggestions based on the pattern
-  List<String> getSuggestions(String pattern) {
-    // Implement your logic to fetch suggestions based on pattern (e.g., search from a list)
-    List<HistoryModel> _regimenList = generateSimulatedData();
-    int index = 0;
-    dynamic items = _regimenList[index];
-    List<String> matches = <String>[];
-    matches.addAll(items);
+  void setRegimenNames(List<String> names) {
+    regimenNames = names;
+    notifyListeners();
+  }
 
-    matches.retainWhere((s) => s.toLowerCase().contains(pattern.toLowerCase()));
+  // Get suggestions based on the pattern
+  List<String> getSuggestions(String pattern) {
+    List<String> matches = regimenNames
+        .where((s) => s.toLowerCase().contains(pattern.toLowerCase()))
+        .toList();
     return matches;
-    // return ["Suggestion 1", "Suggestion 2", "Suggestion 3"];
   }
 }
