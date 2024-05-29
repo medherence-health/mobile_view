@@ -2,10 +2,12 @@ import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:medherence/core/model/models/account_model.dart';
 import 'package:medherence/core/model/models/wallet_model.dart';
 import 'package:medherence/core/shared_widget/buttons.dart';
 import 'package:medherence/core/utils/size_manager.dart';
 import 'package:medherence/features/more_features/withdrawal/widget/add_account_success_widget.dart';
+import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../../core/constants/constants.dart';
@@ -34,6 +36,20 @@ class _AddAccountViewState extends State<AddAccountView> {
           content: Text('Account added successfully'),
         ),
       );
+      final walletViewModel =
+          Provider.of<WalletViewModel>(context, listen: false);
+      // Create a new transaction model
+      final newAccount = SavedWithdrawalAccountModel(
+        accountName: 'ADB',
+        bankName: walletViewModel.selectedBank.toString(),
+        accountNumber: _accountNumberController.text.toString(),
+        src: 'assets/images/bank_logo/medherence_icon.png',
+      );
+
+      // Add the new transaction to the wallet model list
+      Provider.of<WalletViewModel>(context, listen: false)
+          .addWithdrawalAccount(newAccount);
+
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => AddAccountSuccessfulWidget()),
           (Route<dynamic> route) => false);

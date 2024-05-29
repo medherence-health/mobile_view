@@ -1,6 +1,10 @@
 import 'dart:collection';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../core/model/models/account_model.dart';
 import '../../../core/model/models/wallet_model.dart';
+import '../../../core/utils/utils.dart';
 
 class WalletViewModel extends ChangeNotifier {
   String? selectedBank;
@@ -9,6 +13,9 @@ class WalletViewModel extends ChangeNotifier {
   int? amount;
   double? totalAmount;
   String? amountError;
+  WalletViewModel() {
+    loadWalletModels(); // Call loadWalletModels in the constructor
+  }
   List<String> bankNames = [
     'Access Bank',
     'Citibank',
@@ -39,43 +46,74 @@ class WalletViewModel extends ChangeNotifier {
   }
 
   final List<WalletModel> _walletModels = [
-    WalletModel(
-      firstName: 'Mark',
-      lastName: 'Davids',
-      src: 'assets/images/bank_logo/firstbank_logo.png',
-      title: 'Withdrawal',
-      dateTime: '20240418 19:20',
-      price: 10000,
-      debit: true,
-    ),
-    WalletModel(
-      firstName: 'Rachael',
-      lastName: 'Smith',
-      src: 'assets/images/bank_logo/medherence_icon.png',
-      title: 'Adherence Bonus',
-      dateTime: '20240417 23:20',
-      price: 15101,
-      debit: false,
-    ),
-    WalletModel(
-      firstName: 'Filo',
-      lastName: 'Andre',
-      src: 'assets/images/bank_logo/firstbank_logo.png',
-      title: 'Withdrawal',
-      dateTime: '20240410 14:43',
-      price: 9567.77,
-      debit: true,
-    ),
-    WalletModel(
-      firstName: 'John',
-      lastName: 'Pickel',
-      src: 'assets/images/bank_logo/medherence_icon.png',
-      title: 'Adherence Bonus',
-      dateTime: '20240809 10:00',
-      price: 9567.77,
-      debit: false,
-    ),
+    // WalletModel(
+    //   firstName: 'Mark',
+    //   lastName: 'Davids',
+    //   src: 'assets/images/bank_logo/firstbank_logo.png',
+    //   title: 'Withdrawal',
+    //   dateTime: '20240418 19:20',
+    //   price: 10000,
+    //   debit: true,
+    // ),
+    // WalletModel(
+    //   firstName: 'Rachael',
+    //   lastName: 'Smith',
+    //   src: 'assets/images/bank_logo/medherence_icon.png',
+    //   title: 'Adherence Bonus',
+    //   dateTime: '20240417 23:20',
+    //   price: 15101,
+    //   debit: false,
+    // ),
+    // WalletModel(
+    //   firstName: 'Filo',
+    //   lastName: 'Andre',
+    //   src: 'assets/images/bank_logo/firstbank_logo.png',
+    //   title: 'Withdrawal',
+    //   dateTime: '20240410 14:43',
+    //   price: 9567.77,
+    //   debit: true,
+    // ),
+    // WalletModel(
+    //   firstName: 'John',
+    //   lastName: 'Pickel',
+    //   src: 'assets/images/bank_logo/medherence_icon.png',
+    //   title: 'Adherence Bonus',
+    //   dateTime: '20240809 10:00',
+    //   price: 9567.77,
+    //   debit: false,
+    // ),
   ];
+  List<SavedWithdrawalAccountModel> _withdrawalAccounts = [];
+
+  // Load withdrawal accounts from local storage
+  Future<void> loadWithdrawalAccounts() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final List<String>? withdrawalAccountsJson =
+        prefs.getStringList(StringUtils.kSavedWithdrawalAccountsKey);
+    if (withdrawalAccountsJson != null) {
+      _withdrawalAccounts.clear();
+      _withdrawalAccounts.addAll(withdrawalAccountsJson.map(
+          (json) => SavedWithdrawalAccountModel.fromJson(jsonDecode(json))));
+      notifyListeners();
+    }
+  }
+
+  Future<void> saveWithdrawalAccounts() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final List<String> withdrawalAccountsJson = _withdrawalAccounts
+        .map((account) => jsonEncode(account.toJson()))
+        .toList();
+    await prefs.setStringList(
+        StringUtils.kSavedWithdrawalAccountsKey, withdrawalAccountsJson);
+  }
+
+  // Method to add withdrawal account
+  void addWithdrawalAccount(SavedWithdrawalAccountModel account) {
+    _withdrawalAccounts.add(account);
+    saveWithdrawalAccounts();
+    notifyListeners();
+  }
+
   String? validateWithdrawal(int? mainBalance) {
     if (totalAmount != null && totalAmount! > mainBalance!) {
       return 'Total amount exceeds your available balance.';
@@ -83,11 +121,53 @@ class WalletViewModel extends ChangeNotifier {
     return null;
   }
 
+  UnmodifiableListView<SavedWithdrawalAccountModel> get savedAccountModelList {
+    return UnmodifiableListView(_withdrawalAccounts);
+  }
+
   UnmodifiableListView<WalletModel> get walletModelList {
     _walletModels.sort((a, b) => DateTime.parse(b.dateTime)
         .millisecondsSinceEpoch
         .compareTo(DateTime.parse(a.dateTime).millisecondsSinceEpoch));
     return UnmodifiableListView(_walletModels);
+  }
+
+  // void addTransaction(WalletModel transaction) {
+  //   _walletModels.add(transaction);
+  //   _walletModels.sort((a, b) => DateTime.parse(b.dateTime)
+  //       .millisecondsSinceEpoch
+  //       .compareTo(DateTime.parse(a.dateTime).millisecondsSinceEpoch));
+  //   notifyListeners();
+  // }
+
+  // Load transaction history from local storage
+  Future<void> loadWalletModels() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final List<String>? walletModelsJson =
+        prefs.getStringList(StringUtils.kWalletModelsKey);
+    if (walletModelsJson != null) {
+      _walletModels.clear();
+      _walletModels.addAll(walletModelsJson
+          .map((json) => WalletModel.fromJson(jsonDecode(json))));
+
+      notifyListeners();
+    }
+  }
+
+  // Save transaction history to local storage
+  Future<void> saveWalletModels() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final List<String> walletModelsJson =
+        _walletModels.map((model) => jsonEncode(model.toJson())).toList();
+
+    await prefs.setStringList(StringUtils.kWalletModelsKey, walletModelsJson);
+  }
+
+  // Method to add transaction
+  void addTransaction(WalletModel transaction) {
+    _walletModels.add(transaction);
+    saveWalletModels(); // Save the updated transaction history
+    notifyListeners();
   }
 
   // Method to validate account number

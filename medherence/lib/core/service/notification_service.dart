@@ -148,7 +148,8 @@ class NotificationService extends ChangeNotifier {
 
     // Check for past time (optional)
     if (futureDateTime.isBefore(now)) {
-      futureDateTime = futureDateTime.add(const Duration(days: 1));
+      return null;
+      // futureDateTime = futureDateTime.add(const Duration(days: 1));
     }
     int newTime = futureDateTime.millisecondsSinceEpoch -
         DateTime.now().millisecondsSinceEpoch;

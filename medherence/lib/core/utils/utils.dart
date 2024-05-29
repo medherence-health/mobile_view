@@ -4,6 +4,8 @@ import '../constants/constants.dart';
 
 class StringUtils {
   static String poppins = 'Poppins';
+  static const String kWalletModelsKey = 'wallet_models';
+  static const String kSavedWithdrawalAccountsKey = 'saved_withdrawal_accounts';
 
   static String formatDateTime(DateTime dateTime) {
     // Format the date and time as required

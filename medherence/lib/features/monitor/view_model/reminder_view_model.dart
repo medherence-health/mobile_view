@@ -29,6 +29,12 @@ class ReminderState extends ChangeNotifier {
     _loadMedcoin();
   }
 
+  void deductMedcoin(int amount) {
+    _medcoin -= amount;
+    _saveMedcoin(); // Save the updated medcoin balance
+    notifyListeners();
+  }
+
   Future<void> _loadMedcoin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _medcoin = prefs.getInt('medcoin') ?? 0;

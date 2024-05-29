@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:medherence/features/medhecoin/view_model/medhecoin_wallet_view_model.dart';
+import 'package:medherence/features/profile/view_model/profile_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 
@@ -99,6 +100,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
   }
 
   Widget buildWithdrawalForm(WalletViewModel model, int? availableMedcoin) {
+    final savedAccount = Provider.of<WalletViewModel>(context, listen: false);
     return Stack(
       children: [
         Padding(
@@ -108,9 +110,10 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Container(
-                  height: SizeMg.height(130),
-                  child: Visibility(
+                Visibility(
+                  visible: savedAccount.savedAccountModelList.isNotEmpty,
+                  child: Container(
+                    height: SizeMg.height(130),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -127,7 +130,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (ctx, index) {
-                              final item = model.walletModelList[index];
+                              final item = savedAccount.savedAccountModelList[index];
                               return Column(
                                 children: [
                                   CircleAvatar(
@@ -143,7 +146,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                                     child: SizedBox(
                                       width: SizeMg.width(60),
                                       child: Text(
-                                        item.firstName + ' ' + item.lastName,
+                                        item.accountName ?? 'ADB',
                                         style: TextStyle(
                                           fontSize: SizeMg.text(12),
                                           color: AppColors.darkGrey,
@@ -158,7 +161,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                             separatorBuilder: (ctx, index) => SizedBox(
                               height: SizeMg.width(15),
                             ),
-                            itemCount: model.walletModelList.length,
+                            itemCount: savedAccount.savedAccountModelList.length,
                           ),
                         )
                       ],
@@ -557,6 +560,8 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                             content: Text('Account verified'),
                           ),
                         );
+                        Provider.of<WalletViewModel>(context, listen: false)
+                            .calculateTotalAmount();
                         setState(() {
                           showConfirmation = true;
                         });

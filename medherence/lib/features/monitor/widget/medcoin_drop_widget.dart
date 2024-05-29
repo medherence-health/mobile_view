@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:medherence/core/shared_widget/buttons.dart';
 import 'package:medherence/core/utils/color_utils.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/utils/size_manager.dart';
+import '../../../core/model/models/wallet_model.dart';
 import '../../dashboard_feature/view/dashboard_view.dart';
+import '../../medhecoin/view_model/medhecoin_wallet_view_model.dart';
+import '../../profile/view_model/profile_view_model.dart';
 
 class MedCoinDropWidget extends StatelessWidget {
   final int medhecoinEarned;
@@ -71,6 +75,28 @@ class MedCoinDropWidget extends StatelessWidget {
                   buttonConfig: ButtonConfig(
                     text: 'Yaayy!!!',
                     action: () {
+                      // final walletViewModel =
+                      //     Provider.of<WalletViewModel>(context, listen: false);
+                      final profile =
+                          Provider.of<ProfileViewModel>(context, listen: false);
+                      // Create a new transaction model
+                      final newTransaction = WalletModel(
+                        firstName: profile.nickName.isNotEmpty
+                            ? profile.nickName
+                            : 'ADB', // Replace with actual data
+                        lastName: '', // Replace with actual data
+                        src:
+                            'assets/images/bank_logo/medherence_icon.png', // Replace with actual data
+                        title: 'Adherence Bonus',
+                        dateTime: DateTime.now()
+                            .toString(), // Use the current date and time
+                        price: medhecoinEarned.toDouble(),
+                        debit: false,
+                      );
+
+                      // Add the new transaction to the wallet model list
+                      Provider.of<WalletViewModel>(context, listen: false)
+                          .addTransaction(newTransaction);
                       Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
                               builder: (context) => DashboardView()),

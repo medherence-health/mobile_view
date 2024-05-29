@@ -82,9 +82,8 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
           ),
         ],
       ),
-      body: ViewModelBuilder<WalletViewModel>.reactive(
-        viewModelBuilder: () => WalletViewModel(),
-        builder: (_, model, __) => Padding(
+      body: Consumer<WalletViewModel>(
+        builder: (context, model, _) => Padding(
           padding: const EdgeInsets.only(
             left: 25.0,
             right: 25,
@@ -225,7 +224,7 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                     )),
                 ListView.separated(
                   shrinkWrap: true,
-                  physics: const AlwaysScrollableScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   padding: EdgeInsets.only(
                     top: SizeMg.height(10),
                     bottom: SizeMg.height(16),
