@@ -31,19 +31,19 @@ class _WalletPinWidgetState extends State<WalletPinWidget> {
     return CupertinoAlertDialog(
       content: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Container(
+        child: SizedBox(
           height: 100,
           child: Column(
             children: [
-              Text(
+              const Text(
                 'Enter your Wallet Pin to enable fingerprint',
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Expanded(
                 child: Container(
                   width: SizeMg.width(200),
                   height: SizeMg.height(50),
-                  padding: EdgeInsets.all(0),
+                  padding: const EdgeInsets.all(0),
                   decoration: BoxDecoration(
                     color: AppColors.white,
                     borderRadius: BorderRadius.circular(5),

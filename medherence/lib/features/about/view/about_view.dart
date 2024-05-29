@@ -11,7 +11,7 @@ class AboutAppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String url = 'https://www.medherence.health'; 
+    const String url = 'https://www.medherence.health'; 
     return ViewModelBuilder<AboutViewModel>.reactive(
       viewModelBuilder: () => AboutViewModel(),
       builder: (_, model, __) =>Scaffold(
@@ -51,13 +51,13 @@ class AboutAppView extends StatelessWidget {
                       fontFamily: "Poppins-bold.ttf",
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   RichText(
                     text: TextSpan(
                       text: 'Visit; ',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                         color: AppColors.black,
@@ -67,13 +67,13 @@ class AboutAppView extends StatelessWidget {
                           text: url,
                           recognizer: TapGestureRecognizer()
                               ..onTap = () => model.launchInBrowserView(Uri.parse(url), context),
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
                             color: AppColors.navBarColor,
                           ),
                         ),
-                        TextSpan(
+                        const TextSpan(
                           text: ' to learn more about the app and the company',
                           style: TextStyle(
                             fontSize: 16,

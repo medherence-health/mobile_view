@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:medherence/features/auth/views/login_view.dart';
 import 'package:medherence/features/auth/widget/validation_extension.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/utils/color_utils.dart';
 import '../../../core/constants/constants.dart';
 import '../../../core/shared_widget/buttons.dart';
 import '../../../core/utils/size_manager.dart';
-import '../../dashboard_feature/view/dashboard_view.dart';
 
 class NewPassword extends StatefulWidget {
   const NewPassword({super.key});
@@ -24,7 +22,7 @@ class _NewPasswordState extends State<NewPassword> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
-  bool _obscureOldPassword = true;
+  final bool _obscureOldPassword = true;
   bool _obscureNewPassword = true;
   bool _obscureConfirmPassword = true;
 
@@ -47,7 +45,7 @@ class _NewPasswordState extends State<NewPassword> {
     //   MaterialPageRoute(builder: (context) => const LoginView()),
     // );
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => LoginView()),
+        MaterialPageRoute(builder: (context) => const LoginView()),
         (Route<dynamic> route) => false);
   }
 
@@ -100,7 +98,7 @@ class _NewPasswordState extends State<NewPassword> {
                         color: AppColors.black,
                         fontSize: SizeMg.text(12),
                       ),
-                      children: [
+                      children: const [
                         TextSpan(
                           text: '* Include at least one number (0-9).\n',
                         ),

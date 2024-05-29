@@ -68,8 +68,8 @@ class _BiometricWidgetState extends State<BiometricWidget> {
 
   Widget confirmBiometric() {
     return AlertDialog(
-      title: Padding(
-        padding: const EdgeInsets.all(8.0),
+      title: const Padding(
+        padding: EdgeInsets.all(8.0),
         child: Text(
           'Confirm Transaction',
           textAlign: TextAlign.center,
@@ -109,8 +109,8 @@ class _BiometricWidgetState extends State<BiometricWidget> {
                   width: SizeMg.width(60),
                 ),
               ),
-              SizedBox(height: 10),
-              Text(
+              const SizedBox(height: 10),
+              const Text(
                 'Touch the fingerprint sensor',
                 style: TextStyle(
                   fontWeight: FontWeight.w400,
@@ -118,7 +118,7 @@ class _BiometricWidgetState extends State<BiometricWidget> {
                   color: AppColors.black,
                 ),
               ),
-              SizedBox(height: 25),
+              const SizedBox(height: 25),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: OutlinePrimaryButton(
@@ -148,7 +148,7 @@ class _BiometricWidgetState extends State<BiometricWidget> {
       builder: (BuildContext context) {
         return Column(children: [
           if (_isLoading == true)
-            LinearProgressIndicator(
+            const LinearProgressIndicator(
               color: AppColors.navBarColor,
               backgroundColor: AppColors.disabledButton,
             ),
@@ -156,7 +156,7 @@ class _BiometricWidgetState extends State<BiometricWidget> {
       },
     );
 
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () {
       setState(() {
         _isLoading = false;
       });

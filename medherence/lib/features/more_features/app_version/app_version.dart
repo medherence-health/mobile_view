@@ -10,7 +10,7 @@ class AppVersionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String _supportMail = 'medherence23@gmail.com';
+    String supportMail = 'medherence23@gmail.com';
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -31,38 +31,38 @@ class AppVersionView extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(25),
+        padding: const EdgeInsets.all(25),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
+            const Text(
               'Current App version',
               style: TextStyle(
                 color: AppColors.darkGrey,
               ),
             ),
-            Text(
+            const Text(
               '[App version 1.0.0]',
               style: TextStyle(
                 color: AppColors.navBarColor,
                 fontSize: 20,
               ),
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Previous App version',
               style: TextStyle(
                 color: AppColors.darkGrey,
               ),
             ),
-            Text(
+            const Text(
               '---',
               style: TextStyle(
                 color: AppColors.navBarColor,
               ),
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'App Support',
               style: TextStyle(
                 color: AppColors.darkGrey,
@@ -70,49 +70,49 @@ class AppVersionView extends StatelessWidget {
             ),
             ListTile(
               title: Text(
-                _supportMail,
-                style: TextStyle(
+                supportMail,
+                style: const TextStyle(
                   fontSize: 20,
                   color: AppColors.navBarColor,
                 ),
               ),
               trailing: IconButton(
                 onPressed: () {
-                  Clipboard.setData(ClipboardData(text: _supportMail));
+                  Clipboard.setData(ClipboardData(text: supportMail));
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                    const SnackBar(
                       content: Text('Text copied to clipboard'),
                     ),
                   );
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.copy,
                   color: AppColors.navBarColor,
                   size: 25,
                 ),
               ),
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Beta version info',
               style: TextStyle(
                 color: AppColors.darkGrey,
               ),
             ),
-            Text(
+            const Text(
               '---',
               style: TextStyle(
                 color: AppColors.navBarColor,
               ),
             ),
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
             OutlinePrimaryButton(
               buttonConfig: ButtonConfig(
                 text: 'Check for updates',
                 action: () {
                   // Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                    const SnackBar(
                       content: Text('No updates found, you are up to date!'),
                     ),
                   );

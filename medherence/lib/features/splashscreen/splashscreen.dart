@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:medherence/features/auth/views/login_view.dart';
 import 'package:medherence/features/dashboard_feature/view/dashboard_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

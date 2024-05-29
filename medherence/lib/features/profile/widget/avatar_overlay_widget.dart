@@ -8,12 +8,12 @@ class AvatarSelectionOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height,
       child: GridView.builder(
         shrinkWrap: true,
         itemCount: 30, // Number of avatar images
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 5,
           crossAxisSpacing: 4.0,
           mainAxisSpacing: 4.0,

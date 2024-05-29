@@ -3,7 +3,6 @@ import 'package:medherence/features/auth/widget/validation_extension.dart';
 
 import '../../../../core/constants/constants.dart';
 import '../../../../core/shared_widget/buttons.dart';
-import '../../../../core/utils/color_utils.dart';
 import '../../../../core/utils/size_manager.dart';
 import 'change_pin_view.dart';
 
@@ -40,9 +39,9 @@ class _WalletPinViewState extends State<WalletPinView> {
         ),
       ),
       body: _showChangePinView == true
-          ? ChangeWalletPinView() // Show ChangeWalletPinView if _showChangePinView is true
+          ? const ChangeWalletPinView() // Show ChangeWalletPinView if _showChangePinView is true
           : Padding(
-              padding: EdgeInsets.only(
+              padding: const EdgeInsets.only(
                 left: 25,
                 right: 25,
                 top: 10,
@@ -51,9 +50,9 @@ class _WalletPinViewState extends State<WalletPinView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                         'Enter your account password to verify that it is you'),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     TextFormField(
                       controller: _passwordController,
                       obscureText: _obscurePassword,

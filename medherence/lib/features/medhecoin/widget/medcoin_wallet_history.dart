@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:jiffy/jiffy.dart';
 
 import '../../../core/model/models/wallet_model.dart';
 import '../../../core/utils/color_utils.dart';
@@ -33,8 +32,8 @@ class MedhecoinWalletHistory extends StatelessWidget {
             Text(
               StringUtils.formatTime12(DateTime.parse(model.dateTime)),
             ),
-            Padding(
-              padding: const EdgeInsets.all(3.0),
+            const Padding(
+              padding: EdgeInsets.all(3.0),
               child: CircleAvatar(
                 radius: 2,
                 backgroundColor: AppColors.black,

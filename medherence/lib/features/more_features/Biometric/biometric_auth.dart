@@ -37,19 +37,19 @@ class _BiometricAuthenticationViewState
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.only(left: 25, right: 25, top: 10),
+        padding: const EdgeInsets.only(left: 25, right: 25, top: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Enhance Your Wallet Security: Enable biometric authentication to Safeguard Your Earnings and Transactions',
               style: TextStyle(
                 fontSize: 14,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             SwitchListTile(
-              title: Text(
+              title: const Text(
                 'Enable Fingerprint',
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
@@ -75,7 +75,7 @@ class _BiometricAuthenticationViewState
     showDialog(
       barrierDismissible: false,
       context: context,
-      builder: (context) => WalletPinWidget(),
+      builder: (context) => const WalletPinWidget(),
     );
   }
 }

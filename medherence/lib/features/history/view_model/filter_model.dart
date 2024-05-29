@@ -6,7 +6,7 @@ class FilterViewModel extends ChangeNotifier {
   Status status = Status.all;
   DateTime _selectedDate = DateTime.now();
   DateTime _secondSelectedDate = DateTime.now()
-      .add(Duration(days: 1)); // Default: 1 day after selectedDate
+      .add(const Duration(days: 1)); // Default: 1 day after selectedDate
   TextEditingController dropDownSearchController = TextEditingController();
   String suggestion = "";
   String? selectedMedication;

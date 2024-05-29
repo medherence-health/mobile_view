@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import '../../../core/utils/color_utils.dart';
 import '../../../core/utils/image_utils.dart';
 import '../../../core/utils/size_manager.dart';
-import '../../dashboard_feature/view/dashboard_view.dart';
 import '../../monitor/view_model/reminder_view_model.dart';
 import '../../more_features/Biometric/biometric_auth.dart';
 import '../../more_features/wallet/view/wallet_pin_view.dart';
@@ -71,7 +70,7 @@ class _SettingsViewState extends State<SettingsView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'General',
                 style: TextStyle(
                   color: AppColors.darkGrey,
@@ -82,7 +81,7 @@ class _SettingsViewState extends State<SettingsView> {
                 padding: const EdgeInsets.all(8.0),
                 child: Card(
                   child: ListTile(
-                    leading: Icon(
+                    leading: const Icon(
                       Icons.dark_mode,
                       color: AppColors.historyBackground,
                       size: 25,
@@ -107,7 +106,7 @@ class _SettingsViewState extends State<SettingsView> {
                 ),
               ),
               SizedBox(height: SizeMg.height(10)),
-              Text(
+              const Text(
                 'Alarm settings',
                 style: TextStyle(
                   color: AppColors.darkGrey,
@@ -115,7 +114,7 @@ class _SettingsViewState extends State<SettingsView> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                   top: 15,
                   bottom: 15,
                   left: 10,
@@ -124,7 +123,7 @@ class _SettingsViewState extends State<SettingsView> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       'Sound',
                       style: TextStyle(
                         fontSize: 22,
@@ -137,7 +136,7 @@ class _SettingsViewState extends State<SettingsView> {
                           context: context,
                           builder: (BuildContext context) {
                             return CupertinoAlertDialog(
-                              title: Text('Select Sound'),
+                              title: const Text('Select Sound'),
                               content: Padding(
                                 padding: const EdgeInsets.only(bottom: 38.0),
                                 child: Consumer<ReminderState>(
@@ -177,13 +176,13 @@ class _SettingsViewState extends State<SettingsView> {
                         children: [
                           Text(
                             ReminderState().selectedSound,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w300,
                             ),
                           ),
-                          SizedBox(width: 2),
-                          Icon(
+                          const SizedBox(width: 2),
+                          const Icon(
                             Icons.arrow_forward_ios_rounded,
                             size: 16,
                           ),
@@ -193,7 +192,7 @@ class _SettingsViewState extends State<SettingsView> {
                   ],
                 ),
               ),
-              Text(
+              const Text(
                 'Medhecoin Wallet settings',
                 style: TextStyle(
                   color: AppColors.darkGrey,
@@ -201,10 +200,18 @@ class _SettingsViewState extends State<SettingsView> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 child: Column(
                   children: [
                     SettingsWidgetList(
+                      title: 'Change wallet Pin',
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const WalletPinView()),
+                        );
+                      },
                       child: Padding(
                         padding: const EdgeInsets.all(5.0),
                         child: Image.asset(
@@ -213,16 +220,17 @@ class _SettingsViewState extends State<SettingsView> {
                           width: SizeMg.width(24),
                         ),
                       ),
-                      title: 'Change wallet Pin',
+                    ),
+                    SettingsWidgetList(
+                      title: 'Biometric authentication',
                       onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => WalletPinView()),
+                              builder: (context) =>
+                                  const BiometricAuthenticationView()),
                         );
                       },
-                    ),
-                    SettingsWidgetList(
                       child: Padding(
                         padding: const EdgeInsets.all(5.0),
                         child: Image.asset(
@@ -231,15 +239,6 @@ class _SettingsViewState extends State<SettingsView> {
                           width: SizeMg.width(24),
                         ),
                       ),
-                      title: 'Biometric authentication',
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  BiometricAuthenticationView()),
-                        );
-                      },
                     )
                   ],
                 ),

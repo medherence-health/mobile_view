@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'regimen_model.dart';
+
+enum AdherenceStatus {
+  early,
+  late,
+  missed,
+}
 
 class HistoryModel {
   IconData icon;
@@ -7,10 +14,10 @@ class HistoryModel {
   String dosage;
   DateTime date;
   RegimenDescriptionModel regimenDescription;
-  // Fields representing reminder information
-  int id; // Unique identifier for the reminder
-  TimeOfDay time; // Time of the reminder
-  String message; // Message associated with the reminder
+  int id;
+  TimeOfDay time;
+  String message;
+  AdherenceStatus status;
 
   HistoryModel({
     required this.icon,
@@ -18,9 +25,10 @@ class HistoryModel {
     required this.dosage,
     required this.date,
     required this.regimenDescription,
-    required this.id, // Include id field in the constructor
-    required this.time, // Include time field in the constructor
-    required this.message, // Include message field in the constructor
+    required this.id,
+    required this.time,
+    required this.message,
+    required this.status,
   });
 
   factory HistoryModel.fromJson(Map<String, dynamic> json) {
@@ -34,6 +42,7 @@ class HistoryModel {
       id: json['id'],
       time: TimeOfDay.fromDateTime(DateTime.parse(json['time'])),
       message: json['message'],
+      status: AdherenceStatus.values[json['status']],
     );
   }
 
@@ -45,8 +54,9 @@ class HistoryModel {
       'date': date.toIso8601String(),
       'regimenDescription': regimenDescription.toJson(),
       'id': id,
-      'time': '${time.hour}:${time.minute}', // Convert TimeOfDay to String
+      'time': '${time.hour}:${time.minute}',
       'message': message,
+      'status': status.index,
     };
   }
 }

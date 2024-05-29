@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/utils/color_utils.dart';
@@ -25,8 +23,8 @@ class NotificationContainer extends StatelessWidget {
       background: Container(
         color: AppColors.historyBackground,
         alignment: Alignment.centerRight,
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Icon(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: const Icon(
           Icons.delete_outlined,
           color: AppColors.navBarColor,
         ),
@@ -81,8 +79,8 @@ class NotificationContainer extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
                     child: Icon(
                       Icons.yard,
                       size: 24,
@@ -103,7 +101,7 @@ class NotificationContainer extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         Text(
@@ -116,7 +114,7 @@ class NotificationContainer extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Text(

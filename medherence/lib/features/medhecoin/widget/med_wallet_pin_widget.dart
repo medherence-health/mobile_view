@@ -27,7 +27,7 @@ class _MedWalletPinState extends State<MedWalletPin> {
         _showChangePinView = true; // Show ChangeMedWalletPin
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           backgroundColor: AppColors.green,
           duration: Duration(seconds: 5),
           content: Text('Password verified successfully'),
@@ -58,9 +58,9 @@ class _MedWalletPinState extends State<MedWalletPin> {
         ),
       ),
       body: _showChangePinView == true
-          ? ChangeMedWalletPin() // Show ChangeMedWalletPin if _showChangePinView is true
+          ? const ChangeMedWalletPin() // Show ChangeMedWalletPin if _showChangePinView is true
           : Padding(
-              padding: EdgeInsets.only(
+              padding: const EdgeInsets.only(
                 left: 25,
                 right: 25,
                 top: 10,
@@ -77,7 +77,7 @@ class _MedWalletPinState extends State<MedWalletPin> {
                         fontSize: SizeMg.text(15),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     TextFormField(
                       controller: _passwordController,
                       obscureText: _obscurePassword,

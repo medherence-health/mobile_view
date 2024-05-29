@@ -4,13 +4,11 @@ import 'package:medherence/core/utils/size_manager.dart';
 import 'package:medherence/features/dashboard_feature/view/dashboard_view.dart';
 import 'package:medherence/features/more_features/withdrawal/view/withdrawal_view.dart';
 import 'package:provider/provider.dart';
-import 'package:stacked/stacked.dart';
 
 import '../../../core/utils/color_utils.dart';
 import '../../../core/shared_widget/buttons.dart';
 import '../../home/widget/medecoin_widget.dart';
 import '../../monitor/view_model/reminder_view_model.dart';
-import '../../more_features/wallet/view/wallet_pin_view.dart';
 import '../../more_features/withdrawal/view/add_account_view.dart';
 import '../view_model/medhecoin_wallet_view_model.dart';
 import '../widget/med_wallet_pin_widget.dart';
@@ -58,7 +56,7 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => DashboardView()),
+                MaterialPageRoute(builder: (context) => const DashboardView()),
                 (Route<dynamic> route) => false);
             // Navigator.pop(context);
           },
@@ -71,10 +69,10 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => MedWalletPin()),
+                  MaterialPageRoute(builder: (context) => const MedWalletPin()),
                 );
               },
-              child: Icon(
+              child: const Icon(
                 CupertinoIcons.gear_alt_fill,
                 color: AppColors.pillIconColor,
               ),
@@ -113,7 +111,7 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         RichText(
-                          text: TextSpan(
+                          text: const TextSpan(
                             text: 'Progress:',
                             style: TextStyle(
                               fontSize: (5),
@@ -138,9 +136,9 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                             ],
                           ),
                         ),
-                        SizedBox(width: 50),
+                        const SizedBox(width: 50),
                         RichText(
-                          text: TextSpan(
+                          text: const TextSpan(
                             text: 'Withdrawal Chances:',
                             style: TextStyle(
                               fontSize: (5),
@@ -167,13 +165,6 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                     Expanded(
                       child: OutlinePrimaryButton(
                         textSize: 18,
-                        // icon: const Icon(Icons.account_balance_wallet_outlined,
-                        //     color: AppColors.mainPrimaryButton),
-                        child: Image.asset(
-                          'assets/images/withdrawal_icon.png',
-                          height: 30,
-                          width: 30,
-                        ),
                         buttonConfig: ButtonConfig(
                           text: 'Withdraw',
                           action: () {
@@ -181,7 +172,7 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: ((context) =>
-                                    MedhecoinWithdrawalView()),
+                                    const MedhecoinWithdrawalView()),
                               ),
                             );
                             // Navigator.pop(context);
@@ -189,6 +180,13 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                           disabled: false,
                         ),
                         width: MediaQuery.of(context).size.width / 2,
+                        // icon: const Icon(Icons.account_balance_wallet_outlined,
+                        //     color: AppColors.mainPrimaryButton),
+                        child: Image.asset(
+                          'assets/images/withdrawal_icon.png',
+                          height: 30,
+                          width: 30,
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -204,7 +202,7 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: ((context) => AddAccountView()),
+                                builder: ((context) => const AddAccountView()),
                               ),
                             );
                             // Navigator.pop(context);

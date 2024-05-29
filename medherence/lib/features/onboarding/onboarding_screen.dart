@@ -100,7 +100,7 @@ class _OnboardingViewState extends State<OnboardingView> {
           ),
           Positioned(
             bottom: SizeMg.height(80),
-            child: Container(
+            child: SizedBox(
               height: SizeMg.height(180),
               width: SizeMg.screenWidth,
               child: Column(
@@ -125,7 +125,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                           ),
                           textAlign: TextAlign.start,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
                         Expanded(
@@ -147,9 +147,9 @@ class _OnboardingViewState extends State<OnboardingView> {
             ),
           ),
           Align(
-            alignment: Alignment(0, 1),
+            alignment: const Alignment(0, 1),
             child: Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 80),
+              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 80),
               child: smooth_page_indicator.SmoothPageIndicator(
                 controller: _controller ??= PageController(initialPage: 0),
                 count: 3,
@@ -157,7 +157,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                 onDotClicked: (i) async {
                   await _controller.animateToPage(
                     i,
-                    duration: Duration(milliseconds: 500),
+                    duration: const Duration(milliseconds: 500),
                     curve: Curves.ease,
                   );
                 },

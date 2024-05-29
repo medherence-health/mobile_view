@@ -7,7 +7,7 @@ import '../../../../core/utils/color_utils.dart';
 class FAQItem extends StatefulWidget {
   final FAQModel faq;
 
-  const FAQItem({required this.faq});
+  const FAQItem({super.key, required this.faq});
 
   @override
   _FAQItemState createState() => _FAQItemState();
@@ -52,7 +52,7 @@ class _FAQItemState extends State<FAQItem> {
               padding: const EdgeInsets.only(left: 50.0),
               child: Text(
                 widget.faq.answer,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
                   color: AppColors.darkGrey,

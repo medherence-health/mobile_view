@@ -1,13 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/utils/color_utils.dart';
-import '../../../core/utils/size_manager.dart';
-import '../../dashboard_feature/view/dashboard_view.dart';
 import 'reminder_details.dart';
-import 'reminder_edit_content.dart';
 
 class MedicationListScreen extends StatefulWidget {
   const MedicationListScreen({Key? key}) : super(key: key);
@@ -55,12 +50,12 @@ class _MedicationListScreenState extends State<MedicationListScreen> {
           ),
         ),
         centerTitle: true,
-        leading: SizedBox(),
+        leading: const SizedBox(),
       ),
       body: Container(
         color: AppColors.white,
-        child: Padding(
-            padding: const EdgeInsets.only(
+        child: const Padding(
+            padding: EdgeInsets.only(
               top: 10.0,
               bottom: 40,
             ),

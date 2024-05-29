@@ -79,12 +79,12 @@ class _MenuScreenState extends State<MenuScreen> {
                     buttonConfig: ButtonConfig(
                       text: 'LogOut',
                       action: () async {
-                        CircularProgressIndicator();
+                        const CircularProgressIndicator();
                         await signingOut().then((_) {
                           // Navigate back to home screen
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
-                                  builder: (context) => LoginView()),
+                                  builder: (context) => const LoginView()),
                               (Route<dynamic> route) => false);
                         });
                       },
@@ -118,7 +118,7 @@ class _MenuScreenState extends State<MenuScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final snackbar = SnackBar(
+    const snackbar = SnackBar(
       dismissDirection: DismissDirection.horizontal,
       elevation: 10,
       behavior: SnackBarBehavior.floating,
@@ -264,9 +264,9 @@ class _MenuScreenState extends State<MenuScreen> {
                           fontFamily: "Poppins-bold.ttf",
                         ),
                       ),
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Icon(Icons.star_rate,
                               color: AppColors.navBarColor, size: 30),
                           SizedBox(width: 10),

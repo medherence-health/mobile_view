@@ -11,9 +11,9 @@ import '../models/regimen_model.dart';
 List<HistoryModel> generateSimulatedData() {
   List<RegimenDescriptionModel> regimenDescriptions =
       generateSimulatedRegimenDescriptions();
+  final random = math.Random();
 
   return List.generate(5, (index) {
-    // Generate random icons
     IconData icon;
     switch (index % 3) {
       case 0:
@@ -28,11 +28,10 @@ List<HistoryModel> generateSimulatedData() {
       default:
         icon = Icons.local_hospital;
     }
-    // Select a random regimen description
+
     RegimenDescriptionModel regimenDescription =
         regimenDescriptions[index % regimenDescriptions.length];
 
-    // Generate random regimen names
     List<String> regimenNames = [
       'Omeprazole',
       'Lisinopril',
@@ -41,85 +40,40 @@ List<HistoryModel> generateSimulatedData() {
     ];
     String randomRegimenName = regimenNames[index % 3];
 
-    // Generate random dosages
     List<String> dosages = [
       '50mg, Take 2 pill',
       '150mg, Take 1 pill',
       '50mg, Take 1 pill'
     ];
     String randomDosage = dosages[index % 3];
-    final random = math.Random();
-    final int randomHour = random.nextInt(12) + 1;
-    final int randomMinute = random.nextInt(60);
+
     final now = DateTime.now();
-    // final oneMinuteFromNow =
-    //     now.add(const Duration(minutes: 1)); // Add 1 minute
-    // final String formattedTime = DateFormat('hh:mm a').format(oneMinuteFromNow);
-    final String formattedTime = DateFormat('hh:mm a').format(
-      DateTime(
-        DateTime.now().year,
-        DateTime.now().month,
-        DateTime.now().day,
-        randomHour,
-        randomMinute,
-      ),
-    );
-    // Generate random reminder information
-    int id = index + 1; // Example: 1, 2, 3, ...
+    final notificationTime =
+        TimeOfDay(hour: random.nextInt(12) + 1, minute: random.nextInt(60));
+    final futureDateTime = now.add(Duration(days: random.nextInt(30)));
+
+    int id = index + 1;
     String message = '$randomDosage of $randomRegimenName medication';
 
-    // DateTime generateRandomDate() {
-    //   final now = DateTime.now();
+    AdherenceStatus status;
+    if (index % 3 == 0) {
+      status = AdherenceStatus.early;
+    } else if (index % 3 == 1) {
+      status = AdherenceStatus.late;
+    } else {
+      status = AdherenceStatus.missed;
+    }
 
-    //   // Generate a random number of days in the future (adjust as needed)
-    //   final int futureDays =
-    //       random.nextInt(365) + 1; // 1 to 365 days in the future
-
-    //   return now.add(Duration(days: futureDays));
-    // }
-    final List<int> desiredHours = [
-      11,
-      13,
-      17,
-      20
-    ]; // Example: 9 AM, 1 PM, 5 PM
-    final List<int> desiredMinutes = [
-      0,
-      10,
-      15,
-      30
-    ]; // Example: 0 minutes past the hour, 30 minutes past the hour
-
-    final int randomHourIndex = random.nextInt(desiredHours.length);
-    final int randomMinuteIndex = random.nextInt(desiredMinutes.length);
-
-    final int desiredHour = desiredHours[randomHourIndex];
-    final int desiredMinute = desiredMinutes[randomMinuteIndex];
-
-    // final now = DateTime.now();
-    final notificationTime =
-        TimeOfDay(hour: desiredHour, minute: desiredMinute);
-
-    // Combine date and time for notification
-    final futureDateTime = DateTime(
-      now.year,
-      now.month,
-      now.day,
-      notificationTime.hour,
-      notificationTime.minute,
-    );
-
-// Usage in your HistoryModel constructor:
     return HistoryModel(
       icon: icon,
       regimenName: randomRegimenName,
       dosage: randomDosage,
       date: futureDateTime,
-      regimenDescription:
-          regimenDescription, // Include regimen description in HistoryModel
-      id: id, // Include id field
-      time: notificationTime, // Include time field
+      regimenDescription: regimenDescription,
+      id: id,
+      time: notificationTime,
       message: message,
+      status: status,
     );
   });
 }

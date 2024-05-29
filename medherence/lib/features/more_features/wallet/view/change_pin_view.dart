@@ -25,7 +25,7 @@ class _ChangeWalletPinViewState extends State<ChangeWalletPinView> {
   void navigateBackToHome() {
     if (_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Wallet pin changed successfully'),
         ),
       );
@@ -36,7 +36,7 @@ class _ChangeWalletPinViewState extends State<ChangeWalletPinView> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: 25,
         right: 25,
         top: 10,
@@ -46,9 +46,9 @@ class _ChangeWalletPinViewState extends State<ChangeWalletPinView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
+            const Text(
                 'Enhance Your Wallet Security: Change Yout PIN to Safeguard Your Earnings and Transactions.'),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             Text(

@@ -1,8 +1,6 @@
-import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter/widgets.dart';
 import 'package:medherence/core/shared_widget/buttons.dart';
 import 'package:provider/provider.dart';
 
@@ -11,9 +9,10 @@ import '../../../core/utils/color_utils.dart';
 import '../../../core/utils/size_manager.dart';
 import '../view_model/reminder_view_model.dart';
 import '../widget/medcoin_drop_widget.dart';
-import 'medication_monitor.dart';
 
 class EditReminderDetails extends StatefulWidget {
+  const EditReminderDetails({super.key});
+
   @override
   _EditReminderDetailsState createState() => _EditReminderDetailsState();
 }
@@ -33,13 +32,13 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
         bool showButton = checkedCount > 0;
         bool allSelected = reminderState.areAllSelected();
 
-        return Container(
+        return SizedBox(
           width: SizeMg.screenWidth,
           height: MediaQuery.of(context).size.height,
           child: Stack(
             children: [
               if (regimenList.isEmpty)
-                Center(
+                const Center(
                   child: SizedBox(
                     height: 250,
                     width: 300,
@@ -69,7 +68,7 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                 padding: const EdgeInsets.only(left: 25.0, right: 25),
                 child: ListView.separated(
                   separatorBuilder: (context, index) {
-                    return SizedBox(height: 15);
+                    return const SizedBox(height: 15);
                   },
                   itemCount: regimenList.length,
                   itemBuilder: (context, index) {
@@ -87,7 +86,7 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                   alignment: Alignment.bottomRight,
                   child: Column(
                     children: [
-                      Spacer(),
+                      const Spacer(),
                       InkWell(
                         onTap: () {
                           reminderState.selectAll();
@@ -119,7 +118,7 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Row(
                           children: [
                             Padding(
@@ -144,7 +143,7 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         PrimaryButton(
                           height: SizeMg.height(45),
                           textSize: SizeMg.text(23),
@@ -216,7 +215,7 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
               fillColor: isChecked
                   ? MaterialStateProperty.all<Color>(AppColors.navBarColor)
                   : MaterialStateProperty.all<Color>(AppColors.white),
-              side: BorderSide(
+              side: const BorderSide(
                 color: AppColors.navBarColor,
                 width: 2.5,
               ),
@@ -238,14 +237,14 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '${regimen.regimenName}',
+                regimen.regimenName,
                 style: TextStyle(
                   fontSize: SizeMg.text(16),
                   fontWeight: FontWeight.w500,
                 ),
               ),
               Text(
-                '${regimen.dosage}',
+                regimen.dosage,
                 style: TextStyle(
                   fontSize: SizeMg.text(12),
                   fontWeight: FontWeight.w400,
@@ -253,7 +252,7 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
               ),
             ],
           ),
-          Spacer(),
+          const Spacer(),
           Padding(
             padding: const EdgeInsets.only(
               top: 20,

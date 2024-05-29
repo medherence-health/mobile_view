@@ -5,10 +5,8 @@ import 'package:medherence/features/auth/widget/validation_extension.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants/constants.dart';
-import '../../../core/utils/image_utils.dart';
 import '../../../core/utils/size_manager.dart';
 import '../../auth/widget/textfield.dart';
-import '../../dashboard_feature/view/dashboard_view.dart';
 import '../view_model/profile_view_model.dart';
 import '../widget/avatar_overlay_widget.dart';
 
@@ -52,7 +50,7 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
               alignment: Alignment.topCenter,
               child: Column(
                 children: [
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   CircleAvatar(
                     backgroundColor: AppColors.progressBarFill,
                     radius: 60,
@@ -61,7 +59,7 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                       fit: BoxFit.contain,
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   InkWell(
                     onTap: () {
                       showModalBottomSheet(
@@ -80,7 +78,7 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                         },
                       );
                     },
-                    child: Text(
+                    child: const Text(
                       'Customize your avatar',
                       style: TextStyle(
                         fontSize: 18,
@@ -89,7 +87,7 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                 ],
               ),
             ),
@@ -110,7 +108,7 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
         top: 200.0,
       ),
       child: ListView(
-        padding: EdgeInsets.only(
+        padding: const EdgeInsets.only(
           top: 30,
           bottom: 20,
         ),
@@ -143,7 +141,7 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                     });
                   },
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 const Text(
                   'First Name',
                   style: TextStyle(
@@ -233,10 +231,10 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                             groupValue: model.gender,
                             onChanged: model.setGender,
                           ),
-                          Text('Male', style: TextStyle(fontSize: 16))
+                          const Text('Male', style: TextStyle(fontSize: 16))
                         ],
                       ),
-                      SizedBox(width: 15),
+                      const SizedBox(width: 15),
                       Row(
                         children: [
                           Radio(
@@ -244,10 +242,10 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                             groupValue: model.gender,
                             onChanged: model.setGender,
                           ),
-                          Text('Female', style: TextStyle(fontSize: 16))
+                          const Text('Female', style: TextStyle(fontSize: 16))
                         ],
                       ),
-                      SizedBox(width: 15),
+                      const SizedBox(width: 15),
                       Row(
                         children: [
                           Radio(
@@ -255,7 +253,7 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                             groupValue: model.gender,
                             onChanged: model.setGender,
                           ),
-                          Text('Others', style: TextStyle(fontSize: 16))
+                          const Text('Others', style: TextStyle(fontSize: 16))
                         ],
                       ),
                     ],
@@ -293,7 +291,7 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                     });
                   },
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 TitleAndTextFormField(
                   title: 'Last Name',
                   formFieldHint: 'Type your NOK\'s last name',
@@ -317,7 +315,7 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                     });
                   },
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 TitleAndTextFormField(
                   title: 'Phone Number',
                   formFieldHint: 'Type your NOK\'s number',
@@ -341,7 +339,7 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                     });
                   },
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 TitleAndTextFormField(
                   title: 'Relationship',
                   formFieldHint: 'e.g Mother',
@@ -366,11 +364,11 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                     });
                   },
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
               ],
             ),
           ),
-          SizedBox(height: 50),
+          const SizedBox(height: 50),
           PrimaryButton(
             textSize: SizeMg.text(25),
             buttonConfig: ButtonConfig(
@@ -386,7 +384,7 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
             ),
             width: double.infinity,
           ),
-          SizedBox(height: 50),
+          const SizedBox(height: 50),
         ],
       ),
     );

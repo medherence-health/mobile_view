@@ -1,10 +1,9 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import '../model/models/faqs_model.dart';
 
 class FAQProvider with ChangeNotifier {
-  List<FAQModel> _faqs = [
+  final List<FAQModel> _faqs = [
     {
       "question": "How does the app track my medication adherence?",
       "answer":

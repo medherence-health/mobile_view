@@ -1,10 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/utils/color_utils.dart';
 import '../../../core/model/models/notification_model.dart';
-import '../../../core/model/simulated_data/simulated_values.dart';
 import '../view_model/notification_model.dart';
 import '../widget/notify_widget.dart';
 
@@ -54,11 +52,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: 25,
           ),
           child: model.notificationList!.isEmpty
-              ? Center(
+              ? const Center(
                   child: SizedBox(
                     // height: 500,
                     child: Column(
@@ -91,7 +89,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   children: [
                     Visibility(
                       visible: unreadNotifications.isNotEmpty,
-                      child: Text(
+                      child: const Text(
                         'Unread',
                         style: TextStyle(
                           fontSize: 15,
@@ -104,7 +102,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 0.0),
                         child: ListView.separated(
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: unreadNotifications.length,
                           separatorBuilder: (ctx, index) {
                             return const SizedBox(
@@ -126,10 +124,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Visibility(
                       visible: readNotifications.isNotEmpty,
-                      child: Text(
+                      child: const Text(
                         'Read',
                         style: TextStyle(
                           fontSize: 15,
@@ -142,7 +140,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         padding: const EdgeInsets.only(bottom: 30.0),
                         child: ListView.separated(
                           shrinkWrap: true,
-                          physics: AlwaysScrollableScrollPhysics(),
+                          physics: const AlwaysScrollableScrollPhysics(),
                           itemCount: readNotifications.length,
                           separatorBuilder: (ctx, index) {
                             return const SizedBox(

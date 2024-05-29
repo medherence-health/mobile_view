@@ -24,7 +24,7 @@ class _ChangeMedWalletPinState extends State<ChangeMedWalletPin> {
   void navigateBackToHome() {
     if (_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Wallet pin changed successfully'),
         ),
       );
@@ -35,7 +35,7 @@ class _ChangeMedWalletPinState extends State<ChangeMedWalletPin> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: 25,
         right: 25,
         top: 10,
@@ -52,7 +52,7 @@ class _ChangeMedWalletPinState extends State<ChangeMedWalletPin> {
                 fontSize: SizeMg.text(15),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 25,
             ),
             Text(

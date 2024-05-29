@@ -1,11 +1,8 @@
 import 'package:drop_down_search_field/drop_down_search_field.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:medherence/features/medhecoin/view_model/medhecoin_wallet_view_model.dart';
-import 'package:medherence/features/profile/view_model/profile_view_model.dart';
 import 'package:provider/provider.dart';
-import 'package:stacked/stacked.dart';
 
 import '../../../../core/constants/constants.dart';
 import '../../../../core/shared_widget/buttons.dart';
@@ -13,7 +10,6 @@ import '../../../../core/utils/color_utils.dart';
 import '../../../../core/utils/size_manager.dart';
 import '../../../../core/utils/utils.dart';
 import '../../../monitor/view_model/reminder_view_model.dart';
-import '../view_model/withdrawal_view_model.dart';
 import '../widget/confirmation_widget.dart';
 
 class MedhecoinWithdrawalView extends StatefulWidget {
@@ -37,7 +33,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
   void navigateToNext() {
     if (_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Account verified'),
         ),
       );
@@ -52,6 +48,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
     _amountController = TextEditingController();
   }
 
+  @override
   void dispose() {
     super.dispose();
     _accountNumberController.dispose();
@@ -70,7 +67,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
         appBar: AppBar(
           title: Text(
             showConfirmation == true ? 'Confirmation' : 'Withdrawal',
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.w500,
             ),
@@ -86,7 +83,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                 Navigator.pop(context);
               }
             },
-            icon: Icon(Icons.arrow_back_ios_new, color: AppColors.navBarColor),
+            icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.navBarColor),
           ),
         ),
         resizeToAvoidBottomInset: false,
@@ -104,7 +101,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
     return Stack(
       children: [
         Padding(
-          padding: EdgeInsets.fromLTRB(25, 0, 25, 0),
+          padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
           child: Form(
             key: _formKey,
             child: Column(
@@ -112,7 +109,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
               children: [
                 Visibility(
                   visible: savedAccount.savedAccountModelList.isNotEmpty,
-                  child: Container(
+                  child: SizedBox(
                     height: SizeMg.height(130),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -124,7 +121,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                             fontSize: SizeMg.text(14),
                           ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Flexible(
                           child: ListView.separated(
                             shrinkWrap: true,
@@ -141,7 +138,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                                       fit: BoxFit.fitHeight,
                                     ),
                                   ),
-                                  SizedBox(height: 5),
+                                  const SizedBox(height: 5),
                                   Flexible(
                                     child: SizedBox(
                                       width: SizeMg.width(60),
@@ -168,8 +165,8 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                     ),
                   ),
                 ),
-                SizedBox(height: 15),
-                Text(
+                const SizedBox(height: 15),
+                const Text(
                   'Bank',
                   style: TextStyle(
                     fontSize: 16,
@@ -179,14 +176,14 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                 const SizedBox(height: 10),
                 DropDownSearchFormField(
                   textFieldConfiguration: TextFieldConfiguration(
-                    controller: this._dropDownSearchController,
+                    controller: _dropDownSearchController,
                     decoration: kFormTextDecoration.copyWith(
                       errorBorder: kFormTextDecoration.errorBorder,
                       hintStyle: kFormTextDecoration.hintStyle,
                       hintText: 'Select Destination Bank',
                       filled: true,
                       contentPadding:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+                          const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
                       border: kFormTextDecoration.border,
                       focusedBorder: kFormTextDecoration.focusedBorder,
                     ),
@@ -199,7 +196,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                       tileColor: kFormTextDecoration.fillColor,
                       title: Text(
                         suggestion,
-                        style: TextStyle(fontWeight: FontWeight.w500),
+                        style: const TextStyle(fontWeight: FontWeight.w500),
                       ),
                     );
                   },
@@ -221,8 +218,8 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                   },
                   displayAllSuggestionWhenTap: true,
                 ),
-                SizedBox(height: 10),
-                Text(
+                const SizedBox(height: 10),
+                const Text(
                   'Account Number',
                   style: TextStyle(
                     fontSize: 16,
@@ -253,12 +250,13 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                               ? _accountNumberController.text.trim()
                               : '',
                         ));
-                        if (_accountNumberController.text.isNotEmpty)
+                        if (_accountNumberController.text.isNotEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                               content: Text('Text copied to clipboard'),
                             ),
                           );
+                        }
                       },
                     ),
                   ),
@@ -309,7 +307,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                     ),
                   ),
                 SizedBox(height: SizeMg.height(10)),
-                Text(
+                const Text(
                   'Amount',
                   style: TextStyle(
                     fontSize: 16,
@@ -363,26 +361,26 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                       ),
                     ),
                   ),
-                SizedBox(height: 5),
-                Container(
+                const SizedBox(height: 5),
+                SizedBox(
                   width: SizeMg.screenWidth,
                   child: Row(
                     children: [
-                      Text(
+                      const Text(
                         'Available',
                         style: TextStyle(
                           color: AppColors.darkGrey,
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       RichText(
                         text: TextSpan(
                           text: availableMedcoin.toString(),
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: AppColors.darkGrey,
                             fontWeight: FontWeight.w500,
                           ),
-                          children: [
+                          children: const [
                             TextSpan(
                               text: ' MDHC',
                             ),
@@ -468,7 +466,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
     return Container(
       child: Column(
         children: [
-          Divider(color: AppColors.historyBackground),
+          const Divider(color: AppColors.historyBackground),
           Padding(
             padding: const EdgeInsets.all(28.0),
             child: Column(
@@ -484,7 +482,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                         fontSize: SizeMg.text(14),
                       ),
                     ),
-                    SizedBox(),
+                    const SizedBox(),
                     RichText(
                       text: TextSpan(
                         text: '$amount MDHC',
@@ -497,7 +495,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                     )
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Row(
@@ -522,7 +520,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                     )
                   ],
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -545,7 +543,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                     )
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 PrimaryButton(
                   buttonConfig: ButtonConfig(
                     text: 'Checkout',
@@ -556,7 +554,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                           model?.amountError == null &&
                           _formKey.currentState!.validate()) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                          const SnackBar(
                             content: Text('Account verified'),
                           ),
                         );
@@ -591,7 +589,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
-                                child: Text('OK'),
+                                child: const Text('OK'),
                               ),
                             ],
                           ),
@@ -601,10 +599,10 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                   ),
                   width: SizeMg.screenWidth,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
               ],

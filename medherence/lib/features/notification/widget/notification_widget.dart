@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 
 import '../../../core/utils/color_utils.dart';
 import '../../../core/model/models/notification_model.dart';
-import '../view_model/notification_model.dart';
 
 class NotificationWidget extends StatelessWidget {
   final VoidCallback onPressed;

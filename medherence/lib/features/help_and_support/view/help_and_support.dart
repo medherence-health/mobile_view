@@ -3,7 +3,6 @@ import 'package:medherence/core/utils/size_manager.dart';
 
 import '../../../core/utils/color_utils.dart';
 import '../../../core/utils/image_utils.dart';
-import '../../dashboard_feature/view/dashboard_view.dart';
 import '../../more_features/faqs/faq_view.dart';
 import '../view_model.dart/help_view_model.dart';
 import '../widget/support_widget.dart';
@@ -95,7 +94,7 @@ class HelpAndSupport extends StatelessWidget {
                   // ScaffoldMessenger.of(context).showSnackBar(snackbar);
                 },
                 child: Padding(
-                  padding: EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
                   child: Image.asset(
                     ImageUtils.emailMessageIcon,
                     height: SizeMg.height(24),
@@ -114,11 +113,11 @@ class HelpAndSupport extends StatelessWidget {
                   // ScaffoldMessenger.of(context).showSnackBar(snackbar);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => FAQView()),
+                    MaterialPageRoute(builder: (context) => const FAQView()),
                   );
                 },
                 child: Padding(
-                    padding: EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(8),
                     child: Image.asset(
                       ImageUtils.faqIcon,
                       height: SizeMg.height(24),
@@ -136,7 +135,7 @@ class HelpAndSupport extends StatelessWidget {
                   // ScaffoldMessenger.of(context).showSnackBar(snackbar);
                 },
                 child: Padding(
-                  padding: EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
                   child: Image.asset(
                     ImageUtils.appTour,
                     height: SizeMg.height(24),

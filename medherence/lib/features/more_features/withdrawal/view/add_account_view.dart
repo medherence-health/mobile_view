@@ -1,9 +1,7 @@
 import 'package:drop_down_search_field/drop_down_search_field.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:medherence/core/model/models/account_model.dart';
-import 'package:medherence/core/model/models/wallet_model.dart';
 import 'package:medherence/core/shared_widget/buttons.dart';
 import 'package:medherence/core/utils/size_manager.dart';
 import 'package:medherence/features/more_features/withdrawal/widget/add_account_success_widget.dart';
@@ -22,7 +20,7 @@ class AddAccountView extends StatefulWidget {
 }
 
 class _AddAccountViewState extends State<AddAccountView> {
-  TextEditingController _dropDownSearchController = TextEditingController();
+  final TextEditingController _dropDownSearchController = TextEditingController();
   late TextEditingController _accountNumberController;
   Color? accountFillColor = Colors.white70;
 
@@ -30,7 +28,7 @@ class _AddAccountViewState extends State<AddAccountView> {
   void navigateToSuccessPage() {
     if (_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           duration: Duration(seconds: 4),
           backgroundColor: AppColors.green,
           content: Text('Account added successfully'),
@@ -51,7 +49,7 @@ class _AddAccountViewState extends State<AddAccountView> {
           .addWithdrawalAccount(newAccount);
 
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => AddAccountSuccessfulWidget()),
+          MaterialPageRoute(builder: (context) => const AddAccountSuccessfulWidget()),
           (Route<dynamic> route) => false);
     }
   }
@@ -71,7 +69,7 @@ class _AddAccountViewState extends State<AddAccountView> {
         builder: (_, model, __) {
           return Scaffold(
             appBar: AppBar(
-              title: Text(
+              title: const Text(
                 'Add Account',
                 style: TextStyle(
                   fontSize: 22,
@@ -83,7 +81,7 @@ class _AddAccountViewState extends State<AddAccountView> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: Icon(Icons.arrow_back_ios_new,
+                icon: const Icon(Icons.arrow_back_ios_new,
                     color: AppColors.navBarColor),
               ),
             ),
@@ -108,7 +106,7 @@ class _AddAccountViewState extends State<AddAccountView> {
                       ),
                     ),
                     SizedBox(height: SizeMg.height(20)),
-                    Text(
+                    const Text(
                       'Bank',
                       style: TextStyle(
                         fontSize: 16,
@@ -118,13 +116,13 @@ class _AddAccountViewState extends State<AddAccountView> {
                     const SizedBox(height: 10),
                     DropDownSearchFormField(
                       textFieldConfiguration: TextFieldConfiguration(
-                        controller: this._dropDownSearchController,
+                        controller: _dropDownSearchController,
                         decoration: kFormTextDecoration.copyWith(
                           errorBorder: kFormTextDecoration.errorBorder,
                           hintStyle: kFormTextDecoration.hintStyle,
                           hintText: 'Select Destination Bank',
                           filled: true,
-                          contentPadding: EdgeInsets.symmetric(
+                          contentPadding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 12),
                           border: kFormTextDecoration.border,
                           focusedBorder: kFormTextDecoration.focusedBorder,
@@ -138,7 +136,7 @@ class _AddAccountViewState extends State<AddAccountView> {
                           tileColor: kFormTextDecoration.fillColor,
                           title: Text(
                             suggestion,
-                            style: TextStyle(fontWeight: FontWeight.w500),
+                            style: const TextStyle(fontWeight: FontWeight.w500),
                           ),
                         );
                       },
@@ -160,8 +158,8 @@ class _AddAccountViewState extends State<AddAccountView> {
                       },
                       displayAllSuggestionWhenTap: true,
                     ),
-                    SizedBox(height: 10),
-                    Text(
+                    const SizedBox(height: 10),
+                    const Text(
                       'Account Number',
                       style: TextStyle(
                         fontSize: 16,
@@ -192,12 +190,13 @@ class _AddAccountViewState extends State<AddAccountView> {
                                   ? _accountNumberController.text.trim()
                                   : '',
                             ));
-                            if (_accountNumberController.text.isNotEmpty)
+                            if (_accountNumberController.text.isNotEmpty) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
+                                const SnackBar(
                                   content: Text('Text copied to clipboard'),
                                 ),
                               );
+                            }
                           },
                         ),
                       ),

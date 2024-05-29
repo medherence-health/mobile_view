@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/model/models/history_model.dart';
@@ -5,6 +7,8 @@ import '../../../core/model/simulated_data/simulated_values.dart';
 
 class ReminderState extends ChangeNotifier {
   List<HistoryModel> _regimenList = generateSimulatedData();
+  List<HistoryModel> _historyList = [];
+
   bool _val = true;
   bool _pillCount = false;
   String _selectedSound = 'Aegean Sea'; // Default sound
@@ -12,6 +16,7 @@ class ReminderState extends ChangeNotifier {
   bool _isAlarmOn = true;
 
   List<HistoryModel> get regimenList => _regimenList;
+  List<HistoryModel> get historyList => _historyList;
 
   bool get val => _val;
   bool get pillCount => _pillCount;
@@ -26,8 +31,32 @@ class ReminderState extends ChangeNotifier {
   int get medcoin => _medcoin;
   double get medcoinToNairaRate =>
       0.1; // 100 Medcoin = 10 Naira, so 1 Medcoin = 0.1 Naira
+
   ReminderState() {
     _loadMedcoin();
+    _loadHistoryList();
+  }
+
+  Future<void> _loadHistoryList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> historyJson = prefs.getStringList('historyList') ?? [];
+    _historyList = historyJson
+        .map((json) => HistoryModel.fromJson(jsonDecode(json)))
+        .toList();
+    notifyListeners();
+  }
+
+  Future<void> _saveHistoryList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> historyJson =
+        _historyList.map((model) => jsonEncode(model.toJson())).toList();
+    await prefs.setStringList('historyList', historyJson);
+  }
+
+  void addHistory(HistoryModel history) {
+    _historyList.add(history);
+    _saveHistoryList();
+    notifyListeners();
   }
 
   void deductMedcoin(int amount) {

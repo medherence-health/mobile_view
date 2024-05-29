@@ -33,12 +33,12 @@ class ConfirmWithdrawal extends StatelessWidget {
         children: [
           Column(
             children: [
-              SizedBox(height: 40),
-              Text(
+              const SizedBox(height: 40),
+              const Text(
                 'Transaction Amount',
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
                 '$totalAmount MDHC',
                 textAlign: TextAlign.center,
@@ -48,7 +48,7 @@ class ConfirmWithdrawal extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
                 '~ \u{20A6}$amountEquivalence',
                 textAlign: TextAlign.center,
@@ -58,8 +58,8 @@ class ConfirmWithdrawal extends StatelessWidget {
                   fontSize: SizeMg.text(14),
                 ),
               ),
-              SizedBox(height: 20),
-              Divider(
+              const SizedBox(height: 20),
+              const Divider(
                 color: AppColors.historyBackground,
               ),
               Padding(
@@ -81,7 +81,7 @@ class ConfirmWithdrawal extends StatelessWidget {
                   ),
                 ),
               ),
-              Divider(
+              const Divider(
                 color: AppColors.historyBackground,
               ),
               Padding(
@@ -103,7 +103,7 @@ class ConfirmWithdrawal extends StatelessWidget {
                   ),
                 ),
               ),
-              Divider(
+              const Divider(
                 color: AppColors.historyBackground,
               ),
               Padding(
@@ -125,7 +125,7 @@ class ConfirmWithdrawal extends StatelessWidget {
                   ),
                 ),
               ),
-              Divider(
+              const Divider(
                 color: AppColors.historyBackground,
               ),
               Padding(
@@ -147,7 +147,7 @@ class ConfirmWithdrawal extends StatelessWidget {
                   ),
                 ),
               ),
-              Divider(
+              const Divider(
                 color: AppColors.historyBackground,
               ),
             ],
@@ -172,8 +172,8 @@ class ConfirmWithdrawal extends StatelessWidget {
                           return Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              WalletPinWidget(),
-                              SizedBox(height: 15),
+                              const WalletPinWidget(),
+                              const SizedBox(height: 15),
                               Text(
                                 'Or',
                                 style: TextStyle(
@@ -182,8 +182,8 @@ class ConfirmWithdrawal extends StatelessWidget {
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
-                              SizedBox(height: 15),
-                              BiometricWidget(),
+                              const SizedBox(height: 15),
+                              const BiometricWidget(),
                             ],
                           );
                         },
@@ -195,10 +195,10 @@ class ConfirmWithdrawal extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
         ],

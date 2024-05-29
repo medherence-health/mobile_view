@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:medherence/core/shared_widget/buttons.dart';
 import 'package:medherence/features/medhecoin/view/medhecoin.dart';
@@ -13,7 +12,7 @@ class AddAccountSuccessfulWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Successful',
           style: TextStyle(
             fontSize: 25,
@@ -28,7 +27,7 @@ class AddAccountSuccessfulWidget extends StatelessWidget {
           children: [
             Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 Center(
@@ -39,7 +38,7 @@ class AddAccountSuccessfulWidget extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 Text(
                   'You have successfully added account',
                   style: TextStyle(
@@ -58,7 +57,7 @@ class AddAccountSuccessfulWidget extends StatelessWidget {
                     action: () {
                       Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
-                            builder: (context) => MedhecoinScreen(),
+                            builder: (context) => const MedhecoinScreen(),
                           ),
                           (route) => false);
                     }),

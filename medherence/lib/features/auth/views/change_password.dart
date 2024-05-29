@@ -95,7 +95,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                           color: AppColors.black,
                           fontSize: SizeMg.text(15),
                         ),
-                        children: [
+                        children: const [
                           TextSpan(
                             text: '* Include at least one number (0-9).\n',
                           ),

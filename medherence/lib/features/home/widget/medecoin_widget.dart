@@ -11,7 +11,7 @@ class MedhecoinWidget extends StatelessWidget {
   final String coinTitle;
   final String amount;
 
-  MedhecoinWidget({
+  const MedhecoinWidget({
     required this.onTap,
     required this.iconData,
     required this.onPressed,

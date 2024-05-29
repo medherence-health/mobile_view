@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:medherence/core/utils/size_manager.dart';
 import 'package:medherence/features/dashboard_feature/view/dashboard_view.dart';
@@ -13,7 +12,7 @@ class FailedTransaction extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Transaction Failed',
           style: TextStyle(
             fontSize: 22,
@@ -28,7 +27,7 @@ class FailedTransaction extends StatelessWidget {
           children: [
             Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 Center(
@@ -38,7 +37,7 @@ class FailedTransaction extends StatelessWidget {
                     height: SizeMg.height(60),
                   ),
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 Text(
                   'We\'re sorry, the transaction could not be processed at this time try again',
                   style: TextStyle(
@@ -57,7 +56,7 @@ class FailedTransaction extends StatelessWidget {
                     action: () {
                       Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
-                            builder: (context) => DashboardView(),
+                            builder: (context) => const DashboardView(),
                           ),
                           (route) => false);
                     }),

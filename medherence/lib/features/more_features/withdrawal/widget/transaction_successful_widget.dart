@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:medherence/core/utils/size_manager.dart';
 
@@ -14,7 +13,7 @@ class SuccessfulTransaction extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Transaction Successful',
           style: TextStyle(
             fontSize: 22,
@@ -29,7 +28,7 @@ class SuccessfulTransaction extends StatelessWidget {
           children: [
             Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 Center(
@@ -39,7 +38,7 @@ class SuccessfulTransaction extends StatelessWidget {
                     height: SizeMg.height(60),
                   ),
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 Text(
                   'You have successfully withdrawn',
                   style: TextStyle(
@@ -48,7 +47,7 @@ class SuccessfulTransaction extends StatelessWidget {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 Text(
                   '$amount MDHC',
                   style: TextStyle(
@@ -67,7 +66,7 @@ class SuccessfulTransaction extends StatelessWidget {
                     action: () {
                       Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
-                            builder: (context) => DashboardView(),
+                            builder: (context) => const DashboardView(),
                           ),
                           (route) => false);
                     }),

@@ -87,7 +87,7 @@ class SettingsWidgetList extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: onPressed,
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.arrow_forward_ios_rounded,
                     color: AppColors.pillIconColor,
                   ),

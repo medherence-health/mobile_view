@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:medherence/features/auth/views/login_view.dart';
 
 import '../../../core/utils/color_utils.dart';
 import '../../../core/shared_widget/buttons.dart';
@@ -73,7 +72,7 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
                 child: CircleAvatar(
                   backgroundColor: AppColors.textFilledColor,
                   radius: SizeMg.radius(24),
-                  child: Icon(
+                  child: const Icon(
                     Icons.mark_email_unread_outlined,
                     size: 30,
                     color: AppColors.navBarColor,
@@ -165,9 +164,9 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => NewPassword()));
+                              builder: (context) => const NewPassword()));
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                        const SnackBar(
                           content: Text('Otp verified successfully'),
                           backgroundColor: AppColors.green,
                         ),
@@ -192,7 +191,7 @@ class _VerifyForgotPasswordState extends State<VerifyForgotPassword> {
                           ..onTap = () {
                             // Function to show SnackBar
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                 content: Text('Otp resent successfully'),
                                 backgroundColor: AppColors.green,
                               ),

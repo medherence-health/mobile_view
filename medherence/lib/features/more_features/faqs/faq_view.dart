@@ -6,6 +6,8 @@ import '../../../core/providers/faq_provider.dart';
 import 'widget/faq_widget.dart';
 
 class FAQView extends StatelessWidget {
+  const FAQView({super.key});
+
   @override
   Widget build(BuildContext context) {
     final faqProvider = Provider.of<FAQProvider>(context);

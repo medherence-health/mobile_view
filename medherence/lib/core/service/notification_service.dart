@@ -1,16 +1,12 @@
-import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:intl/intl.dart';
 import 'package:medherence/core/model/models/history_model.dart';
-import 'package:medherence/core/utils/image_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/timezone.dart' as tz;
 
-import '../../features/monitor/view/alarm_monitor.dart';
 import '../model/simulated_data/simulated_values.dart';
 import '../../features/dashboard_feature/view/dashboard_view.dart';
 
@@ -48,8 +44,8 @@ class NotificationService extends ChangeNotifier {
   // }
 
   Future<void> init() async {
-    var androidInitilize = AndroidInitializationSettings('@mipmap/ic_launcher');
-    var iOSinitilize = DarwinInitializationSettings();
+    var androidInitilize = const AndroidInitializationSettings('@mipmap/ic_launcher');
+    var iOSinitilize = const DarwinInitializationSettings();
     var initilizationsSettings =
         InitializationSettings(android: androidInitilize, iOS: iOSinitilize);
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -66,7 +62,7 @@ class NotificationService extends ChangeNotifier {
       debugPrint('notification payload: $payload');
     }
     await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => DashboardView()));
+        context, MaterialPageRoute(builder: (context) => const DashboardView()));
   }
 
   // void onDidReceiveNotificationResponse(
@@ -104,7 +100,7 @@ class NotificationService extends ChangeNotifier {
       channelDescription: 'Alarm Notification',
       importance: Importance.max,
       priority: Priority.high,
-      sound: RawResourceAndroidNotificationSound('alarm'),
+      sound: const RawResourceAndroidNotificationSound('alarm'),
       autoCancel: false,
       playSound: true,
       ticker: 'ticker',
@@ -148,7 +144,7 @@ class NotificationService extends ChangeNotifier {
 
     // Check for past time (optional)
     if (futureDateTime.isBefore(now)) {
-      return null;
+      return;
       // futureDateTime = futureDateTime.add(const Duration(days: 1));
     }
     int newTime = futureDateTime.millisecondsSinceEpoch -
@@ -165,7 +161,7 @@ class NotificationService extends ChangeNotifier {
           'med id',
           'medherence',
           channelDescription: 'Medical adherence reminder',
-          sound: RawResourceAndroidNotificationSound('alarm'),
+          sound: const RawResourceAndroidNotificationSound('alarm'),
           autoCancel: false,
           playSound: true,
           importance: Importance.max,

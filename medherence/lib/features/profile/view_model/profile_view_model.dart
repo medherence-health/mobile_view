@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/utils/image_utils.dart';
-import '../../dashboard_feature/view/dashboard_view.dart';
 
 class ProfileViewModel extends ChangeNotifier {
   TextEditingController nicknameController = TextEditingController();
@@ -65,7 +64,7 @@ class ProfileViewModel extends ChangeNotifier {
     if (isFormValid) {
       // Show successful toast message
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Profile saved successfully')),
+        const SnackBar(content: Text('Profile saved successfully')),
       );
 
       // Redirect to DashboardView

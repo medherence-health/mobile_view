@@ -49,9 +49,9 @@ class PrivacyPolicyView extends StatelessWidget {
                   fontFamily: "Poppins-bold.ttf",
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               RichText(
-                text: TextSpan(
+                text: const TextSpan(
                   text: 'Information We Collect \n',
                   style: TextStyle(
                     fontSize: 14,
@@ -64,7 +64,7 @@ class PrivacyPolicyView extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: RichText(
-                  text: TextSpan(
+                  text: const TextSpan(
                     text: '- Personal Information: ',
                     style: TextStyle(
                       fontSize: 16,
@@ -120,9 +120,9 @@ class PrivacyPolicyView extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               RichText(
-                text: TextSpan(
+                text: const TextSpan(
                   text: ' How We Use Your Information \n',
                   style: TextStyle(
                     fontSize: 14,
@@ -135,7 +135,7 @@ class PrivacyPolicyView extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: RichText(
-                  text: TextSpan(
+                  text: const TextSpan(
                     text: '- To Provide Services: ',
                     style: TextStyle(
                       fontSize: 16,
@@ -191,9 +191,9 @@ class PrivacyPolicyView extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               RichText(
-                text: TextSpan(
+                text: const TextSpan(
                   text: 'Information Sharing and Disclosure  \n',
                   style: TextStyle(
                     fontSize: 14,
@@ -206,7 +206,7 @@ class PrivacyPolicyView extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: RichText(
-                  text: TextSpan(
+                  text: const TextSpan(
                     text: '- Third-Party Service Providers: ',
                     style: TextStyle(
                       fontSize: 16,
@@ -245,9 +245,9 @@ class PrivacyPolicyView extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               RichText(
-                text: TextSpan(
+                text: const TextSpan(
                   text: 'Data Security \n',
                   style: TextStyle(
                     fontSize: 18,
@@ -268,9 +268,9 @@ class PrivacyPolicyView extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               RichText(
-                text: TextSpan(
+                text: const TextSpan(
                   text: 'Changes to This Privacy Policy \n',
                   style: TextStyle(
                     fontSize: 18,
@@ -291,8 +291,8 @@ class PrivacyPolicyView extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Contact Us',
                 style: TextStyle(
                   fontSize: 18,
@@ -301,7 +301,7 @@ class PrivacyPolicyView extends StatelessWidget {
                   fontFamily: "Poppins-bold.ttf",
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               HelpAndSupportWidget(
                 model: HelpAndSupport().customerCareModel,
                 icon: Icons.copy,
@@ -333,7 +333,7 @@ class PrivacyPolicyView extends StatelessWidget {
                   // ScaffoldMessenger.of(context).showSnackBar(snackbar);
                 },
                 child: Padding(
-                  padding: EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
                   child: Image.asset(
                     ImageUtils.emailMessageIcon,
                     height: SizeMg.height(24),
@@ -341,10 +341,10 @@ class PrivacyPolicyView extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
             ],
           ),
         ),

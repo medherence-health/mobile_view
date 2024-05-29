@@ -50,7 +50,7 @@ class _AlarmMonitorState extends State<AlarmMonitor> {
                   ),
                 )),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               Text(
@@ -69,7 +69,7 @@ class _AlarmMonitorState extends State<AlarmMonitor> {
                   fontSize: SizeMg.text(16),
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               PrimaryButton(
                 buttonConfig: ButtonConfig(
                   text: 'Take Regimen',

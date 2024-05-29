@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:medherence/core/service/notification_service.dart';
 import 'package:medherence/core/utils/size_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stacked/stacked.dart';
 
 import '../../../core/utils/color_utils.dart';
 import '../../../core/model/models/history_model.dart';
-import '../../../core/model/simulated_data/simulated_values.dart';
 import '../../../core/shared_widget/buttons.dart';
 import '../../auth/views/change_password.dart';
 import '../../dashboard_feature/view/dashboard_view.dart';
 import '../../history/view/history_screen.dart';
 import '../../medhecoin/view/medhecoin.dart';
-import '../../monitor/view/reminder_screen.dart';
 import '../../monitor/view_model/reminder_view_model.dart';
 import '../../notification/view/notification_view.dart';
 import '../../notification/widget/notification_widget.dart';
@@ -254,10 +250,10 @@ class _HomeViewState extends State<HomeView> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => MedhecoinScreen()),
+                            builder: (context) => const MedhecoinScreen()),
                       );
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.open_in_new,
                       color: AppColors.white,
                     ),
@@ -266,7 +262,7 @@ class _HomeViewState extends State<HomeView> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => MedhecoinScreen()),
+                          builder: (context) => const MedhecoinScreen()),
                     );
                   },
                   amountChanged: _amountChanged,
@@ -286,7 +282,7 @@ class _HomeViewState extends State<HomeView> {
                 ),
                 const SizedBox(height: 5),
                 if (regimenList.isEmpty)
-                  Center(
+                  const Center(
                     child: SizedBox(
                       height: 250,
                       width: 300,
@@ -504,7 +500,7 @@ class _HomeViewState extends State<HomeView> {
                           Expanded(
                             child: ListView.separated(
                               shrinkWrap: true,
-                              physics: AlwaysScrollableScrollPhysics(),
+                              physics: const AlwaysScrollableScrollPhysics(),
                               itemCount: historyList
                                   .length, // Use the length of your data list
                               separatorBuilder: (ctx, index) {
@@ -678,12 +674,12 @@ class NextRegimen extends StatelessWidget {
                   const SizedBox(height: 6),
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.alarm,
                         color: AppColors.navBarColor,
                         size: 14,
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Text(
                         DateFormat('hh:mm a').format(DateTime(
                           DateTime.now().year,
@@ -703,14 +699,14 @@ class NextRegimen extends StatelessWidget {
                   const SizedBox(height: 5),
                 ],
               ),
-              Spacer(),
+              const Spacer(),
               InkWell(
                 onTap: () {
                   debugPrint('Regimen taken');
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => GetDashboardView(
+                      builder: (context) => const GetDashboardView(
                         dashboardIndex: 1,
                       ),
                     ),

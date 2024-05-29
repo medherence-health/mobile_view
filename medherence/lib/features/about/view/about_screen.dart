@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../../core/utils/color_utils.dart';
 import '../../../core/utils/image_utils.dart';
 import '../../../core/utils/size_manager.dart';
-import '../../dashboard_feature/view/dashboard_view.dart';
 import '../../more_features/app_version/app_version.dart';
 import '../widgets/about_widget.dart';
 import 'about_view.dart';
@@ -57,7 +56,7 @@ class AboutScreenView extends StatelessWidget {
                   // ScaffoldMessenger.of(context).showSnackBar(snackbar);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AppVersionView()),
+                    MaterialPageRoute(builder: (context) => const AppVersionView()),
                   );
                 },
                 child: Padding(
@@ -82,11 +81,11 @@ class AboutScreenView extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => PrivacyPolicyView()),
+                        builder: (context) => const PrivacyPolicyView()),
                   );
                 },
                 child: Padding(
-                    padding: EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(8),
                     child: Image.asset(
                       ImageUtils.privacyPolicyIcon,
                       height: SizeMg.height(24),
@@ -105,11 +104,11 @@ class AboutScreenView extends StatelessWidget {
                   // ScaffoldMessenger.of(context).showSnackBar(snackbar);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AboutAppView()),
+                    MaterialPageRoute(builder: (context) => const AboutAppView()),
                   );
                 },
                 child: Padding(
-                  padding: EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
                   child: Image.asset(
                     ImageUtils.medherenceAppIcon,
                     height: SizeMg.height(24),

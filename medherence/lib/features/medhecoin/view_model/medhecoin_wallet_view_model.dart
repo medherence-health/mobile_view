@@ -83,7 +83,7 @@ class WalletViewModel extends ChangeNotifier {
     //   debit: false,
     // ),
   ];
-  List<SavedWithdrawalAccountModel> _withdrawalAccounts = [];
+  final List<SavedWithdrawalAccountModel> _withdrawalAccounts = [];
 
   // Load withdrawal accounts from local storage
   Future<void> loadWithdrawalAccounts() async {
@@ -173,7 +173,7 @@ class WalletViewModel extends ChangeNotifier {
   // Method to validate account number
   Future<void> validateAccountNumber(String bank, String accountNumber) async {
     // Simulate an API call delay
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
 
     // Mock response (in a real app, this would be a network call)
     if (bank == "Access Bank" && accountNumber == "1234567890") {

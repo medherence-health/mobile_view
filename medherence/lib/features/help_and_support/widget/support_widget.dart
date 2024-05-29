@@ -33,31 +33,31 @@ class HelpAndSupportWidget extends StatelessWidget {
             color: AppColors.white,
             boxShadow: copyButton == false
                 ? [
-                    BoxShadow(
+                    const BoxShadow(
                       blurRadius: 3,
                       spreadRadius: 0,
                       offset: Offset(1, 1),
                       color: AppColors.shadowColor,
                     ),
-                    BoxShadow(
+                    const BoxShadow(
                       blurRadius: 6,
                       spreadRadius: 0,
                       offset: Offset(4, 5),
                       color: Color.fromRGBO(26, 85, 171, 0.06),
                     ),
-                    BoxShadow(
+                    const BoxShadow(
                       blurRadius: 9,
                       spreadRadius: 0,
                       offset: Offset(10, 10),
                       color: Color.fromRGBO(26, 85, 171, 0.04),
                     ),
-                    BoxShadow(
+                    const BoxShadow(
                       blurRadius: 10,
                       spreadRadius: 0,
                       offset: Offset(17, 18),
                       color: Color.fromRGBO(26, 85, 171, 0.01),
                     ),
-                    BoxShadow(
+                    const BoxShadow(
                       blurRadius: 11,
                       spreadRadius: 0,
                       offset: Offset(27, 29),
@@ -65,13 +65,13 @@ class HelpAndSupportWidget extends StatelessWidget {
                     ),
                   ]
                 : [
-                    BoxShadow(
+                    const BoxShadow(
                       blurRadius: 10,
                       spreadRadius: 0,
                       offset: Offset(17, 18),
                       color: Color.fromRGBO(26, 85, 171, 0.01),
                     ),
-                    BoxShadow(
+                    const BoxShadow(
                       blurRadius: 11,
                       spreadRadius: 0,
                       offset: Offset(27, 29),

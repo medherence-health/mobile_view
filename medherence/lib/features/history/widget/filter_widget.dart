@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +9,7 @@ import '../../monitor/view_model/reminder_view_model.dart';
 import '../view_model/filter_model.dart';
 
 class FilterView extends StatefulWidget {
-  FilterView({Key? key}) : super(key: key);
+  const FilterView({Key? key}) : super(key: key);
 
   @override
   State<FilterView> createState() => _FilterViewState();
@@ -64,7 +63,7 @@ class _FilterViewState extends State<FilterView> {
             onPressed: () {
               Navigator.pop(context, true);
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.check,
               color: AppColors.navBarColor,
             ),
@@ -77,14 +76,14 @@ class _FilterViewState extends State<FilterView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
+              const Text(
                 'Status',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Wrap(
                 children: [
                   _buildStatusRadio(model, Status.all, 'All'),
@@ -93,15 +92,15 @@ class _FilterViewState extends State<FilterView> {
                   _buildStatusRadio(model, Status.missed, 'Missed'),
                 ],
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Date',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 children: [
                   Expanded(
@@ -119,7 +118,7 @@ class _FilterViewState extends State<FilterView> {
                       },
                     ),
                   ),
-                  SizedBox(width: 10), // Add some space between the pickers
+                  const SizedBox(width: 10), // Add some space between the pickers
                   Expanded(
                     child: _buildDatePicker(
                       context,
@@ -137,15 +136,15 @@ class _FilterViewState extends State<FilterView> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Name',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               DropDownSearchFormField(
                 textFieldConfiguration: TextFieldConfiguration(
                   controller: model.dropDownSearchController,
@@ -155,7 +154,7 @@ class _FilterViewState extends State<FilterView> {
                     filled: false,
                     fillColor: kFormTextDecoration.fillColor,
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+                        const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
                     border: kFormTextDecoration.border,
                     focusedBorder: kFormTextDecoration.focusedBorder,
                   ),
@@ -206,7 +205,7 @@ class _FilterViewState extends State<FilterView> {
         ),
         Text(
           label,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 16,
           ),
         ),
@@ -226,11 +225,11 @@ class _FilterViewState extends State<FilterView> {
       children: [
         Text(
           label,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 14,
           ),
         ),
-        SizedBox(height: 5),
+        const SizedBox(height: 5),
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
@@ -246,7 +245,7 @@ class _FilterViewState extends State<FilterView> {
               children: [
                 Text(
                   date,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                     color: AppColors.darkGrey,
                   ),
@@ -261,7 +260,7 @@ class _FilterViewState extends State<FilterView> {
                     );
                     onDatePicked(pickedDate);
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.calendar_today,
                     color: AppColors.navBarColor,
                   ),

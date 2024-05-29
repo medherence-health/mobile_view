@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 
 import '../../../core/shared_widget/buttons.dart';
 import '../../../core/utils/size_manager.dart';
-import '../../dashboard_feature/view/dashboard_view.dart';
 import '../view_model/monitor_viewmodel.dart';
 
 // class MedicationCameraScreen extends StatefulWidget {
@@ -124,6 +123,8 @@ import '../view_model/monitor_viewmodel.dart';
 // }
 
 class MedicationAdherenceScreen extends StatefulWidget {
+  const MedicationAdherenceScreen({super.key});
+
   @override
   _MedicationAdherenceScreenState createState() =>
       _MedicationAdherenceScreenState();
@@ -194,8 +195,8 @@ class _MedicationAdherenceScreenState extends State<MedicationAdherenceScreen> {
                     visible: !model.isMedicationDetected,
                     child: Container(
                       color: Colors.black.withOpacity(0.6),
-                      padding: EdgeInsets.all(10),
-                      child: Text(
+                      padding: const EdgeInsets.all(10),
+                      child: const Text(
                         "Hold your medication to the camera",
                         style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
@@ -210,8 +211,8 @@ class _MedicationAdherenceScreenState extends State<MedicationAdherenceScreen> {
                         model.isMedicationDetected && !model.isMedicationUsed,
                     child: Container(
                       color: Colors.black.withOpacity(0.6),
-                      padding: EdgeInsets.all(10),
-                      child: Text(
+                      padding: const EdgeInsets.all(10),
+                      child: const Text(
                         "Focus your camera on your mouth",
                         style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
@@ -225,8 +226,8 @@ class _MedicationAdherenceScreenState extends State<MedicationAdherenceScreen> {
                     visible: model.isMedicationUsed,
                     child: Container(
                       color: Colors.black.withOpacity(0.6),
-                      padding: EdgeInsets.all(10),
-                      child: Text(
+                      padding: const EdgeInsets.all(10),
+                      child: const Text(
                         "Bravo!! You have used the medication",
                         style: TextStyle(color: Colors.white, fontSize: 16),
                       ),

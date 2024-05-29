@@ -84,7 +84,7 @@ class OutlinePrimaryButton extends StatelessWidget {
     Key? key,
     required this.buttonConfig,
     this.child,
-    this.icon = null,
+    this.icon,
     this.height = 50.0,
     this.textSize = 23,
     this.margin,
@@ -140,7 +140,7 @@ class OutlinePrimaryButton extends StatelessWidget {
                         children: [
                           TextSpan(
                             text: buttonConfig.extraText,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: AppColors.inactiveGrey,
                             ),
                           )

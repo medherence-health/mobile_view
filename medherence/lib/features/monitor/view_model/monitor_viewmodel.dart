@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
 
 import '../../dashboard_feature/view/dashboard_view.dart';
 
@@ -14,12 +13,12 @@ class MedicationAdherenceViewModel extends ChangeNotifier {
     isMedicationDetected = false;
     isMedicationUsed = false;
     // Simulated detection logic
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () {
       isMedicationDetected = true;
       notifyListeners();
     });
 
-    Future.delayed(Duration(seconds: 6), () {
+    Future.delayed(const Duration(seconds: 6), () {
       isMedicationUsed = true;
       notifyListeners();
     });
@@ -33,7 +32,7 @@ class MedicationAdherenceViewModel extends ChangeNotifier {
     isMedicationUsed = false;
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: (context) => DashboardView(),
+          builder: (context) => const DashboardView(),
         ),
         (route) => false);
     notifyListeners();

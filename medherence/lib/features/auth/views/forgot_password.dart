@@ -110,7 +110,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         if (_formKey.currentState!.validate()) {
                           // Password change logic goes here
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                               content: Text('Otp sent'),
                               backgroundColor: AppColors.green,
                             ),
@@ -125,7 +125,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           );
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                               dismissDirection: DismissDirection.horizontal,
                               elevation: 10,
                               behavior: SnackBarBehavior.floating,

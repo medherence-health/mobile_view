@@ -4,7 +4,6 @@ import 'package:medherence/features/medhecoin/view_model/medhecoin_wallet_view_m
 import 'package:provider/provider.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_all.dart' as tz;
 
 import 'package:medherence/features/splashscreen/splashscreen.dart';
@@ -14,7 +13,6 @@ import 'core/utils/color_utils.dart';
 import 'core/utils/utils.dart';
 import 'core/model/models/notification_model.dart';
 import 'features/history/view_model/filter_model.dart';
-import 'features/monitor/view/alarm_monitor.dart';
 import 'features/monitor/view_model/reminder_view_model.dart';
 import 'features/profile/view_model/profile_view_model.dart';
 

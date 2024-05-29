@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:medherence/core/shared_widget/buttons.dart';
 import 'package:medherence/core/utils/color_utils.dart';
 import 'package:provider/provider.dart';
@@ -20,8 +18,8 @@ class MedCoinDropWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Padding(
-        padding: const EdgeInsets.all(8.0),
+      title: const Padding(
+        padding: EdgeInsets.all(8.0),
         child: Text(
           'Well-done Champ!!!',
           textAlign: TextAlign.center,
@@ -45,11 +43,11 @@ class MedCoinDropWidget extends StatelessWidget {
                 height: SizeMg.height(200),
                 width: SizeMg.width(250),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               RichText(
                 text: TextSpan(
                     text: 'You have earned ',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 16,
                       color: AppColors.darkGrey,
@@ -57,16 +55,16 @@ class MedCoinDropWidget extends StatelessWidget {
                     children: [
                       TextSpan(
                         text: '$medhecoinEarned',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: AppColors.navBarColor,
                         ),
                       ),
-                      TextSpan(
+                      const TextSpan(
                         text: ' Medhecoin',
                       ),
                     ]),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: OutlinePrimaryButton(
@@ -99,7 +97,7 @@ class MedCoinDropWidget extends StatelessWidget {
                           .addTransaction(newTransaction);
                       Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
-                              builder: (context) => DashboardView()),
+                              builder: (context) => const DashboardView()),
                           (Route<dynamic> route) => false);
                     },
                   ),

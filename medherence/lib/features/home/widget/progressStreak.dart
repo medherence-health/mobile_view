@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:medherence/core/utils/color_utils.dart';
 import 'package:medherence/core/utils/image_utils.dart';
 import 'package:medherence/core/utils/size_manager.dart';
-import 'package:provider/provider.dart';
 
-import '../../profile/view_model/profile_view_model.dart';
 
 class ProgressStreak extends StatelessWidget {
   final int progress;

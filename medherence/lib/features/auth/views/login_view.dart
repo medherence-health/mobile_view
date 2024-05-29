@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medherence/core/shared_widget/buttons.dart';
 import 'package:medherence/features/auth/views/forgot_password.dart';
-import 'package:medherence/features/auth/widget/validation_extension.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:drop_down_search_field/drop_down_search_field.dart';
 
@@ -64,7 +63,7 @@ class _LoginViewState extends State<LoginView> {
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           dismissDirection: DismissDirection.horizontal,
           elevation: 10,
           behavior: SnackBarBehavior.floating,
@@ -186,7 +185,7 @@ class _LoginViewState extends State<LoginView> {
               const SizedBox(height: (10)),
               DropDownSearchFormField(
                 textFieldConfiguration: TextFieldConfiguration(
-                  controller: this._dropDownSearchController,
+                  controller: _dropDownSearchController,
                   decoration: kFormTextDecoration.copyWith(
                     errorBorder: kFormTextDecoration.errorBorder,
                     hintStyle: kFormTextDecoration.hintStyle,
@@ -194,7 +193,7 @@ class _LoginViewState extends State<LoginView> {
                     filled: true,
                     fillColor: dropdownFill,
                     contentPadding:
-                        EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+                        const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
                     border: kFormTextDecoration.border,
                     focusedBorder: kFormTextDecoration.focusedBorder,
                   ),
