@@ -1,36 +1,41 @@
 import 'package:flutter/material.dart';
-
 import 'package:camera/camera.dart';
 
+import '../../dashboard_feature/view/dashboard_view.dart';
+
 class MedicationAdherenceViewModel extends ChangeNotifier {
-  // Properties
-  // final CameraService? cameraService; // Inject CameraService if used
+  bool isCameraInitialized = false;
   bool isScanning = false;
   bool isMedicationDetected = false;
   bool isMedicationUsed = false;
 
-  // Functions
-  void startScan() {
+  void startScan() async {
     isScanning = true;
-    // Logic to start camera and AI analysis (using CameraService or directly)
+    isMedicationDetected = false;
+    isMedicationUsed = false;
+    // Simulated detection logic
+    Future.delayed(Duration(seconds: 3), () {
+      isMedicationDetected = true;
+      notifyListeners();
+    });
+
+    Future.delayed(Duration(seconds: 6), () {
+      isMedicationUsed = true;
+      notifyListeners();
+    });
+
     notifyListeners();
   }
 
-  void medicationDetected() {
-    isMedicationDetected = true;
-    notifyListeners();
-  }
-
-  void medicationUsed() {
-    isMedicationUsed = true;
-    notifyListeners();
-  }
-
-  void finishScan() {
+  finishScan(BuildContext context) {
     isScanning = false;
     isMedicationDetected = false;
     isMedicationUsed = false;
-    // Logic to stop camera and AI analysis
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => DashboardView(),
+        ),
+        (route) => false);
     notifyListeners();
   }
 }

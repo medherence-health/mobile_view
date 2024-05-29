@@ -11,6 +11,7 @@ import '../../../core/utils/color_utils.dart';
 import '../../../core/utils/size_manager.dart';
 import '../view_model/reminder_view_model.dart';
 import '../widget/medcoin_drop_widget.dart';
+import 'medication_monitor.dart';
 
 class EditReminderDetails extends StatefulWidget {
   @override
@@ -153,6 +154,12 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                             action: () {
                               int medhecoinEarned = checkedCount * 100;
                               reminderState.addMedcoin(medhecoinEarned);
+
+                              // Navigator.of(context).pushAndRemoveUntil(
+                              //     MaterialPageRoute(
+                              //         builder: (context) =>
+                              //             MedicationAdherenceScreen()),
+                              //     (Route<dynamic> route) => false);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                     content: Text('Pills taken successfully')),

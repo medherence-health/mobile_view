@@ -5,22 +5,139 @@ import 'package:provider/provider.dart';
 import '../../../core/shared_widget/buttons.dart';
 import '../../../core/utils/size_manager.dart';
 import '../../dashboard_feature/view/dashboard_view.dart';
+import '../view_model/monitor_viewmodel.dart';
 
-class MedicationCameraScreen extends StatefulWidget {
+// class MedicationCameraScreen extends StatefulWidget {
+//   @override
+//   _MedicationCameraScreenState createState() => _MedicationCameraScreenState();
+// }
+
+// class _MedicationCameraScreenState extends State<MedicationCameraScreen> {
+//   late CameraController _cameraController;
+//   Future<void>? _initializeControllerFuture;
+//   bool _isDetecting = false;
+//   String _snackBarMessage = "Hold your medication to the camera";
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _initializeCamera();
+//   }
+
+//   void _initializeCamera() async {
+//     final cameras = await availableCameras();
+//     final camera = cameras.first;
+
+//     _cameraController = CameraController(
+//       camera,
+//       ResolutionPreset.high,
+//     );
+
+//     _initializeControllerFuture = _cameraController.initialize().then((_) {
+//       setState(() {});
+//     });
+
+//     // Add your AI model initialization here
+
+//     // Start detection loop
+//     _startDetection();
+//   }
+
+//   void _startDetection() async {
+//     // Simulate detection logic with delays
+//     Future.delayed(Duration(seconds: 3), () {
+//       setState(() {
+//         _snackBarMessage = "Focus your camera on your mouth";
+//       });
+//     });
+//     Future.delayed(Duration(seconds: 6), () {
+//       setState(() {
+//         _snackBarMessage = "Bravo!! You have used the medication";
+//         _isDetecting = false;
+//       });
+//     });
+//   }
+
+//   @override
+//   void dispose() {
+//     _cameraController.dispose();
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: FutureBuilder<void>(
+//         future: _initializeControllerFuture,
+//         builder: (context, snapshot) {
+//           if (snapshot.connectionState == ConnectionState.done) {
+//             return Stack(
+//               children: [
+//                 CameraPreview(_cameraController),
+//                 Center(
+//                   child: Container(
+//                     width: 200,
+//                     height: 200,
+//                     decoration: BoxDecoration(
+//                       border: Border.all(color: Colors.green, width: 3),
+//                     ),
+//                   ),
+//                 ),
+//                 Align(
+//                   alignment: Alignment.topCenter,
+//                   child: Container(
+//                     margin: EdgeInsets.all(20),
+//                     child: SnackBar(
+//                       content: Text(_snackBarMessage),
+//                       duration: Duration(seconds: 2),
+//                     ),
+//                   ),
+//                 ),
+//                 if (!_isDetecting)
+//                   Align(
+//                     alignment: Alignment.bottomCenter,
+//                     child: Padding(
+//                       padding: const EdgeInsets.all(20.0),
+//                       child: PrimaryButton(
+//                         buttonConfig: ButtonConfig(
+//                             text: 'Finish',
+//                             action: () {
+//                               Navigator.of(context).pushAndRemoveUntil(
+//                                   MaterialPageRoute(
+//                                     builder: (context) => DashboardView(),
+//                                   ),
+//                                   (route) => false);
+//                             }),
+//                         width: SizeMg.screenWidth - 60,
+//                       ),
+//                     ),
+//                   ),
+//               ],
+//             );
+//           } else {
+//             return Center(child: CircularProgressIndicator());
+//           }
+//         },
+//       ),
+//     );
+//   }
+// }
+
+class MedicationAdherenceScreen extends StatefulWidget {
   @override
-  _MedicationCameraScreenState createState() => _MedicationCameraScreenState();
+  _MedicationAdherenceScreenState createState() =>
+      _MedicationAdherenceScreenState();
 }
 
-class _MedicationCameraScreenState extends State<MedicationCameraScreen> {
-  late CameraController _cameraController;
-  late Future<void> _initializeControllerFuture;
-  bool _isDetecting = false;
-  String _snackBarMessage = "Hold your medication to the camera";
+class _MedicationAdherenceScreenState extends State<MedicationAdherenceScreen> {
+  late MedicationAdherenceViewModel viewModel;
+  CameraController? _cameraController;
 
   @override
   void initState() {
     super.initState();
     _initializeCamera();
+    viewModel = MedicationAdherenceViewModel();
   }
 
   void _initializeCamera() async {
@@ -32,143 +149,114 @@ class _MedicationCameraScreenState extends State<MedicationCameraScreen> {
       ResolutionPreset.high,
     );
 
-    _initializeControllerFuture = _cameraController.initialize().then((_) {
+    _cameraController?.initialize().then((_) {
       setState(() {});
     });
 
     // Add your AI model initialization here
 
     // Start detection loop
-    _startDetection();
-  }
-
-  void _startDetection() async {
-    // Simulate detection logic with delays
-    Future.delayed(Duration(seconds: 3), () {
-      setState(() {
-        _snackBarMessage = "Focus your camera on your mouth";
-      });
-    });
-    Future.delayed(Duration(seconds: 6), () {
-      setState(() {
-        _snackBarMessage = "Bravo!! You have used the medication";
-        _isDetecting = false;
-      });
-    });
+    // _startDetection();
   }
 
   @override
   void dispose() {
-    _cameraController.dispose();
+    _cameraController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: FutureBuilder<void>(
-        future: _initializeControllerFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
+    return ChangeNotifierProvider(
+      create: (_) => viewModel,
+      child: Scaffold(
+        body: Consumer<MedicationAdherenceViewModel>(
+          builder: (context, model, child) {
             return Stack(
               children: [
-                CameraPreview(_cameraController),
+                // _cameraController?.value.isInitialized
+                //     ?
+                CameraPreview(_cameraController!),
+                // Center(child: CircularProgressIndicator()),
                 Center(
                   child: Container(
-                    width: 200,
-                    height: 200,
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.green, width: 3),
                     ),
+                    width: 200,
+                    height: 200,
                   ),
                 ),
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: Container(
-                    margin: EdgeInsets.all(20),
-                    child: SnackBar(
-                      content: Text(_snackBarMessage),
-                      duration: Duration(seconds: 2),
-                    ),
-                  ),
-                ),
-                if (!_isDetecting)
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: PrimaryButton(
-                        buttonConfig: ButtonConfig(
-                            text: 'Finish',
-                            action: () {
-                              Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                    builder: (context) => DashboardView(),
-                                  ),
-                                  (route) => false);
-                            }),
-                        width: SizeMg.screenWidth - 60,
+                Positioned(
+                  top: 50,
+                  left: 10,
+                  child: Visibility(
+                    visible: !model.isMedicationDetected,
+                    child: Container(
+                      color: Colors.black.withOpacity(0.6),
+                      padding: EdgeInsets.all(10),
+                      child: Text(
+                        "Hold your medication to the camera",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
                     ),
                   ),
+                ),
+                Positioned(
+                  top: 50,
+                  left: 10,
+                  child: Visibility(
+                    visible:
+                        model.isMedicationDetected && !model.isMedicationUsed,
+                    child: Container(
+                      color: Colors.black.withOpacity(0.6),
+                      padding: EdgeInsets.all(10),
+                      child: Text(
+                        "Focus your camera on your mouth",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 50,
+                  left: 10,
+                  child: Visibility(
+                    visible: model.isMedicationUsed,
+                    child: Container(
+                      color: Colors.black.withOpacity(0.6),
+                      padding: EdgeInsets.all(10),
+                      child: Text(
+                        "Bravo!! You have used the medication",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 20,
+                  left: (MediaQuery.of(context).size.width / 2) - 70,
+                  child:
+                      // ElevatedButton(
+                      //   onPressed:
+                      //       model.isScanning ? model.finishScan : model.startScan,
+                      //   child:
+                      //       Text(model.isScanning ? "Finish" : "Scan Medication"),
+                      // ),
+                      PrimaryButton(
+                    buttonConfig: ButtonConfig(
+                        text: 'Finish',
+                        action: model.isScanning
+                            ? model.finishScan(context)
+                            : model.startScan),
+                    width: SizeMg.screenWidth - 60,
+                  ),
+                ),
               ],
             );
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        },
+          },
+        ),
       ),
     );
   }
 }
-
-// class MedicationAdherenceScreen extends StatefulWidget {
-//   @override
-//   _MedicationAdherenceScreenState createState() =>
-//       _MedicationAdherenceScreenState();
-// }
-
-// class _MedicationAdherenceScreenState extends State<MedicationAdherenceScreen> {
-//   final viewModel = MedicationAdherenceViewModel();
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Stack(
-//         children: [
-//           // Camera Preview (implement using camera plugin or CameraService)
-//           Center(
-//             child: Container(
-//               // Center overlay for medication placement
-//               child: Stack(
-//                 children: [
-//                   // Transparent overlay with visual cue (dotted box, target symbol)
-//                   // Medication detection logic based on viewModel.isMedicationDetected
-//                 ],
-//               ),
-//             ),
-//           ),
-//           Positioned(
-//             top: 50, // Adjust positioning as needed
-//             left: 10, // Adjust positioning as needed
-//             child: Visibility(
-//               // Optional Top SnackBar
-//               visible: !viewModel.isScanning,
-//               child: Text("Hold your medication to the camera"),
-//             ),
-//           ),
-//           Positioned(
-//             bottom: 20, // Adjust positioning as needed
-//             left: (MediaQuery.of(context).size.width / 2) - 40, // Center button
-//             child: ElevatedButton(
-//               onPressed: viewModel.isScanning
-//                   ? viewModel.finishScan
-//                   : viewModel.startScan,
-//               child: Text(viewModel.isScanning ? "Finish" : "Scan Medication"),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
