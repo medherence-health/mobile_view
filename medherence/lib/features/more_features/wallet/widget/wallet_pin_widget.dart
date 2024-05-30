@@ -133,7 +133,7 @@ class _WalletPinWidgetState extends State<WalletPinWidget> {
     print('Entered PIN: $enteredPin');
 
     if (_allFieldsFilled) {
-      Navigator.pop(context);
+      Navigator.pop(context, true);
     }
   }
 }

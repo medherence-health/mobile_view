@@ -150,7 +150,7 @@ class _BiometricAuthenticationViewState
             ),
             const SizedBox(height: 20),
             SwitchListTile(
-              activeColor: AppColors.success,
+              activeTrackColor: AppColors.success,
               title: const Text(
                 'Enable Fingerprint',
                 style: TextStyle(
@@ -185,8 +185,8 @@ class _BiometricAuthenticationViewState
       // Your logic for enabling biometric authentication here
       setState(() {
         _isBiometricEnabled = true;
-        _saveBiometricEnabledState(true);
       });
+      _saveBiometricEnabledState(true); // Persist state
     } else {
       // User canceled or failed PIN verification, disable switch
       setState(() {
