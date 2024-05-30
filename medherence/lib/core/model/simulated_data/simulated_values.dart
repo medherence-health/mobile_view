@@ -50,8 +50,8 @@ List<HistoryModel> generateSimulatedData() {
     final now = DateTime.now();
     final notificationTime =
         TimeOfDay(hour: random.nextInt(12) + 1, minute: random.nextInt(60));
-    DateTime yesterday = now.subtract(Duration(days: 1));
-    DateTime fiveDaysFromNow = now.add(Duration(days: 5));
+    DateTime yesterday = now.subtract(Duration(days: 2));
+    DateTime fiveDaysFromNow = now.add(Duration(days: 3));
 
 // Generate a random number of days within the desired range (1 to 5)
     int randomDays =

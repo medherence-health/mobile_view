@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:medherence/features/dashboard_feature/view/dashboard_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../core/service/biometric_service.dart';
 import '../../core/utils/color_utils.dart';
 import '../onboarding/onboarding_screen.dart';
 
@@ -17,6 +18,14 @@ class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
+  final _biometricService = BiometricService();
+
+  // Function to check if biometric is enabled in shared preference
+  Future<bool> isBiometricEnabled() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('useBiometric') ?? false;
+  }
+
   // Function to check if password has been successfully changed
   Future<bool> isUserSignedIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -32,10 +41,26 @@ class _SplashScreenState extends State<SplashScreen>
         MaterialPageRoute(builder: (context) => const OnboardingView()),
       );
     } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const DashboardView()),
-      );
+      bool useBiometric = await isBiometricEnabled();
+      if (useBiometric) {
+        bool authenticated = await _biometricService.authenticate();
+        if (authenticated) {
+          // Navigate to dashboard
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const DashboardView()),
+          );
+        } else {
+          // User canceled biometric or failed authentication, close app
+          Navigator.pop(context); // Close splash screen
+        }
+      } else {
+        // Biometric not enabled, navigate to dashboard directly
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const DashboardView()),
+        );
+      }
     }
   }
 
@@ -103,3 +128,19 @@ class _SplashScreenState extends State<SplashScreen>
     );
   }
 }
+
+  // // Function to show password change prompt if necessary
+  // void checkPasswordChangePrompt() async {
+  //   bool passwordChanged = await isUserSignedIn();
+  //   if (!passwordChanged) {
+  //     Navigator.pushReplacement(
+  //       context,
+  //       MaterialPageRoute(builder: (context) => const OnboardingView()),
+  //     );
+  //   } else {
+  //     Navigator.pushReplacement(
+  //       context,
+  //       MaterialPageRoute(builder: (context) => const DashboardView()),
+  //     );
+  //   }
+  // }

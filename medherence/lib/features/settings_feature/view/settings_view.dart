@@ -70,128 +70,128 @@ class _SettingsViewState extends State<SettingsView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'General',
-                style: TextStyle(
-                  color: AppColors.darkGrey,
-                  fontSize: 16,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  child: ListTile(
-                    leading: const Icon(
-                      Icons.dark_mode,
-                      color: AppColors.historyBackground,
-                      size: 25,
-                    ),
-                    title: Text(
-                      'Dark mode',
-                      style: TextStyle(
-                        fontSize: SizeMg.text(20),
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    trailing: Switch.adaptive(
-                      value: isDarkModeEnabled, // Use the boolean variable
-                      onChanged: (value) {
-                        setState(() {
-                          isDarkModeEnabled = value; // Update the state
-                        });
-                        // You can add logic here to apply dark mode
-                      },
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: SizeMg.height(10)),
-              const Text(
-                'Alarm settings',
-                style: TextStyle(
-                  color: AppColors.darkGrey,
-                  fontSize: 16,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 15,
-                  bottom: 15,
-                  left: 10,
-                  right: 10,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Sound',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return CupertinoAlertDialog(
-                              title: const Text('Select Sound'),
-                              content: Padding(
-                                padding: const EdgeInsets.only(bottom: 38.0),
-                                child: Consumer<ReminderState>(
-                                  builder: (context, reminderState, _) {
-                                    return DropdownButton<String>(
-                                      value: reminderState.selectedSound,
-                                      onChanged: (String? newValue) {
-                                        setState(() {
-                                          reminderState
-                                              .updateSelectedSound(newValue!);
-                                          Navigator.of(context)
-                                              .pop(); // Close the dialog after selecting a sound
-                                        });
-                                      },
-                                      items: <String>[
-                                        'Aegean Sea',
-                                        'Bird Chirping',
-                                        'Wind Blowing',
-                                        'Water Splash'
-                                      ].map<DropdownMenuItem<String>>(
-                                        (String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(value),
-                                          );
-                                        },
-                                      ).toList(),
-                                    );
-                                  },
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      child: Row(
-                        children: [
-                          Text(
-                            ReminderState().selectedSound,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                          const SizedBox(width: 2),
-                          const Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            size: 16,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // const Text(
+              //   'General',
+              //   style: TextStyle(
+              //     color: AppColors.darkGrey,
+              //     fontSize: 16,
+              //   ),
+              // ),
+              // Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: Card(
+              //     child: ListTile(
+              //       leading: const Icon(
+              //         Icons.dark_mode,
+              //         color: AppColors.historyBackground,
+              //         size: 25,
+              //       ),
+              //       title: Text(
+              //         'Dark mode',
+              //         style: TextStyle(
+              //           fontSize: SizeMg.text(20),
+              //           fontWeight: FontWeight.w500,
+              //         ),
+              //       ),
+              //       trailing: Switch.adaptive(
+              //         value: isDarkModeEnabled, // Use the boolean variable
+              //         onChanged: (value) {
+              //           setState(() {
+              //             isDarkModeEnabled = value; // Update the state
+              //           });
+              //           // You can add logic here to apply dark mode
+              //         },
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // SizedBox(height: SizeMg.height(10)),
+              // const Text(
+              //   'Alarm settings',
+              //   style: TextStyle(
+              //     color: AppColors.darkGrey,
+              //     fontSize: 16,
+              //   ),
+              // ),
+              // Padding(
+              //   padding: const EdgeInsets.only(
+              //     top: 15,
+              //     bottom: 15,
+              //     left: 10,
+              //     right: 10,
+              //   ),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: [
+              //       const Text(
+              //         'Sound',
+              //         style: TextStyle(
+              //           fontSize: 22,
+              //           fontWeight: FontWeight.w500,
+              //         ),
+              //       ),
+              //       InkWell(
+              //         onTap: () {
+              //           showDialog(
+              //             context: context,
+              //             builder: (BuildContext context) {
+              //               return CupertinoAlertDialog(
+              //                 title: const Text('Select Sound'),
+              //                 content: Padding(
+              //                   padding: const EdgeInsets.only(bottom: 38.0),
+              //                   child: Consumer<ReminderState>(
+              //                     builder: (context, reminderState, _) {
+              //                       return DropdownButton<String>(
+              //                         value: reminderState.selectedSound,
+              //                         onChanged: (String? newValue) {
+              //                           setState(() {
+              //                             reminderState
+              //                                 .updateSelectedSound(newValue!);
+              //                             Navigator.of(context)
+              //                                 .pop(); // Close the dialog after selecting a sound
+              //                           });
+              //                         },
+              //                         items: <String>[
+              //                           'Aegean Sea',
+              //                           'Bird Chirping',
+              //                           'Wind Blowing',
+              //                           'Water Splash'
+              //                         ].map<DropdownMenuItem<String>>(
+              //                           (String value) {
+              //                             return DropdownMenuItem<String>(
+              //                               value: value,
+              //                               child: Text(value),
+              //                             );
+              //                           },
+              //                         ).toList(),
+              //                       );
+              //                     },
+              //                   ),
+              //                 ),
+              //               );
+              //             },
+              //           );
+              //         },
+              //         child: Row(
+              //           children: [
+              //             Text(
+              //               ReminderState().selectedSound,
+              //               style: const TextStyle(
+              //                 fontSize: 15,
+              //                 fontWeight: FontWeight.w300,
+              //               ),
+              //             ),
+              //             const SizedBox(width: 2),
+              //             const Icon(
+              //               Icons.arrow_forward_ios_rounded,
+              //               size: 16,
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
               const Text(
                 'Medhecoin Wallet settings',
                 style: TextStyle(

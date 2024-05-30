@@ -244,8 +244,44 @@ class _HistoryScreenState extends State<HistoryScreen>
                 ),
               ),
               Padding(
+                padding: const EdgeInsets.only(top: 65.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: SizeMg.width(20),
+                    ),
+                    Text(
+                      'Regimen',
+                      style: TextStyle(
+                        color: AppColors.black,
+                        fontSize: SizeMg.text(14),
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    Text(
+                      'Dosage',
+                      style: TextStyle(
+                        color: AppColors.black,
+                        fontSize: SizeMg.text(14),
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    Text(
+                      'Date',
+                      style: TextStyle(
+                        color: AppColors.black,
+                        fontSize: SizeMg.text(14),
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: SizeMg.height(15)),
+              Padding(
                 padding: EdgeInsets.only(
-                  top: SizeMg.height(65),
+                  top: SizeMg.height(75),
                 ),
                 child: ListView.separated(
                   separatorBuilder: (ctx, index) {
