@@ -34,12 +34,12 @@ class ReminderState extends ChangeNotifier {
 
   ReminderState() {
     _loadMedcoin();
-    _loadHistoryList();
+    loadHistoryList();
   }
 
-  Future<void> _loadHistoryList() async {
+  Future<void> loadHistoryList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> historyJson = prefs.getStringList('historyList') ?? [];
+    List<String> historyJson = prefs.getStringList('history_list') ?? [];
     _historyList = historyJson
         .map((json) => HistoryModel.fromJson(jsonDecode(json)))
         .toList();
@@ -50,7 +50,7 @@ class ReminderState extends ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> historyJson =
         _historyList.map((model) => jsonEncode(model.toJson())).toList();
-    await prefs.setStringList('historyList', historyJson);
+    await prefs.setStringList('history_list', historyJson);
   }
 
   void addHistory(HistoryModel history) {

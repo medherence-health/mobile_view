@@ -15,33 +15,33 @@ class PieChartWidget extends StatelessWidget {
         color: AppColors.success,
         value: adherenceData[AdherenceStatus.early]!.toDouble(),
         title: '${adherenceData[AdherenceStatus.early]}%',
-        radius: 60,
+        radius: 120,
         titleStyle: TextStyle(
-            fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+            fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
       ),
       PieChartSectionData(
         color: AppColors.warning,
         value: adherenceData[AdherenceStatus.late]!.toDouble(),
         title: '${adherenceData[AdherenceStatus.late]}%',
-        radius: 60,
+        radius: 120,
         titleStyle: TextStyle(
-            fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+            fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
       ),
       PieChartSectionData(
         color: AppColors.error,
         value: adherenceData[AdherenceStatus.missed]!.toDouble(),
         title: '${adherenceData[AdherenceStatus.missed]}%',
-        radius: 60,
+        radius: 120,
         titleStyle: TextStyle(
-            fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+            fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.black),
       ),
     ];
 
     return PieChart(
       PieChartData(
         sections: sections,
-        centerSpaceRadius: 40,
-        sectionsSpace: 2,
+        centerSpaceRadius: 0,
+        sectionsSpace: 10,
         borderData: FlBorderData(show: false),
       ),
     );

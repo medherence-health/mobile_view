@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'regimen_model.dart';
 
 enum AdherenceStatus {
@@ -32,17 +31,21 @@ class HistoryModel {
   });
 
   factory HistoryModel.fromJson(Map<String, dynamic> json) {
+    // Adjust the parsing for 'time' field
+    List<String> timeParts = json['time'].split(':');
+    int hour = int.parse(timeParts[0]);
+    int minute = int.parse(timeParts[1]);
+
     return HistoryModel(
-      icon: IconData(json['icon'], fontFamily: 'MaterialIcons'),
+      icon: IconData(int.parse(json['icon'].toString()), fontFamily: 'MaterialIcons'),
       regimenName: json['regimenName'],
       dosage: json['dosage'],
       date: DateTime.parse(json['date']),
-      regimenDescription:
-          RegimenDescriptionModel.fromJson(json['regimenDescription']),
+      regimenDescription: RegimenDescriptionModel.fromJson(json['regimenDescription']),
       id: json['id'],
-      time: TimeOfDay.fromDateTime(DateTime.parse(json['time'])),
+      time: TimeOfDay(hour: hour, minute: minute),
       message: json['message'],
-      status: AdherenceStatus.values[json['status']],
+      status: AdherenceStatus.values[int.parse(json['status'].toString())],
     );
   }
 

@@ -1,7 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:medherence/core/shared_widget/buttons.dart';
+import 'package:medherence/core/utils/date_utils.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/model/models/history_model.dart';
@@ -163,10 +163,49 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                                 const SnackBar(
                                     content: Text('Pills taken successfully')),
                               );
-                              List<HistoryModel> updatedList = regimenList
-                                  .where((regimen) =>
-                                      !reminderState.isChecked(regimen))
-                                  .toList();
+                              // Get current date and time
+                              DateTime now = DateTime.now();
+
+                              // Update history list and regimen list
+                              List<HistoryModel> updatedList =
+                                  regimenList.where((regimen) {
+                                if (reminderState.isChecked(regimen)) {
+                                  DateTime regimenTime = DateTime(
+                                    regimen.date.year,
+                                    regimen.date.month,
+                                    regimen.date.day,
+                                    regimen.time.hour,
+                                    regimen.time.minute,
+                                  );
+                                  AdherenceStatus status;
+                                  if (now.isBefore(regimenTime) ||
+                                      now.isAtSameMomentAs(regimenTime)) {
+                                    status = AdherenceStatus.early;
+                                  } else if (now.isAfter(regimenTime) &&
+                                      regimenTime.isSameDayAs(now)) {
+                                    status = AdherenceStatus.late;
+                                  } else {
+                                    status = AdherenceStatus.missed;
+                                  }
+
+                                  regimen.status = status;
+
+                                  reminderState.addHistory(HistoryModel(
+                                    icon: regimen.icon,
+                                    regimenName: regimen.regimenName,
+                                    dosage: regimen.dosage,
+                                    date: regimen.date,
+                                    regimenDescription:
+                                        regimen.regimenDescription,
+                                    id: regimen.id,
+                                    time: regimen.time,
+                                    message: regimen.message,
+                                    status: regimen.status,
+                                  ));
+                                  return false;
+                                }
+                                return true;
+                              }).toList();
                               reminderState.updateRegimenList(updatedList);
                               reminderState.clearCheckedItems();
                               showDialog(

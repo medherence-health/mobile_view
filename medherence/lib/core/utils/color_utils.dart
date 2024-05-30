@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class AppColors {
   static const Color mainPrimaryButton = Color.fromRGBO(171, 122, 26, 1);
   static const Color unToggledColor = Color.fromRGBO(209, 221, 238, 1);
-  static const Color success = Color.fromRGBO(21, 168, 79, 1);
-  static const Color error = Color.fromRGBO(234, 90, 92, 1);
+  static const Color success = Color.fromRGBO(33, 150, 83, 1);
+  static const Color error = Color.fromRGBO(235, 87, 87, 1);
   static const Color warning = Color.fromRGBO(242, 201, 76, 1);
   static const Color pressedButton = Color.fromRGBO(142, 102, 22, 1);
   static const Color black = Colors.black;

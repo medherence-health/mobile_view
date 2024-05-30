@@ -50,7 +50,16 @@ List<HistoryModel> generateSimulatedData() {
     final now = DateTime.now();
     final notificationTime =
         TimeOfDay(hour: random.nextInt(12) + 1, minute: random.nextInt(60));
-    final futureDateTime = now.add(Duration(days: random.nextInt(30)));
+    DateTime yesterday = now.subtract(Duration(days: 1));
+    DateTime fiveDaysFromNow = now.add(Duration(days: 5));
+
+// Generate a random number of days within the desired range (1 to 5)
+    int randomDays =
+        random.nextInt(fiveDaysFromNow.difference(yesterday).inDays) + 1;
+
+// Calculate the future date by adding the random days to yesterday
+    final futureDateTime = yesterday.add(Duration(days: randomDays));
+    // final futureDateTime = now.add(Duration(days: random.nextInt(30)));
 
     int id = index + 1;
     String message = '$randomDosage of $randomRegimenName medication';
