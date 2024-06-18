@@ -13,7 +13,6 @@ Medherence is a Flutter project designed to improve medical adherence through a 
   - [Usage](#usage)
   - [Troubleshooting](#troubleshooting)
   - [Contributing](#contributing)
-  - [License](#license)
 
 ---
 
@@ -66,12 +65,12 @@ To run the Medherence app on your local machine, follow these steps:
    flutter pub get
 
 ## Usage
-Debugging on Device
-To debug and run Medherence on your device:
+ **Debugging on Device**
+ - To debug and run Medherence on your device:
 
-   **Connect Device**:
+ - **Connect Device**:
    Connect your Android/iOS device to your computer via USB and ensure USB debugging is enabled.
-   **Run Application**:
+ - **Run Application**:
     ```bash
     flutter run
    This command builds and deploys the application to your connected device.
@@ -95,5 +94,3 @@ To debug and run Medherence on your device:
 ## Contributing
  - Contributions to Medherence are welcome! If you find bugs, have feature requests, or want to contribute code, please submit an issue or a pull request on GitHub.
 
-## License
- - This project is licensed under the MIT License.
