@@ -56,7 +56,7 @@ To run the Medherence app on your local machine, follow these steps:
 
 1. **Clone Repository**:
    ```bash
-   git clone https://github.com/your_username/medherence.git
+   git clone https://github.com/medherence-health/mobile_view.git
 2. **Navigate to Project Directory**:
    ```bash
    cd medherence
