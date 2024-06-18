@@ -73,7 +73,7 @@ To run the Medherence app on your local machine, follow these steps:
  - **Run Application**:
     ```bash
     flutter run
-   This command builds and deploys the application to your connected device.
+This command builds and deploys the application to your connected device.
 
 
 ## Troubleshooting
