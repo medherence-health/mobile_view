@@ -18,7 +18,7 @@ Medherence is a Flutter project designed to improve medical adherence through a 
 
 ## Overview
 
-Medherence is a mobile application built with Flutter to enhance medical adherence. It helps users manage their medication schedules, set reminders, and maintain communication with healthcare providers or family members.
+Medherence is a mobile application built with Flutter to enhance medical adherence. It helps users manage their medication schedules, medication alarm reminders, regulation of proper use of medication and maintain communication with healthcare providers. 
 
 ---
 
