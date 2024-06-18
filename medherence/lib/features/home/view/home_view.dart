@@ -28,20 +28,15 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   bool _showHistory = false;
-  // final List<HistoryModel> _historyDataList = generateSimulatedData();
-  List<dynamic> history = [];
+  List<dynamic> history = []; // Initialize history list
 
-  // Function to show the history widget
-  void showHistory() {
-    setState(() {
-      _showHistory = true;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      // Check if password change is required on app start
+      checkPasswordChangePrompt();
     });
-  }
-
-  // Function to check if password has been successfully changed
-  Future<bool> isPasswordChanged() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('passwordChanged') ?? false;
   }
 
   // Function to show password change prompt if necessary
@@ -52,15 +47,20 @@ class _HomeViewState extends State<HomeView> {
     }
   }
 
+  // Function to check if password has been successfully changed
+  Future<bool> isPasswordChanged() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('passwordChanged') ?? false;
+  }
+
+  // Function to display password change prompt
   buildCompleteProfile() async {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (ctx) => SimpleDialog(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(
-            (15),
-          ),
+          borderRadius: BorderRadius.circular(15),
         ),
         children: [
           const SizedBox(height: 10),
@@ -75,19 +75,14 @@ class _HomeViewState extends State<HomeView> {
               ),
             ),
           ),
-          const SizedBox(
-            height: (20),
-          ),
+          const SizedBox(height: 20),
           const Padding(
-            padding: EdgeInsets.only(
-              left: 25.0,
-              right: 25.0,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 25.0),
             child: Text(
               'There is a need for you to change your password from the default password you were given to a personal one',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: (18),
+                fontSize: 18,
                 color: Colors.black87,
                 fontWeight: FontWeight.w400,
               ),
@@ -95,18 +90,14 @@ class _HomeViewState extends State<HomeView> {
           ),
           const SizedBox(height: 30),
           Padding(
-            padding: const EdgeInsets.only(
-              left: 15.0,
-              right: 15,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
             child: PrimaryButton(
               buttonConfig: ButtonConfig(
                 text: 'Change Password',
                 action: () {
-                  Navigator.of(context)
-                      .pushReplacement(MaterialPageRoute(builder: (context) {
-                    return const ChangePassword();
-                  }));
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => const ChangePassword(),
+                  ));
                 },
                 disabled: false,
               ),
@@ -116,20 +107,28 @@ class _HomeViewState extends State<HomeView> {
         ],
       ),
     );
-    await Future.delayed(
-      const Duration(
-        seconds: 5,
-      ),
-    );
+
+    // Delay dialog auto-dismissal
+    await Future.delayed(const Duration(seconds: 5));
   }
 
+  // Toggle variable for amount changed display
+  bool _amountChanged = false;
+
+  // Function to toggle the amount changed display
+  void toggleAmountChanged() {
+    setState(() {
+      _amountChanged = !_amountChanged;
+    });
+  }
+
+  // Update progress and title based on progress count
   int progress = 1;
   String title = 'ADB'; // Initial title
 
   void updateProgress() {
     setState(() {
       progress++;
-      // Update title based on progress
       if (progress == 1) {
         title = 'ADB';
       } else if (progress == 2) {
@@ -137,38 +136,15 @@ class _HomeViewState extends State<HomeView> {
       } else if (progress == 3) {
         title = 'Lt.';
       } else {
-        // Custom logic for further progress titles
         title = 'Master ${progress - 2}';
       }
     });
   }
 
-  bool _amountChanged = false; // Add this variable
-
-  // Function to toggle the amount changed
-  void toggleAmountChanged() {
-    setState(() {
-      _amountChanged = !_amountChanged;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // buildHistorySheet(
-      //   _historyDataList,
-      //   context,
-      // );
-      checkPasswordChangePrompt();
-      // await NotificationService(context).init();
-      // context.read<NotificationService>().scheduleAlarmsFromSavedReminders();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    SizeMg.init(context);
+    SizeMg.init(context); // Initialize size manager
+
     return Consumer<ReminderState>(builder: (context, reminderState, _) {
       List<HistoryModel> regimenList = reminderState.regimenList;
       int remainingMedications =
@@ -196,13 +172,10 @@ class _HomeViewState extends State<HomeView> {
           actions: [
             Padding(
               padding: EdgeInsets.only(
-                left: SizeMg.width(8),
-                right: SizeMg.width(8),
-              ),
+                  left: SizeMg.width(8), right: SizeMg.width(8)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Display dynamic title
                   NotificationWidget(
                     onPressed: () {
                       Navigator.push(
@@ -218,31 +191,15 @@ class _HomeViewState extends State<HomeView> {
           ],
         ),
         body: Padding(
-          padding: const EdgeInsets.only(
-            right: 20,
-            left: 20,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SizedBox(
-                  height: SizeMg.height(5),
-                ),
+                SizedBox(height: SizeMg.height(5)),
                 ProgressStreak(
                     progress: progress), // Display progress streak bar
-                SizedBox(
-                  height: SizeMg.height(20),
-                ),
-                // ElevatedButton(
-                //   onPressed: () {
-                //     // Simulate completion of an action
-                //     if (progress < 10) {
-                //       updateProgress();
-                //     }
-                //   },
-                //   child: Text('Complete Action'),
-                // ),
+                SizedBox(height: SizeMg.height(20)),
                 MedhecoinWidget(
                   onTap: toggleAmountChanged,
                   iconData: IconButton(
@@ -269,9 +226,7 @@ class _HomeViewState extends State<HomeView> {
                   coinTitle: coinTitle,
                   amount: amount,
                 ),
-                SizedBox(
-                  height: SizeMg.height(15),
-                ),
+                SizedBox(height: SizeMg.height(15)),
                 Text(
                   'Today\'s Medications',
                   style: TextStyle(
@@ -280,29 +235,26 @@ class _HomeViewState extends State<HomeView> {
                     fontSize: SizeMg.text(20),
                   ),
                 ),
-                const SizedBox(height: 5),
+                SizedBox(height: 5),
+                // Display message when regimenList is empty
                 if (regimenList.isEmpty)
-                  const Center(
+                  Center(
                     child: SizedBox(
                       height: 250,
                       width: 300,
                       child: Column(
                         children: [
-                          SizedBox(
-                            height: 100,
-                          ),
+                          SizedBox(height: 100),
                           Icon(
                             Icons.check_circle_outline_sharp,
                             color: AppColors.historyBackground,
                             size: 30,
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
+                          SizedBox(height: 10),
                           Text(
                             'Yayy, You have taken all medications for today',
                             style: TextStyle(
-                              fontSize: (18),
+                              fontSize: 18,
                               fontStyle: FontStyle.italic,
                               color: AppColors.noWidgetText,
                             ),
@@ -312,18 +264,14 @@ class _HomeViewState extends State<HomeView> {
                       ),
                     ),
                   ),
-
+                // Display regimen list
                 SizedBox(
                   child: ListView.separated(
                     shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount:
-                        remainingMedications, // the length of the data list
-                    separatorBuilder: (ctx, index) {
-                      return SizedBox(
-                        height: SizeMg.height(3),
-                      );
-                    },
+                    itemCount: remainingMedications,
+                    separatorBuilder: (ctx, index) =>
+                        SizedBox(height: SizeMg.height(3)),
                     itemBuilder: (context, index) {
                       HistoryModel regimenItem = regimenList[index];
                       return NextRegimen(itemModel: regimenItem);
@@ -332,27 +280,24 @@ class _HomeViewState extends State<HomeView> {
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: Visibility(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const HistoryScreen()));
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          top: 10,
-                          bottom: SizeMg.height(5.0),
-                        ),
-                        child: Text(
-                          'View Adherence History',
-                          style: TextStyle(
-                            color: AppColors.navBarColor,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: "Poppins-Bold.ttf",
-                            fontSize: SizeMg.text(18),
-                          ),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HistoryScreen()),
+                      );
+                    },
+                    child: Padding(
+                      padding:
+                          EdgeInsets.only(top: 10, bottom: SizeMg.height(5)),
+                      child: Text(
+                        'View Adherence History',
+                        style: TextStyle(
+                          color: AppColors.navBarColor,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: "Poppins-Bold.ttf",
+                          fontSize: SizeMg.text(18),
                         ),
                       ),
                     ),
@@ -366,15 +311,11 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
-  buildHistorySheet(
-    List<HistoryModel> historyList,
-    BuildContext context,
-  ) {
+  // Function to display history in a bottom sheet
+  buildHistorySheet(List<HistoryModel> historyList, BuildContext context) {
     showModalBottomSheet(
-      showDragHandle: true,
       context: context,
       barrierColor: Colors.transparent,
-      // enableDrag: true,
       isDismissible: false,
       scrollControlDisabledMaxHeightRatio: 0.5,
       isScrollControlled: true,
@@ -388,11 +329,9 @@ class _HomeViewState extends State<HomeView> {
             expand: false,
             builder: (context, scrollController) {
               if (historyList.isEmpty) {
-                return const Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 30.0,
-                    vertical: 10,
-                  ),
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 30.0, vertical: 10),
                   child: Stack(
                     children: [
                       Padding(
@@ -412,20 +351,16 @@ class _HomeViewState extends State<HomeView> {
                           width: 180,
                           child: Column(
                             children: [
-                              SizedBox(
-                                height: 20,
-                              ),
+                              SizedBox(height: 20),
                               Icon(
                                 Icons.folder_off_outlined,
                                 color: AppColors.noWidgetText,
                               ),
-                              SizedBox(
-                                height: 10,
-                              ),
+                              SizedBox(height: 10),
                               Text(
                                 'You have no adherence history',
                                 style: TextStyle(
-                                  fontSize: (20),
+                                  fontSize: 20,
                                   fontStyle: FontStyle.italic,
                                   color: AppColors.noWidgetText,
                                 ),
@@ -440,13 +375,11 @@ class _HomeViewState extends State<HomeView> {
                 );
               }
               return Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 30.0,
-                  vertical: 15,
-                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30.0, vertical: 15),
                 child: Stack(
                   children: [
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.only(top: 25.0),
                       child: Text(
                         'History',
@@ -461,15 +394,11 @@ class _HomeViewState extends State<HomeView> {
                       padding: const EdgeInsets.only(top: 50.0),
                       child: Column(
                         children: [
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          const Row(
+                          SizedBox(height: 20),
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              SizedBox(
-                                width: 20,
-                              ),
+                              SizedBox(width: 20),
                               Text(
                                 'Regimen',
                                 style: TextStyle(
@@ -496,18 +425,14 @@ class _HomeViewState extends State<HomeView> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: 10),
                           Expanded(
                             child: ListView.separated(
                               shrinkWrap: true,
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              itemCount: historyList
-                                  .length, // Use the length of your data list
-                              separatorBuilder: (ctx, index) {
-                                return const SizedBox(
-                                  height: (13),
-                                );
-                              },
+                              physics: AlwaysScrollableScrollPhysics(),
+                              itemCount: historyList.length,
+                              separatorBuilder: (ctx, index) =>
+                                  SizedBox(height: 13),
                               itemBuilder: (context, index) {
                                 final item = historyList[index];
                                 final formattedMonth =
@@ -526,9 +451,8 @@ class _HomeViewState extends State<HomeView> {
                                   },
                                   child: Container(
                                     height: 55,
-                                    margin:
-                                        const EdgeInsets.symmetric(vertical: 5),
-                                    padding: const EdgeInsets.only(left: 10),
+                                    margin: EdgeInsets.symmetric(vertical: 5),
+                                    padding: EdgeInsets.only(left: 10),
                                     decoration: BoxDecoration(
                                       color: Colors.grey[200],
                                       borderRadius: BorderRadius.circular(10),
@@ -538,8 +462,7 @@ class _HomeViewState extends State<HomeView> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 15.0),
+                                          padding: EdgeInsets.only(left: 15.0),
                                           child: Icon(
                                             item.icon,
                                             size: 24,
@@ -548,7 +471,7 @@ class _HomeViewState extends State<HomeView> {
                                         ),
                                         Text(
                                           item.regimenName,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             color: AppColors.black,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w500,
@@ -556,7 +479,7 @@ class _HomeViewState extends State<HomeView> {
                                         ),
                                         Text(
                                           item.dosage,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             color: AppColors.darkGrey,
                                             fontSize: 13,
                                             fontWeight: FontWeight.w400,
@@ -564,23 +487,18 @@ class _HomeViewState extends State<HomeView> {
                                         ),
                                         Container(
                                           width: 45,
-                                          decoration: const BoxDecoration(
+                                          decoration: BoxDecoration(
                                             borderRadius: BorderRadius.only(
-                                              topRight: Radius.circular(
-                                                (10),
-                                              ),
-                                              bottomRight: Radius.circular(
-                                                (10),
-                                              ),
+                                              topRight: Radius.circular(10),
+                                              bottomRight: Radius.circular(10),
                                             ),
                                             color: AppColors.mainPrimaryButton,
                                           ),
-                                          // color: AppColors.green,
                                           child: Column(
                                             children: [
                                               Text(
                                                 item.date.day.toString(),
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   color: AppColors.white,
                                                   fontSize: 20,
                                                   fontWeight: FontWeight.w500,
@@ -588,7 +506,7 @@ class _HomeViewState extends State<HomeView> {
                                               ),
                                               Text(
                                                 formattedMonth.toString(),
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   color: AppColors.white,
                                                   fontSize: 14,
                                                 ),
@@ -606,7 +524,6 @@ class _HomeViewState extends State<HomeView> {
                         ],
                       ),
                     ),
-                    // buildHistorySheet(historyList, context),
                   ],
                 ),
               );
@@ -636,11 +553,7 @@ class NextRegimen extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(
-            top: 10.0,
-            left: 20,
-            right: 20,
-          ),
+          padding: const EdgeInsets.only(top: 10.0, left: 20, right: 20),
           child: Row(
             children: [
               Padding(
@@ -656,30 +569,30 @@ class NextRegimen extends StatelessWidget {
                 children: [
                   Text(
                     itemModel.regimenName,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: AppColors.black,
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  const SizedBox(height: 2),
+                  SizedBox(height: 2),
                   Text(
                     itemModel.dosage,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: AppColors.darkGrey,
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  const SizedBox(height: 6),
+                  SizedBox(height: 6),
                   Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.alarm,
                         color: AppColors.navBarColor,
                         size: 14,
                       ),
-                      const SizedBox(width: 10),
+                      SizedBox(width: 10),
                       Text(
                         DateFormat('hh:mm a').format(DateTime(
                           DateTime.now().year,
@@ -696,19 +609,17 @@ class NextRegimen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 5),
+                  SizedBox(height: 5),
                 ],
               ),
-              const Spacer(),
+              Spacer(),
               InkWell(
                 onTap: () {
                   debugPrint('Regimen taken');
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const GetDashboardView(
-                        dashboardIndex: 1,
-                      ),
+                      builder: (context) => GetDashboardView(dashboardIndex: 1),
                     ),
                   );
                 },

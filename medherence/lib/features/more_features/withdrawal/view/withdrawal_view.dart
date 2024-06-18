@@ -12,6 +12,7 @@ import '../../../../core/utils/utils.dart';
 import '../../../monitor/view_model/reminder_view_model.dart';
 import '../widget/confirmation_widget.dart';
 
+/// View for initiating Medhecoin withdrawal, including form and confirmation.
 class MedhecoinWithdrawalView extends StatefulWidget {
   const MedhecoinWithdrawalView({super.key});
 
@@ -30,16 +31,6 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
   bool showConfirmation = false;
 
   final _formKey = GlobalKey<FormState>();
-  void navigateToNext() {
-    if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Account verified'),
-        ),
-      );
-      // Navigator.pop(context);
-    }
-  }
 
   @override
   void initState() {
@@ -60,7 +51,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
     SizeMg.init(context);
     final availableMedcoin =
         Provider.of<ReminderState>(context, listen: false).medcoin;
-    final eqivalentMedcoin =
+    final equivalentMedcoin =
         Provider.of<ReminderState>(context, listen: false).medcoinInNaira;
     return Consumer<WalletViewModel>(
       builder: (context, model, child) => Scaffold(
@@ -83,7 +74,8 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                 Navigator.pop(context);
               }
             },
-            icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.navBarColor),
+            icon: const Icon(Icons.arrow_back_ios_new,
+                color: AppColors.navBarColor),
           ),
         ),
         resizeToAvoidBottomInset: false,
@@ -96,6 +88,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
     );
   }
 
+  /// Builds the withdrawal form UI.
   Widget buildWithdrawalForm(WalletViewModel model, int? availableMedcoin) {
     final savedAccount = Provider.of<WalletViewModel>(context, listen: false);
     return Stack(
@@ -127,7 +120,8 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (ctx, index) {
-                              final item = savedAccount.savedAccountModelList[index];
+                              final item =
+                                  savedAccount.savedAccountModelList[index];
                               return Column(
                                 children: [
                                   CircleAvatar(
@@ -158,7 +152,8 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                             separatorBuilder: (ctx, index) => SizedBox(
                               height: SizeMg.width(15),
                             ),
-                            itemCount: savedAccount.savedAccountModelList.length,
+                            itemCount:
+                                savedAccount.savedAccountModelList.length,
                           ),
                         )
                       ],
@@ -182,8 +177,8 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                       hintStyle: kFormTextDecoration.hintStyle,
                       hintText: 'Select Destination Bank',
                       filled: true,
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 12),
                       border: kFormTextDecoration.border,
                       focusedBorder: kFormTextDecoration.focusedBorder,
                     ),
@@ -412,37 +407,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
     );
   }
 
-  // Widget buildConfirmWithdrawal(WalletViewModel model, int? balance) {
-  //   String? validationError = model.validateWithdrawal(balance);
-  //   if (validationError != null) {
-  //     // Show error message if validation fails
-  //     return CupertinoAlertDialog(
-  //       title: Text('Error'),
-  //       content: Text(validationError),
-  //       actions: [
-  //         TextButton(
-  //           onPressed: () {
-  //             Navigator.of(context).pop();
-  //           },
-  //           child: Text('OK'),
-  //         ),
-  //       ],
-  //     );
-  //   }
-
-  //   return ConfirmWithdrawal(
-  //     amount: model.amount?.toStringAsFixed(2) ?? '-----',
-  //     transferFee: model.transferFee.toStringAsFixed(2),
-  //     totalAmount: model.totalAmount?.toStringAsFixed(2) ?? '-----',
-  //     receiverName: model.accountOwnerName ??
-  //         'Joe Stephens ${_accountNumberController.text.trim()}',
-  //     bankName: model.selectedBank ?? '',
-  //     amountEquivalence:
-  //         model.amountInNaira.toStringAsFixed(2), // Naira equivalency
-  //     dateTime: StringUtils.checkToday(DateTime.now()),
-  //   );
-  // }
-
+  /// Builds the confirmation UI for withdrawal.
   Widget buildConfirmWithdrawal(WalletViewModel model) {
     return ConfirmWithdrawal(
       amount: model.amount?.toStringAsFixed(2) ?? '-----',
@@ -456,6 +421,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
     );
   }
 
+  /// Widget for displaying checkout details.
   Widget checkOutContainer({
     WalletViewModel? model,
     required String amount,

@@ -63,7 +63,6 @@ class _OnboardingViewState extends State<OnboardingView> {
                 color: AppColors.offWhite,
                 child: Image.asset(
                   onBoardingImages[index],
-                  // height: (300),
                   fit: BoxFit.contain,
                   width: SizeMg.screenWidth,
                 ),

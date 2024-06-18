@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -24,27 +23,14 @@ class NotificationService extends ChangeNotifier {
 
   // Constructor to pass the BuildContext
   NotificationService();
-  // GetData() async {
-  //   preferences = await SharedPreferences.getInstance();
-  //   List<String>? cominglist = await preferences.getStringList("data");
-  //   if (cominglist == null) {
-  //   } else {
-  //     modelList =
-  //         cominglist.map((e) => HistoryModel.fromJson(json.decode(e))).toList();
-  //     debugPrint('Model list is $modelList');
-  //     notifyListeners();
-  //   }
-  // }
 
-  // SetData() {
-  //   List<String> listofstring =
-  //       modelList.map((e) => json.encode(e.toJson())).toList();
-  //   preferences.setStringList("data", listofstring);
-  //   notifyListeners();
-  // }
-
+  /// Initialize the notification service.
+  ///
+  /// This method initializes the local notifications plugin with settings for both Android and iOS.
+  /// It also schedules alarms from saved reminders.
   Future<void> init() async {
-    var androidInitilize = const AndroidInitializationSettings('@mipmap/ic_launcher');
+    var androidInitilize =
+        const AndroidInitializationSettings('@mipmap/ic_launcher');
     var iOSinitilize = const DarwinInitializationSettings();
     var initilizationsSettings =
         InitializationSettings(android: androidInitilize, iOS: iOSinitilize);
@@ -55,43 +41,23 @@ class NotificationService extends ChangeNotifier {
     await scheduleAlarmsFromSavedReminders();
   }
 
+  /// Handles notification response.
+  ///
+  /// This method handles the action to be performed when a notification is received.
+  /// It navigates to the dashboard view upon receiving a notification.
   void onDidReceiveNotificationResponse(
       NotificationResponse notificationResponse) async {
     final String? payload = notificationResponse.payload;
     if (notificationResponse.payload != null) {
       debugPrint('notification payload: $payload');
     }
-    await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const DashboardView()));
+    await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const DashboardView()));
   }
 
-  // void onDidReceiveNotificationResponse(
-  //   NotificationResponse notificationResponse,
-  // ) async {
-  //   final String? payload = notificationResponse.payload;
-  //   if (notificationResponse.payload != null) {
-  //     debugPrint('notification payload: $payload');
-  //     // Parse the payload to get the ID of the reminder
-  //     int reminderId = int.parse(payload!); // Assuming the payload is the ID
-  //     // Find the corresponding HistoryModel instance
-  //     HistoryModel? model = modelList.firstWhere(
-  //       (element) => element.id == reminderId,
-  //     );
-  //     if (model != null) {
-  //       // If the model is found, navigate to the AlarmMonitor with the corresponding data
-  //       await Navigator.pushReplacement(
-  //         context,
-  //         MaterialPageRoute<void>(
-  //           builder: (context) => AlarmMonitor(
-  //             subtitle: model.message,
-  //             regimen: model.regimenName,
-  //           ),
-  //         ),
-  //       );
-  //     }
-  //   }
-  // }
-
+  /// Displays a notification immediately.
+  ///
+  /// This method configures and shows a notification with the specified details.
   ShowNotification() async {
     AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails(
@@ -126,6 +92,9 @@ class NotificationService extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Schedules alarms from saved reminders.
+  ///
+  /// This method iterates through the list of reminders and schedules notifications for each.
   Future<void> scheduleAlarmsFromSavedReminders() async {
     for (var reminder in modelList) {
       scheduleNotification(reminder);
@@ -135,17 +104,16 @@ class NotificationService extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Schedules a notification for a specific reminder.
+  ///
+  /// This method schedules a notification to be shown at the time specified in the reminder.
   Future<void> scheduleNotification(HistoryModel reminder) async {
     int notificationId = reminder.id;
-    // Get current date and time
     final now = DateTime.now();
-    // var targetTime;
     var futureDateTime = reminder.date;
 
-    // Check for past time (optional)
     if (futureDateTime.isBefore(now)) {
       return;
-      // futureDateTime = futureDateTime.add(const Duration(days: 1));
     }
     int newTime = futureDateTime.millisecondsSinceEpoch -
         DateTime.now().millisecondsSinceEpoch;
@@ -180,43 +148,23 @@ class NotificationService extends ChangeNotifier {
       ),
       payload: notificationId.toString(),
       androidScheduleMode: AndroidScheduleMode.alarmClock,
-      // androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
     );
     notifyListeners();
   }
 
+  /// Cancels a scheduled notification.
+  ///
+  /// This method cancels a scheduled notification with the specified notification ID.
   Future<void> cancelNotification(int notificationId) async {
     await flutterLocalNotificationsPlugin!.cancel(notificationId);
   }
 
-  // Callback function for the action
+  /// Stops the alarm action for a specific notification.
+  ///
+  /// This method stops the alarm associated with the given notification ID.
   Future<void> stopAlarmAction(int notificationId) async {
-    // Stop the alarm here
-    // For example:
     await AndroidAlarmManager.cancel(notificationId);
   }
 }
-
-//     final String formattedTimeString = DateFormat('hh:mm a').format(DateTime(
-//       DateTime.now().year,
-//       DateTime.now().month,
-//       DateTime.now().day,
-//       reminder.time.hour,
-//       reminder.time.minute,
-//     ));
-
-// // Optional: Parse formatted string back to DateTime (for readability)
-//     DateTime scheduledTime;
-//     try {
-//       scheduledTime = DateTime.parse(formattedTimeString);
-//     } catch (e) {
-//       // Handle parsing error
-//       return;
-//     }
-
-// // Calculate milliseconds difference
-//     final int addNewTime = scheduledTime.millisecondsSinceEpoch -
-//         DateTime.now().millisecondsSinceEpoch;
-

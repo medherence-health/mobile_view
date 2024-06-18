@@ -31,17 +31,19 @@ class HistoryModel {
   });
 
   factory HistoryModel.fromJson(Map<String, dynamic> json) {
-    // Adjust the parsing for 'time' field
+    // Adjusting the parsing for 'time' field
     List<String> timeParts = json['time'].split(':');
     int hour = int.parse(timeParts[0]);
     int minute = int.parse(timeParts[1]);
 
     return HistoryModel(
-      icon: IconData(int.parse(json['icon'].toString()), fontFamily: 'MaterialIcons'),
+      icon: IconData(int.parse(json['icon'].toString()),
+          fontFamily: 'MaterialIcons'),
       regimenName: json['regimenName'],
       dosage: json['dosage'],
       date: DateTime.parse(json['date']),
-      regimenDescription: RegimenDescriptionModel.fromJson(json['regimenDescription']),
+      regimenDescription:
+          RegimenDescriptionModel.fromJson(json['regimenDescription']),
       id: json['id'],
       time: TimeOfDay(hour: hour, minute: minute),
       message: json['message'],

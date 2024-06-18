@@ -13,13 +13,14 @@ class AboutScreenView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Initialize the SizeMg class with the context
     SizeMg.init(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'About',
           style: TextStyle(
-            fontSize: SizeMg.text(25),
+            fontSize: SizeMg.text(25), // Set the font size using SizeMg
             fontWeight: FontWeight.w600,
             fontFamily: "Poppins-bold.ttf",
           ),
@@ -28,22 +29,27 @@ class AboutScreenView extends StatelessWidget {
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
+            // Navigate back to the previous screen
             Navigator.pop(context);
           },
           icon: const Icon(Icons.arrow_back_ios_new),
         ),
       ),
       body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context)
+            .size
+            .height, // Set the height to match the screen height
+        width: MediaQuery.of(context)
+            .size
+            .width, // Set the width to match the screen width
         decoration: const BoxDecoration(
-          color: AppColors.white,
+          color: AppColors.white, // Set the background color
         ),
         child: Padding(
           padding: EdgeInsets.only(
-            left: SizeMg.width(15),
-            right: SizeMg.width(15),
-            top: SizeMg.height(44),
+            left: SizeMg.width(15), // Set left padding using SizeMg
+            right: SizeMg.width(15), // Set right padding using SizeMg
+            top: SizeMg.height(44), // Set top padding using SizeMg
           ),
           child: Column(
             children: [
@@ -53,23 +59,23 @@ class AboutScreenView extends StatelessWidget {
                 icon: Icons.arrow_forward_ios_rounded,
                 onPressed: () {
                   // Navigate to app version control screen
-                  // ScaffoldMessenger.of(context).showSnackBar(snackbar);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const AppVersionView()),
+                    MaterialPageRoute(
+                        builder: (context) => const AppVersionView()),
                   );
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Image.asset(
                     ImageUtils.appVersionIcon,
-                    height: SizeMg.height(24),
-                    width: SizeMg.width(24),
+                    height: SizeMg.height(24), // Set the height using SizeMg
+                    width: SizeMg.width(24), // Set the width using SizeMg
                   ),
                 ),
               ),
               SizedBox(
-                height: SizeMg.height(15),
+                height: SizeMg.height(15), // Add vertical spacing using SizeMg
               ),
               AboutWidget(
                 icon: Icons.arrow_forward_ios_rounded,
@@ -77,7 +83,6 @@ class AboutScreenView extends StatelessWidget {
                 subtitle: 'Data collection, usage and protection',
                 onPressed: () {
                   // Navigate to privacy policy screen
-                  // ScaffoldMessenger.of(context).showSnackBar(snackbar);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -88,8 +93,8 @@ class AboutScreenView extends StatelessWidget {
                     padding: const EdgeInsets.all(8),
                     child: Image.asset(
                       ImageUtils.privacyPolicyIcon,
-                      height: SizeMg.height(24),
-                      width: SizeMg.width(24),
+                      height: SizeMg.height(24), // Set the height using SizeMg
+                      width: SizeMg.width(24), // Set the width using SizeMg
                     )),
               ),
               const SizedBox(
@@ -101,23 +106,23 @@ class AboutScreenView extends StatelessWidget {
                 subtitle: 'Learn more about Medherence Ltd.',
                 onPressed: () {
                   // Navigate to about app screen
-                  // ScaffoldMessenger.of(context).showSnackBar(snackbar);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const AboutAppView()),
+                    MaterialPageRoute(
+                        builder: (context) => const AboutAppView()),
                   );
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8),
                   child: Image.asset(
                     ImageUtils.medherenceAppIcon,
-                    height: SizeMg.height(24),
-                    width: SizeMg.width(24),
+                    height: SizeMg.height(24), // Set the height using SizeMg
+                    width: SizeMg.width(24), // Set the width using SizeMg
                   ),
                 ),
               ),
               SizedBox(
-                height: SizeMg.height(15),
+                height: SizeMg.height(15), // Add vertical spacing using SizeMg
               ),
             ],
           ),

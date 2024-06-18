@@ -145,35 +145,7 @@ class _HistoryScreenState extends State<HistoryScreen>
         return analyticsBuilder(historyState);
       default:
         return Builder(builder: (ctx) {
-          return Center(
-            child: SizedBox(
-              height: SizeMg.height(150),
-              width: SizeMg.width(180),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: SizeMg.height(20),
-                  ),
-                  const Icon(
-                    Icons.folder_off_outlined,
-                    color: AppColors.noWidgetText,
-                  ),
-                  SizedBox(
-                    height: SizeMg.height(10),
-                  ),
-                  Text(
-                    'You have new adherence history',
-                    style: TextStyle(
-                      fontSize: SizeMg.text(20),
-                      fontStyle: FontStyle.italic,
-                      color: AppColors.noWidgetText,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-          );
+          return _buildEmptyState();
         });
     }
   }
@@ -188,37 +160,7 @@ class _HistoryScreenState extends State<HistoryScreen>
             vertical: SizeMg.height(10),
           ),
           child: Stack(
-            children: [
-              Center(
-                child: SizedBox(
-                  height: SizeMg.height(150),
-                  width: SizeMg.width(180),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: SizeMg.height(20),
-                      ),
-                      const Icon(
-                        Icons.folder_off_outlined,
-                        color: AppColors.noWidgetText,
-                      ),
-                      SizedBox(
-                        height: SizeMg.height(10),
-                      ),
-                      Text(
-                        'You have no adherence history',
-                        style: TextStyle(
-                          fontSize: SizeMg.text(20),
-                          fontStyle: FontStyle.italic,
-                          color: AppColors.noWidgetText,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+            children: [_buildEmptyState()],
           ),
         );
       }
@@ -398,130 +340,11 @@ class _HistoryScreenState extends State<HistoryScreen>
     });
   }
 
-  // Builder historyListBuilder(List<HistoryModel> historyList) {
-  //   return Builder(builder: (ctx) {
-  //     return SizedBox(
-  //       width: SizeMg.screenWidth,
-  //       height: MediaQuery.of(context).size.height,
-  //       child: Padding(
-  //         padding: EdgeInsets.symmetric(
-  //           horizontal: SizeMg.width(30),
-  //           vertical: SizeMg.height(15),
-  //         ),
-  //         child: Stack(
-  //           children: [
-  //             Padding(
-  //               padding: EdgeInsets.only(top: SizeMg.height(25)),
-  //               child: Text(
-  //                 'All',
-  //                 style: TextStyle(
-  //                   color: AppColors.black,
-  //                   fontSize: SizeMg.text(25),
-  //                   fontWeight: FontWeight.w500,
-  //                 ),
-  //               ),
-  //             ),
-
-  //             Padding(
-  //               padding: const EdgeInsets.only(top: 50.0),
-  //               child: Column(
-  //                 children: [
-  //                   SizedBox(
-  //                     height: SizeMg.height(20),
-  //                   ),
-  //                   Row(
-  //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                     children: [
-  //                       SizedBox(
-  //                         width: SizeMg.width(20),
-  //                       ),
-  //                       Text(
-  //                         'Regimen',
-  //                         style: TextStyle(
-  //                           color: AppColors.black,
-  //                           fontSize: SizeMg.text(14),
-  //                           fontWeight: FontWeight.w400,
-  //                         ),
-  //                       ),
-  //                       Text(
-  //                         'Dosage',
-  //                         style: TextStyle(
-  //                           color: AppColors.black,
-  //                           fontSize: SizeMg.text(14),
-  //                           fontWeight: FontWeight.w400,
-  //                         ),
-  //                       ),
-  //                       Text(
-  //                         'Date',
-  //                         style: TextStyle(
-  //                           color: AppColors.black,
-  //                           fontSize: SizeMg.text(14),
-  //                           fontWeight: FontWeight.w400,
-  //                         ),
-  //                       ),
-  //                     ],
-  //                   ),
-  //                   SizedBox(height: SizeMg.height(5)),
-  //                   Expanded(
-  //                     child: ListView.separated(
-  //                       shrinkWrap: true,
-  //                       physics: const BouncingScrollPhysics(),
-  //                       itemCount: historyList
-  //                           .length, // Use the length of your data list
-  //                       separatorBuilder: (ctx, index) {
-  //                         return SizedBox(
-  //                           height: SizeMg.height(8),
-  //                         );
-  //                       },
-  //                       itemBuilder: (context, index) {
-  //                         final item = historyList[index];
-  //                         final formattedMonth =
-  //                             DateFormat('MMM').format(item.date);
-  //                         return InkWell(
-  //                           onTap: () {
-  //                             Navigator.push(
-  //                               context,
-  //                               MaterialPageRoute(
-  //                                 builder: (context) => MedicationDetailsScreen(
-  //                                   title: item.regimenName,
-  //                                 ),
-  //                               ),
-  //                             );
-  //                           },
   Widget analyticsBuilder(ReminderState reminderState) {
     return Builder(builder: (ctx) {
       List<HistoryModel> historyList = reminderState.historyList;
       if (historyList.isEmpty) {
-        return Center(
-          child: SizedBox(
-            height: SizeMg.height(350),
-            width: SizeMg.width(180),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: SizeMg.height(100),
-                ),
-                const Icon(
-                  Icons.folder_off_outlined,
-                  color: AppColors.noWidgetText,
-                ),
-                SizedBox(
-                  height: SizeMg.height(10),
-                ),
-                Text(
-                  'You have no adherence analytics history available',
-                  style: TextStyle(
-                    fontSize: SizeMg.text(20),
-                    fontStyle: FontStyle.italic,
-                    color: AppColors.noWidgetText,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-        );
+        return _buildEmptyState();
       }
 
       Map<AdherenceStatus, int> adherenceData =
@@ -709,5 +532,44 @@ class _HistoryScreenState extends State<HistoryScreen>
       AdherenceStatus.late: lateCount,
       AdherenceStatus.missed: missedCount,
     };
+  }
+
+  /// Returns an empty state widget when no data is available.
+  Widget _buildEmptyState() {
+    return Center(
+      child: SizedBox(
+        height: SizeMg.height(150),
+        width: SizeMg.width(180),
+        child: Column(
+          children: [
+            SizedBox(
+              height: SizeMg.height(20),
+            ),
+            const Icon(
+              Icons.folder_off_outlined,
+              color: AppColors.noWidgetText,
+            ),
+            SizedBox(
+              height: SizeMg.height(10),
+            ),
+            Text(
+              'You have new adherence history',
+              style: TextStyle(
+                fontSize: SizeMg.text(20),
+                fontStyle: FontStyle.italic,
+                color: AppColors.noWidgetText,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 }

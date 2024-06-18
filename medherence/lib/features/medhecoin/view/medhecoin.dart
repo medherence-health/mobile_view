@@ -22,9 +22,9 @@ class MedhecoinScreen extends StatefulWidget {
 }
 
 class _MedhecoinScreenState extends State<MedhecoinScreen> {
-  bool _amountChanged = false; // Add this variable
+  bool _amountChanged = false; // Track if amount display is changed
 
-  // Function to toggle the amount changed
+  // Toggle function for changing amount display
   void toggleAmountChanged() {
     setState(() {
       _amountChanged = !_amountChanged;
@@ -35,9 +35,11 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
   Widget build(BuildContext context) {
     ReminderState reminderState = Provider.of<ReminderState>(context);
 
+    // Retrieve Medhecoin balance and amount in Naira from provider
     int medcoinBalance = reminderState.medcoin;
     double medcoinInNaira = reminderState.medcoinInNaira;
 
+    // Determine displayed title and amount based on toggle state
     String coinTitle = _amountChanged ? 'Amount in Naira' : 'Amount in MDHC';
     String amount = _amountChanged
         ? medcoinInNaira.toStringAsFixed(2)
@@ -55,10 +57,11 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
+            // Navigate back to DashboardView on back arrow tap
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => const DashboardView()),
-                (Route<dynamic> route) => false);
-            // Navigator.pop(context);
+              MaterialPageRoute(builder: (context) => const DashboardView()),
+              (Route<dynamic> route) => false,
+            );
           },
           icon: const Icon(Icons.arrow_back_ios_new),
         ),
@@ -67,6 +70,7 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
             padding: const EdgeInsets.only(right: 10),
             child: CupertinoButton(
               onPressed: () {
+                // Navigate to MedWalletPin on settings button tap
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const MedWalletPin()),
@@ -82,16 +86,13 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
       ),
       body: Consumer<WalletViewModel>(
         builder: (context, model, _) => Padding(
-          padding: const EdgeInsets.only(
-            left: 25.0,
-            right: 25,
-            bottom: 10,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
           child: SingleChildScrollView(
             physics: const ClampingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                // Display Medhecoin amount widget with toggle functionality
                 MedhecoinWidget(
                   onTap: toggleAmountChanged,
                   iconData: null,
@@ -101,35 +102,34 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                   amount: amount,
                 ),
                 const SizedBox(height: 15),
+                // Display progress and withdrawal chances
                 FittedBox(
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 5.0,
-                      right: 5,
-                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        // Progress display
                         RichText(
                           text: const TextSpan(
                             text: 'Progress:',
                             style: TextStyle(
-                              fontSize: (5),
+                              fontSize: 15,
                               fontWeight: FontWeight.w400,
                               color: AppColors.black,
                             ),
                             children: [
                               TextSpan(
-                                text: ' 0',
+                                text: ' 0', // Placeholder for actual progress
                                 style: TextStyle(
-                                  fontSize: (6),
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
-                              TextSpan(
-                                text: '/30',
+                              const TextSpan(
+                                text: '/30', // Placeholder for total progress
                                 style: TextStyle(
-                                  fontSize: (5),
+                                  fontSize: 15,
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
@@ -137,19 +137,20 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                           ),
                         ),
                         const SizedBox(width: 50),
+                        // Withdrawal chances display
                         RichText(
                           text: const TextSpan(
                             text: 'Withdrawal Chances:',
                             style: TextStyle(
-                              fontSize: (5),
+                              fontSize: 15,
                               fontWeight: FontWeight.w400,
                               color: AppColors.black,
                             ),
                             children: [
                               TextSpan(
-                                text: ' 0',
+                                text: ' 0', // Placeholder for actual chances
                                 style: TextStyle(
-                                  fontSize: (6),
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -160,6 +161,8 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 15),
+                // Buttons for Withdrawal and Add Account actions
                 Row(
                   children: [
                     Expanded(
@@ -168,20 +171,17 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                         buttonConfig: ButtonConfig(
                           text: 'Withdraw',
                           action: () {
+                            // Navigate to MedhecoinWithdrawalView on Withdraw button tap
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: ((context) =>
-                                    const MedhecoinWithdrawalView()),
-                              ),
+                                  builder: ((context) =>
+                                      const MedhecoinWithdrawalView())),
                             );
-                            // Navigator.pop(context);
                           },
                           disabled: false,
                         ),
-                        width: MediaQuery.of(context).size.width / 2,
-                        // icon: const Icon(Icons.account_balance_wallet_outlined,
-                        //     color: AppColors.mainPrimaryButton),
+                        // Withdrawal button with icon and text
                         child: Image.asset(
                           'assets/images/withdrawal_icon.png',
                           height: 30,
@@ -189,37 +189,37 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
+                    const SizedBox(width: 10),
                     Expanded(
                       child: OutlinePrimaryButton(
                         textSize: 18,
-                        icon: (Icons.add),
+                        icon: Icons.add,
                         buttonConfig: ButtonConfig(
                           text: 'Add Account',
                           action: () {
+                            // Navigate to AddAccountView on Add Account button tap
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: ((context) => const AddAccountView()),
-                              ),
+                                  builder: ((context) =>
+                                      const AddAccountView())),
                             );
-                            // Navigator.pop(context);
                           },
                           disabled: false,
                         ),
-                        width: MediaQuery.of(context).size.width / 2,
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 15),
-                const Text('History',
-                    style: TextStyle(
-                      fontSize: 23,
-                      fontWeight: FontWeight.w500,
-                    )),
+                // Display transaction history list
+                const Text(
+                  'History',
+                  style: TextStyle(
+                    fontSize: 23,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
                 ListView.separated(
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
@@ -228,12 +228,14 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                     bottom: SizeMg.height(16),
                   ),
                   itemBuilder: (ctx, index) => MedhecoinWalletHistory(
-                      model: model.walletModelList[index]),
-                  separatorBuilder: (ctx, index) => SizedBox(
-                    height: SizeMg.height(10),
+                    model: model.walletModelList[index],
+                  ),
+                  separatorBuilder: (ctx, index) => const SizedBox(
+                    height: 10,
                   ),
                   itemCount: model.walletModelList.length,
                 ),
+                // Display message when transaction history is empty
                 if (model.walletModelList.isEmpty)
                   const Center(
                     child: Padding(
@@ -247,13 +249,11 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                               Icons.history,
                               color: AppColors.noWidgetText,
                             ),
-                            SizedBox(
-                              height: 10,
-                            ),
+                            SizedBox(height: 10),
                             Text(
                               'You have no transaction history',
                               style: TextStyle(
-                                fontSize: (16),
+                                fontSize: 16,
                                 fontStyle: FontStyle.italic,
                                 color: AppColors.noWidgetText,
                               ),
@@ -264,9 +264,6 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                       ),
                     ),
                   ),
-                const Column(
-                  children: [],
-                )
               ],
             ),
           ),

@@ -145,11 +145,11 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                 const Text(
                   'First Name',
                   style: TextStyle(
-                    fontSize: (18),
+                    fontSize: 18,
                     color: AppColors.black,
                   ),
                 ),
-                const SizedBox(height: (10)),
+                const SizedBox(height: 10),
                 TextFormField(
                   initialValue: 'Demoj',
                   enabled: false,
@@ -158,15 +158,15 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                     hintText: "",
                   ),
                 ),
-                const SizedBox(height: (10)),
+                const SizedBox(height: 10),
                 const Text(
                   'Last Name',
                   style: TextStyle(
-                    fontSize: (18),
+                    fontSize: 18,
                     color: AppColors.black,
                   ),
                 ),
-                const SizedBox(height: (10)),
+                const SizedBox(height: 10),
                 TextFormField(
                   initialValue: 'Adekunle',
                   enabled: false,
@@ -175,15 +175,15 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                     hintText: "",
                   ),
                 ),
-                const SizedBox(height: (10)),
+                const SizedBox(height: 10),
                 const Text(
                   'Phone Number',
                   style: TextStyle(
-                    fontSize: (18),
+                    fontSize: 18,
                     color: AppColors.black,
                   ),
                 ),
-                const SizedBox(height: (10)),
+                const SizedBox(height: 10),
                 TextFormField(
                   initialValue: '09123456789',
                   enabled: false,
@@ -192,15 +192,15 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                     hintText: "",
                   ),
                 ),
-                const SizedBox(height: (10)),
+                const SizedBox(height: 10),
                 const Text(
                   'Age',
                   style: TextStyle(
-                    fontSize: (18),
+                    fontSize: 18,
                     color: AppColors.black,
                   ),
                 ),
-                const SizedBox(height: (10)),
+                const SizedBox(height: 10),
                 TextFormField(
                   initialValue: '30',
                   enabled: false,
@@ -209,15 +209,15 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                     hintText: "",
                   ),
                 ),
-                const SizedBox(height: (10)),
+                const SizedBox(height: 10),
                 const Text(
                   'Gender',
                   style: TextStyle(
-                    fontSize: (18),
+                    fontSize: 18,
                     color: AppColors.black,
                   ),
                 ),
-                const SizedBox(height: (10)),
+                const SizedBox(height: 10),
                 SizedBox(
                   height: 50,
                   child: ListView(
@@ -259,11 +259,11 @@ class _ProfileScreenViewState extends State<ProfileScreenView> {
                     ],
                   ),
                 ),
-                const SizedBox(height: (10)),
+                const SizedBox(height: 10),
                 const Text(
                   'Next of Kin information',
                   style: TextStyle(
-                    fontSize: (16),
+                    fontSize: 16,
                     color: AppColors.darkGrey,
                   ),
                 ),

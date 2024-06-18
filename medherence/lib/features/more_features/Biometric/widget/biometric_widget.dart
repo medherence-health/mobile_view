@@ -12,15 +12,16 @@ import '../../../profile/view_model/profile_view_model.dart';
 import '../../withdrawal/widget/transaction_successful_widget.dart';
 
 class BiometricWidget extends StatefulWidget {
-  const BiometricWidget({super.key});
+  const BiometricWidget({Key? key}) : super(key: key);
 
   @override
-  State<BiometricWidget> createState() => _BiometricWidgetState();
+  _BiometricWidgetState createState() => _BiometricWidgetState();
 }
 
 class _BiometricWidgetState extends State<BiometricWidget> {
   final BiometricService _biometricService = BiometricService();
   bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -32,33 +33,17 @@ class _BiometricWidgetState extends State<BiometricWidget> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: InkWell(
-                  onTap: () {
-                    if (mounted) {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return confirmBiometric();
-                          });
-                    }
-                  },
-                  child: SizedBox(
-                    child: Image.asset('assets/images/fingerprint_sensor.png',
-                        width: 50, height: 50),
-                  ),
-                ),
-              ),
-              Text(
+              _buildFingerprintIcon(),
+              const SizedBox(height: 10),
+              const Text(
                 'Use Fingerprint',
                 style: TextStyle(
                   color: AppColors.black,
                   fontWeight: FontWeight.w400,
-                  fontSize: SizeMg.text(14),
+                  fontSize: 14,
                 ),
               ),
-              // if (_isLoading) LinearProgressIndicator(),
+              if (_isLoading) const LinearProgressIndicator(),
             ],
           ),
         ),
@@ -66,7 +51,32 @@ class _BiometricWidgetState extends State<BiometricWidget> {
     );
   }
 
-  Widget confirmBiometric() {
+  Widget _buildFingerprintIcon() {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: InkWell(
+        onTap: () {
+          if (mounted) {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return _buildBiometricConfirmationDialog();
+              },
+            );
+          }
+        },
+        child: SizedBox(
+          child: Image.asset(
+            'assets/images/fingerprint_sensor.png',
+            width: 50,
+            height: 50,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBiometricConfirmationDialog() {
     return AlertDialog(
       title: const Padding(
         padding: EdgeInsets.all(8.0),
@@ -81,10 +91,7 @@ class _BiometricWidgetState extends State<BiometricWidget> {
       ),
       content: FittedBox(
         child: Padding(
-          padding: const EdgeInsets.only(
-            left: 20.0,
-            right: 20,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -92,13 +99,8 @@ class _BiometricWidgetState extends State<BiometricWidget> {
                 onTap: () async {
                   bool isAuthenticated = await _biometricService.authenticate();
                   if (isAuthenticated) {
-                    Navigator.pop(
-                        context); // Close the dialog if authentication is successful
-                    // Proceed with your action after successful biometric authentication
-                    setState(() {
-                      _isLoading = true;
-                    });
-                    _showLoadingAndNavigate(context);
+                    Navigator.pop(context); // Close the dialog if authenticated
+                    _startLoadingAndProceed(context);
                   } else {
                     // Handle failed authentication
                   }
@@ -141,58 +143,47 @@ class _BiometricWidgetState extends State<BiometricWidget> {
     );
   }
 
-  void _showLoadingAndNavigate(BuildContext context) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return Column(children: [
-          if (_isLoading == true)
-            const LinearProgressIndicator(
-              color: AppColors.navBarColor,
-              backgroundColor: AppColors.disabledButton,
-            ),
-        ]);
-      },
-    );
+  void _startLoadingAndProceed(BuildContext context) {
+    setState(() {
+      _isLoading = true;
+    });
 
     Future.delayed(const Duration(seconds: 3), () {
       setState(() {
         _isLoading = false;
       });
-      // double? totalAmount =
-      //     Provider.of<WalletViewModel>(context, listen: false).totalAmount;
+
       final walletViewModel =
           Provider.of<WalletViewModel>(context, listen: false);
       final profile = Provider.of<ProfileViewModel>(context, listen: false);
       final monitor = Provider.of<ReminderState>(context, listen: false);
+
       // Create a new transaction model
       final newTransaction = WalletModel(
-        firstName: profile.nickName.isNotEmpty
-            ? profile.nickName
-            : 'ADB', // Replace with actual data
-        lastName: '', // Replace with actual data
-        src:
-            'assets/images/bank_logo/medherence_icon.png', // Replace with actual data
+        firstName: profile.nickName.isNotEmpty ? profile.nickName : 'ADB',
+        lastName: '',
+        src: 'assets/images/bank_logo/medherence_icon.png',
         title: 'Withdrawal',
-        dateTime: DateTime.now().toString(), // Use the current date and time
+        dateTime: DateTime.now().toString(),
         price: walletViewModel.totalAmount!.toDouble(),
         debit: true,
       );
 
       // Add the new transaction to the wallet model list
-      Provider.of<WalletViewModel>(context, listen: false)
-          .addTransaction(newTransaction);
+      walletViewModel.addTransaction(newTransaction);
 
-      // walletViewModel.addTransaction(newTransaction);
+      // Navigate to successful transaction screen
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-              builder: (context) => SuccessfulTransaction(
-                  amount: walletViewModel.totalAmount?.toStringAsFixed(2)
-                      as String)),
-          (Route<dynamic> route) => false);
+        MaterialPageRoute(
+          builder: (context) => SuccessfulTransaction(
+            amount: walletViewModel.totalAmount?.toStringAsFixed(2) ?? '0.00',
+          ),
+        ),
+        (Route<dynamic> route) => false,
+      );
+
+      // Deduct medcoin from the monitor
       monitor.deductMedcoin(walletViewModel.totalAmount!.toInt());
-      debugPrint(walletViewModel.totalAmount.toString());
     });
   }
 }

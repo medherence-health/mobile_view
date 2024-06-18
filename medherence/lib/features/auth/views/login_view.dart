@@ -35,13 +35,6 @@ class _LoginViewState extends State<LoginView> {
     await prefs.setBool('isSignedIn', true);
   }
 
-  // Function to check if password has been successfully changed
-  // Future<bool> isPasswordChanged() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   return prefs.getBool('passwordChanged') ?? false;
-  // }
-
-  // Function to navigate back to home screen after password change
   void navigateBackToHome() {
     Navigator.pushReplacement(
       context,
@@ -49,16 +42,12 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  // Function to handle password change submission
   void handleSignIn() {
     if (_formKey.currentState!.validate()) {
-      // Perform password change logic here...
-      // If password change is successful, update shared preferences
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Signed In successfully')),
       );
       signingIn().then((_) {
-        // Navigate back to home screen
         navigateBackToHome();
       });
     } else {
@@ -120,7 +109,6 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     hospitalNumberController = TextEditingController();
     passwordController = TextEditingController();
@@ -150,7 +138,6 @@ class _LoginViewState extends State<LoginView> {
         child: Form(
           key: _formKey,
           child: ListView(
-            // crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
                 'Welcome',
@@ -182,7 +169,7 @@ class _LoginViewState extends State<LoginView> {
                   color: Colors.black,
                 ),
               ),
-              const SizedBox(height: (10)),
+              const SizedBox(height: 10),
               DropDownSearchFormField(
                 textFieldConfiguration: TextFieldConfiguration(
                   controller: _dropDownSearchController,
@@ -192,8 +179,8 @@ class _LoginViewState extends State<LoginView> {
                     hintText: 'Select your HCP',
                     filled: true,
                     fillColor: dropdownFill,
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 12),
                     border: kFormTextDecoration.border,
                     focusedBorder: kFormTextDecoration.focusedBorder,
                   ),
@@ -214,94 +201,32 @@ class _LoginViewState extends State<LoginView> {
                 },
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Please select an hospital';
+                    return 'Please select a hospital';
                   }
                   setState(() {
-                    // Check if the value is not empty
-                    if (value.isNotEmpty) {
-                      // If there is input, set filled to true
-                      dropdownFill = kFormTextDecoration.fillColor;
-                    } else {
-                      // If no input, set filled to false
-                      dropdownFill = Colors.white70;
-                    }
+                    dropdownFill = value.isNotEmpty
+                        ? kFormTextDecoration.fillColor
+                        : Colors.white70;
                   });
                   return null;
                 },
                 onReset: () {
                   setState(() {
-                    // Check if the value is not empty
-                    if (selectedHospital != null) {
-                      // If there is input, set filled to true
-                      dropdownFill = kFormTextDecoration.fillColor;
-                    } else {
-                      // If no input, set filled to false
-                      dropdownFill = Colors.white70;
-                    }
+                    dropdownFill = selectedHospital != null
+                        ? kFormTextDecoration.fillColor
+                        : Colors.white70;
                   });
                 },
                 onSaved: (value) {
                   selectedHospital = value;
                   setState(() {
-                    // Check if the value is not empty
-                    if (selectedHospital != null) {
-                      // If there is input, set filled to true
-                      dropdownFill = kFormTextDecoration.fillColor;
-                    } else {
-                      // If no input, set filled to false
-                      dropdownFill = Colors.white70;
-                    }
+                    dropdownFill = selectedHospital != null
+                        ? kFormTextDecoration.fillColor
+                        : Colors.white70;
                   });
                 },
                 displayAllSuggestionWhenTap: true,
               ),
-              // Align(
-              //   alignment: AlignmentDirectional(0, -1),
-              //   child: DropdownButtonFormField<String>(
-              //     value: _selectedHospital,
-              //     onChanged: (val) {
-              //       setState(() {
-              //         _selectedHospital = val;
-              //       });
-              //     },
-              //     items: _buildDropdownItems(),
-              //     decoration: InputDecoration(
-              //       hintStyle: kFormTextDecoration.hintStyle,
-              //       hintText: 'Select your HCP',
-              //       filled: true,
-              //       fillColor: kFormTextDecoration.fillColor,
-              //       contentPadding:
-              //           EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-              //       border: kFormTextDecoration.border,
-              //       focusedBorder: kFormTextDecoration.focusedBorder,
-              //     ),
-              //   ),
-              // ),
-              // TextFormField(
-              //   controller:
-              //       TextEditingController(text: _selectedHospital ?? ''),
-              //   enabled: true, // Disable editing directly in the field
-              //   readOnly: true,
-              //   decoration: InputDecoration(
-              //     // ... apply desired styling here
-              //     hintStyle: kFormTextDecoration.hintStyle,
-              //     filled: false,
-              //     fillColor: kFormTextDecoration.fillColor,
-              //     errorBorder: kFormTextDecoration.errorBorder,
-              //     border: kFormTextDecoration.border,
-              //     focusedBorder: kFormTextDecoration.focusedBorder,
-              //     suffixIcon: PopupMenuButton<String>(
-              //       icon: const Icon(Icons.arrow_drop_down),
-              //       onSelected: (value) {
-              //         setState(() {
-              //           _selectedHospital = value;
-              //         });
-              //       },
-              //       itemBuilder: (context) => _buildPopMenuItems(),
-              //     ),
-              //     hintText: "Select your HCP",
-              //   ),
-              // ),
               SizedBox(height: SizeMg.height(20)),
               TitleAndTextFormField(
                 title: 'Hospital Number',
@@ -315,20 +240,13 @@ class _LoginViewState extends State<LoginView> {
                 },
                 onChanged: (value) {
                   setState(() {
-                    // Check if the value is not empty
-                    if (value.isNotEmpty) {
-                      // If there is input, set filled to true
-                      hospitalNumberFillColor = kFormTextDecoration.fillColor;
-                    } else {
-                      // If no input, set filled to false
-                      hospitalNumberFillColor = Colors.white70;
-                    }
+                    hospitalNumberFillColor = value.isNotEmpty
+                        ? kFormTextDecoration.fillColor
+                        : Colors.white70;
                   });
                 },
               ),
-              SizedBox(
-                height: SizeMg.height(20),
-              ),
+              SizedBox(height: SizeMg.height(20)),
               Text(
                 'Password',
                 style: TextStyle(
@@ -336,48 +254,43 @@ class _LoginViewState extends State<LoginView> {
                   color: Colors.black,
                 ),
               ),
-              SizedBox(
-                height: SizeMg.height(10),
-              ),
+              SizedBox(height: SizeMg.height(10)),
               TextFormField(
-                  obscureText: !obscurePassword,
-                  controller: passwordController,
-                  cursorHeight: SizeMg.height(19),
-                  decoration: kFormTextDecoration.copyWith(
-                    errorBorder: kFormTextDecoration.errorBorder,
-                    hintStyle: kFormTextDecoration.hintStyle,
-                    filled: true,
-                    fillColor: passwordFillColor,
-                    border: kFormTextDecoration.border,
-                    focusedBorder: kFormTextDecoration.focusedBorder,
-                    hintText: "Type in your password",
-                    suffixIcon: IconButton(
-                        icon: obscurePassword
-                            ? const Icon(Icons.visibility_off)
-                            : const Icon(Icons.remove_red_eye_rounded),
-                        iconSize: 24,
-                        onPressed: () => setState(() {
-                              obscurePassword = !obscurePassword;
-                            })),
+                obscureText: !obscurePassword,
+                controller: passwordController,
+                cursorHeight: SizeMg.height(19),
+                decoration: kFormTextDecoration.copyWith(
+                  errorBorder: kFormTextDecoration.errorBorder,
+                  hintStyle: kFormTextDecoration.hintStyle,
+                  filled: true,
+                  fillColor: passwordFillColor,
+                  border: kFormTextDecoration.border,
+                  focusedBorder: kFormTextDecoration.focusedBorder,
+                  hintText: "Type in your password",
+                  suffixIcon: IconButton(
+                    icon: obscurePassword
+                        ? const Icon(Icons.visibility_off)
+                        : const Icon(Icons.remove_red_eye_rounded),
+                    iconSize: 24,
+                    onPressed: () => setState(() {
+                      obscurePassword = !obscurePassword;
+                    }),
                   ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "The password field must cannot be empty";
-                    }
-                    return null;
-                  },
-                  onChanged: (value) {
-                    setState(() {
-                      // Check if the value is not empty
-                      if (value.isNotEmpty) {
-                        // If there is input, set filled to true
-                        passwordFillColor = kFormTextDecoration.fillColor;
-                      } else {
-                        // If no input, set filled to false
-                        passwordFillColor = Colors.white70;
-                      }
-                    });
-                  }),
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "The password field must cannot be empty";
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  setState(() {
+                    passwordFillColor = value.isNotEmpty
+                        ? kFormTextDecoration.fillColor
+                        : Colors.white70;
+                  });
+                },
+              ),
               SizedBox(height: SizeMg.height(10)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -402,10 +315,11 @@ class _LoginViewState extends State<LoginView> {
                     child: GestureDetector(
                       onTap: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const ForgotPasswordScreen()));
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const ForgotPasswordScreen()),
+                        );
                       },
                       child: const Text(
                         'Forgot Password?',
@@ -473,25 +387,4 @@ class _LoginViewState extends State<LoginView> {
       ),
     );
   }
-
-  // List<PopupMenuItem<String>> _buildPopMenuItems() {
-  //   List<String> hospitalNames = [
-  //     'Hospital A',
-  //     'Hospital B',
-  //     'Hospital C',
-  //     'Hospital D',
-  //     'Hospital E',
-  //     'Hospital F',
-  //     'Hospital G',
-  //     'Hospital H',
-  //     'Hospital I',
-  //     'Hospital J',
-  //   ];
-  //   return hospitalNames.map((String value) {
-  //     return PopupMenuItem<String>(
-  //       value: value,
-  //       child: Text(value),
-  //     );
-  //   }).toList();
-  // }
 }
