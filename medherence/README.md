@@ -69,19 +69,20 @@ To run the Medherence app on your local machine, follow these steps:
 Debugging on Device
 To debug and run Medherence on your device:
 
-**Connect Device**:
-
-Connect your Android/iOS device to your computer via USB and ensure USB debugging is enabled.
-**Run Application**:
+   **Connect Device**:
+   Connect your Android/iOS device to your computer via USB and ensure USB debugging is enabled.
+   **Run Application**:
     ```bash
     flutter run
-This command builds and deploys the application to your connected device.
+   This command builds and deploys the application to your connected device.
 
 
 ## Troubleshooting
 - If you encounter any issues while setting up or running Medherence, consider the following steps:
 
-- **Update Flutter SDK**: Ensure you have the latest version of the Flutter SDK installed by running flutter upgrade.
+- **Update Flutter SDK**: Ensure you have the latest version of the Flutter SDK installed by running
+  ```bash
+  flutter upgrade.
 
 - **Clear Flutter Cache**: Sometimes clearing the Flutter cache can resolve dependency-related issues:
 
