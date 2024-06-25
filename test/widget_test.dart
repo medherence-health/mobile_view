@@ -126,4 +126,9 @@ void main() {
   });
 }
 
-class MockBiometricService extends Mock implements BiometricService {}
+class MockBiometricService extends Mock implements BiometricService {
+  @override
+  Future<bool> authenticate() async {
+    return true; // Default to successful authentication for the mock
+  }
+}
