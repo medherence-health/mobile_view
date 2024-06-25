@@ -44,7 +44,6 @@ void main() async {
     statusBarColor: Colors.transparent, // Example: Set status bar color
   ));
 
-  // Run the application
   runApp(const MyApp());
 }
 
@@ -55,7 +54,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        // Providers for various application features and services
+        // Providers for services
         ChangeNotifierProvider(create: (context) => NotificationModelItems()),
         ChangeNotifierProvider(create: (context) => ReminderState()),
         ChangeNotifierProvider(create: (context) => NotificationService()),
@@ -65,26 +64,26 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => WalletViewModel()),
       ],
       child: MaterialApp(
-        debugShowCheckedModeBanner: false, // Disable debug banner
-        title: 'Medical adherence', // Set the application title
+        debugShowCheckedModeBanner: false, 
+        title: 'Medical adherence', 
         themeMode: ThemeMode.system, // Use system-defined theme mode
         theme: ThemeData(
-          brightness: Brightness.light, // Use light theme by default
-          scaffoldBackgroundColor: Colors.white, // Default background color
+          brightness: Brightness.light, 
+          scaffoldBackgroundColor: Colors.white,
           colorScheme: const ColorScheme.light(
-            primary: AppColors.navBarColor, // Define primary color
+            primary: AppColors.navBarColor, 
           ),
-          useMaterial3: true, // Enable Material 3 design
-          fontFamily: StringUtils.poppins, // Set default font family
+          useMaterial3: true, 
+          fontFamily: StringUtils.poppins,
           appBarTheme: const AppBarTheme(
-            elevation: 0, // No elevation for app bar
-            backgroundColor: Colors.white, // App bar background color
+            elevation: 0, 
+            backgroundColor: Colors.white,
             iconTheme: IconThemeData(
-              color: AppColors.navBarColor, // App bar icon color
+              color: AppColors.navBarColor, 
             ),
           ),
           textSelectionTheme: TextSelectionThemeData(
-            cursorColor: AppColors.pressedButton, // Text cursor color
+            cursorColor: AppColors.pressedButton, 
             selectionHandleColor: AppColors.midOrange, // Selection handle color
             selectionColor:
                 AppColors.pressedButton.withOpacity(0.3), // Selection color
