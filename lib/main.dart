@@ -64,32 +64,32 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => WalletViewModel()),
       ],
       child: MaterialApp(
-        debugShowCheckedModeBanner: false, 
-        title: 'Medical adherence', 
+        debugShowCheckedModeBanner: false,
+        title: 'Medical adherence',
         themeMode: ThemeMode.system, // Use system-defined theme mode
         theme: ThemeData(
-          brightness: Brightness.light, 
+          brightness: Brightness.light,
           scaffoldBackgroundColor: Colors.white,
           colorScheme: const ColorScheme.light(
-            primary: AppColors.navBarColor, 
+            primary: AppColors.navBarColor,
           ),
-          useMaterial3: true, 
+          useMaterial3: true,
           fontFamily: StringUtils.poppins,
           appBarTheme: const AppBarTheme(
-            elevation: 0, 
+            elevation: 0,
             backgroundColor: Colors.white,
             iconTheme: IconThemeData(
-              color: AppColors.navBarColor, 
+              color: AppColors.navBarColor,
             ),
           ),
           textSelectionTheme: TextSelectionThemeData(
-            cursorColor: AppColors.pressedButton, 
+            cursorColor: AppColors.pressedButton,
             selectionHandleColor: AppColors.midOrange, // Selection handle color
             selectionColor:
                 AppColors.pressedButton.withOpacity(0.3), // Selection color
           ),
         ),
-        home: const SplashScreen(), // Initial route is SplashScreen
+        home: SplashScreen(), // Initial route is SplashScreen
       ),
     );
   }

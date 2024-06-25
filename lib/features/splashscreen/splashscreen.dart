@@ -8,7 +8,9 @@ import '../../core/utils/color_utils.dart';
 import '../onboarding/onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  SplashScreen({
+    super.key,
+  });
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
