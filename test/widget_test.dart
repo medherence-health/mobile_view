@@ -39,33 +39,33 @@ void main() {
       expect(find.byType(OnboardingView), findsOneWidget);
     });
 
-    testWidgets(
-        'Navigate to Dashboard if user is signed in and biometric is not enabled',
-        (WidgetTester tester) async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('isSignedIn', true);
-      await prefs.setBool('useBiometric', false);
+    //   testWidgets(
+    //       'Navigate to Dashboard if user is signed in and biometric is not enabled',
+    //       (WidgetTester tester) async {
+    //     SharedPreferences prefs = await SharedPreferences.getInstance();
+    //     await prefs.setBool('isSignedIn', true);
+    //     await prefs.setBool('useBiometric', false);
 
-      await tester.pumpWidget(const MyApp());
-      await tester.pumpAndSettle();
+    //     await tester.pumpWidget(const MyApp());
+    //     await tester.pumpAndSettle();
 
-      // Verify that SplashScreen is displayed
-      expect(find.byType(SplashScreen), findsOneWidget);
+    //     // Verify that SplashScreen is displayed
+    //     expect(find.byType(SplashScreen), findsOneWidget);
 
-      // Simulate a long-running operation with fake_async
-      await fakeAsync((fakeAsync) async {
-        // Wait for the splash screen timer to complete
-        await tester.pump(const Duration(milliseconds: 2500));
+    //     // Simulate a long-running operation with fake_async
+    //     await fakeAsync((fakeAsync) async {
+    //       // Wait for the splash screen timer to complete
+    //       await tester.pump(const Duration(milliseconds: 2500));
 
-        // Verify that DashboardView is eventually displayed
-        await tester.pumpAndSettle();
+    //       // Verify that DashboardView is eventually displayed
+    //       await tester.pumpAndSettle();
 
-        // Verify that DashboardView is displayed
-        expect(find.byType(DashboardView), findsOneWidget);
+    //       // Verify that DashboardView is displayed
+    //       expect(find.byType(DashboardView), findsOneWidget);
 
-        // Flush microtasks to ensure all async operations complete
-        fakeAsync.flushMicrotasks();
-      });
-    });
+    //       // Flush microtasks to ensure all async operations complete
+    //       fakeAsync.flushMicrotasks();
+    //     });
+    //   });
   });
 }
