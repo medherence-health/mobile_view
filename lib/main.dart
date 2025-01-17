@@ -15,9 +15,15 @@ import 'core/model/models/notification_model.dart';
 import 'features/history/view_model/filter_model.dart';
 import 'features/monitor/view_model/reminder_view_model.dart';
 import 'features/profile/view_model/profile_view_model.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const MyApp());
 
   // Initialize Android Alarm Manager
   await AndroidAlarmManager.initialize();

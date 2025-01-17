@@ -1,14 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drop_down_search_field/drop_down_search_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medherence/core/shared_widget/buttons.dart';
 import 'package:medherence/features/auth/views/forgot_password.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:drop_down_search_field/drop_down_search_field.dart';
 
-import '../../../core/utils/color_utils.dart';
 import '../../../core/constants/constants.dart';
+import '../../../core/utils/color_utils.dart';
 import '../../../core/utils/size_manager.dart';
-import '../widget/textfield.dart';
 import '../../dashboard_feature/view/dashboard_view.dart';
+import '../widget/textfield.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -18,7 +20,7 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  late TextEditingController hospitalNumberController;
+  late TextEditingController emailController;
   late TextEditingController passwordController;
   final TextEditingController _dropDownSearchController =
       TextEditingController();
@@ -42,25 +44,111 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
+  // Global function to show a SnackBar
+  void showSnackBar(BuildContext context, String message,
+      {Color backgroundColor = Colors.red}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        dismissDirection: DismissDirection.horizontal,
+        elevation: 10,
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(15),
+        backgroundColor: backgroundColor,
+      ),
+    );
+  }
+
+  // Function to validate email format
+  bool isValidEmail(String email) {
+    final emailRegEx = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+    return emailRegEx.hasMatch(email);
+  }
+
+  // Function to log in, show loading, and fetch user data
+  Future<void> loginUser({
+    required BuildContext context,
+    required TextEditingController emailController,
+    required TextEditingController passwordController,
+  }) async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+    if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+      showSnackBar(context, 'Email and Password cannot be empty.');
+      return;
+    }
+
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+
+    try {
+      // Attempt Firebase login
+      final UserCredential userCredential =
+          await _auth.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+
+      // Fetch user data from Firestore
+      final String userId = userCredential.user!.uid;
+      final DocumentSnapshot<Map<String, dynamic>> userDoc =
+          await _firestore.collection('users').doc(userId).get();
+
+      // Check if user data exists
+      if (userDoc.exists) {
+        final Map<String, dynamic> userData = userDoc.data()!;
+        showSnackBar(
+          context,
+          'Welcome back, ${userData['name']}!',
+          backgroundColor: Colors.green,
+        );
+      } else {
+        showSnackBar(context, 'User data not found.',
+            backgroundColor: Colors.red);
+      }
+    } on FirebaseAuthException catch (e) {
+      // Handle login errors
+      String errorMessage = 'An error occurred. Please try again.';
+      if (e.code == 'user-not-found') {
+        errorMessage = 'No user found for that email.';
+      } else if (e.code == 'wrong-password') {
+        errorMessage = 'Wrong password provided for that email.';
+      }
+      showSnackBar(context, errorMessage, backgroundColor: Colors.red);
+    } finally {
+      // Dismiss loading dialog
+      Navigator.of(context, rootNavigator: true).pop();
+    }
+  }
+
   void handleSignIn() {
-    if (_formKey.currentState!.validate()) {
+    if (emailController.text.isEmpty) {
+      showSnackBar(context, 'Email cannot be empty.');
+      return;
+    } else if (!isValidEmail(emailController.text)) {
+      showSnackBar(context, 'Please enter a valid email address.');
+      return;
+    } else if (passwordController.text.isEmpty) {
+      showSnackBar(context, 'Password cannot be empty.');
+      return;
+    } else if (_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Signed In successfully')),
       );
       signingIn().then((_) {
-        navigateBackToHome();
+        loginUser(
+            context: context,
+            emailController: emailController,
+            passwordController: passwordController);
+        // navigateBackToHome();
       });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          dismissDirection: DismissDirection.horizontal,
-          elevation: 10,
-          behavior: SnackBarBehavior.floating,
-          margin: EdgeInsets.all(15),
-          content: Text('Oops, you have inputted the wrong login details.'),
-          backgroundColor: Colors.red,
-        ),
-      );
     }
   }
 
@@ -110,7 +198,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   void initState() {
     super.initState();
-    hospitalNumberController = TextEditingController();
+    emailController = TextEditingController();
     passwordController = TextEditingController();
   }
 
@@ -162,76 +250,11 @@ class _LoginViewState extends State<LoginView> {
               const SizedBox(
                 height: 30,
               ),
-              Text(
-                'Hospital/Clinical Name',
-                style: TextStyle(
-                  fontSize: SizeMg.text(18),
-                  color: Colors.black,
-                ),
-              ),
-              const SizedBox(height: 10),
-              DropDownSearchFormField(
-                textFieldConfiguration: TextFieldConfiguration(
-                  controller: _dropDownSearchController,
-                  decoration: kFormTextDecoration.copyWith(
-                    errorBorder: kFormTextDecoration.errorBorder,
-                    hintStyle: kFormTextDecoration.hintStyle,
-                    hintText: 'Select your HCP',
-                    filled: true,
-                    fillColor: dropdownFill,
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 12),
-                    border: kFormTextDecoration.border,
-                    focusedBorder: kFormTextDecoration.focusedBorder,
-                  ),
-                ),
-                suggestionsCallback: (pattern) {
-                  return getSuggestions(pattern);
-                },
-                itemBuilder: (context, suggestion) {
-                  return ListTile(
-                    title: Text(suggestion),
-                  );
-                },
-                transitionBuilder: (context, suggestionsBox, controller) {
-                  return suggestionsBox;
-                },
-                onSuggestionSelected: (suggestion) {
-                  _dropDownSearchController.text = suggestion;
-                },
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please select a hospital';
-                  }
-                  setState(() {
-                    dropdownFill = value.isNotEmpty
-                        ? kFormTextDecoration.fillColor
-                        : Colors.white70;
-                  });
-                  return null;
-                },
-                onReset: () {
-                  setState(() {
-                    dropdownFill = selectedHospital != null
-                        ? kFormTextDecoration.fillColor
-                        : Colors.white70;
-                  });
-                },
-                onSaved: (value) {
-                  selectedHospital = value;
-                  setState(() {
-                    dropdownFill = selectedHospital != null
-                        ? kFormTextDecoration.fillColor
-                        : Colors.white70;
-                  });
-                },
-                displayAllSuggestionWhenTap: true,
-              ),
               SizedBox(height: SizeMg.height(20)),
               TitleAndTextFormField(
-                title: 'Hospital Number',
-                formFieldHint: 'Please type your Hospital Number',
-                formFieldController: hospitalNumberController,
+                title: 'Email',
+                formFieldHint: 'Please type your Email',
+                formFieldController: emailController,
                 textInputAction: TextInputAction.next,
                 textInputType: TextInputType.text,
                 formFieldColor: hospitalNumberFillColor,
@@ -341,7 +364,7 @@ class _LoginViewState extends State<LoginView> {
                     handleSignIn();
                   },
                   disabled: (_selectedHospital == '' ||
-                      hospitalNumberController.text.isEmpty ||
+                      emailController.text.isEmpty ||
                       passwordController.text.isEmpty),
                 ),
               ),
