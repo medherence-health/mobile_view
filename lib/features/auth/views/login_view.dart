@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:medherence/core/model/models/user_data.dart';
 import 'package:medherence/core/shared_widget/buttons.dart';
 import 'package:medherence/features/auth/views/forgot_password.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -74,11 +75,6 @@ class _LoginViewState extends State<LoginView> {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-    if (emailController.text.isEmpty || passwordController.text.isEmpty) {
-      showSnackBar(context, 'Email and Password cannot be empty.');
-      return;
-    }
-
     // Show loading dialog
     showDialog(
       context: context,
@@ -98,21 +94,29 @@ class _LoginViewState extends State<LoginView> {
 
       // Fetch user data from Firestore
       final String userId = userCredential.user!.uid;
-      final DocumentSnapshot<Map<String, dynamic>> userDoc =
-          await _firestore.collection('users').doc(userId).get();
 
-      // Check if user data exists
-      if (userDoc.exists) {
-        final Map<String, dynamic> userData = userDoc.data()!;
-        showSnackBar(
-          context,
-          'Welcome back, ${userData['name']}!',
-          backgroundColor: Colors.green,
-        );
-      } else {
-        showSnackBar(context, 'User data not found.',
-            backgroundColor: Colors.red);
-      }
+      final userDoc = _firestore.collection("users").doc(userId);
+      userDoc.get().then(
+        (DocumentSnapshot doc) {
+          final data = doc.data() as Map<String, dynamic>;
+          // ...
+          if (data != null) {
+            final userData = UserData.fromMap(data);
+            final String userName =
+                userData.fullName ?? 'Unknown User'; // Access specific field
+            showSnackBar(context, 'Welcome back, $userName!',
+                backgroundColor: Colors.green);
+          } else {
+            showSnackBar(context, 'User data is null.',
+                backgroundColor: Colors.red);
+          }
+        },
+        onError: (e) => {
+          showSnackBar(context, "Error getting document: $e",
+              backgroundColor: Colors.red),
+          print("Error getting document: $e")
+        },
+      );
     } on FirebaseAuthException catch (e) {
       // Handle login errors
       String errorMessage = 'An error occurred. Please try again.';
@@ -139,9 +143,6 @@ class _LoginViewState extends State<LoginView> {
       showSnackBar(context, 'Password cannot be empty.');
       return;
     } else if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Signed In successfully')),
-      );
       signingIn().then((_) {
         loginUser(
             context: context,
