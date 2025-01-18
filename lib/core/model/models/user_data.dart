@@ -232,7 +232,8 @@ class UserData {
       'loginType': loginType,
       'profileImg': profileImg,
       'createdAt': createdAt,
-      'isActive': isActive,
+      'isActive':
+          isActive ? 1 : 0, // Boolean to Integer (0 for false, 1 for true)
       'role': role,
       'accountStatus': accountStatus,
       'facilityId': facilityId,
@@ -248,12 +249,12 @@ class UserData {
       'totalNairaBalance': totalNairaBalance,
       'subscriptionType': subscriptionType,
       'subscriptionExpirationDate': subscriptionExpirationDate,
-      'subscriptionTotalPatients': subscriptionTotalPatients,
+      'subscriptionTotalPatients': subscriptionTotalPatients?.join(','),
       'subscriptionPatientsSlots': subscriptionPatientsSlots,
       'myReferralCode': myReferralCode,
       'message': message,
       'messageType': messageType,
-      'totalPatients': totalPatients,
+      'totalPatients': totalPatients?.join(','),
     };
   }
 

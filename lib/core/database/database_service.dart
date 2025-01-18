@@ -71,7 +71,7 @@ class DatabaseService {
         language TEXT,
         loginType TEXT,
         profileImg TEXT,
-        createdAt INTEGER,
+        createdAt TEXT,
         isActive INTEGER,  -- Store boolean as INTEGER (0 for false, 1 for true)
         role TEXT,
         accountStatus TEXT,
