@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:medherence/core/database/database_service.dart';
 import 'package:medherence/core/model/models/user_data.dart';
 import 'package:medherence/core/shared_widget/buttons.dart';
 import 'package:medherence/features/auth/views/forgot_password.dart';
@@ -32,6 +33,7 @@ class _LoginViewState extends State<LoginView> {
   Color? passwordFillColor = Colors.white70;
   Color? dropdownFill;
   final _formKey = GlobalKey<FormState>();
+  final DatabaseService _databaseService = DatabaseService.instance;
 
   Future<void> signingIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -97,15 +99,21 @@ class _LoginViewState extends State<LoginView> {
 
       final userDoc = _firestore.collection("users").doc(userId);
       userDoc.get().then(
-        (DocumentSnapshot doc) {
+        (DocumentSnapshot doc) async {
           final data = doc.data() as Map<String, dynamic>;
           // ...
           if (data != null) {
             final userData = UserData.fromMap(data);
-            final String userName =
-                userData.fullName ?? 'Unknown User'; // Access specific field
-            showSnackBar(context, 'Welcome back, $userName!',
-                backgroundColor: Colors.green);
+            var res = await _databaseService.insertUserData(userData);
+            if (res == "OK") {
+              navigateBackToHome();
+              final String userName =
+                  userData.fullName ?? 'Unknown User'; // Access specific field
+              showSnackBar(context, 'Welcome back, $userName!',
+                  backgroundColor: Colors.green);
+            } else {
+              showSnackBar(context, '$res', backgroundColor: Colors.red);
+            }
           } else {
             showSnackBar(context, 'User data is null.',
                 backgroundColor: Colors.red);
@@ -148,7 +156,6 @@ class _LoginViewState extends State<LoginView> {
             context: context,
             emailController: emailController,
             passwordController: passwordController);
-        // navigateBackToHome();
       });
     }
   }

@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:medherence/features/dashboard_feature/view/dashboard_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen>
   // Function to check if password has been successfully changed
   Future<bool> isUserSignedIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('isSignedIn') ?? false;
+    return prefs.getBool('isSignedIns') ?? false;
   }
 
   // Function to show password change prompt if necessary
@@ -131,18 +132,18 @@ class _SplashScreenState extends State<SplashScreen>
   }
 }
 
-  // // Function to show password change prompt if necessary
-  // void checkPasswordChangePrompt() async {
-  //   bool passwordChanged = await isUserSignedIn();
-  //   if (!passwordChanged) {
-  //     Navigator.pushReplacement(
-  //       context,
-  //       MaterialPageRoute(builder: (context) => const OnboardingView()),
-  //     );
-  //   } else {
-  //     Navigator.pushReplacement(
-  //       context,
-  //       MaterialPageRoute(builder: (context) => const DashboardView()),
-  //     );
-  //   }
-  // }
+// // Function to show password change prompt if necessary
+// void checkPasswordChangePrompt() async {
+//   bool passwordChanged = await isUserSignedIn();
+//   if (!passwordChanged) {
+//     Navigator.pushReplacement(
+//       context,
+//       MaterialPageRoute(builder: (context) => const OnboardingView()),
+//     );
+//   } else {
+//     Navigator.pushReplacement(
+//       context,
+//       MaterialPageRoute(builder: (context) => const DashboardView()),
+//     );
+//   }
+// }

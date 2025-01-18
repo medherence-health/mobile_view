@@ -8,23 +8,94 @@ class DatabaseService {
 
   DatabaseService._constructor();
 
+  // Singleton pattern to ensure only one database instance is used
   Future<Database> get database async {
-    if (_db != null) return _db!;
-    _db = await getDatabase();
+    _db ??=
+        await _initializeDatabase(); // If _db is null, initialize the database
     return _db!;
   }
 
-  Future<Database> getDatabase() async {
+  // Initialize the database and create the tables if not already done
+  Future<Database> _initializeDatabase() async {
     final databaseDirPath = await getDatabasesPath();
-    final databasePath = join(databaseDirPath, "tree_db.db");
-    final database =
-        await openDatabase(databasePath, version: 1, onCreate: (db, version) {
-      db.execute(
-          'CREATE TABLE UserData (id INTEGER PRIMARY KEY, name TEXT, dob TEXT, dod TEXT, image TEXT, fatherId TEXT, motherId TEXT, level INTEGER, spouse INTEGER, treeId TEXT, dateCreated INTEGER, gender TEXT, children INTEGER, personId TEXT, position INTEGER, spouseId TEXT, fcPosition INTEGER, lcPosition INTEGER, lastSCPosition INTEGER, tNOSC INTEGER, tNOPC INTEGER, tNOC INTEGER, adopted INTEGER)');
-      db.execute(
-          'CREATE TABLE Drugs (id INTEGER PRIMARY KEY, highestLevel INTEGER, lowestLevel INTEGER, image TEXT, familyName TEXT, highestPosition INTEGER, numberOfFamilyMember INTEGER, dateCreated INTEGER, treeId TEXT)');
-    });
-    return database;
+    final databasePath = join(databaseDirPath, "medherence_db.db");
+
+    return await openDatabase(
+      databasePath,
+      version: 1,
+      onCreate: (db, version) async {
+        await _createTables(db);
+      },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion < 2) {
+          // Handle database schema changes for version 2 or higher
+          // Example: db.execute('ALTER TABLE ...')
+        }
+      },
+    );
+  }
+
+  // Create all tables
+  Future<void> _createTables(Database db) async {
+    await db.execute('''
+      CREATE TABLE UserData (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT,
+        fullName TEXT,
+        userId TEXT UNIQUE,
+        email TEXT,
+        password TEXT,
+        phoneNumber TEXT,
+        dob TEXT,
+        gender TEXT,
+        waPhoneNumber TEXT,
+        ecName TEXT,
+        ecGender TEXT,
+        ecNum TEXT,
+        ecEmail TEXT,
+        ecRelationship TEXT,
+        nofName TEXT,
+        nofGender TEXT,
+        nofNum TEXT,
+        nofEmail TEXT,
+        nofRelationship TEXT,
+        state TEXT,
+        country TEXT,
+        localGovernmentArea TEXT,
+        ward TEXT,
+        city TEXT,
+        address TEXT,
+        postalCode TEXT,
+        firstName TEXT,
+        lastName TEXT,
+        language TEXT,
+        loginType TEXT,
+        profileImg TEXT,
+        createdAt INTEGER,
+        isActive INTEGER,  -- Store boolean as INTEGER (0 for false, 1 for true)
+        role TEXT,
+        accountStatus TEXT,
+        facilityId TEXT,
+        facilityCode TEXT,
+        facilityLevel TEXT,
+        facilityOwnership TEXT,
+        verificationType TEXT,
+        verificationCode TEXT,
+        bankName TEXT,
+        accountNumber TEXT,
+        cardNumber TEXT,
+        medhecoinBalance REAL,
+        totalNairaBalance REAL,
+        subscriptionType TEXT,
+        subscriptionExpirationDate INTEGER,
+        subscriptionTotalPatients TEXT,  -- Can store as a comma-separated list or JSON
+        subscriptionPatientsSlots INTEGER,
+        myReferralCode TEXT,
+        message TEXT,
+        messageType TEXT,
+        totalPatients TEXT  -- Can store as a comma-separated list or JSON
+      );
+    ''');
   }
 
   Future<String> insertUserData(UserData userData) async {
