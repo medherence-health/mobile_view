@@ -27,289 +27,82 @@ class DatabaseService {
     return database;
   }
 
-  void addUserData(UserData userData) async {
-    final db = await database;
+  Future<String> insertUserData(UserData userData) async {
+    try {
+      // Get a reference to the database.
+      final db = await database;
 
-    await db.insert(
-      'UserData', // Table name
-      {
-        'id': userData.id,
-        'username': userData.username,
-        'fullName': userData.fullName,
-        'userId': userData.userId,
-        'email': userData.email,
-        'password': userData.password,
-        'phoneNumber': userData.phoneNumber,
-        'dob': userData.dob,
-        'gender': userData.gender,
-        'waPhoneNumber': userData.waPhoneNumber,
-        'ecName': userData.ecName,
-        'ecGender': userData.ecGender,
-        'ecNum': userData.ecNum,
-        'ecEmail': userData.ecEmail,
-        'ecRelationship': userData.ecRelationship,
-        'nofName': userData.nofName,
-        'nofGender': userData.nofGender,
-        'nofNum': userData.nofNum,
-        'nofEmail': userData.nofEmail,
-        'nofRelationship': userData.nofRelationship,
-        'state': userData.state,
-        'country': userData.country,
-        'localGovernmentArea': userData.localGovernmentArea,
-        'ward': userData.ward,
-        'city': userData.city,
-        'address': userData.address,
-        'postalCode': userData.postalCode,
-        'firstName': userData.firstName,
-        'lastName': userData.lastName,
-        'language': userData.language,
-        'loginType': userData.loginType,
-        'profileImg': userData.profileImg,
-        'createdAt': userData.createdAt,
-        'isActive': userData.isActive
-            ? 1
-            : 0, // SQLite uses integers for boolean values
-        'role': userData.role,
-        'accountStatus': userData.accountStatus,
-        'facilityId': userData.facilityId,
-        'facilityCode': userData.facilityCode,
-        'facilityLevel': userData.facilityLevel,
-        'facilityOwnership': userData.facilityOwnership,
-        'verificationType': userData.verificationType,
-        'verificationCode': userData.verificationCode,
-        'bankName': userData.bankName,
-        'accountNumber': userData.accountNumber,
-        'cardNumber': userData.cardNumber,
-        'medhecoinBalance': userData.medhecoinBalance,
-        'totalNairaBalance': userData.totalNairaBalance,
-        'subscriptionType': userData.subscriptionType,
-        'subscriptionExpirationDate': userData.subscriptionExpirationDate,
-        'subscriptionTotalPatients': userData.subscriptionTotalPatients != null
-            ? userData.subscriptionTotalPatients!
-                .join(',') // Convert list to comma-separated string
-            : null,
-        'subscriptionPatientsSlots': userData.subscriptionPatientsSlots,
-        'myReferralCode': userData.myReferralCode,
-        'message': userData.message,
-        'messageType': userData.messageType,
-        'totalPatients': userData.totalPatients != null
-            ? userData.totalPatients!
-                .join(',') // Convert list to comma-separated string
-            : null,
-      },
-      conflictAlgorithm: ConflictAlgorithm.replace, // Handle conflicts
-    );
+      // Insert the user data into the table, replacing any existing data with the same `userId`.
+      await db.insert(
+        'UserData',
+        userData.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+
+      return 'OK'; // Return success message on successful insertion.
+    } catch (error) {
+      // Log the error and return a failure message.
+      print('Error inserting user data: $error');
+      return 'Error: Unable to insert user data.';
+    }
   }
 
-  Future<UserData?> getUserDataById(String userId) async {
+  Future<UserDataResult> getUserDataById(String userId) async {
     final db = await database;
 
     try {
-      // Query the database to get the user data by userId
-      final data = await db
-          .rawQuery('SELECT * FROM UserData WHERE userId = ?', [userId]);
+      // Query the database to retrieve user data by userId
+      final data = await db.query(
+        'UserData',
+        where: 'userId = ?',
+        whereArgs: [userId],
+      );
 
+      // Check if any data was returned
       if (data.isNotEmpty) {
-        // Map the first result to a UserData object
-        return UserData(
-          id: data[0]['id'] as int,
-          username: data[0]['username'] as String,
-          fullName: data[0]['fullName'] as String,
-          userId: data[0]['userId'] as String,
-          email: data[0]['email'] as String,
-          password: data[0]['password'] as String,
-          phoneNumber: data[0]['phoneNumber'] as String,
-          dob: data[0]['dob'] as String?,
-          gender: data[0]['gender'] as String?,
-          waPhoneNumber: data[0]['waPhoneNumber'] as String?,
-          ecName: data[0]['ecName'] as String?,
-          ecGender: data[0]['ecGender'] as String?,
-          ecNum: data[0]['ecNum'] as String?,
-          ecEmail: data[0]['ecEmail'] as String?,
-          ecRelationship: data[0]['ecRelationship'] as String?,
-          nofName: data[0]['nofName'] as String?,
-          nofGender: data[0]['nofGender'] as String?,
-          nofNum: data[0]['nofNum'] as String?,
-          nofEmail: data[0]['nofEmail'] as String?,
-          nofRelationship: data[0]['nofRelationship'] as String?,
-          state: data[0]['state'] as String?,
-          country: data[0]['country'] as String?,
-          localGovernmentArea: data[0]['localGovernmentArea'] as String?,
-          ward: data[0]['ward'] as String?,
-          city: data[0]['city'] as String?,
-          address: data[0]['address'] as String?,
-          postalCode: data[0]['postalCode'] as String?,
-          firstName: data[0]['firstName'] as String?,
-          lastName: data[0]['lastName'] as String?,
-          language: data[0]['language'] as String,
-          loginType: data[0]['loginType'] as String,
-          profileImg: data[0]['profileImg'] as String?,
-          createdAt: data[0]['createdAt'] as String,
-          isActive:
-              (data[0]['isActive'] as int) == 1, // Convert from int to bool
-          role: data[0]['role'] as String,
-          accountStatus: data[0]['accountStatus'] as String,
-          facilityId: data[0]['facilityId'] as String?,
-          facilityCode: data[0]['facilityCode'] as String?,
-          facilityLevel: data[0]['facilityLevel'] as String?,
-          facilityOwnership: data[0]['facilityOwnership'] as String?,
-          verificationType: data[0]['verificationType'] as String?,
-          verificationCode: data[0]['verificationCode'] as String?,
-          bankName: data[0]['bankName'] as String?,
-          accountNumber: data[0]['accountNumber'] as String?,
-          cardNumber: data[0]['cardNumber'] as String?,
-          medhecoinBalance: data[0]['medhecoinBalance'] as double,
-          totalNairaBalance: data[0]['totalNairaBalance'] as double,
-          subscriptionType: data[0]['subscriptionType'] as String,
-          subscriptionExpirationDate:
-              data[0]['subscriptionExpirationDate'] as int,
-          subscriptionTotalPatients:
-              (data[0]['subscriptionTotalPatients'] as String?)
-                  ?.split(','), // Convert comma-separated string back to list
-          subscriptionPatientsSlots:
-              data[0]['subscriptionPatientsSlots'] as int,
-          myReferralCode: data[0]['myReferralCode'] as String,
-          message: data[0]['message'] as String?,
-          messageType: data[0]['messageType'] as String?,
-          totalPatients: (data[0]['totalPatients'] as String?)?.split(','),
-        );
+        // Map the first result to a UserData object using a factory method
+        return UserDataResult(
+            userData: UserData.fromMap(data.first), message: "OK");
       }
 
       // If no matching user is found, return null
-      return null;
+      return UserDataResult(userData: null, message: "User not found");
     } catch (error) {
-      print("Error retrieving user data: $error"); // Log the error
-      return null; // Return null if an error occurs
+      // Log the error for debugging purposes
+      print("Error retrieving user data for userId=$userId: $error");
+      return UserDataResult(
+          userData: null,
+          message: "Error retrieving user data for userId=$userId: $error");
     }
   }
 
-  Future<int> updateUserData(UserData userData) async {
-    final db = await database;
-
+  Future<String> updateUserData(UserData userData) async {
     try {
-      // Update the UserData table with the provided userData
-      int rowsAffected = await db.rawUpdate(
-        'UPDATE UserData SET '
-        'username = ?, '
-        'fullName = ?, '
-        'email = ?, '
-        'phoneNumber = ?, '
-        'dob = ?, '
-        'gender = ?, '
-        'waPhoneNumber = ?, '
-        'ecName = ?, '
-        'ecGender = ?, '
-        'ecNum = ?, '
-        'ecEmail = ?, '
-        'ecRelationship = ?, '
-        'nofName = ?, '
-        'nofGender = ?, '
-        'nofNum = ?, '
-        'nofEmail = ?, '
-        'nofRelationship = ?, '
-        'state = ?, '
-        'country = ?, '
-        'localGovernmentArea = ?, '
-        'ward = ?, '
-        'city = ?, '
-        'address = ?, '
-        'postalCode = ?, '
-        'firstName = ?, '
-        'lastName = ?, '
-        'language = ?, '
-        'loginType = ?, '
-        'profileImg = ?, '
-        'createdAt = ?, '
-        'isActive = ?, '
-        'role = ?, '
-        'accountStatus = ?, '
-        'facilityId = ?, '
-        'facilityCode = ?, '
-        'facilityLevel = ?, '
-        'facilityOwnership = ?, '
-        'verificationType = ?, '
-        'verificationCode = ?, '
-        'bankName = ?, '
-        'accountNumber = ?, '
-        'cardNumber = ?, '
-        'medhecoinBalance = ?, '
-        'totalNairaBalance = ?, '
-        'subscriptionType = ?, '
-        'subscriptionExpirationDate = ?, '
-        'subscriptionTotalPatients = ?, '
-        'subscriptionPatientsSlots = ?, '
-        'myReferralCode = ?, '
-        'message = ?, '
-        'messageType = ?, '
-        'totalPatients = ? '
-        'WHERE userId = ?',
-        [
-          userData.username,
-          userData.fullName,
-          userData.email,
-          userData.phoneNumber,
-          userData.dob,
-          userData.gender,
-          userData.waPhoneNumber,
-          userData.ecName,
-          userData.ecGender,
-          userData.ecNum,
-          userData.ecEmail,
-          userData.ecRelationship,
-          userData.nofName,
-          userData.nofGender,
-          userData.nofNum,
-          userData.nofEmail,
-          userData.nofRelationship,
-          userData.state,
-          userData.country,
-          userData.localGovernmentArea,
-          userData.ward,
-          userData.city,
-          userData.address,
-          userData.postalCode,
-          userData.firstName,
-          userData.lastName,
-          userData.language,
-          userData.loginType,
-          userData.profileImg,
-          userData.createdAt,
-          userData.isActive ? 1 : 0, // Convert boolean to int
-          userData.role,
-          userData.accountStatus,
-          userData.facilityId,
-          userData.facilityCode,
-          userData.facilityLevel,
-          userData.facilityOwnership,
-          userData.verificationType,
-          userData.verificationCode,
-          userData.bankName,
-          userData.accountNumber,
-          userData.cardNumber,
-          userData.medhecoinBalance,
-          userData.totalNairaBalance,
-          userData.subscriptionType,
-          userData.subscriptionExpirationDate,
-          userData.subscriptionTotalPatients
-              ?.join(','), // Convert list to comma-separated string
-          userData.subscriptionPatientsSlots,
-          userData.myReferralCode,
-          userData.message,
-          userData.messageType,
-          userData.totalPatients
-              ?.join(','), // Convert list to comma-separated string
-          userData.userId,
-        ],
+      // Get a reference to the database.
+      final db = await database;
+
+      // Attempt to update the user data.
+      final rowsUpdated = await db.update(
+        'UserData',
+        userData.toMap(),
+        where: 'userId = ?',
+        whereArgs: [userData.userId],
       );
 
-      return rowsAffected; // Return the number of rows updated
+      // Check if any rows were updated.
+      if (rowsUpdated > 0) {
+        return 'OK'; // Update was successful.
+      } else {
+        return 'Error: No matching user found to update.';
+      }
     } catch (error) {
-      print("Error updating user: $error"); // Log the error
-      return 0; // Return 0 if an error occurs
+      // Handle errors during the update process.
+      print('Error updating user data: $error');
+      return 'Error: Unable to update user data.';
     }
   }
 
-  void deleteTree(UserData userData) async {
+  Future<String> deleteTree(UserData userData) async {
     final db = await database;
 
     try {
@@ -320,12 +113,23 @@ class DatabaseService {
       );
 
       if (rowsAffected > 0) {
-        print('Successfully deleted user with ID: ${userData.userId}');
+        // If rows were affected, the deletion was successful
+        return 'OK';
       } else {
-        print('No user found with ID: ${userData.userId}');
+        // If no rows were affected, the user was not found
+        return 'No user found with ID: ${userData.userId}';
       }
     } catch (error) {
+      // Catch any error that occurs during the deletion
       print("Error deleting user: $error"); // Log the error for debugging
+      return 'Error: $error';
     }
   }
+}
+
+class UserDataResult {
+  final UserData? userData;
+  final String message;
+
+  UserDataResult({this.userData, required this.message});
 }

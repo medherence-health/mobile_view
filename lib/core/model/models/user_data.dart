@@ -196,4 +196,69 @@ class UserData {
       totalPatients: List<String>.from(map['total_patients'] ?? []),
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'username': username,
+      'fullName': fullName,
+      'userId': userId,
+      'email': email,
+      'password': password,
+      'phoneNumber': phoneNumber,
+      'dob': dob,
+      'gender': gender,
+      'waPhoneNumber': waPhoneNumber,
+      'ecName': ecName,
+      'ecGender': ecGender,
+      'ecNum': ecNum,
+      'ecEmail': ecEmail,
+      'ecRelationship': ecRelationship,
+      'nofName': nofName,
+      'nofGender': nofGender,
+      'nofNum': nofNum,
+      'nofEmail': nofEmail,
+      'nofRelationship': nofRelationship,
+      'state': state,
+      'country': country,
+      'localGovernmentArea': localGovernmentArea,
+      'ward': ward,
+      'city': city,
+      'address': address,
+      'postalCode': postalCode,
+      'firstName': firstName,
+      'lastName': lastName,
+      'language': language,
+      'loginType': loginType,
+      'profileImg': profileImg,
+      'createdAt': createdAt,
+      'isActive': isActive,
+      'role': role,
+      'accountStatus': accountStatus,
+      'facilityId': facilityId,
+      'facilityCode': facilityCode,
+      'facilityLevel': facilityLevel,
+      'facilityOwnership': facilityOwnership,
+      'verificationType': verificationType,
+      'verificationCode': verificationCode,
+      'bankName': bankName,
+      'accountNumber': accountNumber,
+      'cardNumber': cardNumber,
+      'medhecoinBalance': medhecoinBalance,
+      'totalNairaBalance': totalNairaBalance,
+      'subscriptionType': subscriptionType,
+      'subscriptionExpirationDate': subscriptionExpirationDate,
+      'subscriptionTotalPatients': subscriptionTotalPatients,
+      'subscriptionPatientsSlots': subscriptionPatientsSlots,
+      'myReferralCode': myReferralCode,
+      'message': message,
+      'messageType': messageType,
+      'totalPatients': totalPatients,
+    };
+  }
+
+  @override
+  String toString() {
+    return 'UserData{id: $id, username: $username, fullName: $fullName, userId: $userId, email: $email, password: $password, phoneNumber: $phoneNumber, dob: $dob, gender: $gender, waPhoneNumber: $waPhoneNumber, ecName: $ecName, ecGender: $ecGender, ecNum: $ecNum, ecEmail: $ecEmail, ecRelationship: $ecRelationship, nofName: $nofName, nofGender: $nofGender, nofNum: $nofNum, nofEmail: $nofEmail, nofRelationship: $nofRelationship, state: $state, country: $country, localGovernmentArea: $localGovernmentArea, ward: $ward, city: $city, address: $address, postalCode: $postalCode, firstName: $firstName, lastName: $lastName, language: $language, loginType: $loginType, profileImg: $profileImg, createdAt: $createdAt, isActive: $isActive, role: $role, accountStatus: $accountStatus, facilityId: $facilityId, facilityCode: $facilityCode, facilityLevel: $facilityLevel, facilityOwnership: $facilityOwnership, verificationType: $verificationType, verificationCode: $verificationCode, bankName: $bankName, accountNumber: $accountNumber, cardNumber: $cardNumber, medhecoinBalance: $medhecoinBalance, totalNairaBalance: $totalNairaBalance, subscriptionType: $subscriptionType, subscriptionExpirationDate: $subscriptionExpirationDate, subscriptionTotalPatients: $subscriptionTotalPatients, subscriptionPatientsSlots: $subscriptionPatientsSlots, myReferralCode: $myReferralCode, message: $message, messageType: $messageType, totalPatients: $totalPatients}';
+  }
 }
