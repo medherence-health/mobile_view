@@ -1,8 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:medherence/core/database/database_service.dart';
+import 'package:medherence/core/model/models/user_data.dart';
 
 import '../../../core/utils/image_utils.dart';
 
 class ProfileViewModel extends ChangeNotifier {
+  final DatabaseService _databaseService = DatabaseService.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   TextEditingController nicknameController = TextEditingController();
   TextEditingController nokFirstNameController = TextEditingController();
   TextEditingController nokLastNameController = TextEditingController();
@@ -44,6 +50,13 @@ class ProfileViewModel extends ChangeNotifier {
       notifyListeners();
       _validateForm();
     }
+  }
+
+  Future<UserData?> getUserData() async {
+    var result =
+        await _databaseService.getUserDataById(_auth.currentUser?.uid ?? "");
+
+    return result.userData;
   }
 
   void _validateForm() {

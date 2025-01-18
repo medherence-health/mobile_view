@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:medherence/core/model/models/user_data.dart';
 import 'package:medherence/core/utils/size_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../core/utils/color_utils.dart';
 import '../../../core/model/models/history_model.dart';
 import '../../../core/shared_widget/buttons.dart';
+import '../../../core/utils/color_utils.dart';
 import '../../auth/views/change_password.dart';
 import '../../dashboard_feature/view/dashboard_view.dart';
 import '../../history/view/history_screen.dart';
@@ -35,7 +36,7 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
       // Check if password change is required on app start
-      checkPasswordChangePrompt();
+      // checkPasswordChangePrompt();
     });
   }
 
@@ -160,14 +161,7 @@ class _HomeViewState extends State<HomeView> {
         appBar: AppBar(
           title: Padding(
             padding: const EdgeInsets.only(top: 10.0),
-            child: Text(
-              'Welcome, ${context.watch<ProfileViewModel>().nickName.isNotEmpty ? context.watch<ProfileViewModel>().nickName : 'ADB'}',
-              style: TextStyle(
-                fontSize: SizeMg.text(22),
-                fontWeight: FontWeight.w600,
-                fontFamily: "Poppins-bold.ttf",
-              ),
-            ),
+            child: UserNameWidget(),
           ),
           actions: [
             Padding(
@@ -530,6 +524,42 @@ class _HomeViewState extends State<HomeView> {
             },
           ),
         );
+      },
+    );
+  }
+}
+
+class UserNameWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<UserData?>(
+      future: context.watch<ProfileViewModel>().getUserData(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator(); // Show loading indicator
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else if (snapshot.hasData) {
+          // Safely access the data here
+          final fullName = snapshot.data?.fullName ?? 'ADB';
+          return Text(
+            'Welcome, $fullName',
+            style: TextStyle(
+              fontSize: SizeMg.text(22),
+              fontWeight: FontWeight.w600,
+              fontFamily: "Poppins-bold.ttf",
+            ),
+          );
+        } else {
+          return Text(
+            'Welcome, ADB', // Default message if no data
+            style: TextStyle(
+              fontSize: SizeMg.text(22),
+              fontWeight: FontWeight.w600,
+              fontFamily: "Poppins-bold.ttf",
+            ),
+          );
+        }
       },
     );
   }
