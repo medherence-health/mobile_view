@@ -47,6 +47,8 @@ InputDecoration kProfileInputDecoration = InputDecoration(
   ),
 );
 
+String ok = "OK";
+
 NumberFormat kNumFormatNoDecimal = NumberFormat('#,###');
 
 NumberFormat kNumFormatDecimal = NumberFormat('#,###.0#');

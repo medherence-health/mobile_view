@@ -2,6 +2,8 @@ import 'package:medherence/core/model/models/user_data.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../constants/constants.dart';
+
 class DatabaseService {
   static Database? _db;
   static final DatabaseService instance = DatabaseService._constructor();
@@ -110,7 +112,7 @@ class DatabaseService {
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
 
-      return 'OK'; // Return success message on successful insertion.
+      return ok; // Return success message on successful insertion.
     } catch (error) {
       // Log the error and return a failure message.
       print('Error inserting user data: $error');
@@ -133,7 +135,7 @@ class DatabaseService {
       if (data.isNotEmpty) {
         // Map the first result to a UserData object using a factory method
         return UserDataResult(
-            userData: UserData.fromMap(data.first), message: "OK");
+            userData: UserData.fromMap(data.first), message: ok);
       }
 
       // If no matching user is found, return null
@@ -162,7 +164,7 @@ class DatabaseService {
 
       // Check if any rows were updated.
       if (rowsUpdated > 0) {
-        return 'OK'; // Update was successful.
+        return ok; // Update was successful.
       } else {
         return 'Error: No matching user found to update.';
       }
@@ -185,7 +187,7 @@ class DatabaseService {
 
       if (rowsAffected > 0) {
         // If rows were affected, the deletion was successful
-        return 'OK';
+        return ok;
       } else {
         // If no rows were affected, the user was not found
         return 'No user found with ID: ${userData.userId}';

@@ -1,6 +1,9 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:medherence/core/constants/constants.dart';
+import 'package:medherence/core/database/database_service.dart';
 import 'package:medherence/features/dashboard_feature/view/dashboard_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,6 +25,8 @@ class _SplashScreenState extends State<SplashScreen>
   late AnimationController _animationController;
   late Animation<double> _animation;
   final _biometricService = BiometricService();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final DatabaseService _databaseService = DatabaseService.instance;
 
   // Function to check if biometric is enabled in shared preference
   Future<bool> isBiometricEnabled() async {
@@ -31,8 +36,17 @@ class _SplashScreenState extends State<SplashScreen>
 
   // Function to check if password has been successfully changed
   Future<bool> isUserSignedIn() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('isSignedIns') ?? false;
+    if (_auth.currentUser == null) {
+      return false;
+    } else {
+      var result =
+          await _databaseService.getUserDataById(_auth.currentUser?.uid ?? "");
+      if (result.message == ok) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   }
 
   // Function to show password change prompt if necessary
