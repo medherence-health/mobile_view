@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:medherence/core/model/models/user_data.dart';
+import 'package:medherence/features/profile/view_model/profile_view_model.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/utils/color_utils.dart';
 import '../../../core/utils/size_manager.dart';
@@ -10,6 +13,7 @@ class MedhecoinWidget extends StatelessWidget {
   final VoidCallback onTap;
   final String coinTitle;
   final String amount;
+  final bool allowConversion;
 
   const MedhecoinWidget({
     required this.onTap,
@@ -18,6 +22,7 @@ class MedhecoinWidget extends StatelessWidget {
     required this.amountChanged,
     required this.coinTitle,
     required this.amount,
+    required this.allowConversion,
     super.key,
   });
 
@@ -93,58 +98,105 @@ class MedhecoinWidget extends StatelessWidget {
                             ],
                           ),
                         )
-                      : RichText(
-                          text: TextSpan(
-                            text: amount,
-                            style: TextStyle(
-                              fontSize: SizeMg.text(22),
-                              color: Colors.white,
-                              letterSpacing: 1.0,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: ' MDHC',
+                      : CoinBalanceWidget(),
+                  allowConversion
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InkWell(
+                              onTap: onTap,
+                              child: Text(
+                                coinTitle,
                                 style: TextStyle(
-                                  fontSize: SizeMg.text(19),
-                                  color: Colors.white,
-                                  letterSpacing: 0.5,
-                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.staleWhite,
+                                  fontSize: SizeMg.text(14),
+                                  fontWeight: FontWeight.w400,
+                                  decorationColor: AppColors.white,
+                                  decoration: TextDecoration
+                                      .underline, // Add underline decoration
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      InkWell(
-                        onTap: onTap,
-                        child: Text(
-                          coinTitle,
-                          style: TextStyle(
-                            color: AppColors.staleWhite,
-                            fontSize: SizeMg.text(14),
-                            fontWeight: FontWeight.w400,
-                            decorationColor: AppColors.white,
-                            decoration: TextDecoration
-                                .underline, // Add underline decoration
-                          ),
-                        ),
-                      ),
-                      Image.asset(
-                        'assets/images/coin.png',
-                        height: SizeMg.height(30),
-                        width: SizeMg.width(40),
-                      ),
-                    ],
-                  ),
+                            ),
+                            Image.asset(
+                              'assets/images/coin.png',
+                              height: SizeMg.height(30),
+                              width: SizeMg.width(40),
+                            ),
+                          ],
+                        )
+                      : Row(),
                 ],
               ),
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class CoinBalanceWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<UserData?>(
+      future: context.watch<ProfileViewModel>().getUserData(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator(); // Show loading indicator
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else if (snapshot.hasData) {
+          // Safely access the data here
+          final amount = snapshot.data?.medhecoinBalance ?? 0.0;
+          print("medhecoinBalance: $amount");
+
+          return RichText(
+            text: TextSpan(
+              text: amount.toStringAsFixed(2), // Format to 2 decimal places
+              style: TextStyle(
+                fontSize: SizeMg.text(22),
+                color: Colors.white,
+                letterSpacing: 1.0,
+                fontWeight: FontWeight.w500,
+              ),
+              children: [
+                TextSpan(
+                  text: ' MDHC',
+                  style: TextStyle(
+                    fontSize: SizeMg.text(19),
+                    color: Colors.white,
+                    letterSpacing: 0.5,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          );
+        } else {
+          return RichText(
+            text: TextSpan(
+              text: "0.00",
+              style: TextStyle(
+                fontSize: SizeMg.text(22),
+                color: Colors.white,
+                letterSpacing: 1.0,
+                fontWeight: FontWeight.w500,
+              ),
+              children: [
+                TextSpan(
+                  text: ' MDHC',
+                  style: TextStyle(
+                    fontSize: SizeMg.text(19),
+                    color: Colors.white,
+                    letterSpacing: 0.5,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+      },
     );
   }
 }

@@ -218,7 +218,8 @@ class _HomeViewState extends State<HomeView> {
                   },
                   amountChanged: _amountChanged,
                   coinTitle: coinTitle,
-                  amount: amount,
+                  amount: "1",
+                  allowConversion: false,
                 ),
                 SizedBox(height: SizeMg.height(15)),
                 Text(
@@ -544,7 +545,7 @@ class UserNameWidget extends StatelessWidget {
           final fullName = snapshot.data?.fullName ?? 'ADB';
           print("fullName ${snapshot.data}");
           return Text(
-            'Welcome, ${fullName}',
+            'Welcome ${fullName},',
             style: TextStyle(
               fontSize: SizeMg.text(22),
               fontWeight: FontWeight.w600,

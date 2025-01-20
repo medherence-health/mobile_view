@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:medherence/core/utils/size_manager.dart';
 import 'package:medherence/features/dashboard_feature/view/dashboard_view.dart';
 import 'package:medherence/features/more_features/withdrawal/view/withdrawal_view.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/utils/color_utils.dart';
 import '../../../core/shared_widget/buttons.dart';
+import '../../../core/utils/color_utils.dart';
 import '../../home/widget/medecoin_widget.dart';
 import '../../monitor/view_model/reminder_view_model.dart';
 import '../../more_features/withdrawal/view/add_account_view.dart';
@@ -100,6 +100,7 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                   amountChanged: _amountChanged,
                   coinTitle: coinTitle,
                   amount: amount,
+                  allowConversion: true,
                 ),
                 const SizedBox(height: 15),
                 // Display progress and withdrawal chances
