@@ -171,7 +171,8 @@ class UserData {
       loginType: map['login_type'] ?? 'email',
       profileImg: map['profile_img'],
       createdAt: map['created_at'] ?? "0",
-      isActive: map['is_active'] ?? true,
+      isActive: (map['is_active'] ==
+          1), // Convert int to bool (1 -> true, 0 -> false)
       role: map['role'] ?? 'user',
       accountStatus: map['account_status'] ?? 'pending',
       facilityId: map['facility_id'],
@@ -188,12 +189,12 @@ class UserData {
       subscriptionType: map['subscription_type'] ?? 'free',
       subscriptionExpirationDate: map['subscription_expiration_date'] ?? 0,
       subscriptionTotalPatients:
-          List<String>.from(map['subscription_total_patients'] ?? []),
+          _stringToList(map['subscription_total_patients']),
       subscriptionPatientsSlots: map['subscription_patients_slots'] ?? 0,
       myReferralCode: map['my_referral_code'] ?? '',
       message: map['message'],
       messageType: map['message_type'],
-      totalPatients: List<String>.from(map['total_patients'] ?? []),
+      totalPatients: _stringToList(map['total_patients']),
     );
   }
 
@@ -201,65 +202,77 @@ class UserData {
     return {
       'id': id,
       'username': username,
-      'fullName': fullName,
-      'userId': userId,
+      'full_name': fullName,
+      'user_id': userId,
       'email': email,
       'password': password,
-      'phoneNumber': phoneNumber,
+      'phone_number': phoneNumber,
       'dob': dob,
       'gender': gender,
-      'waPhoneNumber': waPhoneNumber,
-      'ecName': ecName,
-      'ecGender': ecGender,
-      'ecNum': ecNum,
-      'ecEmail': ecEmail,
-      'ecRelationship': ecRelationship,
-      'nofName': nofName,
-      'nofGender': nofGender,
-      'nofNum': nofNum,
-      'nofEmail': nofEmail,
-      'nofRelationship': nofRelationship,
+      'wa_phone_number': waPhoneNumber,
+      'ec_name': ecName,
+      'ec_gender': ecGender,
+      'ec_num': ecNum,
+      'ec_email': ecEmail,
+      'ec_relationship': ecRelationship,
+      'nof_name': nofName,
+      'nof_gender': nofGender,
+      'nof_num': nofNum,
+      'nof_email': nofEmail,
+      'nof_relationship': nofRelationship,
       'state': state,
       'country': country,
-      'localGovernmentArea': localGovernmentArea,
+      'local_government_area': localGovernmentArea,
       'ward': ward,
       'city': city,
       'address': address,
-      'postalCode': postalCode,
-      'firstName': firstName,
-      'lastName': lastName,
+      'postal_code': postalCode,
+      'first_name': firstName,
+      'last_name': lastName,
       'language': language,
-      'loginType': loginType,
-      'profileImg': profileImg,
-      'createdAt': createdAt,
-      'isActive':
+      'login_type': loginType,
+      'profile_img': profileImg,
+      'created_at': createdAt,
+      'is_active':
           isActive ? 1 : 0, // Boolean to Integer (0 for false, 1 for true)
       'role': role,
-      'accountStatus': accountStatus,
-      'facilityId': facilityId,
-      'facilityCode': facilityCode,
-      'facilityLevel': facilityLevel,
-      'facilityOwnership': facilityOwnership,
-      'verificationType': verificationType,
-      'verificationCode': verificationCode,
-      'bankName': bankName,
-      'accountNumber': accountNumber,
-      'cardNumber': cardNumber,
-      'medhecoinBalance': medhecoinBalance,
-      'totalNairaBalance': totalNairaBalance,
-      'subscriptionType': subscriptionType,
-      'subscriptionExpirationDate': subscriptionExpirationDate,
-      'subscriptionTotalPatients': subscriptionTotalPatients?.join(','),
-      'subscriptionPatientsSlots': subscriptionPatientsSlots,
-      'myReferralCode': myReferralCode,
+      'account_status': accountStatus,
+      'facility_id': facilityId,
+      'facility_code': facilityCode,
+      'facility_level': facilityLevel,
+      'facility_ownership': facilityOwnership,
+      'verification_type': verificationType,
+      'verification_code': verificationCode,
+      'bank_name': bankName,
+      'account_number': accountNumber,
+      'card_number': cardNumber,
+      'medhecoin_balance': medhecoinBalance,
+      'total_naira_balance': totalNairaBalance,
+      'subscription_type': subscriptionType,
+      'subscription_expiration_date': subscriptionExpirationDate,
+      'subscription_total_patients': subscriptionTotalPatients?.join(','),
+      'subscription_patients_slots': subscriptionPatientsSlots,
+      'my_referral_code': myReferralCode,
       'message': message,
-      'messageType': messageType,
-      'totalPatients': totalPatients?.join(','),
+      'message_type': messageType,
+      'total_patients': totalPatients?.join(','),
     };
+  }
+
+  /// Helper method to convert a String or List into a List<String>
+  static List<String> _stringToList(dynamic value) {
+    if (value is String) {
+      return value.split(','); // Split string into list by commas
+    } else if (value is Iterable) {
+      return List<String>.from(
+          value); // Directly convert if it's already a list
+    } else {
+      return []; // Return an empty list if the value is neither
+    }
   }
 
   @override
   String toString() {
-    return 'UserData{id: $id, username: $username, fullName: $fullName, userId: $userId, email: $email, password: $password, phoneNumber: $phoneNumber, dob: $dob, gender: $gender, waPhoneNumber: $waPhoneNumber, ecName: $ecName, ecGender: $ecGender, ecNum: $ecNum, ecEmail: $ecEmail, ecRelationship: $ecRelationship, nofName: $nofName, nofGender: $nofGender, nofNum: $nofNum, nofEmail: $nofEmail, nofRelationship: $nofRelationship, state: $state, country: $country, localGovernmentArea: $localGovernmentArea, ward: $ward, city: $city, address: $address, postalCode: $postalCode, firstName: $firstName, lastName: $lastName, language: $language, loginType: $loginType, profileImg: $profileImg, createdAt: $createdAt, isActive: $isActive, role: $role, accountStatus: $accountStatus, facilityId: $facilityId, facilityCode: $facilityCode, facilityLevel: $facilityLevel, facilityOwnership: $facilityOwnership, verificationType: $verificationType, verificationCode: $verificationCode, bankName: $bankName, accountNumber: $accountNumber, cardNumber: $cardNumber, medhecoinBalance: $medhecoinBalance, totalNairaBalance: $totalNairaBalance, subscriptionType: $subscriptionType, subscriptionExpirationDate: $subscriptionExpirationDate, subscriptionTotalPatients: $subscriptionTotalPatients, subscriptionPatientsSlots: $subscriptionPatientsSlots, myReferralCode: $myReferralCode, message: $message, messageType: $messageType, totalPatients: $totalPatients}';
+    return 'UserData{id: $id, username: $username, full_name: $fullName, user_id: $userId, email: $email, password: $password, phone_number: $phoneNumber, dob: $dob, gender: $gender, wa_phone_number: $waPhoneNumber, ec_name: $ecName, ec_gender: $ecGender, ec_num: $ecNum, ec_email: $ecEmail, ec_relationship: $ecRelationship, nof_name: $nofName, nof_gender: $nofGender, nof_num: $nofNum, nof_email: $nofEmail, nof_relationship: $nofRelationship, state: $state, country: $country, local_government_area: $localGovernmentArea, ward: $ward, city: $city, address: $address, postal_code: $postalCode, first_name: $firstName, last_name: $lastName, language: $language, login_type: $loginType, profile_img: $profileImg, created_at: $createdAt, is_active: $isActive, role: $role, account_status: $accountStatus, facility_id: $facilityId, facility_code: $facilityCode, facility_level: $facilityLevel, facility_ownership: $facilityOwnership, verification_type: $verificationType, verification_code: $verificationCode, bank_name: $bankName, account_number: $accountNumber, card_number: $cardNumber, medhecoin_balance: $medhecoinBalance, total_naira_balance: $totalNairaBalance, subscription_type: $subscriptionType, subscription_expiration_date: $subscriptionExpirationDate, subscription_total_patients: $subscriptionTotalPatients, subscription_patients_slots: $subscriptionPatientsSlots, my_referral_code: $myReferralCode, message: $message, message_type: $messageType, total_patients: $totalPatients}';
   }
 }

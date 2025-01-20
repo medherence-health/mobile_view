@@ -11,6 +11,8 @@ class DatabaseService {
   DatabaseService._constructor();
 
   // Singleton pattern to ensure only one database instance is used
+  // email!1Q
+  //enarebebenatthan@gmail.com
   Future<Database> get database async {
     _db ??=
         await _initializeDatabase(); // If _db is null, initialize the database
@@ -43,59 +45,59 @@ class DatabaseService {
       CREATE TABLE UserData (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT,
-        fullName TEXT,
-        userId TEXT UNIQUE,
+        full_name TEXT,
+        user_id TEXT UNIQUE,
         email TEXT,
         password TEXT,
-        phoneNumber TEXT,
+        phone_number TEXT,
         dob TEXT,
         gender TEXT,
-        waPhoneNumber TEXT,
-        ecName TEXT,
-        ecGender TEXT,
-        ecNum TEXT,
-        ecEmail TEXT,
-        ecRelationship TEXT,
-        nofName TEXT,
-        nofGender TEXT,
-        nofNum TEXT,
-        nofEmail TEXT,
-        nofRelationship TEXT,
+        wa_phone_number TEXT,
+        ec_name TEXT,
+        ec_gender TEXT,
+        ec_num TEXT,
+        ec_email TEXT,
+        ec_relationship TEXT,
+        nof_name TEXT,
+        nof_gender TEXT,
+        nof_num TEXT,
+        nof_email TEXT,
+        nof_relationship TEXT,
         state TEXT,
         country TEXT,
-        localGovernmentArea TEXT,
+        local_government_area TEXT,
         ward TEXT,
         city TEXT,
         address TEXT,
-        postalCode TEXT,
-        firstName TEXT,
-        lastName TEXT,
+        postal_code TEXT,
+        first_name TEXT,
+        last_name TEXT,
         language TEXT,
-        loginType TEXT,
-        profileImg TEXT,
-        createdAt TEXT,
-        isActive INTEGER,  -- Store boolean as INTEGER (0 for false, 1 for true)
+        login_type TEXT,
+        profile_img TEXT,
+        created_at TEXT,
+        is_active INTEGER,  -- Store boolean as INTEGER (0 for false, 1 for true)
         role TEXT,
-        accountStatus TEXT,
-        facilityId TEXT,
-        facilityCode TEXT,
-        facilityLevel TEXT,
-        facilityOwnership TEXT,
-        verificationType TEXT,
-        verificationCode TEXT,
-        bankName TEXT,
-        accountNumber TEXT,
-        cardNumber TEXT,
-        medhecoinBalance REAL,
-        totalNairaBalance REAL,
-        subscriptionType TEXT,
-        subscriptionExpirationDate INTEGER,
-        subscriptionTotalPatients TEXT,  -- Can store as a comma-separated list or JSON
-        subscriptionPatientsSlots INTEGER,
-        myReferralCode TEXT,
+        account_status TEXT,
+        facility_id TEXT,
+        facility_code TEXT,
+        facility_level TEXT,
+        facility_ownership TEXT,
+        verification_type TEXT,
+        verification_code TEXT,
+        bank_name TEXT,
+        account_number TEXT,
+        card_number TEXT,
+        medhecoin_balance REAL,
+        total_naira_balance REAL,
+        subscription_type TEXT,
+        subscription_expiration_date INTEGER,
+        subscription_total_patients TEXT,  -- Can store as a comma-separated list or JSON
+        subscription_patients_slots INTEGER,
+        my_referral_code TEXT,
         message TEXT,
-        messageType TEXT,
-        totalPatients TEXT  -- Can store as a comma-separated list or JSON
+        message_type TEXT,
+        total_patients TEXT  -- Can store as a comma-separated list or JSON
       );
     ''');
   }
@@ -120,32 +122,33 @@ class DatabaseService {
     }
   }
 
-  Future<UserDataResult> getUserDataById(String userId) async {
+  Future<UserDataResult> getUserDataById(String user_id) async {
     final db = await database;
 
     try {
       // Query the database to retrieve user data by userId
       final data = await db.query(
         'UserData',
-        where: 'userId = ?',
-        whereArgs: [userId],
+        where: 'user_id = ?',
+        whereArgs: [user_id],
       );
 
       // Check if any data was returned
       if (data.isNotEmpty) {
         // Map the first result to a UserData object using a factory method
-        return UserDataResult(
-            userData: UserData.fromMap(data.first), message: ok);
+        var dbUserData = UserData.fromMap(data.first);
+        print("currentUserdb ${dbUserData}");
+        return UserDataResult(userData: dbUserData, message: ok);
       }
 
       // If no matching user is found, return null
       return UserDataResult(userData: null, message: "User not found");
     } catch (error) {
       // Log the error for debugging purposes
-      print("Error retrieving user data for userId=$userId: $error");
+      print("Error retrieving user data for user_id=$user_id: $error");
       return UserDataResult(
           userData: null,
-          message: "Error retrieving user data for userId=$userId: $error");
+          message: "Error retrieving user data for user_id=$user_id: $error");
     }
   }
 
@@ -158,7 +161,7 @@ class DatabaseService {
       final rowsUpdated = await db.update(
         'UserData',
         userData.toMap(),
-        where: 'userId = ?',
+        where: 'user_id = ?',
         whereArgs: [userData.userId],
       );
 
@@ -181,7 +184,7 @@ class DatabaseService {
     try {
       // Use a parameterized query to delete the user data by userId
       int rowsAffected = await db.rawDelete(
-        'DELETE FROM UserData WHERE userId = ?',
+        'DELETE FROM UserData WHERE user_id = ?',
         [userData.userId],
       );
 

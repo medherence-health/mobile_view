@@ -34,50 +34,77 @@ class _SplashScreenState extends State<SplashScreen>
     return prefs.getBool('useBiometric') ?? false;
   }
 
-  // Function to check if password has been successfully changed
+// Function to check if the user is signed in
   Future<bool> isUserSignedIn() async {
-    if (_auth.currentUser == null) {
-      return false;
-    } else {
-      var result =
-          await _databaseService.getUserDataById(_auth.currentUser?.uid ?? "");
+    // Check if the current user is null
+    final currentUser = _auth.currentUser;
+    if (currentUser == null) {
+      return false; // User is not signed in
+    }
+
+    try {
+      // Fetch user data from the database by user ID
+      var result = await _databaseService.getUserDataById(currentUser.uid);
+
+      print("currentUserdb: ${result.message} : ${currentUser.uid}");
+
+      // Check if the result's message indicates success
       if (result.message == ok) {
         return true;
       } else {
         return false;
       }
+    } catch (e) {
+      // Handle any errors that occur
+      print("Error checking user sign-in status: $e");
+      return false;
     }
   }
 
-  // Function to show password change prompt if necessary
-  void checkPasswordChangePrompt() async {
-    bool passwordChanged = await isUserSignedIn();
-    if (!passwordChanged) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const OnboardingView()),
-      );
-    } else {
+// Function to check and show logged-in prompt if necessary
+  void checkLoggedInPrompt() async {
+    try {
+      // Check if the user is signed in
+      bool userSignedIn = await isUserSignedIn();
+      if (!userSignedIn) {
+        // Navigate to the onboarding screen
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const OnboardingView()),
+        );
+        return; // Exit function as user is not signed in
+      }
+
+      // Check if biometric authentication is enabled
       bool useBiometric = await isBiometricEnabled();
       if (useBiometric) {
+        // Attempt biometric authentication
         bool authenticated = await _biometricService.authenticate();
         if (authenticated) {
-          // Navigate to dashboard
+          // Navigate to the dashboard if authentication succeeds
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => const DashboardView()),
           );
         } else {
-          // User canceled biometric or failed authentication, close app
-          Navigator.pop(context); // Close splash screen
+          // Authentication failed or canceled, exit the app
+          Navigator.pop(context); // Close splash screen or current view
         }
       } else {
-        // Biometric not enabled, navigate to dashboard directly
+        // Biometric authentication not enabled, navigate directly to dashboard
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const DashboardView()),
         );
       }
+    } catch (e) {
+      // Handle any exceptions that occur
+      print("Error during login check: $e");
+      // Optionally navigate to an error or fallback screen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const OnboardingView()),
+      );
     }
   }
 
@@ -85,25 +112,33 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
 
-    // Animation controller
+    // Initialize animation controller
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 600),
     );
 
-    // Animation
+    // Define the animation with a curve
     _animation = CurvedAnimation(
       parent: _animationController,
       curve: Curves.easeInOut,
     );
 
-    // Start animation
+    // Start the animation
     _animationController.forward();
+
+    // Listen to animation progress and rebuild the widget
     _animationController.addListener(() {
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
     });
-    Timer(const Duration(milliseconds: 2500), () {
-      checkPasswordChangePrompt();
+
+    // Delay execution for login check
+    Future.delayed(const Duration(milliseconds: 2500), () {
+      if (mounted) {
+        checkLoggedInPrompt();
+      }
     });
   }
 

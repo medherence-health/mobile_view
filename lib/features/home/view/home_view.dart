@@ -542,8 +542,9 @@ class UserNameWidget extends StatelessWidget {
         } else if (snapshot.hasData) {
           // Safely access the data here
           final fullName = snapshot.data?.fullName ?? 'ADB';
+          print("fullName ${snapshot.data}");
           return Text(
-            'Welcome, $fullName',
+            'Welcome, ${fullName}',
             style: TextStyle(
               fontSize: SizeMg.text(22),
               fontWeight: FontWeight.w600,
