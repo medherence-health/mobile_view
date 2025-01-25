@@ -127,7 +127,7 @@ class _HomeViewState extends State<HomeView> {
   }
 
   // Update progress and title based on progress count
-  int progress = 1;
+  int progress = 0;
   String title = 'ADB'; // Initial title
 
   void updateProgress() {
@@ -183,7 +183,10 @@ class _HomeViewState extends State<HomeView> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               SizedBox(height: SizeMg.height(5)),
-              ProgressStreak(progress: progress), // Display progress streak bar
+              ProgressStreak(
+                  progress: progress,
+                  spaceAdjustment:
+                      40), // Display progress streak bar, spaceAdjustment is the space between left and right
               SizedBox(height: SizeMg.height(20)),
               MedhecoinWidget(
                 onTap: toggleAmountChanged,
@@ -500,12 +503,12 @@ class UserNameWidget extends StatelessWidget {
 class TodayMedicationsWidget extends StatelessWidget {
   final VoidCallback onHistoryTap;
   final FirebaseAuth auth;
+
   const TodayMedicationsWidget({
     Key? key,
     required this.onHistoryTap,
     required this.auth,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Drug>>(

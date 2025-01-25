@@ -3,11 +3,13 @@ import 'package:medherence/core/utils/color_utils.dart';
 import 'package:medherence/core/utils/image_utils.dart';
 import 'package:medherence/core/utils/size_manager.dart';
 
-
 class ProgressStreak extends StatelessWidget {
   final int progress;
+  final int spaceAdjustment;
 
-  const ProgressStreak({Key? key, required this.progress}) : super(key: key);
+  const ProgressStreak(
+      {Key? key, required this.progress, required this.spaceAdjustment})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,8 @@ class ProgressStreak extends StatelessWidget {
                 children: [
                   Container(
                     height: 20,
-                    width: (progress / 30) * MediaQuery.of(context).size.width,
+                    width: (progress / 100) *
+                        (MediaQuery.of(context).size.width - spaceAdjustment),
                     decoration: BoxDecoration(
                       color: AppColors.navBarColor,
                       borderRadius: BorderRadius.circular(10),

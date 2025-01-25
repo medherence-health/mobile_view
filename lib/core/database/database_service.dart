@@ -28,7 +28,7 @@ class DatabaseService {
       databasePath,
       version: 1,
       onCreate: (db, version) async {
-        await _createTables(db);
+        await _createUserDataTable(db);
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
@@ -40,7 +40,7 @@ class DatabaseService {
   }
 
   // Create all tables
-  Future<void> _createTables(Database db) async {
+  Future<void> _createUserDataTable(Database db) async {
     await db.execute('''
       CREATE TABLE UserData (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
