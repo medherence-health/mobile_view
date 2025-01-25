@@ -93,9 +93,9 @@ class ReminderState extends ChangeNotifier {
   }
 
   // Method to get the number of checked regimens
-  int getCheckedCount() {
+  int getCheckedCount(List<Drug> drugList) {
     int count = 0;
-    for (var i = 0; i < _regimenList.length; i++) {
+    for (var i = 0; i < drugList.length; i++) {
       if (_checkedMap.containsKey(i) && _checkedMap[i]!) {
         count++;
       }
@@ -109,9 +109,9 @@ class ReminderState extends ChangeNotifier {
     return _checkedMap[index] ?? false;
   }
 
-  bool areAllSelected() {
-    return _regimenList.isNotEmpty &&
-        _checkedMap.length == _regimenList.length &&
+  bool areAllSelected(List<Drug> drugList) {
+    return drugList.isNotEmpty &&
+        _checkedMap.length == drugList.length &&
         _checkedMap.values.every((isChecked) => isChecked);
   }
 
@@ -154,8 +154,9 @@ class ReminderState extends ChangeNotifier {
   }
 
   // Method to select all regimens
-  void selectAll() {
-    for (var i = 0; i < _regimenList.length; i++) {
+  void selectAll(List<Drug> drugList) {
+    for (var i = 0; i < drugList.length; i++) {
+      toggleChecked(drugList[i]);
       _checkedMap[i] = true;
     }
     notifyListeners();

@@ -33,9 +33,9 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
     return Consumer<ReminderState>(
       builder: (context, reminderState, _) {
         List<HistoryModel> regimenList = reminderState.regimenList;
-        int checkedCount = reminderState.getCheckedCount();
+        int checkedCount = reminderState.getCheckedCount(drugList);
         bool showButton = checkedCount > 0;
-        bool allSelected = reminderState.areAllSelected();
+        bool allSelected = reminderState.areAllSelected(drugList);
 
         return SizedBox(
           width: SizeMg.screenWidth,
@@ -205,7 +205,8 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
           Spacer(),
           InkWell(
             onTap: () {
-              Provider.of<ReminderState>(context, listen: false).selectAll();
+              Provider.of<ReminderState>(context, listen: false)
+                  .selectAll(drugList);
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 25.0),
