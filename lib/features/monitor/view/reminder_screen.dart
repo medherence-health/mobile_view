@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:medherence/core/model/models/drug.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/utils/color_utils.dart';
 import 'reminder_details.dart';
 
 class MedicationListScreen extends StatefulWidget {
-  const MedicationListScreen({Key? key}) : super(key: key);
+  final List<Drug> drugList;
+
+  const MedicationListScreen({
+    Key? key,
+    required this.drugList,
+  }) : super(key: key);
 
   @override
   State<MedicationListScreen> createState() => _MedicationListScreenState();
@@ -14,9 +20,12 @@ class MedicationListScreen extends StatefulWidget {
 class _MedicationListScreenState extends State<MedicationListScreen> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   late Future<bool> isDoneClicked;
+  List<Drug> drugList = [];
 
   @override
   void initState() {
+    drugList = widget.drugList;
+
     super.initState();
     // _loadIsDoneClicked();
   }
@@ -54,12 +63,14 @@ class _MedicationListScreenState extends State<MedicationListScreen> {
       ),
       body: Container(
         color: AppColors.white,
-        child: const Padding(
-            padding: EdgeInsets.only(
+        child: Padding(
+            padding: const EdgeInsets.only(
               top: 10.0,
               bottom: 40,
             ),
-            child: EditReminderDetails()),
+            child: EditReminderDetails(
+              drugList: drugList,
+            )),
       ),
     );
   }

@@ -1,13 +1,16 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:medherence/core/model/models/drug.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../../core/model/models/history_model.dart';
 import '../../../core/model/simulated_data/simulated_values.dart';
 
 class ReminderState extends ChangeNotifier {
   List<HistoryModel> _regimenList = generateSimulatedData();
   List<HistoryModel> _historyList = [];
+  List<Drug> _checkedDrugList = [];
 
   bool _val = true;
   bool _pillCount = false;
@@ -101,8 +104,8 @@ class ReminderState extends ChangeNotifier {
   }
 
   // Method to check if a regimen at a specific index is checked
-  bool isChecked(HistoryModel regimen) {
-    int index = _regimenList.indexOf(regimen);
+  bool isChecked(Drug drug) {
+    int index = _checkedDrugList.indexOf(drug);
     return _checkedMap[index] ?? false;
   }
 
@@ -113,8 +116,8 @@ class ReminderState extends ChangeNotifier {
   }
 
   // Method to toggle the checked status of a regimen at a specific index
-  void toggleChecked(HistoryModel regimen) {
-    int index = _regimenList.indexOf(regimen);
+  void toggleChecked(Drug drug) {
+    int index = _checkedDrugList.indexOf(drug);
     bool isChecked = _checkedMap[index] ?? false;
     _checkedMap[index] = !isChecked;
     notifyListeners();

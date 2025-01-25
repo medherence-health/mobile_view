@@ -29,6 +29,8 @@ class DatabaseService {
       version: 1,
       onCreate: (db, version) async {
         await _createUserDataTable(db);
+        // await _createProgressTable(db);
+        // await _createDrugTakenTable(db);
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
@@ -39,7 +41,7 @@ class DatabaseService {
     );
   }
 
-  // Create all tables
+  // Create UserData
   Future<void> _createUserDataTable(Database db) async {
     await db.execute('''
       CREATE TABLE UserData (
@@ -98,6 +100,27 @@ class DatabaseService {
         message TEXT,
         message_type TEXT,
         total_patients TEXT  -- Can store as a comma-separated list or JSON
+      );
+    ''');
+  }
+
+  // Create progress table
+  Future<void> _createProgressTable(Database db) async {
+    await db.execute('''
+      CREATE TABLE Progress (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        progress INTEGER,
+      );
+    ''');
+  }
+
+  // Create drug taken table
+  Future<void> _createDrugTakenTable(Database db) async {
+    await db.execute('''
+      CREATE TABLE Progress (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        drug_id TEXT,
+        time_taken INTEGER,
       );
     ''');
   }

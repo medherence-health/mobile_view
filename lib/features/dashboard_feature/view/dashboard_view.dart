@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medherence/core/model/models/drug.dart';
 import 'package:medherence/features/auth/views/login_view.dart';
 import 'package:stacked/stacked.dart';
 
@@ -25,24 +26,32 @@ class _DashboardViewState extends State<DashboardView> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(
       viewModelBuilder: () => DashboardViewModel(),
-      builder: (_, model, __) => Scaffold(
-        body: GetDashboardView(
-          dashboardIndex: model.currentIndex,
-        ),
-        bottomNavigationBar: CustomBottomNavigationBar(
-          model: model,
-        ),
-      ),
+      builder: (_, model, __) {
+        // Assuming you fetch the drugList from your ViewModel
+        List<Drug> drugList = model.getDrugs(); // Adjust this to fit your logic
+
+        return Scaffold(
+          body: GetDashboardView(
+            dashboardIndex: model.currentIndex,
+            drugList: drugList, // Pass the correct drug list
+          ),
+          bottomNavigationBar: CustomBottomNavigationBar(
+            model: model,
+          ),
+        );
+      },
     );
   }
 }
 
 class GetDashboardView extends StatelessWidget {
   final int dashboardIndex;
+  final List<Drug> drugList;
 
   const GetDashboardView({
     Key? key,
     required this.dashboardIndex,
+    required this.drugList,
   }) : super(key: key);
 
   @override
@@ -51,7 +60,7 @@ class GetDashboardView extends StatelessWidget {
       case 0:
         return const HomeView();
       case 1:
-        return const MedicationListScreen();
+        return MedicationListScreen(drugList: drugList);
       case 2:
         return const MenuScreen();
       default:

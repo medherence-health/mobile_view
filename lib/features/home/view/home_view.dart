@@ -574,7 +574,7 @@ class TodayMedicationsWidget extends StatelessWidget {
                       SizedBox(height: SizeMg.height(3)),
                   itemBuilder: (context, index) {
                     Drug drugItem = drugList[index];
-                    return NextRegimen(itemModel: drugItem);
+                    return NextRegimen(itemModel: drugItem, drugList: drugList);
                   },
                 ),
               Align(
@@ -607,9 +607,12 @@ class TodayMedicationsWidget extends StatelessWidget {
 }
 
 class NextRegimen extends StatelessWidget {
+  final List<Drug> drugList;
+
   const NextRegimen({
     Key? key,
     required this.itemModel,
+    required this.drugList,
   }) : super(key: key);
 
   final Drug itemModel;
@@ -684,7 +687,8 @@ class NextRegimen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => GetDashboardView(dashboardIndex: 1),
+                      builder: (context) => GetDashboardView(
+                          dashboardIndex: 1, drugList: drugList),
                     ),
                   );
                 },

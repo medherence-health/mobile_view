@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:medherence/core/model/models/drug.dart';
 import 'package:medherence/core/shared_widget/buttons.dart';
-import 'package:medherence/core/utils/date_utils.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/model/models/history_model.dart';
@@ -11,15 +10,21 @@ import '../view_model/reminder_view_model.dart';
 import '../widget/medcoin_drop_widget.dart';
 
 class EditReminderDetails extends StatefulWidget {
-  const EditReminderDetails({super.key});
+  final List<Drug> drugList;
+
+  const EditReminderDetails({super.key, required this.drugList});
 
   @override
   _EditReminderDetailsState createState() => _EditReminderDetailsState();
 }
 
 class _EditReminderDetailsState extends State<EditReminderDetails> {
+  List<Drug> drugList = [];
+
   @override
   void initState() {
+    drugList = widget.drugList;
+
     super.initState();
   }
 
@@ -38,17 +43,17 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
           child: Stack(
             children: [
               // Show message when regimenList is empty
-              if (regimenList.isEmpty) _buildEmptyListMessage(),
+              if (drugList.isEmpty) _buildEmptyListMessage(),
               // List of regimen items
               Padding(
                 padding: const EdgeInsets.only(left: 25.0, right: 25),
                 child: ListView.separated(
                   separatorBuilder: (context, index) =>
                       const SizedBox(height: 15),
-                  itemCount: regimenList.length,
+                  itemCount: drugList.length,
                   itemBuilder: (context, index) {
-                    HistoryModel regimen = regimenList[index];
-                    return _buildRegimenTile(context, regimen, reminderState);
+                    Drug drug = drugList[index];
+                    return _buildRegimenTile(context, drug, reminderState);
                   },
                 ),
               ),
@@ -98,10 +103,10 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
   /// Widget for building each regimen tile in the list
   Widget _buildRegimenTile(
     BuildContext context,
-    HistoryModel regimen,
+    Drug drug,
     ReminderState state,
   ) {
-    bool isChecked = state.isChecked(regimen);
+    bool isChecked = state.isChecked(drug);
     return Container(
       width: SizeMg.screenWidth,
       decoration: BoxDecoration(
@@ -124,9 +129,9 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                 color: AppColors.navBarColor,
                 width: 2.5,
               ),
-              value: state.isChecked(regimen),
+              value: state.isChecked(drug),
               onChanged: (value) {
-                state.toggleChecked(regimen);
+                state.toggleChecked(drug);
               },
             ),
           ),
@@ -144,14 +149,14 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                regimen.regimenName,
+                drug.drugName,
                 style: TextStyle(
                   fontSize: SizeMg.text(16),
                   fontWeight: FontWeight.w500,
                 ),
               ),
               Text(
-                regimen.dosage,
+                drug.dosage,
                 style: TextStyle(
                   fontSize: SizeMg.text(12),
                   fontWeight: FontWeight.w400,
@@ -176,13 +181,7 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                   bottom: 0,
                 ),
                 child: Text(
-                  DateFormat('hh:mm a').format(DateTime(
-                    DateTime.now().year,
-                    DateTime.now().month,
-                    DateTime.now().day,
-                    regimen.time.hour,
-                    regimen.time.minute,
-                  )),
+                  drug.timeTaken,
                   style: TextStyle(
                     color: AppColors.navBarColor,
                     fontSize: SizeMg.text(14),
@@ -278,8 +277,8 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                 action: () {
                   // Calculate Medhecoin earned and update state
                   int medhecoinEarned = checkedCount * 100;
-                  Provider.of<ReminderState>(context, listen: false)
-                      .addMedcoin(medhecoinEarned);
+                  // Provider.of<ReminderState>(context, listen: false)
+                  //     .addMedcoin(medhecoinEarned);
 
                   // Show feedback and update history for taken items
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -287,57 +286,13 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                   );
 
                   // Get current date and time
-                  DateTime now = DateTime.now();
 
                   // Update history and regimen list
-                  List<HistoryModel> updatedList = regimenList.where((regimen) {
-                    if (Provider.of<ReminderState>(context, listen: false)
-                        .isChecked(regimen)) {
-                      DateTime regimenTime = DateTime(
-                        regimen.date.year,
-                        regimen.date.month,
-                        regimen.date.day,
-                        regimen.time.hour,
-                        regimen.time.minute,
-                      );
-                      AdherenceStatus status;
-                      if (now.isBefore(regimenTime) ||
-                          now.isAtSameMomentAs(regimenTime)) {
-                        status = AdherenceStatus.early;
-                      } else if (now.isAfter(regimenTime) &&
-                          regimenTime.isSameDayAs(now)) {
-                        status = AdherenceStatus.late;
-                      } else {
-                        status = AdherenceStatus.missed;
-                      }
 
-                      regimen.status = status;
-
-                      // Add to history
-                      Provider.of<ReminderState>(context, listen: false)
-                          .addHistory(
-                        HistoryModel(
-                          icon: regimen.icon,
-                          regimenName: regimen.regimenName,
-                          dosage: regimen.dosage,
-                          date: regimen.date,
-                          regimenDescription: regimen.regimenDescription,
-                          id: regimen.id,
-                          time: regimen.time,
-                          message: regimen.message,
-                          status: regimen.status,
-                        ),
-                      );
-                      return false;
-                    }
-                    return true;
-                  }).toList();
                   // Update regimen list
-                  Provider.of<ReminderState>(context, listen: false)
-                      .updateRegimenList(updatedList);
+
                   // Clear checked items
-                  Provider.of<ReminderState>(context, listen: false)
-                      .clearCheckedItems();
+
                   // Show MedCoin drop widget
                   showDialog(
                     context: context,

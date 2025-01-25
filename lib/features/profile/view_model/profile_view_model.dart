@@ -63,6 +63,32 @@ class ProfileViewModel extends ChangeNotifier {
     }
   }
 
+  Future<List<Drug>> getMedicationActivity(String patientUid) async {
+    try {
+      // Query the patient_drug collection
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('medication_activity')
+          .where('patient_uid', isEqualTo: patientUid)
+          .get(const GetOptions(source: Source.cache)); // Force offline cache
+
+      // If cache is unavailable, fallback to server
+      if (querySnapshot.docs.isEmpty) {
+        querySnapshot = await _firestore
+            .collection('patient_drug')
+            .where('patient_uid', isEqualTo: patientUid)
+            .get(const GetOptions(source: Source.server)); // Use server data
+      }
+
+      // Convert query results into a list of Drug objects
+      return querySnapshot.docs
+          .map((doc) => Drug.fromMap(doc.data() as Map<String, dynamic>))
+          .toList();
+    } catch (error) {
+      print("Error fetching patient drugs: $error");
+      return [];
+    }
+  }
+
   void setAvatar(String avatar) {
     selectedAvatar = avatar;
     notifyListeners();
