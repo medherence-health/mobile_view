@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:drop_down_search_field/drop_down_search_field.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants/constants.dart';
@@ -23,8 +23,8 @@ class _FilterViewState extends State<FilterView> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ReminderState reminderState =
           Provider.of<ReminderState>(context, listen: false);
-      List<String> regimenNames = reminderState.regimenList
-          .map((regimen) => regimen.regimenName)
+      List<String> regimenNames = reminderState.checkedDrugList
+          .map((regimen) => regimen.drugName)
           .toList();
       Provider.of<FilterViewModel>(context, listen: false)
           .setRegimenNames(regimenNames);
@@ -118,7 +118,8 @@ class _FilterViewState extends State<FilterView> {
                       },
                     ),
                   ),
-                  const SizedBox(width: 10), // Add some space between the pickers
+                  const SizedBox(
+                      width: 10), // Add some space between the pickers
                   Expanded(
                     child: _buildDatePicker(
                       context,
@@ -153,8 +154,8 @@ class _FilterViewState extends State<FilterView> {
                     hintText: 'Type in and select the medication',
                     filled: false,
                     fillColor: kFormTextDecoration.fillColor,
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 12),
                     border: kFormTextDecoration.border,
                     focusedBorder: kFormTextDecoration.focusedBorder,
                   ),

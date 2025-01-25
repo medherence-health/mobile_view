@@ -3,7 +3,6 @@ import 'package:medherence/core/model/models/drug.dart';
 import 'package:medherence/core/shared_widget/buttons.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/model/models/history_model.dart';
 import '../../../core/utils/color_utils.dart';
 import '../../../core/utils/size_manager.dart';
 import '../view_model/reminder_view_model.dart';
@@ -32,10 +31,11 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
   Widget build(BuildContext context) {
     return Consumer<ReminderState>(
       builder: (context, reminderState, _) {
-        List<HistoryModel> regimenList = reminderState.regimenList;
+        List<Drug> checkedDrugList = reminderState.checkedDrugList;
         int checkedCount = reminderState.getCheckedCount(drugList);
         bool showButton = checkedCount > 0;
         bool allSelected = reminderState.areAllSelected(drugList);
+        bool isAnySelected = reminderState.isAnySelected();
 
         return SizedBox(
           width: SizeMg.screenWidth,
@@ -58,11 +58,9 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                 ),
               ),
               // Option to select all if not all items are selected
-              if (regimenList.isNotEmpty && !allSelected)
-                _buildSelectAllOption(),
+              if (!isAnySelected) _buildSelectAllOption(),
               // Action button section when items are selected
-              if (showButton)
-                _buildActionButton(context, checkedCount, regimenList),
+              if (isAnySelected) _buildActionButton(context, checkedCount),
             ],
           ),
         );
@@ -230,7 +228,6 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
   Widget _buildActionButton(
     BuildContext context,
     int checkedCount,
-    List<HistoryModel> regimenList,
   ) {
     return Align(
       alignment: Alignment.bottomCenter,
@@ -293,7 +290,8 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                   // Update regimen list
 
                   // Clear checked items
-
+                  Provider.of<ReminderState>(context, listen: false)
+                      .clearCheckedItems();
                   // Show MedCoin drop widget
                   showDialog(
                     context: context,

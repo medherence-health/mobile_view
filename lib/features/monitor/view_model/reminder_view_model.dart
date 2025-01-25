@@ -18,7 +18,7 @@ class ReminderState extends ChangeNotifier {
   TimeOfDay _selectedTime = TimeOfDay.now();
   bool _isAlarmOn = true;
 
-  List<HistoryModel> get regimenList => _regimenList;
+  List<Drug> get checkedDrugList => _checkedDrugList;
   List<HistoryModel> get historyList => _historyList;
 
   bool get val => _val;
@@ -113,6 +113,10 @@ class ReminderState extends ChangeNotifier {
     return drugList.isNotEmpty &&
         _checkedMap.length == drugList.length &&
         _checkedMap.values.every((isChecked) => isChecked);
+  }
+
+  bool isAnySelected() {
+    return _checkedMap.values.any((isChecked) => isChecked);
   }
 
   // Method to toggle the checked status of a regimen at a specific index
