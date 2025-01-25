@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medherence/core/database/database_service.dart';
+import 'package:medherence/core/model/models/drug.dart';
 import 'package:medherence/core/model/models/user_data.dart';
 
 import '../../../core/utils/image_utils.dart';
@@ -8,6 +10,7 @@ import '../../../core/utils/image_utils.dart';
 class ProfileViewModel extends ChangeNotifier {
   final DatabaseService _databaseService = DatabaseService.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   TextEditingController nicknameController = TextEditingController();
   TextEditingController nokFirstNameController = TextEditingController();
@@ -32,6 +35,32 @@ class ProfileViewModel extends ChangeNotifier {
     nokRelationController = TextEditingController();
     selectedAvatar = ImageUtils.avatar4; // Default avatar
     nickName = 'ADB';
+  }
+
+  Future<List<Drug>> getPatientDrugs(String patientUid) async {
+    try {
+      // Query the patient_drug collection
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('patient_drug')
+          .where('patient_uid', isEqualTo: patientUid)
+          .get(const GetOptions(source: Source.cache)); // Force offline cache
+
+      // If cache is unavailable, fallback to server
+      if (querySnapshot.docs.isEmpty) {
+        querySnapshot = await _firestore
+            .collection('patient_drug')
+            .where('patient_uid', isEqualTo: patientUid)
+            .get(const GetOptions(source: Source.server)); // Use server data
+      }
+
+      // Convert query results into a list of Drug objects
+      return querySnapshot.docs
+          .map((doc) => Drug.fromMap(doc.data() as Map<String, dynamic>))
+          .toList();
+    } catch (error) {
+      print("Error fetching patient drugs: $error");
+      return [];
+    }
   }
 
   void setAvatar(String avatar) {

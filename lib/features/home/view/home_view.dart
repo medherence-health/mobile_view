@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:medherence/core/model/models/drug.dart';
 import 'package:medherence/core/model/models/user_data.dart';
 import 'package:medherence/core/utils/size_manager.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +32,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   bool _showHistory = false;
   List<dynamic> history = []; // Initialize history list
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -146,69 +149,45 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     SizeMg.init(context); // Initialize size manager
 
-    return Consumer<ReminderState>(builder: (context, reminderState, _) {
-      List<HistoryModel> regimenList = reminderState.regimenList;
-      int remainingMedications =
-          regimenList.length - reminderState.getCheckedCount();
-      int medcoinBalance = reminderState.medcoin;
-      double medcoinInNaira = reminderState.medcoinInNaira;
-      String coinTitle = _amountChanged ? 'Amount in Naira' : 'Amount in MDHC';
-      String amount = _amountChanged
-          ? medcoinInNaira.toStringAsFixed(2)
-          : medcoinBalance.toString();
-
-      return Scaffold(
-        appBar: AppBar(
-          title: Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: UserNameWidget(),
-          ),
-          actions: [
-            Padding(
-              padding: EdgeInsets.only(
-                  left: SizeMg.width(8), right: SizeMg.width(8)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  NotificationWidget(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const NotificationScreen()),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Padding(
+          padding: const EdgeInsets.only(top: 10.0),
+          child: UserNameWidget(),
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+        actions: [
+          Padding(
+            padding:
+                EdgeInsets.only(left: SizeMg.width(8), right: SizeMg.width(8)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(height: SizeMg.height(5)),
-                ProgressStreak(
-                    progress: progress), // Display progress streak bar
-                SizedBox(height: SizeMg.height(20)),
-                MedhecoinWidget(
-                  onTap: toggleAmountChanged,
-                  iconData: IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MedhecoinScreen()),
-                      );
-                    },
-                    icon: const Icon(
-                      Icons.open_in_new,
-                      color: AppColors.white,
-                    ),
-                  ),
+                NotificationWidget(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const NotificationScreen()),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(height: SizeMg.height(5)),
+              ProgressStreak(progress: progress), // Display progress streak bar
+              SizedBox(height: SizeMg.height(20)),
+              MedhecoinWidget(
+                onTap: toggleAmountChanged,
+                iconData: IconButton(
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -216,94 +195,45 @@ class _HomeViewState extends State<HomeView> {
                           builder: (context) => const MedhecoinScreen()),
                     );
                   },
-                  amountChanged: _amountChanged,
-                  coinTitle: coinTitle,
-                  amount: "1",
-                  allowConversion: false,
-                ),
-                SizedBox(height: SizeMg.height(15)),
-                Text(
-                  'Today\'s Medications',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontFamily: "Poppins-Bold.ttf",
-                    fontSize: SizeMg.text(20),
+                  icon: const Icon(
+                    Icons.open_in_new,
+                    color: AppColors.white,
                   ),
                 ),
-                SizedBox(height: 5),
-                // Display message when regimenList is empty
-                if (regimenList.isEmpty)
-                  Center(
-                    child: SizedBox(
-                      height: 250,
-                      width: 300,
-                      child: Column(
-                        children: [
-                          SizedBox(height: 100),
-                          Icon(
-                            Icons.check_circle_outline_sharp,
-                            color: AppColors.historyBackground,
-                            size: 30,
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            'Yayy, You have taken all medications for today',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontStyle: FontStyle.italic,
-                              color: AppColors.noWidgetText,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                // Display regimen list
-                SizedBox(
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount: remainingMedications,
-                    separatorBuilder: (ctx, index) =>
-                        SizedBox(height: SizeMg.height(3)),
-                    itemBuilder: (context, index) {
-                      HistoryModel regimenItem = regimenList[index];
-                      return NextRegimen(itemModel: regimenItem);
-                    },
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const HistoryScreen()),
-                      );
-                    },
-                    child: Padding(
-                      padding:
-                          EdgeInsets.only(top: 10, bottom: SizeMg.height(5)),
-                      child: Text(
-                        'View Adherence History',
-                        style: TextStyle(
-                          color: AppColors.navBarColor,
-                          fontWeight: FontWeight.w600,
-                          fontFamily: "Poppins-Bold.ttf",
-                          fontSize: SizeMg.text(18),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const MedhecoinScreen()),
+                  );
+                },
+                amountChanged: _amountChanged,
+                coinTitle:
+                    _amountChanged ? 'Amount in Naira' : 'Amount in MDHC',
+                amount: _amountChanged
+                    ? context
+                        .read<ReminderState>()
+                        .medcoinInNaira
+                        .toStringAsFixed(2)
+                    : context.read<ReminderState>().medcoin.toString(),
+                allowConversion: false,
+              ),
+              SizedBox(height: SizeMg.height(15)),
+              TodayMedicationsWidget(
+                auth: _auth,
+                onHistoryTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const HistoryScreen()),
+                  );
+                },
+              ),
+            ],
           ),
         ),
-      );
-    });
+      ),
+    );
   }
 
   // Function to display history in a bottom sheet
@@ -567,13 +497,119 @@ class UserNameWidget extends StatelessWidget {
   }
 }
 
+class TodayMedicationsWidget extends StatelessWidget {
+  final VoidCallback onHistoryTap;
+  final FirebaseAuth auth;
+  const TodayMedicationsWidget({
+    Key? key,
+    required this.onHistoryTap,
+    required this.auth,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<Drug>>(
+      future: context
+          .watch<ProfileViewModel>()
+          .getPatientDrugs(auth.currentUser?.uid ?? ""),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // Show loading indicator while waiting for data
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          // Handle errors
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (snapshot.hasData) {
+          final drugList = snapshot.data ?? [];
+          final int remainingMedications = drugList.length;
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                'Today\'s Medications',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontFamily: "Poppins-Bold.ttf",
+                  fontSize: SizeMg.text(20),
+                ),
+              ),
+              const SizedBox(height: 5),
+              if (drugList.isEmpty)
+                Center(
+                  child: SizedBox(
+                    height: 250,
+                    width: 300,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 100),
+                        Icon(
+                          Icons.check_circle_outline_sharp,
+                          color: AppColors.historyBackground,
+                          size: 30,
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          'Yayy, You have taken all medications for today',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontStyle: FontStyle.italic,
+                            color: AppColors.noWidgetText,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              if (drugList.isNotEmpty)
+                ListView.separated(
+                  shrinkWrap: true,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  itemCount: remainingMedications,
+                  separatorBuilder: (ctx, index) =>
+                      SizedBox(height: SizeMg.height(3)),
+                  itemBuilder: (context, index) {
+                    Drug drugItem = drugList[index];
+                    return NextRegimen(itemModel: drugItem);
+                  },
+                ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: GestureDetector(
+                  onTap: onHistoryTap,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 10, bottom: SizeMg.height(5)),
+                    child: Text(
+                      'View Adherence History',
+                      style: TextStyle(
+                        color: AppColors.navBarColor,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: "Poppins-Bold.ttf",
+                        fontSize: SizeMg.text(18),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        } else {
+          // Handle the case where no data is available
+          return Center(child: Text('No medications found.'));
+        }
+      },
+    );
+  }
+}
+
 class NextRegimen extends StatelessWidget {
   const NextRegimen({
     Key? key,
     required this.itemModel,
   }) : super(key: key);
 
-  final HistoryModel itemModel;
+  final Drug itemModel;
 
   @override
   Widget build(BuildContext context) {
@@ -600,7 +636,7 @@ class NextRegimen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    itemModel.regimenName,
+                    itemModel.drugName,
                     style: TextStyle(
                       color: AppColors.black,
                       fontSize: 20,
@@ -626,13 +662,7 @@ class NextRegimen extends StatelessWidget {
                       ),
                       SizedBox(width: 10),
                       Text(
-                        DateFormat('hh:mm a').format(DateTime(
-                          DateTime.now().year,
-                          DateTime.now().month,
-                          DateTime.now().day,
-                          itemModel.time.hour,
-                          itemModel.time.minute,
-                        )),
+                        itemModel.timeTaken,
                         style: TextStyle(
                           color: AppColors.navBarColor,
                           fontSize: SizeMg.text(12),

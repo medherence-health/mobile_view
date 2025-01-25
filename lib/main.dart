@@ -1,21 +1,22 @@
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:medherence/features/medhecoin/view_model/medhecoin_wallet_view_model.dart';
-import 'package:provider/provider.dart';
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:medherence/features/medhecoin/view_model/medhecoin_wallet_view_model.dart';
+import 'package:medherence/features/splashscreen/splashscreen.dart';
+import 'package:provider/provider.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 
-import 'package:medherence/features/splashscreen/splashscreen.dart';
+import 'core/model/models/notification_model.dart';
 import 'core/providers/faq_provider.dart';
 import 'core/service/notification_service.dart';
 import 'core/utils/color_utils.dart';
 import 'core/utils/utils.dart';
-import 'core/model/models/notification_model.dart';
 import 'features/history/view_model/filter_model.dart';
 import 'features/monitor/view_model/reminder_view_model.dart';
 import 'features/profile/view_model/profile_view_model.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -23,8 +24,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  enablePersistence();
   runApp(const MyApp());
-
   // Initialize Android Alarm Manager
   await AndroidAlarmManager.initialize();
 
@@ -51,6 +52,12 @@ void main() async {
   ));
 
   runApp(const MyApp());
+}
+
+void enablePersistence() {
+  FirebaseFirestore.instance.settings = const Settings(
+    persistenceEnabled: true,
+  );
 }
 
 class MyApp extends StatelessWidget {
