@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:medherence/features/medhecoin/view_model/medhecoin_wallet_view_model.dart';
 import 'package:medherence/features/splashscreen/splashscreen.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 
@@ -21,6 +22,7 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Permission.camera.request();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
