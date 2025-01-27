@@ -21,6 +21,21 @@ class LoginView extends StatefulWidget {
   State<LoginView> createState() => _LoginViewState();
 }
 
+// Global function to show a SnackBar
+void showSnackBar(BuildContext context, String message,
+    {Color backgroundColor = Colors.red}) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+      dismissDirection: DismissDirection.horizontal,
+      elevation: 10,
+      behavior: SnackBarBehavior.floating,
+      margin: const EdgeInsets.all(15),
+      backgroundColor: backgroundColor,
+    ),
+  );
+}
+
 class _LoginViewState extends State<LoginView> {
   late TextEditingController emailController;
   late TextEditingController passwordController;
@@ -44,21 +59,6 @@ class _LoginViewState extends State<LoginView> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const DashboardView()),
-    );
-  }
-
-  // Global function to show a SnackBar
-  void showSnackBar(BuildContext context, String message,
-      {Color backgroundColor = Colors.red}) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        dismissDirection: DismissDirection.horizontal,
-        elevation: 10,
-        behavior: SnackBarBehavior.floating,
-        margin: const EdgeInsets.all(15),
-        backgroundColor: backgroundColor,
-      ),
     );
   }
 

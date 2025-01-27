@@ -29,7 +29,7 @@ class Drug {
   final String patientName;
   final String patientUid;
   final String safety;
-  final String timeTaken;
+  String timeTaken;
   final String videoUrl;
 
   Drug({

@@ -49,6 +49,8 @@ InputDecoration kProfileInputDecoration = InputDecoration(
 
 String ok = "OK";
 
+int currentTimeInMilli = DateTime.now().millisecondsSinceEpoch;
+
 NumberFormat kNumFormatNoDecimal = NumberFormat('#,###');
 
 NumberFormat kNumFormatDecimal = NumberFormat('#,###.0#');

@@ -104,8 +104,8 @@ class ReminderState extends ChangeNotifier {
   }
 
   // Method to check if a regimen at a specific index is checked
-  bool isChecked(Drug drug) {
-    int index = _checkedDrugList.indexOf(drug);
+  bool isChecked(Drug drug, int index) {
+    // int index = _checkedDrugList.indexOf(drug);
     return _checkedMap[index] ?? false;
   }
 
@@ -120,8 +120,8 @@ class ReminderState extends ChangeNotifier {
   }
 
   // Method to toggle the checked status of a regimen at a specific index
-  void toggleChecked(Drug drug) {
-    int index = _checkedDrugList.indexOf(drug);
+  void toggleChecked(Drug drug, int index) {
+    // int index = _checkedDrugList.indexOf(drug);
     bool isChecked = _checkedMap[index] ?? false;
     _checkedMap[index] = !isChecked;
     notifyListeners();
@@ -160,7 +160,7 @@ class ReminderState extends ChangeNotifier {
   // Method to select all regimens
   void selectAll(List<Drug> drugList) {
     for (var i = 0; i < drugList.length; i++) {
-      toggleChecked(drugList[i]);
+      toggleChecked(drugList[i], i);
       _checkedMap[i] = true;
     }
     notifyListeners();

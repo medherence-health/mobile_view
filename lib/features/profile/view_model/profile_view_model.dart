@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:medherence/core/constants/constants.dart';
 import 'package:medherence/core/database/database_service.dart';
 import 'package:medherence/core/model/models/drug.dart';
 import 'package:medherence/core/model/models/user_data.dart';
@@ -86,6 +87,32 @@ class ProfileViewModel extends ChangeNotifier {
     } catch (error) {
       print("Error fetching patient drugs: $error");
       return [];
+    }
+  }
+
+  Future<String> setMedicationActivity(List<Drug> selectedDrugList) async {
+    try {
+      // Create a batch for Firestore operations
+      WriteBatch batch = _firestore.batch();
+
+      // Add each drug to the batch
+      for (Drug drug in selectedDrugList) {
+        drug.timeTaken = currentTimeInMilli.toString();
+        DocumentReference docRef =
+            _firestore.collection('medication_activity').doc();
+        batch.set(docRef, drug.toMap());
+      }
+
+      // Commit the batch
+      await batch.commit();
+
+      return ok;
+    } catch (e) {
+      // Log the error (use a logging library if available)
+      print("Error updating medication activity: $e");
+
+      // Return a user-friendly error message
+      return "Error: $e";
     }
   }
 

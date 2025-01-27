@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:medherence/core/constants/constants.dart';
 import 'package:medherence/core/model/models/drug.dart';
 import 'package:medherence/core/shared_widget/buttons.dart';
+import 'package:medherence/features/auth/views/login_view.dart';
+import 'package:medherence/features/profile/view_model/profile_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/utils/color_utils.dart';
@@ -19,11 +22,11 @@ class EditReminderDetails extends StatefulWidget {
 
 class _EditReminderDetailsState extends State<EditReminderDetails> {
   List<Drug> drugList = [];
+  List<Drug> selectedDrugList = [];
 
   @override
   void initState() {
     drugList = widget.drugList;
-
     super.initState();
   }
 
@@ -53,7 +56,8 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                   itemCount: drugList.length,
                   itemBuilder: (context, index) {
                     Drug drug = drugList[index];
-                    return _buildRegimenTile(context, drug, reminderState);
+                    return _buildRegimenTile(
+                        context, drug, reminderState, index);
                   },
                 ),
               ),
@@ -100,11 +104,8 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
 
   /// Widget for building each regimen tile in the list
   Widget _buildRegimenTile(
-    BuildContext context,
-    Drug drug,
-    ReminderState state,
-  ) {
-    bool isChecked = state.isChecked(drug);
+      BuildContext context, Drug drug, ReminderState state, int index) {
+    bool isChecked = state.isChecked(drug, index);
     return Container(
       width: SizeMg.screenWidth,
       decoration: BoxDecoration(
@@ -127,9 +128,14 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                 color: AppColors.navBarColor,
                 width: 2.5,
               ),
-              value: state.isChecked(drug),
+              value: state.isChecked(drug, index),
               onChanged: (value) {
-                state.toggleChecked(drug);
+                state.toggleChecked(drug, index);
+                if (isChecked) {
+                  selectedDrugList.remove(drug);
+                } else {
+                  selectedDrugList.add(drug);
+                }
               },
             ),
           ),
@@ -205,6 +211,7 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
             onTap: () {
               Provider.of<ReminderState>(context, listen: false)
                   .selectAll(drugList);
+              selectedDrugList = drugList;
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 25.0),
@@ -229,6 +236,54 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
     BuildContext context,
     int checkedCount,
   ) {
+    bool _isLoading = false;
+
+    void _handleTakeMed() async {
+      setState(() {
+        _isLoading = true;
+      });
+
+      // Calculate Medhecoin earned
+      int medhecoinEarned = selectedDrugList.length * 100;
+
+      try {
+        // Call setMedicationActivity and wait for completion
+        String result = await context
+            .read<ProfileViewModel>()
+            .setMedicationActivity(selectedDrugList);
+
+        if (result == ok) {
+          // Show MedCoin drop widget
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return MedCoinDropWidget(
+                medhecoinEarned: medhecoinEarned,
+              );
+            },
+          );
+          // Show success feedback
+          showSnackBar(context, 'Medication Taken',
+              backgroundColor: Colors.green);
+
+          // Clear checked items
+          Provider.of<ReminderState>(context, listen: false)
+              .clearCheckedItems();
+        } else {
+          showSnackBar(context, '$result', backgroundColor: Colors.red);
+        }
+      } catch (error) {
+        // Handle error case
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to take medications: $error')),
+        );
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+
     return Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
@@ -266,45 +321,18 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
             ),
             const SizedBox(height: 10),
             // Button for taking medications
-            PrimaryButton(
-              height: SizeMg.height(45),
-              textSize: SizeMg.text(23),
-              buttonConfig: ButtonConfig(
-                text: 'Take med',
-                extraText: ' ($checkedCount)',
-                action: () {
-                  // Calculate Medhecoin earned and update state
-                  int medhecoinEarned = checkedCount * 100;
-                  // Provider.of<ReminderState>(context, listen: false)
-                  //     .addMedcoin(medhecoinEarned);
-
-                  // Show feedback and update history for taken items
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Pills taken successfully')),
-                  );
-
-                  // Get current date and time
-
-                  // Update history and regimen list
-
-                  // Update regimen list
-
-                  // Clear checked items
-                  Provider.of<ReminderState>(context, listen: false)
-                      .clearCheckedItems();
-                  // Show MedCoin drop widget
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return MedCoinDropWidget(
-                        medhecoinEarned: medhecoinEarned,
-                      );
-                    },
-                  );
-                },
-              ),
-              width: SizeMg.screenWidth,
-            ),
+            _isLoading
+                ? const CircularProgressIndicator() // Show loading indicator when loading
+                : PrimaryButton(
+                    height: SizeMg.height(45),
+                    textSize: SizeMg.text(23),
+                    buttonConfig: ButtonConfig(
+                      text: 'Take med',
+                      extraText: ' ($checkedCount)',
+                      action: _handleTakeMed, // Call the handler function
+                    ),
+                    width: SizeMg.screenWidth,
+                  ),
           ],
         ),
       ),
