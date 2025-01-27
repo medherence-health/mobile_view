@@ -3,6 +3,7 @@ import 'package:medherence/core/constants/constants.dart';
 import 'package:medherence/core/model/models/drug.dart';
 import 'package:medherence/core/shared_widget/buttons.dart';
 import 'package:medherence/features/auth/views/login_view.dart';
+import 'package:medherence/features/dashboard_feature/view/dashboard_view.dart';
 import 'package:medherence/features/profile/view_model/profile_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -284,6 +285,16 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
       }
     }
 
+    void _navToCamera() async {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              GetDashboardView(dashboardIndex: 3, drugList: drugList),
+        ),
+      );
+    }
+
     return Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
@@ -329,7 +340,7 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                     buttonConfig: ButtonConfig(
                       text: 'Take med',
                       extraText: ' ($checkedCount)',
-                      action: _handleTakeMed, // Call the handler function
+                      action: _navToCamera, // Call the handler function
                     ),
                     width: SizeMg.screenWidth,
                   ),

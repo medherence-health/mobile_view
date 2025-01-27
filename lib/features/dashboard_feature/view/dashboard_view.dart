@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medherence/core/model/models/drug.dart';
 import 'package:medherence/features/auth/views/login_view.dart';
+import 'package:medherence/features/video_capture/video_screen.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../home/view/home_view.dart';
@@ -63,6 +64,9 @@ class GetDashboardView extends StatelessWidget {
         return MedicationListScreen(drugList: drugList);
       case 2:
         return const MenuScreen();
+
+      case 3:
+        return const VideoCaptureScreen();
       default:
         return const LoginView();
     }
