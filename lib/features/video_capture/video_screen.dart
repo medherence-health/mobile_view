@@ -1,13 +1,12 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:medherence/features/video_capture/video_preview.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:video_player/video_player.dart';
 
 class VideoCaptureScreen extends StatefulWidget {
   const VideoCaptureScreen({Key? key}) : super(key: key);
@@ -23,10 +22,8 @@ class _VideoCaptureScreenState extends State<VideoCaptureScreen> {
   bool _isCameraInitialized = false;
   bool _hasPermission = false;
   int _countdown = 30;
-  late Timer _timer;
-  late VideoPlayerController _videoPlayerController;
+  Timer? _timer;
   String _videoPath = '';
-  bool _isPlaying = true;
 
   @override
   void initState() {
@@ -78,14 +75,7 @@ class _VideoCaptureScreenState extends State<VideoCaptureScreen> {
         _startCountdown();
 
         await Future.delayed(const Duration(seconds: 30));
-        final file = await _cameraController!.stopVideoRecording();
-
-        setState(() {
-          _isRecording = false;
-        });
-
-        file.saveTo(_videoPath);
-        _initializeVideoPreview();
+        _stopRecording();
       } catch (e) {
         debugPrint("Error during video recording: $e");
         setState(() {
@@ -109,36 +99,50 @@ class _VideoCaptureScreenState extends State<VideoCaptureScreen> {
     });
   }
 
-  void _initializeVideoPreview() {
-    _videoPlayerController = VideoPlayerController.file(File(_videoPath))
-      ..initialize().then((_) {
-        setState(() {});
-        _videoPlayerController.play();
-      });
-  }
-
   void _stopRecording() async {
     if (_cameraController != null &&
         _cameraController!.value.isRecordingVideo) {
       final file = await _cameraController!.stopVideoRecording();
+      _timer?.cancel();
 
       setState(() {
         _isRecording = false;
       });
 
       file.saveTo(_videoPath);
-      _initializeVideoPreview();
-      _timer.cancel();
+
+      // Navigate to the video preview screen
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => VideoPreviewScreen(
+              videoPath: _videoPath,
+              onDelete: _deleteVideo,
+              onSend: _sendVideo,
+            ),
+          ),
+        );
+      }
     }
+  }
+
+  void _deleteVideo() {
+    setState(() {
+      _videoPath = '';
+    });
+    Navigator.pop(context);
+  }
+
+  void _sendVideo() {
+    debugPrint("Sending video: $_videoPath");
+    // Implement upload functionality here
   }
 
   @override
   void dispose() {
     _cameraController?.dispose();
-    _timer.cancel();
-    if (_videoPlayerController.value.isInitialized) {
-      _videoPlayerController.dispose();
-    }
+    _timer?.cancel();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     super.dispose();
   }
@@ -151,12 +155,10 @@ class _VideoCaptureScreenState extends State<VideoCaptureScreen> {
           ? _isCameraInitialized
               ? Stack(
                   children: [
-                    // Camera preview
+                    // Camera Preview
                     Center(
                       child: Transform.scale(
-                        scale: 1 /
-                            (_cameraController!.value.aspectRatio /
-                                MediaQuery.of(context).size.aspectRatio),
+                        scale: 1.5,
                         child: AspectRatio(
                           aspectRatio: _cameraController!.value.aspectRatio,
                           child: Transform.rotate(
@@ -166,6 +168,8 @@ class _VideoCaptureScreenState extends State<VideoCaptureScreen> {
                         ),
                       ),
                     ),
+
+                    // Countdown Timer & Controls
                     if (_isRecording)
                       Align(
                         alignment: Alignment.bottomCenter,
@@ -174,9 +178,21 @@ class _VideoCaptureScreenState extends State<VideoCaptureScreen> {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text(
-                                "Recording... ($_countdown)",
-                                style: const TextStyle(color: Colors.white),
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: _countdown <= 10
+                                      ? Colors.red
+                                      : Colors.green,
+                                ),
+                                child: Text(
+                                  "($_countdown)",
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                               ElevatedButton(
                                 onPressed: _stopRecording,
@@ -200,22 +216,7 @@ class _VideoCaptureScreenState extends State<VideoCaptureScreen> {
                   ],
                 )
               : const Center(child: CircularProgressIndicator())
-          : Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Camera permission is required to use this feature.",
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: _checkPermissions,
-                    child: const Text("Enable Camera Permission"),
-                  ),
-                ],
-              ),
-            ),
+          : const Center(child: Text("Camera permission required.")),
     );
   }
 }
