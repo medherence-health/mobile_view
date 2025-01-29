@@ -116,6 +116,34 @@ class ProfileViewModel extends ChangeNotifier {
     }
   }
 
+  Future<String> setMedicationActivityVideo(
+      List<Drug> selectedDrugList, String downloadUrl) async {
+    try {
+      // Create a batch for Firestore operations
+      WriteBatch batch = _firestore.batch();
+
+      // Add each drug to the batch
+      for (Drug drug in selectedDrugList) {
+        drug.timeTaken = currentTimeInMilli.toString();
+        drug.videoUrl = downloadUrl;
+        DocumentReference docRef =
+            _firestore.collection('medication_activity').doc();
+        batch.set(docRef, drug.toMap());
+      }
+
+      // Commit the batch
+      await batch.commit();
+
+      return ok;
+    } catch (e) {
+      // Log the error (use a logging library if available)
+      print("Error updating medication activity: $e");
+
+      // Return a user-friendly error message
+      return "Error: $e";
+    }
+  }
+
   void setAvatar(String avatar) {
     selectedAvatar = avatar;
     notifyListeners();

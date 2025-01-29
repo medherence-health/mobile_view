@@ -3,19 +3,24 @@ import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:medherence/core/model/models/drug.dart';
 import 'package:medherence/features/video_capture/video_preview.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class VideoCaptureScreen extends StatefulWidget {
-  const VideoCaptureScreen({Key? key}) : super(key: key);
+  final List<Drug> drugList;
+
+  const VideoCaptureScreen({Key? key, required this.drugList})
+      : super(key: key);
 
   @override
   _VideoCaptureScreenState createState() => _VideoCaptureScreenState();
 }
 
 class _VideoCaptureScreenState extends State<VideoCaptureScreen> {
+  List<Drug> drugList = [];
   late List<CameraDescription> _cameras;
   CameraController? _cameraController;
   bool _isRecording = false;
@@ -27,6 +32,7 @@ class _VideoCaptureScreenState extends State<VideoCaptureScreen> {
 
   @override
   void initState() {
+    drugList = widget.drugList;
     super.initState();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     _checkPermissions();
@@ -120,6 +126,7 @@ class _VideoCaptureScreenState extends State<VideoCaptureScreen> {
               videoPath: _videoPath,
               onDelete: _deleteVideo,
               onSend: _sendVideo,
+              selectedDrugList: drugList,
             ),
           ),
         );

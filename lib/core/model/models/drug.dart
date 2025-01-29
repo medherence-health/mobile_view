@@ -30,7 +30,7 @@ class Drug {
   final String patientUid;
   final String safety;
   String timeTaken;
-  final String videoUrl;
+  String videoUrl;
 
   Drug({
     required this.adherencePercent,

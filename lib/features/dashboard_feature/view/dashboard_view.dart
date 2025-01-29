@@ -66,7 +66,7 @@ class GetDashboardView extends StatelessWidget {
         return const MenuScreen();
 
       case 3:
-        return const VideoCaptureScreen();
+        return VideoCaptureScreen(drugList: drugList);
       default:
         return const LoginView();
     }
