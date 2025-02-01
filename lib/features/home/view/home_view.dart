@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:medherence/core/database/database_service.dart';
 import 'package:medherence/core/model/models/drug.dart';
 import 'package:medherence/core/model/models/user_data.dart';
 import 'package:medherence/core/utils/size_manager.dart';
@@ -183,10 +184,7 @@ class _HomeViewState extends State<HomeView> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               SizedBox(height: SizeMg.height(5)),
-              ProgressStreak(
-                  progress: progress,
-                  spaceAdjustment:
-                      40), // Display progress streak bar, spaceAdjustment is the space between left and right
+              ProgressWidget(), // Display progress streak bar, spaceAdjustment is the space between left and right
               SizedBox(height: SizeMg.height(20)),
               MedhecoinWidget(
                 onTap: toggleAmountChanged,
@@ -494,6 +492,30 @@ class UserNameWidget extends StatelessWidget {
               fontFamily: "Poppins-bold.ttf",
             ),
           );
+        }
+      },
+    );
+  }
+}
+
+class ProgressWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<ProgressResult?>(
+      future: context.watch<ProfileViewModel>().getProgress(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return ProgressStreak(
+              progress: 0, spaceAdjustment: 40); // Show loading indicator
+        } else if (snapshot.hasError) {
+          return ProgressStreak(progress: 0, spaceAdjustment: 40);
+        } else if (snapshot.hasData) {
+          // Safely access the data here
+          final progress = snapshot.data?.progress?.progress ?? 0;
+          print("fullName ${snapshot.data}");
+          return ProgressStreak(progress: progress, spaceAdjustment: 40);
+        } else {
+          return ProgressStreak(progress: 0, spaceAdjustment: 40);
         }
       },
     );
