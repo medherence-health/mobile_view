@@ -1,4 +1,5 @@
 import 'package:medherence/core/model/models/monitor_drug.dart';
+import 'package:medherence/core/model/models/progress.dart';
 import 'package:medherence/core/model/models/user_data.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -175,6 +176,26 @@ class DatabaseService {
     }
   }
 
+  Future<String> insertProgress(Progress progress) async {
+    try {
+      // Get a reference to the database.
+      final db = await database;
+
+      // Insert the user data into the table, replacing any existing data with the same `userId`.
+      await db.insert(
+        progressTable,
+        progress.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+
+      return ok; // Return success message on successful insertion.
+    } catch (error) {
+      // Log the error and return a failure message.
+      print('Error inserting user data: $error');
+      return 'Error: $error';
+    }
+  }
+
   Future<UserDataResult> getUserDataById(String user_id) async {
     final db = await database;
 
@@ -233,6 +254,32 @@ class DatabaseService {
     }
   }
 
+  Future<ProgressResult> getProgress() async {
+    final db = await database;
+
+    try {
+      // Query the database to retrieve user data by userId
+      final data = await db.query(
+        progressTable,
+      );
+
+      // Check if any data was returned
+      if (data.isNotEmpty) {
+        // Map the first result to a UserData object using a factory method
+        var dbProgress = Progress.fromMap(data.first);
+        print("currentUserdb ${dbProgress}");
+        return ProgressResult(progress: dbProgress, message: ok);
+      }
+
+      // If no matching user is found, return null
+      return ProgressResult(progress: null, message: "Drug not found");
+    } catch (error) {
+      // Log the error for debugging purposes
+      return ProgressResult(
+          progress: null, message: "Error retrieving data $error");
+    }
+  }
+
   Future<String> updateUserData(UserData userData) async {
     try {
       // Get a reference to the database.
@@ -270,6 +317,30 @@ class DatabaseService {
         monitorDrug.toMap(),
         where: 'drug_id = ?',
         whereArgs: [monitorDrug.drug_id],
+      );
+
+      // Check if any rows were updated.
+      if (rowsUpdated > 0) {
+        return ok; // Update was successful.
+      } else {
+        return 'Error: No matching user found to update.';
+      }
+    } catch (error) {
+      // Handle errors during the update process.
+      print('Error updating user data: $error');
+      return 'Error: Unable to update  $error';
+    }
+  }
+
+  Future<String> updateProgress(Progress progress) async {
+    try {
+      // Get a reference to the database.
+      final db = await database;
+
+      // Attempt to update the user data.
+      final rowsUpdated = await db.update(
+        progressTable,
+        progress.toMap(),
       );
 
       // Check if any rows were updated.
@@ -332,6 +403,27 @@ class DatabaseService {
       return 'Error: $error';
     }
   }
+
+  Future<String> deleteProgress(Progress progress) async {
+    final db = await database;
+
+    try {
+      // Use a parameterized query to delete the user data by userId
+      int rowsAffected = await db.rawDelete('DELETE FROM $progressTable');
+
+      if (rowsAffected > 0) {
+        // If rows were affected, the deletion was successful
+        return ok;
+      } else {
+        // If no rows were affected, the user was not found
+        return 'No user found with ID:';
+      }
+    } catch (error) {
+      // Catch any error that occurs during the deletion
+      print("Error: $error"); // Log the error for debugging
+      return 'Error: $error';
+    }
+  }
 }
 
 class UserDataResult {
@@ -346,4 +438,11 @@ class MonitorDrugResult {
   final String message;
 
   MonitorDrugResult({this.monitorDrug, required this.message});
+}
+
+class ProgressResult {
+  final Progress? progress;
+  final String message;
+
+  ProgressResult({this.progress, required this.message});
 }

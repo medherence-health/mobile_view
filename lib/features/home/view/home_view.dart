@@ -509,9 +509,10 @@ class TodayMedicationsWidget extends StatelessWidget {
     required this.onHistoryTap,
     required this.auth,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Drug>>(
+    return FutureBuilder<ListDrugPercent>(
       future: context
           .watch<ProfileViewModel>()
           .getPatientTodayDrugs(auth.currentUser?.uid ?? ""),
@@ -523,7 +524,8 @@ class TodayMedicationsWidget extends StatelessWidget {
           // Handle errors
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (snapshot.hasData) {
-          final drugList = snapshot.data ?? [];
+          final drugList = snapshot.data!.listOfDrugs;
+
           final int remainingMedications = drugList.length;
 
           return Column(

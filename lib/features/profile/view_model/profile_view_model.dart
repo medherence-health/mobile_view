@@ -5,6 +5,7 @@ import 'package:medherence/core/constants/constants.dart';
 import 'package:medherence/core/database/database_service.dart';
 import 'package:medherence/core/model/models/drug.dart';
 import 'package:medherence/core/model/models/monitor_drug.dart';
+import 'package:medherence/core/model/models/progress.dart';
 import 'package:medherence/core/model/models/user_data.dart';
 
 import '../../../core/utils/image_utils.dart';
@@ -39,6 +40,12 @@ class ProfileViewModel extends ChangeNotifier {
     nickName = 'ADB';
   }
 
+  Future<ProgressResult> getProgress() async {
+    var progress = await _databaseService.getProgress();
+
+    return progress;
+  }
+
   Future<List<Drug>> getPatientDrugs(String patientUid) async {
     try {
       // Query the patient_drug collection
@@ -65,8 +72,13 @@ class ProfileViewModel extends ChangeNotifier {
     }
   }
 
-  Future<List<Drug>> getPatientTodayDrugs(String patientUid) async {
+  Future<ListDrugPercent> getPatientTodayDrugs(String patientUid) async {
     List<Drug> filteredDrugList = [];
+    int usedCount = 0;
+    int notUsedCount = 0;
+    int totalCount = 0;
+    int percentageOfUsed = 0;
+
     try {
       print('currentTimeInMilli$currentTimeInMilli');
       // Query the patient_drug collection
@@ -107,10 +119,19 @@ class ProfileViewModel extends ChangeNotifier {
         }
       }
 
-      return filteredDrugList;
+      notUsedCount = filteredDrugList.length;
+      totalCount = firestoreData.length;
+      usedCount = notUsedCount - totalCount;
+      percentageOfUsed = ((usedCount / totalCount) * 100) as int;
+
+      await _databaseService
+          .insertProgress(Progress(progress: percentageOfUsed));
+
+      return ListDrugPercent(
+          listOfDrugs: filteredDrugList, percent: percentageOfUsed);
     } catch (error) {
       print("Error fetching patient drugs: $error");
-      return [];
+      return ListDrugPercent(listOfDrugs: [], percent: 0);
     }
   }
 
@@ -286,4 +307,10 @@ class ProfileViewModel extends ChangeNotifier {
       // );
     }
   }
+}
+
+class ListDrugPercent {
+  final List<Drug> listOfDrugs;
+  final int percent;
+  ListDrugPercent({required this.listOfDrugs, required this.percent});
 }
