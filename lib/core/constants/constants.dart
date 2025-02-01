@@ -55,6 +55,19 @@ int addHoursToCurrentMillis(int hours) {
   return currentTimeInMilli + addedMillis;
 }
 
+int cyclesLeftUntil(int endDateMillis, int freq) {
+  int currentMillis = DateTime.now().millisecondsSinceEpoch;
+  int differenceMillis = endDateMillis - currentMillis;
+
+  if (differenceMillis <= 0) {
+    return 0; // If the end date has already passed, return 0 hours
+  }
+
+  int hoursLeft =
+      (differenceMillis / (60 * 60 * 1000)).floor(); // Convert to hours
+  return (hoursLeft / freq).floor();
+}
+
 NumberFormat kNumFormatNoDecimal = NumberFormat('#,###');
 
 NumberFormat kNumFormatDecimal = NumberFormat('#,###.0#');

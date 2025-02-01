@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -74,8 +72,8 @@ class ProfileViewModel extends ChangeNotifier {
       QuerySnapshot querySnapshot = await _firestore
           .collection('patient_drug')
           .where('patient_uid', isEqualTo: patientUid)
-          .where('expected_date_to_finish_drug',
-              isGreaterThanOrEqualTo: currentTimeInMilli)
+          // .where('expected_date_to_finish_drug',
+          //     isGreaterThanOrEqualTo: currentTimeInMilli)
           .get(const GetOptions(source: Source.cache)); // Force offline cache
 
       // If cache is unavailable, fallback to server
@@ -83,15 +81,21 @@ class ProfileViewModel extends ChangeNotifier {
         querySnapshot = await _firestore
             .collection('patient_drug')
             .where('patient_uid', isEqualTo: patientUid)
-            .where('expected_date_to_finish_drug',
-                isGreaterThanOrEqualTo: currentTimeInMilli)
+            // .where('expected_date_to_finish_drug',
+            //     isGreaterThanOrEqualTo: currentTimeInMilli)
             .get(const GetOptions(source: Source.server)); // Use server data
       }
 
       // Convert query results into a list of Drug objects
-      return querySnapshot.docs
+      var firestoreData = querySnapshot.docs
           .map((doc) => Drug.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
+
+      var result = await _databaseService
+          .getMonitorDrugById(firestoreData.first.medicationsId);
+      print("MonitorData ${result.monitorDrug}");
+
+      return firestoreData;
     } catch (error) {
       print("Error fetching patient drugs: $error");
       return [];
@@ -132,11 +136,7 @@ class ProfileViewModel extends ChangeNotifier {
       // Add each drug to the batch
       for (Drug drug in selectedDrugList) {
         drug.timeTaken = currentTimeInMilli.toString();
-        int next_time_taken = addHoursToCurrentMillis(drug.frequencyTime);
 
-        MonitorDrug monitorDrug = MonitorDrug(drug_id: drug.medicationsId,
-            time_taken: int.tryParse(drug.timeTaken) ?? currentTimeInMilli,
-            next_time_taken: next_time_taken, cycles_left: cycles_left)
         DocumentReference docRef =
             _firestore.collection('medication_activity').doc();
         batch.set(docRef, drug.toMap());
@@ -145,6 +145,11 @@ class ProfileViewModel extends ChangeNotifier {
       // Commit the batch
       await batch.commit();
 
+      // After successful commit, update local database
+      for (Drug drug in selectedDrugList) {
+        await updateMonitorDrug(drug);
+      }
+
       return ok;
     } catch (e) {
       // Log the error (use a logging library if available)
@@ -152,6 +157,31 @@ class ProfileViewModel extends ChangeNotifier {
 
       // Return a user-friendly error message
       return "Error: $e";
+    }
+  }
+
+  Future<String> updateMonitorDrug(Drug drug) async {
+    int next_time_taken = addHoursToCurrentMillis(
+        drug.frequencyTime); // next time drug should be taken
+
+    int cycles_left = cyclesLeftUntil(drug.expectedDateToFinishDrug,
+        drug.frequencyTime); // amount of drugs left to be taken
+
+    //create the MonitorDrug
+    MonitorDrug monitorDrug = MonitorDrug(
+        drug_id: drug.medicationsId,
+        time_taken: int.tryParse(drug.timeTaken) ?? currentTimeInMilli,
+        next_time_taken: next_time_taken,
+        cycles_left: cycles_left);
+
+    var result = await _databaseService.getMonitorDrugById(monitorDrug.drug_id);
+    if (result.monitorDrug == null) {
+      // insert into database
+      await _databaseService.insertMonitorDrug(monitorDrug);
+      return ok;
+    } else {
+      await _databaseService.updateMonitorDrug(monitorDrug);
+      return ok;
     }
   }
 

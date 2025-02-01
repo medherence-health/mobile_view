@@ -8,6 +8,13 @@ import '../constants/constants.dart';
 class DatabaseService {
   static Database? _db;
   static final DatabaseService instance = DatabaseService._constructor();
+  static const String _databaseName = "medherence_db.db";
+  static const int _databaseVersion = 1;
+
+  // Table names
+  static const String userTable = "UserData";
+  static const String progressTable = "Progress";
+  static const String monitorDrugTable = "MonitorDrug";
 
   DatabaseService._constructor();
 
@@ -23,11 +30,11 @@ class DatabaseService {
   // Initialize the database and create the tables if not already done
   Future<Database> _initializeDatabase() async {
     final databaseDirPath = await getDatabasesPath();
-    final databasePath = join(databaseDirPath, "medherence_db.db");
+    final databasePath = join(databaseDirPath, _databaseName);
 
     return await openDatabase(
       databasePath,
-      version: 1,
+      version: _databaseVersion,
       onCreate: (db, version) async {
         await _createUserDataTable(db);
         await _createProgressTable(db);
@@ -45,7 +52,7 @@ class DatabaseService {
   // Create UserData
   Future<void> _createUserDataTable(Database db) async {
     await db.execute('''
-      CREATE TABLE UserData (
+      CREATE TABLE $userTable (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT,
         full_name TEXT,
@@ -108,9 +115,9 @@ class DatabaseService {
   // Create progress table
   Future<void> _createProgressTable(Database db) async {
     await db.execute('''
-      CREATE TABLE Progress (
+      CREATE TABLE $progressTable (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        progress INTEGER,
+        progress INTEGER
       );
     ''');
   }
@@ -118,12 +125,12 @@ class DatabaseService {
   // Create drug taken table
   Future<void> _createMonitorDrugTakenTable(Database db) async {
     await db.execute('''
-      CREATE TABLE MonitorDrug (
+      CREATE TABLE $monitorDrugTable (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         drug_id TEXT,
         time_taken INTEGER,
         next_time_taken INTEGER,
-        cycles_left INTEGER,
+        cycles_left INTEGER
       );
     ''');
   }
@@ -144,7 +151,7 @@ class DatabaseService {
     } catch (error) {
       // Log the error and return a failure message.
       print('Error inserting user data: $error');
-      return 'Error: Unable to insert user data.';
+      return '$error';
     }
   }
 
@@ -198,7 +205,7 @@ class DatabaseService {
     }
   }
 
-  Future<MonitorDrugResult> getMonitorDrug(String drug_id) async {
+  Future<MonitorDrugResult> getMonitorDrugById(String drug_id) async {
     final db = await database;
 
     try {

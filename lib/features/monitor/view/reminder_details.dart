@@ -340,7 +340,8 @@ class _EditReminderDetailsState extends State<EditReminderDetails> {
                     buttonConfig: ButtonConfig(
                       text: 'Take med',
                       extraText: ' ($checkedCount)',
-                      action: _navToCamera, // Call the handler function
+                      // action: _navToCamera, // Call the handler function
+                      action: _handleTakeMed, // Call the handler function
                     ),
                     width: SizeMg.screenWidth,
                   ),
