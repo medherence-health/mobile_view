@@ -1,9 +1,12 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medherence/core/constants/constants.dart';
 import 'package:medherence/core/database/database_service.dart';
 import 'package:medherence/core/model/models/drug.dart';
+import 'package:medherence/core/model/models/monitor_drug.dart';
 import 'package:medherence/core/model/models/user_data.dart';
 
 import '../../../core/utils/image_utils.dart';
@@ -64,6 +67,37 @@ class ProfileViewModel extends ChangeNotifier {
     }
   }
 
+  Future<List<Drug>> getPatientTodayDrugs(String patientUid) async {
+    try {
+      print('currentTimeInMilli$currentTimeInMilli');
+      // Query the patient_drug collection
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('patient_drug')
+          .where('patient_uid', isEqualTo: patientUid)
+          .where('expected_date_to_finish_drug',
+              isGreaterThanOrEqualTo: currentTimeInMilli)
+          .get(const GetOptions(source: Source.cache)); // Force offline cache
+
+      // If cache is unavailable, fallback to server
+      if (querySnapshot.docs.isEmpty) {
+        querySnapshot = await _firestore
+            .collection('patient_drug')
+            .where('patient_uid', isEqualTo: patientUid)
+            .where('expected_date_to_finish_drug',
+                isGreaterThanOrEqualTo: currentTimeInMilli)
+            .get(const GetOptions(source: Source.server)); // Use server data
+      }
+
+      // Convert query results into a list of Drug objects
+      return querySnapshot.docs
+          .map((doc) => Drug.fromMap(doc.data() as Map<String, dynamic>))
+          .toList();
+    } catch (error) {
+      print("Error fetching patient drugs: $error");
+      return [];
+    }
+  }
+
   Future<List<Drug>> getMedicationActivity(String patientUid) async {
     try {
       // Query the patient_drug collection
@@ -98,6 +132,11 @@ class ProfileViewModel extends ChangeNotifier {
       // Add each drug to the batch
       for (Drug drug in selectedDrugList) {
         drug.timeTaken = currentTimeInMilli.toString();
+        int next_time_taken = addHoursToCurrentMillis(drug.frequencyTime);
+
+        MonitorDrug monitorDrug = MonitorDrug(drug_id: drug.medicationsId,
+            time_taken: int.tryParse(drug.timeTaken) ?? currentTimeInMilli,
+            next_time_taken: next_time_taken, cycles_left: cycles_left)
         DocumentReference docRef =
             _firestore.collection('medication_activity').doc();
         batch.set(docRef, drug.toMap());

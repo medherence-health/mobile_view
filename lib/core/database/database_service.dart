@@ -1,3 +1,4 @@
+import 'package:medherence/core/model/models/monitor_drug.dart';
 import 'package:medherence/core/model/models/user_data.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -29,8 +30,8 @@ class DatabaseService {
       version: 1,
       onCreate: (db, version) async {
         await _createUserDataTable(db);
-        // await _createProgressTable(db);
-        // await _createDrugTakenTable(db);
+        await _createProgressTable(db);
+        await _createMonitorDrugTakenTable(db);
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
@@ -115,12 +116,14 @@ class DatabaseService {
   }
 
   // Create drug taken table
-  Future<void> _createDrugTakenTable(Database db) async {
+  Future<void> _createMonitorDrugTakenTable(Database db) async {
     await db.execute('''
-      CREATE TABLE Progress (
+      CREATE TABLE MonitorDrug (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         drug_id TEXT,
         time_taken INTEGER,
+        next_time_taken INTEGER,
+        cycles_left INTEGER,
       );
     ''');
   }
@@ -142,6 +145,26 @@ class DatabaseService {
       // Log the error and return a failure message.
       print('Error inserting user data: $error');
       return 'Error: Unable to insert user data.';
+    }
+  }
+
+  Future<String> insertMonitorDrug(MonitorDrug monitorDrug) async {
+    try {
+      // Get a reference to the database.
+      final db = await database;
+
+      // Insert the user data into the table, replacing any existing data with the same `userId`.
+      await db.insert(
+        'MonitorDrug',
+        monitorDrug.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+
+      return ok; // Return success message on successful insertion.
+    } catch (error) {
+      // Log the error and return a failure message.
+      print('Error inserting user data: $error');
+      return 'Error: $error';
     }
   }
 
@@ -175,6 +198,34 @@ class DatabaseService {
     }
   }
 
+  Future<MonitorDrugResult> getMonitorDrug(String drug_id) async {
+    final db = await database;
+
+    try {
+      // Query the database to retrieve user data by userId
+      final data = await db.query(
+        'MonitorDrug',
+        where: 'drug_id = ?',
+        whereArgs: [drug_id],
+      );
+
+      // Check if any data was returned
+      if (data.isNotEmpty) {
+        // Map the first result to a UserData object using a factory method
+        var dbMonitorDrug = MonitorDrug.fromMap(data.first);
+        print("currentUserdb ${dbMonitorDrug}");
+        return MonitorDrugResult(monitorDrug: dbMonitorDrug, message: ok);
+      }
+
+      // If no matching user is found, return null
+      return MonitorDrugResult(monitorDrug: null, message: "Drug not found");
+    } catch (error) {
+      // Log the error for debugging purposes
+      return MonitorDrugResult(
+          monitorDrug: null, message: "Error retrieving data $error");
+    }
+  }
+
   Future<String> updateUserData(UserData userData) async {
     try {
       // Get a reference to the database.
@@ -201,6 +252,32 @@ class DatabaseService {
     }
   }
 
+  Future<String> updateMonitorDrug(MonitorDrug monitorDrug) async {
+    try {
+      // Get a reference to the database.
+      final db = await database;
+
+      // Attempt to update the user data.
+      final rowsUpdated = await db.update(
+        'MonitorDrug',
+        monitorDrug.toMap(),
+        where: 'drug_id = ?',
+        whereArgs: [monitorDrug.drug_id],
+      );
+
+      // Check if any rows were updated.
+      if (rowsUpdated > 0) {
+        return ok; // Update was successful.
+      } else {
+        return 'Error: No matching user found to update.';
+      }
+    } catch (error) {
+      // Handle errors during the update process.
+      print('Error updating user data: $error');
+      return 'Error: Unable to update  $error';
+    }
+  }
+
   Future<String> deleteTree(UserData userData) async {
     final db = await database;
 
@@ -224,6 +301,30 @@ class DatabaseService {
       return 'Error: $error';
     }
   }
+
+  Future<String> deleteMonitorDrug(MonitorDrug monitorDrug) async {
+    final db = await database;
+
+    try {
+      // Use a parameterized query to delete the user data by userId
+      int rowsAffected = await db.rawDelete(
+        'DELETE FROM MonitorDrug WHERE drug_id = ?',
+        [monitorDrug.drug_id],
+      );
+
+      if (rowsAffected > 0) {
+        // If rows were affected, the deletion was successful
+        return ok;
+      } else {
+        // If no rows were affected, the user was not found
+        return 'No user found with ID: ${monitorDrug.drug_id}';
+      }
+    } catch (error) {
+      // Catch any error that occurs during the deletion
+      print("Error: $error"); // Log the error for debugging
+      return 'Error: $error';
+    }
+  }
 }
 
 class UserDataResult {
@@ -231,4 +332,11 @@ class UserDataResult {
   final String message;
 
   UserDataResult({this.userData, required this.message});
+}
+
+class MonitorDrugResult {
+  final MonitorDrug? monitorDrug;
+  final String message;
+
+  MonitorDrugResult({this.monitorDrug, required this.message});
 }

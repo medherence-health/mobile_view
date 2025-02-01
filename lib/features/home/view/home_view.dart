@@ -514,7 +514,7 @@ class TodayMedicationsWidget extends StatelessWidget {
     return FutureBuilder<List<Drug>>(
       future: context
           .watch<ProfileViewModel>()
-          .getPatientDrugs(auth.currentUser?.uid ?? ""),
+          .getPatientTodayDrugs(auth.currentUser?.uid ?? ""),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Show loading indicator while waiting for data
