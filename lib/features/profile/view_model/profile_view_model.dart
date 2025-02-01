@@ -66,6 +66,7 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   Future<List<Drug>> getPatientTodayDrugs(String patientUid) async {
+    List<Drug> filteredDrugList = [];
     try {
       print('currentTimeInMilli$currentTimeInMilli');
       // Query the patient_drug collection
@@ -91,11 +92,22 @@ class ProfileViewModel extends ChangeNotifier {
           .map((doc) => Drug.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
 
-      var result = await _databaseService
-          .getMonitorDrugById(firestoreData.first.medicationsId);
-      print("MonitorData ${result.monitorDrug}");
+      for (Drug drug in firestoreData) {
+        var monitoredDataResult = await _databaseService
+            .getMonitorDrugById(firestoreData.first.medicationsId);
+        if (monitoredDataResult.monitorDrug == null) {
+          filteredDrugList.add(drug);
+        } else {
+          // check if drug has been used
+          if (monitoredDataResult.monitorDrug!.next_time_taken <=
+                  currentTimeInMilli &&
+              drug.medicationUseDate <= currentTimeInMilli) {
+            filteredDrugList.add(drug);
+          }
+        }
+      }
 
-      return firestoreData;
+      return filteredDrugList;
     } catch (error) {
       print("Error fetching patient drugs: $error");
       return [];
@@ -139,7 +151,14 @@ class ProfileViewModel extends ChangeNotifier {
 
         DocumentReference docRef =
             _firestore.collection('medication_activity').doc();
+
+        // Reference for patient drug update
+        DocumentReference docRefPatientDrug =
+            _firestore.collection('patient_drug').doc(drug.medicationsId);
+
         batch.set(docRef, drug.toMap());
+        batch.update(
+            docRefPatientDrug, {"medication_use_date": currentTimeInMilli});
       }
 
       // Commit the batch
