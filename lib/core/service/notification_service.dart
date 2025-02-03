@@ -1,13 +1,15 @@
 import 'dart:typed_data';
+
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:medherence/core/model/models/drug.dart';
 import 'package:medherence/core/model/models/history_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/timezone.dart' as tz;
 
-import '../model/simulated_data/simulated_values.dart';
 import '../../features/dashboard_feature/view/dashboard_view.dart';
+import '../model/simulated_data/simulated_values.dart';
 
 class NotificationService extends ChangeNotifier {
   late SharedPreferences preferences;
@@ -96,37 +98,40 @@ class NotificationService extends ChangeNotifier {
   ///
   /// This method iterates through the list of reminders and schedules notifications for each.
   Future<void> scheduleAlarmsFromSavedReminders() async {
-    for (var reminder in modelList) {
-      scheduleNotification(reminder);
-      debugPrint('reminder in the model list is : $reminder');
-      debugPrint('alarms scheduled successfully!!!!!!');
-    }
+    // for (var reminder in modelList) {
+    //   scheduleNotification(reminder);
+    //   debugPrint('reminder in the model list is : $reminder');
+    //   debugPrint('alarms scheduled successfully!!!!!!');
+    // }
     notifyListeners();
   }
 
   /// Schedules a notification for a specific reminder.
   ///
   /// This method schedules a notification to be shown at the time specified in the reminder.
-  Future<void> scheduleNotification(HistoryModel reminder) async {
-    int notificationId = reminder.id;
-    final now = DateTime.now();
-    var futureDateTime = reminder.date;
 
-    if (futureDateTime.isBefore(now)) {
-      return;
+  Future<void> scheduleNotification(Drug drug) async {
+    if (int.parse(drug.timeTaken ?? "0") <=
+        DateTime.now().millisecondsSinceEpoch) {
+      return; // Prevent scheduling past notifications
     }
-    int newTime = futureDateTime.millisecondsSinceEpoch -
-        DateTime.now().millisecondsSinceEpoch;
-    debugPrint('future time is: $futureDateTime');
-    debugPrint('The new time is: $newTime');
+
+    int notificationId = drug.medicationsId.hashCode; // Unique ID for the drug
+    tz.TZDateTime scheduledTime = tz.TZDateTime.fromMillisecondsSinceEpoch(
+      tz.local,
+      int.parse(drug.timeTaken ?? "0"),
+    );
+
+    debugPrint('Scheduling notification for: $scheduledTime');
+
     await flutterLocalNotificationsPlugin?.zonedSchedule(
       notificationId,
-      'Alarm',
-      reminder.message,
-      tz.TZDateTime.now(tz.local).add(Duration(milliseconds: newTime)),
+      'Medication Reminder',
+      'Time to take your medication!', // Replace with actual message if needed
+      scheduledTime,
       NotificationDetails(
         android: AndroidNotificationDetails(
-          'med id',
+          'med_id',
           'medherence',
           channelDescription: 'Medical adherence reminder',
           sound: const RawResourceAndroidNotificationSound('alarm'),
@@ -139,11 +144,8 @@ class NotificationService extends ChangeNotifier {
           enableVibration: true,
           vibrationPattern: Int64List.fromList([0, 1000, 500, 1000]),
           fullScreenIntent: true,
-          additionalFlags: Int32List.fromList(
-            <int>[
-              0x00000001, // FLAG_INSISTENT (Requires VIBRATE permission)
-            ],
-          ),
+          additionalFlags:
+              Int32List.fromList(<int>[0x00000001]), // FLAG_INSISTENT
         ),
       ),
       payload: notificationId.toString(),
@@ -151,6 +153,7 @@ class NotificationService extends ChangeNotifier {
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
     );
+
     notifyListeners();
   }
 

@@ -7,6 +7,7 @@ import 'package:medherence/core/model/models/drug.dart';
 import 'package:medherence/core/model/models/monitor_drug.dart';
 import 'package:medherence/core/model/models/progress.dart';
 import 'package:medherence/core/model/models/user_data.dart';
+import 'package:medherence/core/service/notification_service.dart';
 
 import '../../../core/utils/image_utils.dart';
 
@@ -107,6 +108,7 @@ class ProfileViewModel extends ChangeNotifier {
       for (Drug drug in firestoreData) {
         var monitoredDataResult = await _databaseService
             .getMonitorDrugById(firestoreData.first.medicationsId);
+
         if (monitoredDataResult.monitorDrug == null) {
           filteredDrugList.add(drug);
         } else {
@@ -117,6 +119,10 @@ class ProfileViewModel extends ChangeNotifier {
             filteredDrugList.add(drug);
           }
         }
+
+        //set alarm for each drug
+        var notificationService = NotificationService();
+        notificationService.scheduleNotification(drug);
       }
 
       notUsedCount = filteredDrugList.length;
