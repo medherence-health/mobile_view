@@ -8,7 +8,7 @@ class Drug {
   final double drugCost;
   final String drugName;
   final int drugUsageDuration;
-  final String drugUsageStatus;
+  String drugUsageStatus;
   final String drugUseId;
   final int drugUseNumTime;
   final int expectedDateToFinishDrug;

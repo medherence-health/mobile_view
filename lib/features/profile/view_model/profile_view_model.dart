@@ -158,9 +158,11 @@ class ProfileViewModel extends ChangeNotifier {
       }
 
       // Convert query results into a list of Drug objects
-      return querySnapshot.docs
+      var listOfDrugWithoutMissedList = querySnapshot.docs
           .map((doc) => Drug.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
+      var completeList = missedListGenerator(listOfDrugWithoutMissedList);
+      return listOfDrugWithoutMissedList;
     } catch (error) {
       print("Error fetching patient drugs: $error");
       return [];
@@ -321,9 +323,46 @@ class ProfileViewModel extends ChangeNotifier {
         getHoursBetween(drug.medicationStartDate, currentTimeInMilli);
 
     // hours passed divided by freq get the number before the decimal
-    double timesPassed = hoursBetweenMilli / drug.frequencyTime;
+    double numberOfTimesDrugUsed = hoursBetweenMilli / drug.frequencyTime;
 
-    return timesPassed.floor();
+    return numberOfTimesDrugUsed.floor();
+  }
+
+  List<Drug> missedListGenerator(List<Drug> listOfDrugWithoutMissedList) {
+    if (listOfDrugWithoutMissedList.isEmpty) return [];
+
+    // Get the number of times the drug should have been used
+    int numberOfTimesDrugUsed =
+        calculatePerfectTimeToTakeDrug(listOfDrugWithoutMissedList.first);
+
+    // Create a map<String, Drug?> where the key is the expected time to take the drug
+    Map<int, Drug?> drugMap = {};
+
+    // Initialize the map with expected times as keys and null as values
+    for (int i = 0; i < numberOfTimesDrugUsed; i++) {
+      drugMap[i] = null;
+    }
+
+    // Fill the map with the actual drug usage data
+    for (Drug drug in listOfDrugWithoutMissedList) {
+      drugMap[drug.perfectTimeToTakeDrug] = drug;
+    }
+
+    List<Drug> missedDrugs = [];
+
+    // Loop through the drugMap to find missed doses
+    drugMap.forEach((time, drug) {
+      if (drug == null) {
+        var newDrug = listOfDrugWithoutMissedList.first;
+        newDrug.perfectTimeToTakeDrug = time;
+        newDrug.drugUsageStatus = 'missed';
+
+        // Create a missed drug entry
+        missedDrugs.add(newDrug);
+      }
+    });
+
+    return missedDrugs;
   }
 }
 
