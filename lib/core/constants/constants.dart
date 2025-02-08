@@ -71,3 +71,15 @@ int cyclesLeftUntil(int endDateMillis, int freq) {
 NumberFormat kNumFormatNoDecimal = NumberFormat('#,###');
 
 NumberFormat kNumFormatDecimal = NumberFormat('#,###.0#');
+
+Map<String, String> formatDateTime(int milliseconds) {
+  DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(milliseconds);
+
+  return {
+    'date': DateFormat('dd-MM-yy').format(dateTime),
+    'time': DateFormat('h:mm a').format(dateTime),
+    'day': DateFormat('EEEE').format(dateTime),
+    'month': DateFormat('MMMM').format(dateTime),
+    'year': DateFormat('yyyy').format(dateTime),
+  };
+}

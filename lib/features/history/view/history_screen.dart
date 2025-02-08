@@ -1,13 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
+import 'package:medherence/core/constants/constants.dart';
+import 'package:medherence/core/model/models/drug.dart';
+import 'package:medherence/features/profile/view_model/profile_view_model.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/utils/color_utils.dart';
 import '../../../core/model/models/history_model.dart';
-import '../../../core/model/simulated_data/simulated_values.dart';
+import '../../../core/utils/color_utils.dart';
 import '../../../core/utils/size_manager.dart';
-import '../../home/view/medication_details.dart';
 import '../../monitor/view_model/reminder_view_model.dart';
 import '../widget/filter_widget.dart';
 import '../widget/pie_widget.dart';
@@ -25,6 +25,8 @@ class _HistoryScreenState extends State<HistoryScreen>
   // final ReminderState _historyData = ReminderState();
   final FocusManager focusManager = FocusManager.instance;
   int _tabIndex = 0;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -140,7 +142,7 @@ class _HistoryScreenState extends State<HistoryScreen>
   _buildMedicationHistory(ReminderState historyState, int tabIndex) {
     switch (tabIndex) {
       case 0:
-        return historyListBuilder(historyState);
+        return historyListBuilder(context);
       case 1:
         return analyticsBuilder(historyState);
       default:
@@ -148,196 +150,6 @@ class _HistoryScreenState extends State<HistoryScreen>
           return _buildEmptyState();
         });
     }
-  }
-
-  Widget historyListBuilder(ReminderState reminderState) {
-    return Builder(builder: (ctx) {
-      List<HistoryModel> historyList = reminderState.historyList;
-      if (historyList.isEmpty) {
-        return Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: SizeMg.width(30),
-            vertical: SizeMg.height(10),
-          ),
-          child: Stack(
-            children: [_buildEmptyState()],
-          ),
-        );
-      }
-      return SizedBox(
-        width: SizeMg.screenWidth,
-        height: MediaQuery.of(context).size.height,
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: SizeMg.width(30),
-            vertical: SizeMg.height(15),
-          ),
-          child: Stack(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(top: SizeMg.height(25)),
-                child: Text(
-                  'All',
-                  style: TextStyle(
-                    color: AppColors.black,
-                    fontSize: SizeMg.text(25),
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 65.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: SizeMg.width(20),
-                    ),
-                    Text(
-                      'Regimen',
-                      style: TextStyle(
-                        color: AppColors.black,
-                        fontSize: SizeMg.text(14),
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    Text(
-                      'Dosage',
-                      style: TextStyle(
-                        color: AppColors.black,
-                        fontSize: SizeMg.text(14),
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    Text(
-                      'Date',
-                      style: TextStyle(
-                        color: AppColors.black,
-                        fontSize: SizeMg.text(14),
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: SizeMg.height(15)),
-              Padding(
-                padding: EdgeInsets.only(
-                  top: SizeMg.height(75),
-                ),
-                child: ListView.separated(
-                  separatorBuilder: (ctx, index) {
-                    return SizedBox(
-                      height: SizeMg.height(5),
-                    );
-                  },
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: historyList.length,
-                  itemBuilder: (context, index) {
-                    final history = historyList[index];
-                    String formattedDay = DateFormat('d').format(history.date);
-                    String formattedMonth =
-                        DateFormat('MMM').format(history.date);
-                    Color containerColor;
-
-                    switch (history.status) {
-                      case AdherenceStatus.early:
-                        containerColor = AppColors.success;
-                        break;
-                      case AdherenceStatus.late:
-                        containerColor = AppColors.warning;
-                        break;
-                      case AdherenceStatus.missed:
-                        containerColor = AppColors.error;
-                        break;
-                    }
-
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: SizeMg.height(5)),
-                      child: Container(
-                        height: SizeMg.height(55),
-                        margin: const EdgeInsets.symmetric(vertical: 5),
-                        padding: const EdgeInsets.only(left: 10),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(
-                            SizeMg.radius(10),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 15.0),
-                              child: Icon(
-                                history.icon,
-                                size: 24,
-                                color: AppColors.pillIconColor,
-                              ),
-                            ),
-                            Text(
-                              history.regimenName,
-                              style: TextStyle(
-                                color: AppColors.black,
-                                fontSize: SizeMg.text(16),
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            Text(
-                              history.dosage,
-                              style: TextStyle(
-                                color: AppColors.darkGrey,
-                                fontSize: SizeMg.text(13),
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            Container(
-                              width: SizeMg.width(35),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(
-                                    SizeMg.radius(10),
-                                  ),
-                                  bottomRight: Radius.circular(
-                                    SizeMg.radius(10),
-                                  ),
-                                ),
-                                color: containerColor,
-                              ),
-                              // color: AppColors.green,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    formattedDay,
-                                    style: TextStyle(
-                                      color: AppColors.white,
-                                      fontSize: SizeMg.text(18),
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  Text(
-                                    formattedMonth.toString(),
-                                    style: TextStyle(
-                                      color: AppColors.white,
-                                      fontSize: SizeMg.text(14),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    });
   }
 
   Widget analyticsBuilder(ReminderState reminderState) {
@@ -571,5 +383,201 @@ class _HistoryScreenState extends State<HistoryScreen>
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  Widget historyListBuilder(BuildContext context) {
+    return FutureBuilder<List<Drug>>(
+      future: context
+          .watch<ProfileViewModel>()
+          .getPatientDrugs(_auth.currentUser?.uid ?? ""),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        if (snapshot.hasError) {
+          return Center(
+            child: Text("Error loading history"),
+          );
+        }
+
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: SizeMg.width(30),
+              vertical: SizeMg.height(10),
+            ),
+            child: Stack(
+              children: [_buildEmptyState()],
+            ),
+          );
+        }
+
+        List<Drug> drugList = snapshot.data!;
+        List<Drug> historyList = drugList;
+
+        return SizedBox(
+          width: SizeMg.screenWidth,
+          height: MediaQuery.of(context).size.height,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: SizeMg.width(30),
+              vertical: SizeMg.height(15),
+            ),
+            child: Stack(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top: SizeMg.height(25)),
+                  child: Text(
+                    'All',
+                    style: TextStyle(
+                      color: AppColors.black,
+                      fontSize: SizeMg.text(25),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 65.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(width: SizeMg.width(20)),
+                      Text('Regimen', style: _headerTextStyle()),
+                      Text('Dosage', style: _headerTextStyle()),
+                      Text('Date', style: _headerTextStyle()),
+                    ],
+                  ),
+                ),
+                SizedBox(height: SizeMg.height(15)),
+                Padding(
+                  padding: EdgeInsets.only(top: SizeMg.height(75)),
+                  child: ListView.separated(
+                    separatorBuilder: (ctx, index) =>
+                        SizedBox(height: SizeMg.height(5)),
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: historyList.length,
+                    itemBuilder: (context, index) {
+                      final drug = historyList[index];
+                      return _buildHistoryItem(drug);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  TextStyle _headerTextStyle() {
+    return TextStyle(
+      color: AppColors.black,
+      fontSize: SizeMg.text(14),
+      fontWeight: FontWeight.w400,
+    );
+  }
+
+  Widget _buildHistoryItem(Drug drug) {
+    String formattedDay = formatDateTime(
+        int.tryParse(drug.timeTaken.toString()) ??
+            DateTime.now().millisecondsSinceEpoch)['day']!;
+
+    String formattedMonth = formatDateTime(
+        int.tryParse(drug.timeTaken.toString()) ??
+            DateTime.now().millisecondsSinceEpoch)['month']!;
+
+    Color containerColor = AppColors.historyBackground;
+
+    switch (drug.drugUsageStatus) {
+      case AdherenceStatus.early:
+        containerColor = AppColors.success;
+        break;
+      case AdherenceStatus.late:
+        containerColor = AppColors.warning;
+        break;
+      case AdherenceStatus.missed:
+        containerColor = AppColors.error;
+        break;
+    }
+
+    return Padding(
+      padding: EdgeInsets.only(bottom: SizeMg.height(5)),
+      child: Container(
+        height: SizeMg.height(55),
+        margin: const EdgeInsets.symmetric(vertical: 5),
+        padding: const EdgeInsets.only(left: 10),
+        decoration: BoxDecoration(
+          color: Colors.grey[200],
+          borderRadius: BorderRadius.circular(SizeMg.radius(10)),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 15.0),
+              child: Icon(
+                Icons.medication,
+                size: 24,
+                color: AppColors.pillIconColor,
+              ),
+            ),
+            Text(
+              drug.drugName,
+              style: TextStyle(
+                color: AppColors.black,
+                fontSize: SizeMg.text(16),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            Text(
+              drug.dosage,
+              style: TextStyle(
+                color: AppColors.darkGrey,
+                fontSize: SizeMg.text(13),
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            Container(
+              width: SizeMg.width(35),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(SizeMg.radius(10)),
+                  bottomRight: Radius.circular(SizeMg.radius(10)),
+                ),
+                color: containerColor,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    formattedDay,
+                    style: TextStyle(
+                      color: AppColors.black,
+                      fontSize: SizeMg.text(18),
+                      fontWeight: FontWeight.w500,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    maxLines: 1,
+                  ),
+                  Text(
+                    formattedMonth,
+                    style: TextStyle(
+                      color: AppColors.black,
+                      fontSize: SizeMg.text(14),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    maxLines: 1,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
