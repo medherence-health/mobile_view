@@ -155,9 +155,9 @@ class _HistoryScreenState extends State<HistoryScreen>
   Widget analyticsBuilder(ReminderState reminderState) {
     return Builder(builder: (ctx) {
       List<HistoryModel> historyList = reminderState.historyList;
-      if (historyList.isEmpty) {
-        return _buildEmptyState();
-      }
+      // if (historyList.isEmpty) {
+      //   return _buildEmptyState();
+      // }
 
       Map<AdherenceStatus, int> adherenceData =
           aggregateAdherenceData(historyList);
@@ -321,9 +321,9 @@ class _HistoryScreenState extends State<HistoryScreen>
 
   Map<AdherenceStatus, int> aggregateAdherenceData(
       List<HistoryModel> historyList) {
-    int earlyCount = 0;
-    int lateCount = 0;
-    int missedCount = 0;
+    int earlyCount = 3;
+    int lateCount = 4;
+    int missedCount = 3;
 
     for (var history in historyList) {
       switch (history.status) {

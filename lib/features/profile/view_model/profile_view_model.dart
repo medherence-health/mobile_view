@@ -175,6 +175,7 @@ class ProfileViewModel extends ChangeNotifier {
       // Add each drug to the batch
       for (Drug drug in selectedDrugList) {
         drug.timeTaken = currentTimeInMilli.toString();
+        drug.perfectTimeToTakeDrug = calculatePerfectTimeToTakeDrug(drug);
 
         DocumentReference docRef =
             _firestore.collection('medication_activity').doc();
@@ -312,6 +313,17 @@ class ProfileViewModel extends ChangeNotifier {
       //   MaterialPageRoute(builder: (context) => DashboardView()),
       // );
     }
+  }
+
+  int calculatePerfectTimeToTakeDrug(Drug drug) {
+    // using current time and time start time to check get how many hours should have passed
+    var hoursBetweenMilli =
+        getHoursBetween(drug.medicationStartDate, currentTimeInMilli);
+
+    // hours passed divided by freq get the number before the decimal
+    double timesPassed = hoursBetweenMilli / drug.frequencyTime;
+
+    return timesPassed.floor();
   }
 }
 

@@ -30,6 +30,7 @@ class Drug {
   final String patientUid;
   final String safety;
   String timeTaken;
+  int perfectTimeToTakeDrug;
   String videoUrl;
 
   Drug({
@@ -64,6 +65,7 @@ class Drug {
     required this.patientUid,
     required this.safety,
     required this.timeTaken,
+    required this.perfectTimeToTakeDrug,
     required this.videoUrl,
   });
 
@@ -102,6 +104,7 @@ class Drug {
       patientUid: map['patient_uid'] ?? '',
       safety: map['safety'] ?? '',
       timeTaken: map['time_taken'] ?? '',
+      perfectTimeToTakeDrug: map['perfect_time_to_take_drug'] ?? 0,
       videoUrl: map['video_url'] ?? '',
     );
   }
@@ -140,6 +143,7 @@ class Drug {
       'patient_uid': patientUid,
       'safety': safety,
       'time_taken': timeTaken,
+      'perfect_time_to_take_drug': perfectTimeToTakeDrug,
       'video_url': videoUrl,
     };
   }
@@ -158,6 +162,6 @@ class Drug {
         'medications_id: $medicationsId, method_of_use: $methodOfUse, note: $note, nurse_in_charge: $nurseInCharge, '
         'nurse_in_charge_email: $nurseInChargeEmail, nurse_in_charge_phone_number: $nurseInChargePhoneNumber, '
         'patient_age: $patientAge, patient_name: $patientName, patient_uid: $patientUid, safety: $safety, '
-        'time_taken: $timeTaken, video_url: $videoUrl)';
+        'time_taken: $timeTaken,perfect_time_to_take_drug: $perfectTimeToTakeDrug, video_url: $videoUrl)';
   }
 }

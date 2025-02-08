@@ -50,6 +50,7 @@ InputDecoration kProfileInputDecoration = InputDecoration(
 String ok = "OK";
 
 int currentTimeInMilli = DateTime.now().millisecondsSinceEpoch;
+
 int addHoursToCurrentMillis(int hours) {
   int addedMillis = hours * 60 * 60 * 1000; // Convert hours to milliseconds
   return currentTimeInMilli + addedMillis;
@@ -66,6 +67,10 @@ int cyclesLeftUntil(int endDateMillis, int freq) {
   int hoursLeft =
       (differenceMillis / (60 * 60 * 1000)).floor(); // Convert to hours
   return (hoursLeft / freq).floor();
+}
+
+int getHoursBetween(int startMillis, int endMillis) {
+  return ((endMillis - startMillis) / (1000 * 60 * 60)).round();
 }
 
 NumberFormat kNumFormatNoDecimal = NumberFormat('#,###');
