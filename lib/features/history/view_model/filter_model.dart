@@ -8,6 +8,7 @@ class FilterViewModel extends ChangeNotifier {
   DateTime? _selectedDate = null;
   DateTime? _secondSelectedDate = null; // Default: 1 day after selectedDate
   TextEditingController dropDownSearchController = TextEditingController();
+  TextEditingController dropDownIdController = TextEditingController();
   String suggestion = "";
   String? selectedMedication;
   List<String> regimenNames = ["opens"];

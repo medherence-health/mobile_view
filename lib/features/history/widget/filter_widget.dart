@@ -194,8 +194,8 @@ class _FilterViewState extends State<FilterView> {
                       return suggestionsBox;
                     },
                     onSuggestionSelected: (Drug suggestion) {
-                      model.dropDownSearchController.text =
-                          suggestion.drugUseId;
+                      model.dropDownSearchController.text = suggestion.drugName;
+                      model.dropDownIdController.text = suggestion.drugUseId;
                     },
                     validator: (value) {
                       if (value!.isEmpty) {
