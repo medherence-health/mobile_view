@@ -1,5 +1,8 @@
 import 'package:drop_down_search_field/drop_down_search_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:medherence/core/model/models/drug.dart';
+import 'package:medherence/features/profile/view_model/profile_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants/constants.dart';
@@ -9,13 +12,16 @@ import '../../monitor/view_model/reminder_view_model.dart';
 import '../view_model/filter_model.dart';
 
 class FilterView extends StatefulWidget {
-  const FilterView({Key? key}) : super(key: key);
+  final Map<String, List<Drug?>> idList;
+  const FilterView({Key? key, required this.idList}) : super(key: key);
 
   @override
   State<FilterView> createState() => _FilterViewState();
 }
 
 class _FilterViewState extends State<FilterView> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   void initState() {
     super.initState();
@@ -29,6 +35,7 @@ class _FilterViewState extends State<FilterView> {
       Provider.of<FilterViewModel>(context, listen: false)
           .setRegimenNames(regimenNames);
     });
+    print("groupedList: " + widget.idList.length.toString());
   }
 
   @override
@@ -70,122 +77,140 @@ class _FilterViewState extends State<FilterView> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Text(
-                'Status',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 10),
-              Wrap(
+      body: FutureBuilder<MedActivityResult>(
+        future: context.watch<ProfileViewModel>().getMedicationActivity(
+            _auth.currentUser?.uid ??
+                ""), // Replace with your actual async function
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+                child: CircularProgressIndicator()); // Loading spinner
+          } else if (snapshot.hasError) {
+            return Center(child: Text("Error loading data")); // Error message
+          } else if (!snapshot.hasData || snapshot.data!.allList.isEmpty) {
+            return Center(child: Text("No medications found")); // Empty state
+          }
+
+          final idList = snapshot.data!; // Extract data
+
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  _buildStatusRadio(model, Status.all, 'All'),
-                  _buildStatusRadio(model, Status.early, 'Early'),
-                  _buildStatusRadio(model, Status.late, 'Late'),
-                  _buildStatusRadio(model, Status.missed, 'Missed'),
+                  const Text(
+                    'Status',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(height: 10),
+                  Wrap(
+                    children: [
+                      _buildStatusRadio(model, Status.all, 'All'),
+                      _buildStatusRadio(model, Status.early, 'Early'),
+                      _buildStatusRadio(model, Status.late, 'Late'),
+                      _buildStatusRadio(model, Status.missed, 'Missed'),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Date',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildDatePicker(
+                          context,
+                          model,
+                          'From',
+                          formattedDate,
+                          model.selectedDate,
+                          (pickedDate) {
+                            if (pickedDate != null &&
+                                pickedDate != model.selectedDate) {
+                              model.updateSelectedDate(pickedDate);
+                            }
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: _buildDatePicker(
+                          context,
+                          model,
+                          'To',
+                          secondFormattedDate,
+                          model.secondSelectedDate,
+                          (pickedDate) {
+                            if (pickedDate != null &&
+                                pickedDate != model.secondSelectedDate) {
+                              model.updateSecondSelectedDate(pickedDate);
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Name',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(height: 10),
+                  DropDownSearchFormField(
+                    textFieldConfiguration: TextFieldConfiguration(
+                      controller: model.dropDownSearchController,
+                      decoration: InputDecoration(
+                        hintStyle: kFormTextDecoration.hintStyle,
+                        hintText: 'Type in and select the medication',
+                        filled: false,
+                        fillColor: kFormTextDecoration.fillColor,
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 12),
+                        border: kFormTextDecoration.border,
+                        focusedBorder: kFormTextDecoration.focusedBorder,
+                      ),
+                    ),
+                    suggestionsCallback: (pattern) {
+                      return idList.idMapList.values
+                          .expand((list) => list) // Flatten nested lists
+                          .where((drug) =>
+                              drug != null &&
+                              drug.drugName
+                                  .toLowerCase()
+                                  .contains(pattern.toLowerCase()))
+                          .cast<
+                              Drug>() // Ensure it's a List<Drug> instead of List<Drug?>
+                          .toList();
+                    },
+                    itemBuilder: (context, Drug suggestion) {
+                      return ListTile(
+                        title: Text(suggestion.drugName), // Display drug name
+                      );
+                    },
+                    transitionBuilder: (context, suggestionsBox, controller) {
+                      return suggestionsBox;
+                    },
+                    onSuggestionSelected: (Drug suggestion) {
+                      model.dropDownSearchController.text =
+                          suggestion.drugUseId;
+                    },
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please select a medication';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) => model.selectedMedication = value,
+                    displayAllSuggestionWhenTap: true,
+                  ),
                 ],
               ),
-              const SizedBox(height: 20),
-              const Text(
-                'Date',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildDatePicker(
-                      context,
-                      model,
-                      'From',
-                      formattedDate,
-                      model.selectedDate,
-                      (pickedDate) {
-                        if (pickedDate != null &&
-                            pickedDate != model.selectedDate) {
-                          model.updateSelectedDate(pickedDate);
-                        }
-                      },
-                    ),
-                  ),
-                  const SizedBox(
-                      width: 10), // Add some space between the pickers
-                  Expanded(
-                    child: _buildDatePicker(
-                      context,
-                      model,
-                      'To',
-                      secondFormattedDate,
-                      model.secondSelectedDate,
-                      (pickedDate) {
-                        if (pickedDate != null &&
-                            pickedDate != model.secondSelectedDate) {
-                          model.updateSecondSelectedDate(pickedDate);
-                        }
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                'Name',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 10),
-              DropDownSearchFormField(
-                textFieldConfiguration: TextFieldConfiguration(
-                  controller: model.dropDownSearchController,
-                  decoration: InputDecoration(
-                    hintStyle: kFormTextDecoration.hintStyle,
-                    hintText: 'Type in and select the medication',
-                    filled: false,
-                    fillColor: kFormTextDecoration.fillColor,
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 12),
-                    border: kFormTextDecoration.border,
-                    focusedBorder: kFormTextDecoration.focusedBorder,
-                  ),
-                ),
-                suggestionsCallback: (pattern) {
-                  return model.getSuggestions(pattern);
-                },
-                itemBuilder: (context, suggestion) {
-                  return ListTile(
-                    title: Text(suggestion),
-                  );
-                },
-                transitionBuilder: (context, suggestionsBox, controller) {
-                  return suggestionsBox;
-                },
-                onSuggestionSelected: (suggestion) {
-                  model.dropDownSearchController.text = suggestion;
-                },
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please select a medication';
-                  }
-                  return null;
-                },
-                onSaved: (value) => model.selectedMedication = value,
-                displayAllSuggestionWhenTap: true,
-              ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

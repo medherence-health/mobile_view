@@ -8,8 +8,6 @@ import 'package:medherence/core/model/models/monitor_drug.dart';
 import 'package:medherence/core/model/models/progress.dart';
 import 'package:medherence/core/model/models/user_data.dart';
 import 'package:medherence/core/service/notification_service.dart';
-import 'package:medherence/features/history/view_model/filter_model.dart';
-import 'package:provider/provider.dart';
 
 import '../../../core/utils/image_utils.dart';
 
@@ -144,8 +142,7 @@ class ProfileViewModel extends ChangeNotifier {
     }
   }
 
-  Future<List<Drug?>> getMedicationActivity(
-      String patientUid, BuildContext context) async {
+  Future<MedActivityResult> getMedicationActivity(String patientUid) async {
     try {
       // Query the patient_drug collection
       QuerySnapshot querySnapshot = await _firestore
@@ -157,7 +154,7 @@ class ProfileViewModel extends ChangeNotifier {
       // If cache is unavailable, fallback to server
       if (querySnapshot.docs.isEmpty) {
         querySnapshot = await _firestore
-            .collection('patient_drug')
+            .collection('medication_activity')
             .where('patient_uid', isEqualTo: patientUid)
             // .where('drug_usage_status', isNotEqualTo: notUsed)
             .get(const GetOptions(source: Source.server)); // Use server data
@@ -167,12 +164,13 @@ class ProfileViewModel extends ChangeNotifier {
       var listOfDrugWithoutMissedList = querySnapshot.docs
           .map((doc) => Drug.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
-      var completeList = completeAllList(listOfDrugWithoutMissedList, context);
+
+      var completeList = completeAllList(listOfDrugWithoutMissedList);
 
       return completeList;
     } catch (error) {
       print("Error fetching patient drugs: $error");
-      return [];
+      return MedActivityResult(allList: [], idMapList: {});
     }
   }
 
@@ -389,13 +387,12 @@ class ProfileViewModel extends ChangeNotifier {
     return drugMap;
   }
 
-  List<Drug?> completeAllList(
-      List<Drug> listOfDrugWithoutMissedList, BuildContext context) {
-    final model = Provider.of<FilterViewModel>(context);
+  MedActivityResult completeAllList(List<Drug> listOfDrugWithoutMissedList) {
     Map<String, List<Drug?>> filterStatus = {};
 
     // Group List
     var groupedList = groupListByMedId(listOfDrugWithoutMissedList);
+
     Map<String, List<Drug?>> combinedMapList = {};
     Map<String, List<Drug?>> missedDrugsList = {};
     List<Drug?> allList = [];
@@ -404,20 +401,38 @@ class ProfileViewModel extends ChangeNotifier {
       var missedListRes = missedListGenerator(list);
       missedDrugsList[id] = missedListRes.missedList;
       combinedMapList[id] = missedListRes.combinedMapList.values.toList();
-      print("groupedList: " + list.toString());
 
       allList.addAll(list);
     });
 
-    // filter by status
-    if (model.status != Status.all) {
-      for (Drug? drug in allList) {
-        filterStatus[drug?.drugUsageStatus.toLowerCase()]?.add(drug);
-      }
-      // filterStatus[model.status.toString().toLowerCase()];
-    }
-
-    return allList;
+    // // filter by status
+    // if (model.status != Status.all) {
+    //   for (Drug? drug in allList) {
+    //     filterStatus[drug?.drugUsageStatus.toLowerCase()]?.add(drug);
+    //   }
+    //   // filterStatus[model.status.toString().toLowerCase()];
+    // }
+    //
+    // // filter by date
+    // if (model.selectedDate != null || model.secondSelectedDate != null) {
+    //   List<Drug?> filteredDateList = [];
+    //   for (Drug? drug in allList) {
+    //     if (model.selectedDate != null &&
+    //         drug!.medicationUseDate >=
+    //             model.selectedDate!.millisecondsSinceEpoch) {
+    //       // From date
+    //       filteredDateList.add(drug);
+    //     }
+    //     if (model.secondSelectedDate != null &&
+    //         drug!.medicationUseDate <=
+    //             model.secondSelectedDate!.millisecondsSinceEpoch) {
+    //       // To date
+    //       filteredDateList.add(drug);
+    //     }
+    //   }
+    //   // filterStatus[model.status.toString().toLowerCase()];
+    // }
+    return MedActivityResult(allList: allList, idMapList: groupedList);
   }
 }
 
@@ -431,4 +446,10 @@ class MissedListResult {
   final List<Drug> missedList;
   final Map<int, Drug?> combinedMapList;
   MissedListResult({required this.missedList, required this.combinedMapList});
+}
+
+class MedActivityResult {
+  final List<Drug?> allList;
+  final Map<String, List<Drug?>> idMapList;
+  MedActivityResult({required this.allList, required this.idMapList});
 }

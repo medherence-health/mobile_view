@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medherence/core/model/models/drug.dart';
 
 enum Status { all, early, late, missed }
 
@@ -9,10 +10,12 @@ class FilterViewModel extends ChangeNotifier {
   TextEditingController dropDownSearchController = TextEditingController();
   String suggestion = "";
   String? selectedMedication;
-  List<String> regimenNames = [];
+  List<String> regimenNames = ["opens"];
+  Map<String, List<Drug?>> _groupedList = {};
 
   DateTime? get selectedDate => _selectedDate;
   DateTime? get secondSelectedDate => _secondSelectedDate;
+  Map<String, List<Drug?>> get getGroupedList => _groupedList;
 
   // Method to format DateTime as "yyyy-MM-dd"
   String formatDate(DateTime? date) {
@@ -25,6 +28,13 @@ class FilterViewModel extends ChangeNotifier {
   void setStatus(Status? value) {
     if (value != null) {
       status = value;
+      notifyListeners();
+    }
+  }
+
+  void setGroupedList(Map<String, List<Drug?>> value) {
+    if (value != null) {
+      _groupedList = value;
       notifyListeners();
     }
   }
@@ -49,6 +59,6 @@ class FilterViewModel extends ChangeNotifier {
     List<String> matches = regimenNames
         .where((s) => s.toLowerCase().contains(pattern.toLowerCase()))
         .toList();
-    return matches;
+    return regimenNames;
   }
 }

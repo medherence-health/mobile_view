@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medherence/core/constants/constants.dart';
 import 'package:medherence/core/model/models/drug.dart';
+import 'package:medherence/features/history/view_model/filter_model.dart';
+import 'package:medherence/features/history/widget/filter_widget.dart';
 import 'package:medherence/features/profile/view_model/profile_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -9,7 +11,6 @@ import '../../../core/model/models/history_model.dart';
 import '../../../core/utils/color_utils.dart';
 import '../../../core/utils/size_manager.dart';
 import '../../monitor/view_model/reminder_view_model.dart';
-import '../widget/filter_widget.dart';
 import '../widget/pie_widget.dart';
 
 class HistoryScreen extends StatefulWidget {
@@ -25,6 +26,7 @@ class _HistoryScreenState extends State<HistoryScreen>
   // final ReminderState _historyData = ReminderState();
   final FocusManager focusManager = FocusManager.instance;
   int _tabIndex = 0;
+  Map<String, List<Drug?>> groupedList = {};
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
@@ -43,7 +45,10 @@ class _HistoryScreenState extends State<HistoryScreen>
   @override
   Widget build(BuildContext context) {
     SizeMg.init(context);
+
     return Consumer<ReminderState>(builder: (context, _historyData, _) {
+      final model = Provider.of<FilterViewModel>(context, listen: false);
+
       return Scaffold(
         backgroundColor: AppColors.historyBackground,
         appBar: AppBar(
@@ -70,7 +75,8 @@ class _HistoryScreenState extends State<HistoryScreen>
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const FilterView()));
+                            builder: (context) =>
+                                FilterView(idList: groupedList)));
                   },
                   icon: const Icon(Icons.filter_list_alt)),
             )
@@ -127,7 +133,8 @@ class _HistoryScreenState extends State<HistoryScreen>
               ),
             ),
             SliverToBoxAdapter(
-              child: _buildMedicationHistory(_historyData, _tabIndex),
+              child:
+                  _buildMedicationHistory(_historyData, _tabIndex, groupedList),
             ),
           ],
         ),
@@ -139,10 +146,11 @@ class _HistoryScreenState extends State<HistoryScreen>
     });
   }
 
-  _buildMedicationHistory(ReminderState historyState, int tabIndex) {
+  _buildMedicationHistory(ReminderState historyState, int tabIndex,
+      Map<String, List<Drug?>> groupedList) {
     switch (tabIndex) {
       case 0:
-        return historyListBuilder(context);
+        return historyListBuilder(context, groupedList);
       case 1:
         return analyticsBuilder(historyState);
       default:
@@ -385,11 +393,12 @@ class _HistoryScreenState extends State<HistoryScreen>
     super.dispose();
   }
 
-  Widget historyListBuilder(BuildContext context) {
-    return FutureBuilder<List<Drug?>>(
+  Widget historyListBuilder(
+      BuildContext context, Map<String, List<Drug?>> groupedList) {
+    return FutureBuilder<MedActivityResult>(
       future: context
           .watch<ProfileViewModel>()
-          .getMedicationActivity(_auth.currentUser?.uid ?? "", context),
+          .getMedicationActivity(_auth.currentUser?.uid ?? ""),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
@@ -403,7 +412,7 @@ class _HistoryScreenState extends State<HistoryScreen>
           );
         }
 
-        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+        if (!snapshot.hasData || snapshot.data!.allList.isEmpty) {
           return Padding(
             padding: EdgeInsets.symmetric(
               horizontal: SizeMg.width(30),
@@ -415,7 +424,7 @@ class _HistoryScreenState extends State<HistoryScreen>
           );
         }
 
-        List<Drug?> drugList = snapshot.data!;
+        List<Drug?> drugList = snapshot.data!.allList;
         List<Drug?> historyList = drugList;
 
         return SizedBox(
