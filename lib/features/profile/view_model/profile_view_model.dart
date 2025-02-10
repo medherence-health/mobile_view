@@ -8,6 +8,7 @@ import 'package:medherence/core/model/models/monitor_drug.dart';
 import 'package:medherence/core/model/models/progress.dart';
 import 'package:medherence/core/model/models/user_data.dart';
 import 'package:medherence/core/service/notification_service.dart';
+import 'package:medherence/features/history/view_model/filter_model.dart';
 
 import '../../../core/utils/image_utils.dart';
 
@@ -142,7 +143,8 @@ class ProfileViewModel extends ChangeNotifier {
     }
   }
 
-  Future<MedActivityResult> getMedicationActivity(String patientUid) async {
+  Future<MedActivityResult> getMedicationActivity(
+      String patientUid, FilterViewModel model) async {
     try {
       // Query the patient_drug collection
       QuerySnapshot querySnapshot = await _firestore
@@ -165,7 +167,7 @@ class ProfileViewModel extends ChangeNotifier {
           .map((doc) => Drug.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
 
-      var completeList = completeAllList(listOfDrugWithoutMissedList);
+      var completeList = completeAllList(listOfDrugWithoutMissedList, model);
 
       return completeList;
     } catch (error) {
@@ -387,52 +389,71 @@ class ProfileViewModel extends ChangeNotifier {
     return drugMap;
   }
 
-  MedActivityResult completeAllList(List<Drug> listOfDrugWithoutMissedList) {
-    Map<String, List<Drug?>> filterStatus = {};
+  MedActivityResult completeAllList(
+      List<Drug> listOfDrugWithoutMissedList, FilterViewModel model) {
+    // Group drugs by their medication ID
+    Map<String, List<Drug>> groupedList =
+        groupListByMedId(listOfDrugWithoutMissedList);
 
-    // Group List
-    var groupedList = groupListByMedId(listOfDrugWithoutMissedList);
+    // Keep an unmodified copy of the grouped list
+    final nonModifiableGroupedList = Map<String, List<Drug>>.from(groupedList);
 
     Map<String, List<Drug?>> combinedMapList = {};
     Map<String, List<Drug?>> missedDrugsList = {};
     List<Drug?> allList = [];
 
+    // **Filter by Drug ID** (if specified)
+    if (model.drugId.isNotEmpty) {
+      groupedList = {model.drugId: groupedList[model.drugId] ?? []};
+    }
+
+    // **Generate Missed Medication Lists & Collect All Medications**
     groupedList.forEach((id, list) {
       var missedListRes = missedListGenerator(list);
       missedDrugsList[id] = missedListRes.missedList;
       combinedMapList[id] = missedListRes.combinedMapList.values.toList();
-
       allList.addAll(list);
     });
 
-    // // filter by status
-    // if (model.status != Status.all) {
-    //   for (Drug? drug in allList) {
-    //     filterStatus[drug?.drugUsageStatus.toLowerCase()]?.add(drug);
-    //   }
-    //   // filterStatus[model.status.toString().toLowerCase()];
-    // }
-    //
-    // // filter by date
-    // if (model.selectedDate != null || model.secondSelectedDate != null) {
-    //   List<Drug?> filteredDateList = [];
-    //   for (Drug? drug in allList) {
-    //     if (model.selectedDate != null &&
-    //         drug!.medicationUseDate >=
-    //             model.selectedDate!.millisecondsSinceEpoch) {
-    //       // From date
-    //       filteredDateList.add(drug);
-    //     }
-    //     if (model.secondSelectedDate != null &&
-    //         drug!.medicationUseDate <=
-    //             model.secondSelectedDate!.millisecondsSinceEpoch) {
-    //       // To date
-    //       filteredDateList.add(drug);
-    //     }
-    //   }
-    //   // filterStatus[model.status.toString().toLowerCase()];
-    // }
-    return MedActivityResult(allList: allList, idMapList: groupedList);
+    // **Filter by Medication Status** (if not "All")
+    if (model.status != Status.all) {
+      Map<String, List<Drug?>> filterStatus = {};
+
+      for (Drug? drug in allList) {
+        if (drug != null) {
+          filterStatus
+              .putIfAbsent(drug.drugUsageStatus.toLowerCase(), () => [])
+              .add(drug);
+        }
+      }
+
+      allList = filterStatus[model.status.toString().toLowerCase()] ?? [];
+    }
+
+    // **Filter by Date Range**
+    if (model.selectedDate != null || model.secondSelectedDate != null) {
+      allList = allList.where((drug) {
+        if (drug == null) return false;
+
+        final medicationDate = drug.medicationUseDate;
+
+        // Check "From" date
+        bool isAfterStart = model.selectedDate == null ||
+            medicationDate >= model.selectedDate!.millisecondsSinceEpoch;
+
+        // Check "To" date
+        bool isBeforeEnd = model.secondSelectedDate == null ||
+            medicationDate <= model.secondSelectedDate!.millisecondsSinceEpoch;
+
+        return isAfterStart && isBeforeEnd;
+      }).toList();
+    }
+
+    // Return the final result
+    return MedActivityResult(
+      allList: allList,
+      idMapList: nonModifiableGroupedList,
+    );
   }
 }
 

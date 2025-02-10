@@ -10,6 +10,7 @@ class FilterViewModel extends ChangeNotifier {
   TextEditingController dropDownSearchController = TextEditingController();
   TextEditingController dropDownIdController = TextEditingController();
   String suggestion = "";
+  String drugId = "";
   String? selectedMedication;
   List<String> regimenNames = ["opens"];
   Map<String, List<Drug?>> _groupedList = {};

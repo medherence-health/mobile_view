@@ -395,10 +395,12 @@ class _HistoryScreenState extends State<HistoryScreen>
 
   Widget historyListBuilder(
       BuildContext context, Map<String, List<Drug?>> groupedList) {
+    final model = Provider.of<FilterViewModel>(context, listen: false);
+
     return FutureBuilder<MedActivityResult>(
       future: context
           .watch<ProfileViewModel>()
-          .getMedicationActivity(_auth.currentUser?.uid ?? ""),
+          .getMedicationActivity(_auth.currentUser?.uid ?? "", model),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(

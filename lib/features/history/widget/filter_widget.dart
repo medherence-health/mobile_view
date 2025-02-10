@@ -79,8 +79,8 @@ class _FilterViewState extends State<FilterView> {
       ),
       body: FutureBuilder<MedActivityResult>(
         future: context.watch<ProfileViewModel>().getMedicationActivity(
-            _auth.currentUser?.uid ??
-                ""), // Replace with your actual async function
+            _auth.currentUser?.uid ?? "",
+            model), // Replace with your actual async function
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -195,7 +195,7 @@ class _FilterViewState extends State<FilterView> {
                     },
                     onSuggestionSelected: (Drug suggestion) {
                       model.dropDownSearchController.text = suggestion.drugName;
-                      model.dropDownIdController.text = suggestion.drugUseId;
+                      model.drugId = suggestion.drugUseId;
                     },
                     validator: (value) {
                       if (value!.isEmpty) {
