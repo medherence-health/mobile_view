@@ -8,6 +8,8 @@ import 'package:medherence/core/model/models/monitor_drug.dart';
 import 'package:medherence/core/model/models/progress.dart';
 import 'package:medherence/core/model/models/user_data.dart';
 import 'package:medherence/core/service/notification_service.dart';
+import 'package:medherence/features/history/view_model/filter_model.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/utils/image_utils.dart';
 
@@ -30,6 +32,7 @@ class ProfileViewModel extends ChangeNotifier {
   bool isFormValid = false;
   String selectedAvatar = '';
   String nickName = '';
+  String status = '';
 
   ProfileViewModel() {
     nicknameController = TextEditingController();
@@ -385,7 +388,11 @@ class ProfileViewModel extends ChangeNotifier {
     return drugMap;
   }
 
-  List<Drug?> completeAllList(List<Drug> listOfDrugWithoutMissedList) {
+  List<Drug?> completeAllList(
+      List<Drug> listOfDrugWithoutMissedList, BuildContext context) {
+    final model = Provider.of<FilterViewModel>(context);
+    Map<String, List<Drug?>> filterStatus = {};
+
     // Group List
     var groupedList = groupListByMedId(listOfDrugWithoutMissedList);
     Map<String, List<Drug?>> combinedMapList = {};
@@ -400,6 +407,14 @@ class ProfileViewModel extends ChangeNotifier {
 
       allList.addAll(list);
     });
+
+    // filter by status
+    if (model.status != Status.all) {
+      for (Drug? drug in allList) {
+        filterStatus[drug?.drugUsageStatus.toLowerCase()]?.add(drug);
+      }
+      // filterStatus[model.status.toString().toLowerCase()];
+    }
 
     return allList;
   }

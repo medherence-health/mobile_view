@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum Status { all, taken, late, missed }
+enum Status { all, early, late, missed }
 
 class FilterViewModel extends ChangeNotifier {
   Status status = Status.all;

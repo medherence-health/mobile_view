@@ -87,7 +87,7 @@ class _FilterViewState extends State<FilterView> {
               Wrap(
                 children: [
                   _buildStatusRadio(model, Status.all, 'All'),
-                  _buildStatusRadio(model, Status.taken, 'Taken'),
+                  _buildStatusRadio(model, Status.early, 'Early'),
                   _buildStatusRadio(model, Status.late, 'Late'),
                   _buildStatusRadio(model, Status.missed, 'Missed'),
                 ],
