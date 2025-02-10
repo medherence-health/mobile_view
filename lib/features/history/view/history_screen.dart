@@ -389,7 +389,7 @@ class _HistoryScreenState extends State<HistoryScreen>
     return FutureBuilder<List<Drug?>>(
       future: context
           .watch<ProfileViewModel>()
-          .getMedicationActivity(_auth.currentUser?.uid ?? ""),
+          .getMedicationActivity(_auth.currentUser?.uid ?? "", context),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(

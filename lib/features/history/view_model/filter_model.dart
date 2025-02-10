@@ -4,19 +4,21 @@ enum Status { all, early, late, missed }
 
 class FilterViewModel extends ChangeNotifier {
   Status status = Status.all;
-  DateTime _selectedDate = DateTime.now();
-  DateTime _secondSelectedDate = DateTime.now()
-      .add(const Duration(days: 1)); // Default: 1 day after selectedDate
+  DateTime? _selectedDate = null;
+  DateTime? _secondSelectedDate = null; // Default: 1 day after selectedDate
   TextEditingController dropDownSearchController = TextEditingController();
   String suggestion = "";
   String? selectedMedication;
   List<String> regimenNames = [];
 
-  DateTime get selectedDate => _selectedDate;
-  DateTime get secondSelectedDate => _secondSelectedDate;
+  DateTime? get selectedDate => _selectedDate;
+  DateTime? get secondSelectedDate => _secondSelectedDate;
 
   // Method to format DateTime as "yyyy-MM-dd"
-  String formatDate(DateTime date) {
+  String formatDate(DateTime? date) {
+    if (date == null) {
+      return "Select Date";
+    }
     return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
   }
 

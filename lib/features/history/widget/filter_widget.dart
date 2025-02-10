@@ -219,7 +219,7 @@ class _FilterViewState extends State<FilterView> {
       FilterViewModel model,
       String label,
       String date,
-      DateTime initialDate,
+      DateTime? initialDate,
       void Function(DateTime?) onDatePicked) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

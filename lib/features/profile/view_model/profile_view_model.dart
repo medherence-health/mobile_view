@@ -144,7 +144,8 @@ class ProfileViewModel extends ChangeNotifier {
     }
   }
 
-  Future<List<Drug?>> getMedicationActivity(String patientUid) async {
+  Future<List<Drug?>> getMedicationActivity(
+      String patientUid, BuildContext context) async {
     try {
       // Query the patient_drug collection
       QuerySnapshot querySnapshot = await _firestore
@@ -166,7 +167,7 @@ class ProfileViewModel extends ChangeNotifier {
       var listOfDrugWithoutMissedList = querySnapshot.docs
           .map((doc) => Drug.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
-      var completeList = completeAllList(listOfDrugWithoutMissedList);
+      var completeList = completeAllList(listOfDrugWithoutMissedList, context);
 
       return completeList;
     } catch (error) {
