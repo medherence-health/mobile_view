@@ -141,12 +141,13 @@ class ProfileViewModel extends ChangeNotifier {
     }
   }
 
-  Future<List<Drug>> getMedicationActivity(String patientUid) async {
+  Future<List<Drug?>> getMedicationActivity(String patientUid) async {
     try {
       // Query the patient_drug collection
       QuerySnapshot querySnapshot = await _firestore
           .collection('medication_activity')
           .where('patient_uid', isEqualTo: patientUid)
+          // .where('drug_usage_status', isNotEqualTo: notUsed)
           .get(const GetOptions(source: Source.cache)); // Force offline cache
 
       // If cache is unavailable, fallback to server
@@ -154,6 +155,7 @@ class ProfileViewModel extends ChangeNotifier {
         querySnapshot = await _firestore
             .collection('patient_drug')
             .where('patient_uid', isEqualTo: patientUid)
+            // .where('drug_usage_status', isNotEqualTo: notUsed)
             .get(const GetOptions(source: Source.server)); // Use server data
       }
 
@@ -161,8 +163,9 @@ class ProfileViewModel extends ChangeNotifier {
       var listOfDrugWithoutMissedList = querySnapshot.docs
           .map((doc) => Drug.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
-      var completeList = missedListGenerator(listOfDrugWithoutMissedList);
-      return listOfDrugWithoutMissedList;
+      var completeList = completeAllList(listOfDrugWithoutMissedList);
+
+      return completeList;
     } catch (error) {
       print("Error fetching patient drugs: $error");
       return [];
@@ -328,8 +331,10 @@ class ProfileViewModel extends ChangeNotifier {
     return numberOfTimesDrugUsed.floor();
   }
 
-  List<Drug> missedListGenerator(List<Drug> listOfDrugWithoutMissedList) {
-    if (listOfDrugWithoutMissedList.isEmpty) return [];
+  MissedListResult missedListGenerator(List<Drug> listOfDrugWithoutMissedList) {
+    // O(n)
+    if (listOfDrugWithoutMissedList.isEmpty)
+      return MissedListResult(missedList: [], combinedMapList: {});
 
     // Get the number of times the drug should have been used
     int numberOfTimesDrugUsed =
@@ -359,10 +364,44 @@ class ProfileViewModel extends ChangeNotifier {
 
         // Create a missed drug entry
         missedDrugs.add(newDrug);
+
+        //add to drugMap for complete list
+        drugMap[time] = newDrug;
       }
     });
 
-    return missedDrugs;
+    return MissedListResult(missedList: missedDrugs, combinedMapList: drugMap);
+  }
+
+  Map<String, List<Drug>> groupListByMedId(
+      List<Drug> listOfDrugWithoutMissedList) {
+    // O(n)
+    Map<String, List<Drug>> drugMap = {};
+
+    for (Drug drug in listOfDrugWithoutMissedList) {
+      drugMap.putIfAbsent(drug.medicationsId, () => []).add(drug);
+    }
+
+    return drugMap;
+  }
+
+  List<Drug?> completeAllList(List<Drug> listOfDrugWithoutMissedList) {
+    // Group List
+    var groupedList = groupListByMedId(listOfDrugWithoutMissedList);
+    Map<String, List<Drug?>> combinedMapList = {};
+    Map<String, List<Drug?>> missedDrugsList = {};
+    List<Drug?> allList = [];
+
+    groupedList.forEach((id, list) {
+      var missedListRes = missedListGenerator(list);
+      missedDrugsList[id] = missedListRes.missedList;
+      combinedMapList[id] = missedListRes.combinedMapList.values.toList();
+      print("groupedList: " + list.toString());
+
+      allList.addAll(list);
+    });
+
+    return allList;
   }
 }
 
@@ -370,4 +409,10 @@ class ListDrugPercent {
   final List<Drug> listOfDrugs;
   final int percent;
   ListDrugPercent({required this.listOfDrugs, required this.percent});
+}
+
+class MissedListResult {
+  final List<Drug> missedList;
+  final Map<int, Drug?> combinedMapList;
+  MissedListResult({required this.missedList, required this.combinedMapList});
 }

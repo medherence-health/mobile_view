@@ -386,10 +386,10 @@ class _HistoryScreenState extends State<HistoryScreen>
   }
 
   Widget historyListBuilder(BuildContext context) {
-    return FutureBuilder<List<Drug>>(
+    return FutureBuilder<List<Drug?>>(
       future: context
           .watch<ProfileViewModel>()
-          .getPatientDrugs(_auth.currentUser?.uid ?? ""),
+          .getMedicationActivity(_auth.currentUser?.uid ?? ""),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
@@ -415,8 +415,8 @@ class _HistoryScreenState extends State<HistoryScreen>
           );
         }
 
-        List<Drug> drugList = snapshot.data!;
-        List<Drug> historyList = drugList;
+        List<Drug?> drugList = snapshot.data!;
+        List<Drug?> historyList = drugList;
 
         return SizedBox(
           width: SizeMg.screenWidth,
@@ -481,18 +481,18 @@ class _HistoryScreenState extends State<HistoryScreen>
     );
   }
 
-  Widget _buildHistoryItem(Drug drug) {
+  Widget _buildHistoryItem(Drug? drug) {
     String formattedDay = formatDateTime(
-        int.tryParse(drug.timeTaken.toString()) ??
+        int.tryParse(drug?.timeTaken.toString() ?? "") ??
             DateTime.now().millisecondsSinceEpoch)['day']!;
 
     String formattedMonth = formatDateTime(
-        int.tryParse(drug.timeTaken.toString()) ??
+        int.tryParse(drug?.timeTaken.toString() ?? "") ??
             DateTime.now().millisecondsSinceEpoch)['month']!;
 
     Color containerColor = AppColors.historyBackground;
 
-    switch (drug.drugUsageStatus) {
+    switch (drug?.drugUsageStatus ?? "") {
       case AdherenceStatus.early:
         containerColor = AppColors.success;
         break;
@@ -526,7 +526,7 @@ class _HistoryScreenState extends State<HistoryScreen>
               ),
             ),
             Text(
-              drug.drugName,
+              drug?.drugName ?? "",
               style: TextStyle(
                 color: AppColors.black,
                 fontSize: SizeMg.text(16),
@@ -534,7 +534,7 @@ class _HistoryScreenState extends State<HistoryScreen>
               ),
             ),
             Text(
-              drug.dosage,
+              drug?.dosage ?? "",
               style: TextStyle(
                 color: AppColors.darkGrey,
                 fontSize: SizeMg.text(13),

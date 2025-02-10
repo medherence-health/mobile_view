@@ -48,6 +48,7 @@ InputDecoration kProfileInputDecoration = InputDecoration(
 );
 
 String ok = "OK";
+String notUsed = "not_used";
 
 int currentTimeInMilli = DateTime.now().millisecondsSinceEpoch;
 
