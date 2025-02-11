@@ -134,8 +134,7 @@ class _HistoryScreenState extends State<HistoryScreen>
               ),
             ),
             SliverToBoxAdapter(
-              child:
-                  _buildMedicationHistory(_historyData, _tabIndex, groupedList),
+              child: _buildMedicationHistory(context, _historyData, _tabIndex),
             ),
           ],
         ),
@@ -158,21 +157,45 @@ class _HistoryScreenState extends State<HistoryScreen>
     }
   }
 
-  _buildMedicationHistory(ReminderState historyState, int tabIndex,
-      Map<String, List<Drug?>> groupedList) {
-    switch (tabIndex) {
-      case 0:
-        return historyListBuilder(context, groupedList);
-      case 1:
-        return analyticsBuilder(historyState);
-      default:
-        return Builder(builder: (ctx) {
+  Widget _buildMedicationHistory(
+    BuildContext context,
+    ReminderState historyState,
+    int tabIndex,
+  ) {
+    final model = Provider.of<FilterViewModel>(context, listen: false);
+
+    return FutureBuilder(
+      future: context
+          .watch<ProfileViewModel>()
+          .getMedicationActivity(_auth.currentUser?.uid ?? "", model),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text("Error: ${snapshot.error}"));
+        } else if (!snapshot.hasData || snapshot.data!.idMapList.isEmpty) {
           return _buildEmptyState();
-        });
-    }
+        }
+
+        // Extract data
+        final groupedListById = snapshot.data!.idMapList;
+        final allList = snapshot.data!.allList;
+        final groupedListByStatus = snapshot.data!.statusMapList;
+
+        switch (tabIndex) {
+          case 0:
+            return historyListBuilder(context, groupedListById, allList);
+          case 1:
+            return analyticsBuilder(historyState, groupedListByStatus);
+          default:
+            return _buildEmptyState();
+        }
+      },
+    );
   }
 
-  Widget analyticsBuilder(ReminderState reminderState) {
+  Widget analyticsBuilder(ReminderState reminderState,
+      Map<String, List<Drug?>> groupedListByStatus) {
     return Builder(builder: (ctx) {
       List<HistoryModel> historyList = reminderState.historyList;
       // if (historyList.isEmpty) {
@@ -180,7 +203,7 @@ class _HistoryScreenState extends State<HistoryScreen>
       // }
 
       Map<AdherenceStatus, int> adherenceData =
-          aggregateAdherenceData(historyList);
+          aggregateAdherenceData(groupedListByStatus);
 
       return Padding(
         padding: const EdgeInsets.all(25.0),
@@ -340,24 +363,10 @@ class _HistoryScreenState extends State<HistoryScreen>
   }
 
   Map<AdherenceStatus, int> aggregateAdherenceData(
-      List<HistoryModel> historyList) {
-    int earlyCount = 3;
-    int lateCount = 4;
-    int missedCount = 3;
-
-    for (var history in historyList) {
-      switch (history.status) {
-        case AdherenceStatus.early:
-          earlyCount++;
-          break;
-        case AdherenceStatus.late:
-          lateCount++;
-          break;
-        case AdherenceStatus.missed:
-          missedCount++;
-          break;
-      }
-    }
+      Map<String, List<Drug?>> groupedListByStatus) {
+    int earlyCount = groupedListByStatus["early"]?.length ?? 0;
+    int lateCount = groupedListByStatus["late"]?.length ?? 0;
+    int missedCount = groupedListByStatus["missed"]?.length ?? 0;
 
     return {
       AdherenceStatus.early: earlyCount,
@@ -405,94 +414,58 @@ class _HistoryScreenState extends State<HistoryScreen>
     super.dispose();
   }
 
-  Widget historyListBuilder(
-      BuildContext context, Map<String, List<Drug?>> groupedList) {
-    final model = Provider.of<FilterViewModel>(context, listen: false);
-
-    return FutureBuilder<MedActivityResult>(
-      future: context
-          .watch<ProfileViewModel>()
-          .getMedicationActivity(_auth.currentUser?.uid ?? "", model),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-
-        if (snapshot.hasError) {
-          return Center(
-            child: Text("Error loading history"),
-          );
-        }
-
-        if (!snapshot.hasData || snapshot.data!.allList.isEmpty) {
-          return Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: SizeMg.width(30),
-              vertical: SizeMg.height(10),
-            ),
-            child: Stack(
-              children: [_buildEmptyState()],
-            ),
-          );
-        }
-
-        List<Drug?> drugList = snapshot.data!.allList;
-        List<Drug?> historyList = drugList;
-
-        return SizedBox(
-          width: SizeMg.screenWidth,
-          height: MediaQuery.of(context).size.height,
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: SizeMg.width(30),
-              vertical: SizeMg.height(15),
-            ),
-            child: Stack(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: SizeMg.height(25)),
-                  child: Text(
-                    'All',
-                    style: TextStyle(
-                      color: AppColors.black,
-                      fontSize: SizeMg.text(25),
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+  Widget historyListBuilder(BuildContext context,
+      Map<String, List<Drug?>> groupedList, List<Drug?> historyList) {
+    return SizedBox(
+      width: SizeMg.screenWidth,
+      height: MediaQuery.of(context).size.height,
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: SizeMg.width(30),
+          vertical: SizeMg.height(15),
+        ),
+        child: Stack(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: SizeMg.height(25)),
+              child: Text(
+                'All',
+                style: TextStyle(
+                  color: AppColors.black,
+                  fontSize: SizeMg.text(25),
+                  fontWeight: FontWeight.w500,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 65.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(width: SizeMg.width(20)),
-                      Text('Regimen', style: _headerTextStyle()),
-                      Text('Dosage', style: _headerTextStyle()),
-                      Text('Date', style: _headerTextStyle()),
-                    ],
-                  ),
-                ),
-                SizedBox(height: SizeMg.height(15)),
-                Padding(
-                  padding: EdgeInsets.only(top: SizeMg.height(75)),
-                  child: ListView.separated(
-                    separatorBuilder: (ctx, index) =>
-                        SizedBox(height: SizeMg.height(5)),
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: historyList.length,
-                    itemBuilder: (context, index) {
-                      final drug = historyList[index];
-                      return _buildHistoryItem(drug);
-                    },
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
-        );
-      },
+            Padding(
+              padding: const EdgeInsets.only(top: 65.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(width: SizeMg.width(20)),
+                  Text('Regimen', style: _headerTextStyle()),
+                  Text('Dosage', style: _headerTextStyle()),
+                  Text('Date', style: _headerTextStyle()),
+                ],
+              ),
+            ),
+            SizedBox(height: SizeMg.height(15)),
+            Padding(
+              padding: EdgeInsets.only(top: SizeMg.height(75)),
+              child: ListView.separated(
+                separatorBuilder: (ctx, index) =>
+                    SizedBox(height: SizeMg.height(5)),
+                physics: const BouncingScrollPhysics(),
+                itemCount: historyList.length,
+                itemBuilder: (context, index) {
+                  final drug = historyList[index];
+                  return _buildHistoryItem(drug);
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
