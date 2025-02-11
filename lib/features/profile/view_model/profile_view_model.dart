@@ -178,18 +178,22 @@ class ProfileViewModel extends ChangeNotifier {
     }
   }
 
-  Future<double?> getMdhcNaira() async {
+  Future<WithdrawalResult> getMdhcNairaAndAccount() async {
+    var userData = await getUserData();
     try {
-      final snapshot =
-          await _dbRef.child('current_slot_price/mdhc_naira').get();
+      final snapshot = await _dbRef.child('mdhc_naira').get();
+      print('mdhc_naira: ${snapshot.value.toString()}');
+
       if (snapshot.exists) {
-        return double.tryParse(snapshot.value.toString());
+        return WithdrawalResult(
+            conversionNairaPrice: double.tryParse(snapshot.value.toString()),
+            userData: userData);
       } else {
-        return null;
+        return WithdrawalResult(conversionNairaPrice: 0, userData: userData);
       }
     } catch (e) {
       print('Error fetching mdhc_naira: $e');
-      return null;
+      return WithdrawalResult(conversionNairaPrice: null, userData: null);
     }
   }
 
@@ -524,4 +528,11 @@ class MedActGroupingResult {
   final Map<String, List<Drug>> idMapList;
   final Map<String, List<Drug>> statusMapList;
   MedActGroupingResult({required this.idMapList, required this.statusMapList});
+}
+
+class WithdrawalResult {
+  final double? conversionNairaPrice;
+  final UserData? userData;
+  WithdrawalResult(
+      {required this.conversionNairaPrice, required this.userData});
 }

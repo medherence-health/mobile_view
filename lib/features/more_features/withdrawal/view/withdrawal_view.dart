@@ -1,11 +1,11 @@
 import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:medherence/core/constants/constants.dart';
 import 'package:medherence/features/medhecoin/view_model/medhecoin_wallet_view_model.dart';
 import 'package:medherence/features/profile/view_model/profile_view_model.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../core/constants/constants.dart';
 import '../../../../core/shared_widget/buttons.dart';
 import '../../../../core/utils/color_utils.dart';
 import '../../../../core/utils/size_manager.dart';
@@ -91,9 +91,11 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
 
   /// Builds the withdrawal form UI.
   Widget buildWithdrawalForm(WalletViewModel model, int? availableMedcoin) {
-    return FutureBuilder<void>(
-      future: context.watch<ProfileViewModel>().getPatientTodayDrugs(
-          auth.currentUser?.uid ?? ""), // Assume this fetches necessary data
+    final savedAccount = Provider.of<WalletViewModel>(context, listen: false);
+    return FutureBuilder<WithdrawalResult>(
+      future: context
+          .watch<ProfileViewModel>()
+          .getMdhcNairaAndAccount(), // Assume this fetches necessary data
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
@@ -105,6 +107,10 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
             ),
           );
         } else {
+          var userData = snapshot.data?.userData;
+          var conversionRate = snapshot.data?.conversionNairaPrice ?? 0.0;
+          var transferAmount =
+              conversionRate * (userData?.medhecoinBalance ?? 0);
           return Stack(
             children: [
               Padding(
@@ -115,7 +121,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Visibility(
-                        visible: model.savedAccountModelList.isNotEmpty,
+                        visible: savedAccount.savedAccountModelList.isNotEmpty,
                         child: SizedBox(
                           height: SizeMg.height(130),
                           child: Column(
@@ -134,8 +140,8 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                                   shrinkWrap: true,
                                   scrollDirection: Axis.horizontal,
                                   itemBuilder: (ctx, index) {
-                                    final item =
-                                        model.savedAccountModelList[index];
+                                    final item = savedAccount
+                                        .savedAccountModelList[index];
                                     return Column(
                                       children: [
                                         CircleAvatar(
@@ -166,14 +172,245 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                                   separatorBuilder: (ctx, index) => SizedBox(
                                     height: SizeMg.width(15),
                                   ),
-                                  itemCount: model.savedAccountModelList.length,
+                                  itemCount:
+                                      savedAccount.savedAccountModelList.length,
                                 ),
                               )
                             ],
                           ),
                         ),
                       ),
-                      // Additional form fields here...
+                      const SizedBox(height: 15),
+                      const Text(
+                        'Bank',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      DropDownSearchFormField(
+                        textFieldConfiguration: TextFieldConfiguration(
+                          controller: _dropDownSearchController,
+                          decoration: kFormTextDecoration.copyWith(
+                            errorBorder: kFormTextDecoration.errorBorder,
+                            hintStyle: kFormTextDecoration.hintStyle,
+                            hintText: 'Select Destination Bank',
+                            filled: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 12),
+                            border: kFormTextDecoration.border,
+                            focusedBorder: kFormTextDecoration.focusedBorder,
+                          ),
+                        ),
+                        suggestionsCallback: (pattern) {
+                          return model.getSuggestions(pattern);
+                        },
+                        itemBuilder: (context, suggestion) {
+                          return ListTile(
+                            tileColor: kFormTextDecoration.fillColor,
+                            title: Text(
+                              suggestion,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w500),
+                            ),
+                          );
+                        },
+                        transitionBuilder:
+                            (context, suggestionsBox, controller) {
+                          return suggestionsBox;
+                        },
+                        onSuggestionSelected: (suggestion) {
+                          _dropDownSearchController.text = suggestion;
+                          model.selectedBank = suggestion;
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please select a bank';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          model.selectedBank = value;
+                        },
+                        displayAllSuggestionWhenTap: true,
+                      ),
+                      const SizedBox(height: 10),
+                      const Text(
+                        'Account Number',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(
+                        height: SizeMg.height(10),
+                      ),
+                      TextFormField(
+                        controller: _accountNumberController,
+                        cursorHeight: SizeMg.height(19),
+                        decoration: kFormTextDecoration.copyWith(
+                          errorBorder: kFormTextDecoration.errorBorder,
+                          hintStyle: kFormTextDecoration.hintStyle,
+                          border: kFormTextDecoration.border,
+                          filled: true,
+                          fillColor: accountFillColor,
+                          focusedBorder: kFormTextDecoration.focusedBorder,
+                          hintText: "Enter Account Number",
+                          suffixIcon: IconButton(
+                            icon: const Icon(Icons.copy,
+                                color: AppColors.navBarColor),
+                            iconSize: 24,
+                            onPressed: () {
+                              Clipboard.setData(ClipboardData(
+                                text: _accountNumberController.text.isNotEmpty
+                                    ? _accountNumberController.text.trim()
+                                    : '',
+                              ));
+                              if (_accountNumberController.text.isNotEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Text copied to clipboard'),
+                                  ),
+                                );
+                              }
+                            },
+                          ),
+                        ),
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(
+                              10), // Limit input to 10 characters
+                          FilteringTextInputFormatter
+                              .digitsOnly, // Allow only digits
+                        ],
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "The account number must not be empty";
+                          } else if (value.length < 10) {
+                            return "Ensure to input a correct account number";
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          setState(() {
+                            if (value!.length == 10 &&
+                                model.selectedBank != null) {
+                              model.validateAccountNumber(
+                                  model.selectedBank!, value);
+                            }
+                          });
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            // Check if the value is not empty
+                            if (value.isNotEmpty) {
+                              // If there is input, set filled to true
+                              accountFillColor = kFormTextDecoration.fillColor;
+                            } else {
+                              // If no input, set filled to false
+                              model.accountOwnerName = null;
+                              accountFillColor = Colors.white70;
+                            }
+                          });
+                        },
+                      ),
+                      if (userData != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Text(
+                            '${userData.fullName}',
+                            style: TextStyle(
+                              color: Colors.green,
+                              fontSize: SizeMg.text(12),
+                            ),
+                          ),
+                        ),
+                      SizedBox(height: SizeMg.height(10)),
+                      const Text(
+                        'Amount',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(
+                        height: SizeMg.height(10),
+                      ),
+                      TextFormField(
+                        controller: _amountController,
+                        cursorHeight: SizeMg.height(19),
+                        decoration: kFormTextDecoration.copyWith(
+                          errorBorder: kFormTextDecoration.errorBorder,
+                          hintStyle: kFormTextDecoration.hintStyle,
+                          border: kFormTextDecoration.border,
+                          filled: true,
+                          fillColor: amountFillColor,
+                          focusedBorder: kFormTextDecoration.focusedBorder,
+                          hintText: "Enter Amount to Withdraw",
+                        ),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter
+                              .digitsOnly, // Allow only digits
+                        ],
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "The amount must not be empty";
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          model.updateAmount(value, availableMedcoin);
+                          setState(() {
+                            if (value.isNotEmpty) {
+                              amountFillColor = kFormTextDecoration.fillColor;
+                            } else {
+                              amountFillColor = Colors.white70;
+                            }
+                          });
+                        },
+                      ),
+                      if (model.amountError != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Text(
+                            model.amountError!,
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: SizeMg.text(12),
+                            ),
+                          ),
+                        ),
+                      const SizedBox(height: 5),
+                      SizedBox(
+                        width: SizeMg.screenWidth,
+                        child: Row(
+                          children: [
+                            const Text(
+                              'Available',
+                              style: TextStyle(
+                                color: AppColors.darkGrey,
+                              ),
+                            ),
+                            const Spacer(),
+                            RichText(
+                              text: TextSpan(
+                                text: "${userData?.medhecoinBalance ?? 0}",
+                                style: const TextStyle(
+                                  color: AppColors.darkGrey,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: ' MDHC',
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -185,11 +422,9 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                 child: checkOutContainer(
                   balance: availableMedcoin!,
                   model: model,
-                  amount: model.amount?.toStringAsFixed(2) ?? '-----',
-                  transferFee: model.amount != null
-                      ? model.transferFee.toStringAsFixed(2)
-                      : '---',
-                  totalAmount: model.totalAmount?.toStringAsFixed(2) ?? '-----',
+                  amount: "${userData?.medhecoinBalance ?? 0}" ?? '-----',
+                  transferFee: "${conversionRate}" ?? '---',
+                  totalAmount: "${transferAmount}" ?? '-----',
                 ),
               ),
             ],
