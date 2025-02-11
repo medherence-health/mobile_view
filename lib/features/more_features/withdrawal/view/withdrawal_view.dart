@@ -30,12 +30,15 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
   Color? amountFillColor = Colors.white70;
   Color? accountFillColor = Colors.white70;
   bool showConfirmation = false;
+  Future<WithdrawalResult>? _withdrawalResultFuture;
 
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
+    _withdrawalResultFuture =
+        context.read<ProfileViewModel>().getMdhcNairaAndAccount();
     _accountNumberController = TextEditingController();
     _amountController = TextEditingController();
   }
@@ -50,7 +53,8 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
   @override
   Widget build(BuildContext context) {
     SizeMg.init(context);
-    final availableMedcoin =
+
+    var availableMedcoin =
         Provider.of<ReminderState>(context, listen: false).medcoin;
     final equivalentMedcoin =
         Provider.of<ReminderState>(context, listen: false).medcoinInNaira;
@@ -93,9 +97,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
   Widget buildWithdrawalForm(WalletViewModel model, int? availableMedcoin) {
     final savedAccount = Provider.of<WalletViewModel>(context, listen: false);
     return FutureBuilder<WithdrawalResult>(
-      future: context
-          .watch<ProfileViewModel>()
-          .getMdhcNairaAndAccount(), // Assume this fetches necessary data
+      future: _withdrawalResultFuture, // Assume this fetches necessary data
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
@@ -111,6 +113,10 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
           var conversionRate = snapshot.data?.conversionNairaPrice ?? 0.0;
           var transferAmount =
               conversionRate * (userData?.medhecoinBalance ?? 0);
+          availableMedcoin = (userData?.medhecoinBalance ?? 0).toInt();
+
+          model.updateTotalAmount(transferAmount.toString());
+          model.updateTransferFee(conversionRate.toString());
           return Stack(
             children: [
               Padding(
@@ -396,7 +402,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                             const Spacer(),
                             RichText(
                               text: TextSpan(
-                                text: "${userData?.medhecoinBalance ?? 0}",
+                                text: "${availableMedcoin}",
                                 style: const TextStyle(
                                   color: AppColors.darkGrey,
                                   fontWeight: FontWeight.w500,
@@ -551,8 +557,8 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
                             content: Text('Account verified'),
                           ),
                         );
-                        Provider.of<WalletViewModel>(context, listen: false)
-                            .calculateTotalAmount();
+                        // Provider.of<WalletViewModel>(context, listen: false)
+                        //     .calculateTotalAmount();
                         setState(() {
                           showConfirmation = true;
                         });

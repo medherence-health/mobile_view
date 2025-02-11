@@ -1,5 +1,6 @@
 import 'package:medherence/core/model/models/monitor_drug.dart';
 import 'package:medherence/core/model/models/progress.dart';
+import 'package:medherence/core/model/models/security.dart';
 import 'package:medherence/core/model/models/user_data.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -15,6 +16,7 @@ class DatabaseService {
   // Table names
   static const String userTable = "UserData";
   static const String progressTable = "Progress";
+  static const String securityTable = "Progress";
   static const String monitorDrugTable = "MonitorDrug";
 
   DatabaseService._constructor();
@@ -40,6 +42,7 @@ class DatabaseService {
         await _createUserDataTable(db);
         await _createProgressTable(db);
         await _createMonitorDrugTakenTable(db);
+        await _createSecurity(db);
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
@@ -136,6 +139,17 @@ class DatabaseService {
     ''');
   }
 
+  // Create drug taken table
+  Future<void> _createSecurity(Database db) async {
+    await db.execute('''
+      CREATE TABLE $monitorDrugTable (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        pin TEXT,
+        type TEXT
+      );
+    ''');
+  }
+
   Future<String> insertUserData(UserData userData) async {
     try {
       // Get a reference to the database.
@@ -185,6 +199,26 @@ class DatabaseService {
       await db.insert(
         progressTable,
         progress.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+
+      return ok; // Return success message on successful insertion.
+    } catch (error) {
+      // Log the error and return a failure message.
+      print('Error inserting user data: $error');
+      return 'Error: $error';
+    }
+  }
+
+  Future<String> insertSecurity(Security security) async {
+    try {
+      // Get a reference to the database.
+      final db = await database;
+
+      // Insert the user data into the table, replacing any existing data with the same `userId`.
+      await db.insert(
+        securityTable,
+        security.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
 
@@ -280,6 +314,32 @@ class DatabaseService {
     }
   }
 
+  Future<SecurityResult> getSecurity() async {
+    final db = await database;
+
+    try {
+      // Query the database to retrieve user data by userId
+      final data = await db.query(
+        securityTable,
+      );
+
+      // Check if any data was returned
+      if (data.isNotEmpty) {
+        // Map the first result to a UserData object using a factory method
+        var dbSecurity = Security.fromMap(data.first);
+        print("currentUserdb ${dbSecurity}");
+        return SecurityResult(security: dbSecurity, message: ok);
+      }
+
+      // If no matching user is found, return null
+      return SecurityResult(security: null, message: "Drug not found");
+    } catch (error) {
+      // Log the error for debugging purposes
+      return SecurityResult(
+          security: null, message: "Error retrieving data $error");
+    }
+  }
+
   Future<String> updateUserData(UserData userData) async {
     try {
       // Get a reference to the database.
@@ -341,6 +401,30 @@ class DatabaseService {
       final rowsUpdated = await db.update(
         progressTable,
         progress.toMap(),
+      );
+
+      // Check if any rows were updated.
+      if (rowsUpdated > 0) {
+        return ok; // Update was successful.
+      } else {
+        return 'Error: No matching user found to update.';
+      }
+    } catch (error) {
+      // Handle errors during the update process.
+      print('Error updating user data: $error');
+      return 'Error: Unable to update  $error';
+    }
+  }
+
+  Future<String> updateSecurity(Security security) async {
+    try {
+      // Get a reference to the database.
+      final db = await database;
+
+      // Attempt to update the user data.
+      final rowsUpdated = await db.update(
+        securityTable,
+        security.toMap(),
       );
 
       // Check if any rows were updated.
@@ -424,6 +508,27 @@ class DatabaseService {
       return 'Error: $error';
     }
   }
+
+  Future<String> deleteSecurity(Security security) async {
+    final db = await database;
+
+    try {
+      // Use a parameterized query to delete the user data by userId
+      int rowsAffected = await db.rawDelete('DELETE FROM $securityTable');
+
+      if (rowsAffected > 0) {
+        // If rows were affected, the deletion was successful
+        return ok;
+      } else {
+        // If no rows were affected, the user was not found
+        return 'No user found with ID:';
+      }
+    } catch (error) {
+      // Catch any error that occurs during the deletion
+      print("Error: $error"); // Log the error for debugging
+      return 'Error: $error';
+    }
+  }
 }
 
 class UserDataResult {
@@ -445,4 +550,11 @@ class ProgressResult {
   final String message;
 
   ProgressResult({this.progress, required this.message});
+}
+
+class SecurityResult {
+  final Security? security;
+  final String message;
+
+  SecurityResult({this.security, required this.message});
 }

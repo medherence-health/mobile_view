@@ -3,6 +3,7 @@ import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medherence/core/database/database_service.dart';
+import 'package:medherence/core/model/models/security.dart';
 import 'package:medherence/core/model/models/user_data.dart';
 import 'package:medherence/core/shared_widget/buttons.dart';
 import 'package:medherence/features/auth/views/forgot_password.dart';
@@ -105,7 +106,9 @@ class _LoginViewState extends State<LoginView> {
           if (data != null) {
             final userData = UserData.fromMap(data);
             var res = await _databaseService.insertUserData(userData);
-            if (res == "OK") {
+            var resCreatePin = await _databaseService
+                .insertSecurity(Security(pin: "0000", type: "pin"));
+            if (res == "OK" && resCreatePin == "OK") {
               navigateBackToHome();
               final String userName =
                   userData.fullName ?? 'Unknown User'; // Access specific field

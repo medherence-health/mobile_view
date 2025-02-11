@@ -1,7 +1,9 @@
 import 'dart:collection';
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../../core/model/models/account_model.dart';
 import '../../../core/model/models/wallet_model.dart';
 import '../../../core/utils/utils.dart';
@@ -115,9 +117,13 @@ class WalletViewModel extends ChangeNotifier {
   }
 
   String? validateWithdrawal(int? mainBalance) {
-    if (totalAmount != null && totalAmount! > mainBalance!) {
-      return 'Total amount exceeds your available balance.';
-    }
+    // totalAmount = 0;
+    // if (totalAmount != null) {
+    //   return 'Total amount missing';
+    // }
+    // if (totalAmount != null && totalAmount! > mainBalance!) {
+    //   return 'Total amount exceeds your available balance.';
+    // }
     return null;
   }
 
@@ -196,15 +202,15 @@ class WalletViewModel extends ChangeNotifier {
       amount = int.tryParse(value);
       if (amount != null && isAmountWithinLimit(amount, availableMedcoin)) {
         amountError = null;
-        calculateTotalAmount();
+        // calculateTotalAmount();
       } else {
         amountError = "Amount exceeds available balance";
         amount = null;
-        totalAmount = null;
+        // totalAmount = null;
       }
     } else {
       amount = null;
-      totalAmount = null;
+      // totalAmount = null;
       amountError = null;
     }
     notifyListeners();
@@ -212,19 +218,25 @@ class WalletViewModel extends ChangeNotifier {
 
   // Method to update the transfer fee
   void updateTransferFee(String value) {
-    transferFee = double.tryParse(value) ?? 25.66;
-    calculateTotalAmount();
+    transferFee = double.tryParse(value) ?? 0.0;
+    // calculateTotalAmount();
+    notifyListeners();
+  }
+
+  void updateTotalAmount(String value) {
+    totalAmount = double.tryParse(value) ?? 0.0;
+    // calculateTotalAmount();
     notifyListeners();
   }
 
   // Method to calculate the total amount
-  void calculateTotalAmount() {
-    if (amount != null) {
-      totalAmount = amount! + transferFee;
-    } else {
-      totalAmount = null;
-    }
-  }
+  // void calculateTotalAmount() {
+  //   if (amount != null) {
+  //     totalAmount = amount! + transferFee;
+  //   } else {
+  //     totalAmount = null;
+  //   }
+  // }
 
   double medcoinToNairaRate = 0.1; // 1 Medcoin = 0.1 Naira
 
