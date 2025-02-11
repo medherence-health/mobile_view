@@ -151,7 +151,7 @@ class ProfileViewModel extends ChangeNotifier {
           .collection('medication_activity')
           .where('patient_uid', isEqualTo: patientUid)
           // .where('drug_usage_status', isNotEqualTo: notUsed)
-          .get(const GetOptions(source: Source.cache)); // Force offline cache
+          .get(const GetOptions(source: Source.server)); // Force offline cache
 
       // If cache is unavailable, fallback to server
       if (querySnapshot.docs.isEmpty) {
@@ -400,7 +400,7 @@ class ProfileViewModel extends ChangeNotifier {
 
     Map<String, List<Drug?>> combinedMapList = {};
     Map<String, List<Drug?>> missedDrugsList = {};
-    List<Drug?> allList = [];
+    List<Drug> allList = [];
 
     // **Filter by Drug ID** (if specified)
     if (model.drugId.isNotEmpty) {
@@ -417,7 +417,7 @@ class ProfileViewModel extends ChangeNotifier {
 
     // **Filter by Medication Status** (if not "All")
     if (model.status != Status.all) {
-      Map<String, List<Drug?>> filterStatus = {};
+      Map<String, List<Drug>> filterStatus = {};
 
       for (Drug? drug in allList) {
         if (drug != null) {
@@ -445,14 +445,21 @@ class ProfileViewModel extends ChangeNotifier {
         bool isBeforeEnd = model.secondSelectedDate == null ||
             medicationDate <= model.secondSelectedDate!.millisecondsSinceEpoch;
 
+        print(
+            "groupedList $isAfterStart and $isBeforeEnd ${model.secondSelectedDate}  : $medicationDate : "
+            "${model.selectedDate!.millisecondsSinceEpoch} ");
+
         return isAfterStart && isBeforeEnd;
       }).toList();
     }
 
+    // Group drugs by their medication ID
+    Map<String, List<Drug>> groupedFilteredList = groupListByMedId(allList);
+
     // Return the final result
     return MedActivityResult(
       allList: allList,
-      idMapList: nonModifiableGroupedList,
+      idMapList: groupedFilteredList,
     );
   }
 }

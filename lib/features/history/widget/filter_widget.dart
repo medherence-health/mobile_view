@@ -58,6 +58,11 @@ class _FilterViewState extends State<FilterView> {
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
+            model.setStatus(Status.all);
+            model.updateSelectedDate(null);
+            model.updateSecondSelectedDate(null);
+            model.drugId = "";
+            model.suggestion = "";
             Navigator.pop(context);
           },
           icon: const Icon(
@@ -87,9 +92,10 @@ class _FilterViewState extends State<FilterView> {
                 child: CircularProgressIndicator()); // Loading spinner
           } else if (snapshot.hasError) {
             return Center(child: Text("Error loading data")); // Error message
-          } else if (!snapshot.hasData || snapshot.data!.allList.isEmpty) {
-            return Center(child: Text("No medications found")); // Empty state
           }
+          // else if (!snapshot.hasData || snapshot.data!.allList.isEmpty) {
+          //   return Center(child: Text("No medications found")); // Empty state
+          // }
 
           final idList = snapshot.data!; // Extract data
 

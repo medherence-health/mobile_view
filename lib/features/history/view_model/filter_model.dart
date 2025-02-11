@@ -41,12 +41,12 @@ class FilterViewModel extends ChangeNotifier {
     }
   }
 
-  updateSelectedDate(DateTime pickedDate) {
+  updateSelectedDate(DateTime? pickedDate) {
     _selectedDate = pickedDate;
     notifyListeners();
   }
 
-  updateSecondSelectedDate(DateTime pickedDate) {
+  updateSecondSelectedDate(DateTime? pickedDate) {
     _secondSelectedDate = pickedDate;
     notifyListeners();
   }
