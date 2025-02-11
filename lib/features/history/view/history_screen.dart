@@ -72,11 +72,12 @@ class _HistoryScreenState extends State<HistoryScreen>
               padding: const EdgeInsets.all(8.0),
               child: IconButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                FilterView(idList: groupedList)));
+                    _navigateAndReload(groupedList);
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) =>
+                    //             FilterView(idList: groupedList)));
                   },
                   icon: const Icon(Icons.filter_list_alt)),
             )
@@ -144,6 +145,17 @@ class _HistoryScreenState extends State<HistoryScreen>
         // ]),
       );
     });
+  }
+
+  void _navigateAndReload(Map<String, List<Drug?>> list) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => FilterView(idList: list)),
+    );
+
+    if (result == true) {
+      setState(() {}); // Rebuild the widget to refresh UI
+    }
   }
 
   _buildMedicationHistory(ReminderState historyState, int tabIndex,

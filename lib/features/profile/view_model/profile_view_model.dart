@@ -172,7 +172,7 @@ class ProfileViewModel extends ChangeNotifier {
       return completeList;
     } catch (error) {
       print("Error fetching patient drugs: $error");
-      return MedActivityResult(allList: [], idMapList: {});
+      return MedActivityResult(allList: [], idMapList: {}, statusMapList: {});
     }
   }
 
@@ -338,13 +338,15 @@ class ProfileViewModel extends ChangeNotifier {
   MissedListResult missedListGenerator(List<Drug> listOfDrugWithoutMissedList) {
     // O(n)
     if (listOfDrugWithoutMissedList.isEmpty)
-      return MissedListResult(missedList: [], combinedMapList: {});
+      return MissedListResult(
+          missedList: [], combinedMapList: {}, drugMapByStatus: {});
 
     // Get the number of times the drug should have been used
     int numberOfTimesDrugUsed =
         calculatePerfectTimeToTakeDrug(listOfDrugWithoutMissedList.first);
 
     // Create a map<String, Drug?> where the key is the expected time to take the drug
+    Map<String, List<Drug?>> drugMapByStatus = {};
     Map<int, Drug?> drugMap = {};
 
     // Initialize the map with expected times as keys and null as values
@@ -355,6 +357,11 @@ class ProfileViewModel extends ChangeNotifier {
     // Fill the map with the actual drug usage data
     for (Drug drug in listOfDrugWithoutMissedList) {
       drugMap[drug.perfectTimeToTakeDrug] = drug;
+
+      // Ensure the list exists before adding a drug
+      drugMapByStatus
+          .putIfAbsent(drug.drugUsageStatus.toLowerCase(), () => [])
+          .add(drug);
     }
 
     List<Drug> missedDrugs = [];
@@ -374,29 +381,34 @@ class ProfileViewModel extends ChangeNotifier {
       }
     });
 
-    return MissedListResult(missedList: missedDrugs, combinedMapList: drugMap);
+    return MissedListResult(
+        missedList: missedDrugs,
+        combinedMapList: drugMap,
+        drugMapByStatus: drugMapByStatus);
   }
 
-  Map<String, List<Drug>> groupListByMedId(
-      List<Drug> listOfDrugWithoutMissedList) {
+  MedActGroupingResult groupDrugList(List<Drug> listOfDrugWithoutMissedList) {
     // O(n)
-    Map<String, List<Drug>> drugMap = {};
+    Map<String, List<Drug>> drugMapById = {};
+    Map<String, List<Drug>> drugMapByStatus = {};
 
     for (Drug drug in listOfDrugWithoutMissedList) {
-      drugMap.putIfAbsent(drug.medicationsId, () => []).add(drug);
+      drugMapById.putIfAbsent(drug.medicationsId, () => []).add(drug);
+      // Ensure the list exists before adding a drug
+      drugMapByStatus
+          .putIfAbsent(drug.drugUsageStatus.toLowerCase(), () => [])
+          .add(drug);
     }
 
-    return drugMap;
+    return MedActGroupingResult(
+        idMapList: drugMapById, statusMapList: drugMapByStatus);
   }
 
   MedActivityResult completeAllList(
       List<Drug> listOfDrugWithoutMissedList, FilterViewModel model) {
     // Group drugs by their medication ID
-    Map<String, List<Drug>> groupedList =
-        groupListByMedId(listOfDrugWithoutMissedList);
-
-    // Keep an unmodified copy of the grouped list
-    final nonModifiableGroupedList = Map<String, List<Drug>>.from(groupedList);
+    Map<String, List<Drug>> groupedByIdList =
+        groupDrugList(listOfDrugWithoutMissedList).idMapList;
 
     Map<String, List<Drug?>> combinedMapList = {};
     Map<String, List<Drug?>> missedDrugsList = {};
@@ -404,11 +416,11 @@ class ProfileViewModel extends ChangeNotifier {
 
     // **Filter by Drug ID** (if specified)
     if (model.drugId.isNotEmpty) {
-      groupedList = {model.drugId: groupedList[model.drugId] ?? []};
+      groupedByIdList = {model.drugId: groupedByIdList[model.drugId] ?? []};
     }
 
     // **Generate Missed Medication Lists & Collect All Medications**
-    groupedList.forEach((id, list) {
+    groupedByIdList.forEach((id, list) {
       var missedListRes = missedListGenerator(list);
       missedDrugsList[id] = missedListRes.missedList;
       combinedMapList[id] = missedListRes.combinedMapList.values.toList();
@@ -454,12 +466,13 @@ class ProfileViewModel extends ChangeNotifier {
     }
 
     // Group drugs by their medication ID
-    Map<String, List<Drug>> groupedFilteredList = groupListByMedId(allList);
+    MedActGroupingResult groupedFilteredList = groupDrugList(allList);
 
     // Return the final result
     return MedActivityResult(
       allList: allList,
-      idMapList: groupedFilteredList,
+      idMapList: groupedFilteredList.idMapList,
+      statusMapList: groupedFilteredList.statusMapList,
     );
   }
 }
@@ -473,11 +486,25 @@ class ListDrugPercent {
 class MissedListResult {
   final List<Drug> missedList;
   final Map<int, Drug?> combinedMapList;
-  MissedListResult({required this.missedList, required this.combinedMapList});
+  final Map<String, List<Drug?>> drugMapByStatus; // sorted by status
+  MissedListResult(
+      {required this.missedList,
+      required this.combinedMapList,
+      required this.drugMapByStatus});
 }
 
 class MedActivityResult {
   final List<Drug?> allList;
   final Map<String, List<Drug?>> idMapList;
-  MedActivityResult({required this.allList, required this.idMapList});
+  final Map<String, List<Drug?>> statusMapList;
+  MedActivityResult(
+      {required this.allList,
+      required this.idMapList,
+      required this.statusMapList});
+}
+
+class MedActGroupingResult {
+  final Map<String, List<Drug>> idMapList;
+  final Map<String, List<Drug>> statusMapList;
+  MedActGroupingResult({required this.idMapList, required this.statusMapList});
 }
