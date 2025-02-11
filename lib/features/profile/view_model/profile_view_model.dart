@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:medherence/core/constants/constants.dart';
 import 'package:medherence/core/database/database_service.dart';
@@ -16,6 +17,7 @@ class ProfileViewModel extends ChangeNotifier {
   final DatabaseService _databaseService = DatabaseService.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final DatabaseReference _dbRef = FirebaseDatabase.instance.ref();
 
   TextEditingController nicknameController = TextEditingController();
   TextEditingController nokFirstNameController = TextEditingController();
@@ -173,6 +175,21 @@ class ProfileViewModel extends ChangeNotifier {
     } catch (error) {
       print("Error fetching patient drugs: $error");
       return MedActivityResult(allList: [], idMapList: {}, statusMapList: {});
+    }
+  }
+
+  Future<double?> getMdhcNaira() async {
+    try {
+      final snapshot =
+          await _dbRef.child('current_slot_price/mdhc_naira').get();
+      if (snapshot.exists) {
+        return double.tryParse(snapshot.value.toString());
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching mdhc_naira: $e');
+      return null;
     }
   }
 
