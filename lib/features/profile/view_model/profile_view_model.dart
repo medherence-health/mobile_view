@@ -358,6 +358,7 @@ class ProfileViewModel extends ChangeNotifier {
 
   Future<String> withdrawal(
       TransactionModel transaction, UserData userData) async {
+    userData.medhecoinBalance = userData.medhecoinBalance - transaction.amount;
     try {
       DocumentReference docRef = _firestore.collection('withdrawal').doc();
       transaction.referenceNumber = docRef.id;

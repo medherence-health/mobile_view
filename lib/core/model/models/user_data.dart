@@ -60,7 +60,7 @@ class UserData {
   final String? bankName;
   final String? accountNumber;
   final String? cardNumber;
-  final double medhecoinBalance;
+  double medhecoinBalance;
   final double totalNairaBalance;
 
   // Subscription Information
@@ -77,7 +77,7 @@ class UserData {
   // Statistics
   final List<String>? totalPatients;
 
-  const UserData({
+  UserData({
     required this.id,
     required this.username,
     required this.fullName,
