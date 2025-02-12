@@ -110,14 +110,14 @@ class ConfirmWithdrawal extends StatelessWidget {
                 padding: const EdgeInsets.all(2.0),
                 child: ListTile(
                   leading: Text(
-                    'Fee',
+                    'Amount',
                     style: TextStyle(
                       color: AppColors.darkGrey,
                       fontSize: SizeMg.text(16),
                     ),
                   ),
                   trailing: Text(
-                    '$transferFee MDHC',
+                    '$totalAmount MDHC',
                     style: TextStyle(
                       fontSize: SizeMg.text(16),
                       fontWeight: FontWeight.w500,

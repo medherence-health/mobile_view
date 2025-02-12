@@ -1,11 +1,30 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:medherence/core/constants/constants.dart';
+import 'package:medherence/core/model/models/transaction_model.dart';
+import 'package:medherence/core/model/models/user_data.dart';
 import 'package:medherence/features/profile/view_model/profile_view_model.dart';
 import 'package:provider/provider.dart';
 
 class WalletPinWidget extends StatefulWidget {
-  const WalletPinWidget({Key? key}) : super(key: key);
+  final String amount;
+  final String transferFee;
+  final String totalAmount;
+  final String receiverName;
+  final String bankName;
+  final String amountEquivalence;
+  final String dateTime;
+  const WalletPinWidget({
+    Key? key,
+    required this.amount,
+    required this.transferFee,
+    required this.totalAmount,
+    required this.receiverName,
+    required this.bankName,
+    required this.amountEquivalence,
+    required this.dateTime,
+  }) : super(key: key);
 
   @override
   _WalletPinWidgetState createState() => _WalletPinWidgetState();
@@ -138,8 +157,28 @@ class _WalletPinWidgetState extends State<WalletPinWidget> {
     );
   }
 
-  void _verifyPinAndCloseDialog(String currentPin) {
+  void _verifyPinAndCloseDialog(String currentPin, UserData userData) {
     final enteredPin = _controllers.map((c) => c.text).join();
+    var transaction = TransactionModel(
+        amount: double.parse(widget.totalAmount),
+        currency: "NGN",
+        transactionDate: currentTimeInMilli.toString(),
+        senderId: userData.userId,
+        recipientId: userData.facilityId ?? "",
+        patientId: userData.userId,
+        hospitalId: userData.facilityId ?? "",
+        adherenceStatus: "Good",
+        paymentMethod: "bank",
+        transactionStatus: "pending",
+        transactionType: "debit",
+        referenceNumber: "",
+        fraudCheckIndicator: "",
+        transactionFees: double.parse(widget.transferFee),
+        taxAmount: 0,
+        netAmount: 0,
+        platformChannel: "app",
+        ipAddress: "",
+        deviceId: "");
     if (enteredPin == currentPin) {
       Navigator.pop(context, true);
     } else {

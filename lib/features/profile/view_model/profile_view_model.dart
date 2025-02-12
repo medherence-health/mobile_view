@@ -8,6 +8,7 @@ import 'package:medherence/core/model/models/drug.dart';
 import 'package:medherence/core/model/models/monitor_drug.dart';
 import 'package:medherence/core/model/models/progress.dart';
 import 'package:medherence/core/model/models/security.dart';
+import 'package:medherence/core/model/models/transaction_model.dart';
 import 'package:medherence/core/model/models/user_data.dart';
 import 'package:medherence/core/service/notification_service.dart';
 import 'package:medherence/features/history/view_model/filter_model.dart';
@@ -326,6 +327,45 @@ class ProfileViewModel extends ChangeNotifier {
     var result = await _databaseService.updateSecurity(security);
 
     return result;
+  }
+
+  Future<String> withdrawal(
+      TransactionModel transaction, UserData userData) async {
+    try {
+      DocumentReference docRef = _firestore.collection('withdrawal').doc();
+      transaction.referenceNumber = docRef.id;
+
+      await docRef.set(transaction);
+
+      String updateUserDataResult = await updateUserData(userData);
+
+      if (updateUserDataResult != "ok") {
+        return "User data update failed: $updateUserDataResult";
+      }
+
+      return "ok";
+    } catch (e) {
+      return "Error processing withdrawal: ${e.toString()}";
+    }
+  }
+
+  Future<String> updateUserData(UserData userData) async {
+    try {
+      DocumentReference docRef =
+          _firestore.collection('users').doc(userData.userId);
+
+      await docRef.update(userData.toMap());
+
+      String res = await _databaseService.updateUserData(userData);
+
+      if (res != "ok") {
+        return "Database update failed: $res";
+      }
+
+      return ok;
+    } catch (e) {
+      return "Error updating user data: ${e.toString()}";
+    }
   }
 
   void _validateForm() {

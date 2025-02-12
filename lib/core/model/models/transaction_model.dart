@@ -10,7 +10,7 @@ class TransactionModel {
   final String paymentMethod;
   final String transactionStatus;
   final String transactionType;
-  final String referenceNumber;
+  String referenceNumber;
   final String? authorizationCode;
   final String fraudCheckIndicator;
   final double transactionFees;
