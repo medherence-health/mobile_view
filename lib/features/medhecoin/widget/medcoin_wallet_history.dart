@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:medherence/core/model/models/transaction_model.dart';
 
-import '../../../core/model/models/wallet_model.dart';
+import '../../../core/constants/constants.dart';
 import '../../../core/utils/color_utils.dart';
 import '../../../core/utils/size_manager.dart';
 import '../../../core/utils/utils.dart';
 
 class MedhecoinWalletHistory extends StatelessWidget {
-  final WalletModel model;
+  final TransactionModel model;
 
   const MedhecoinWalletHistory({required this.model, super.key});
 
@@ -17,10 +18,15 @@ class MedhecoinWalletHistory extends StatelessWidget {
       child: ListTile(
         leading: CircleAvatar(
           radius: SizeMg.radius(30),
-          child: Image.asset(model.src, width: 55, fit: BoxFit.fitHeight),
+          backgroundColor: Colors.grey[200], // Optional: Set background color
+          child: Icon(
+            Icons.call_received, // Use Icon widget
+            size: 30, // Adjust size as needed
+            color: Colors.black, // Adjust color as needed
+          ),
         ),
         title: Text(
-          model.title,
+          model.transactionType,
         ),
         titleTextStyle: TextStyle(
           fontSize: SizeMg.text(16),
@@ -30,7 +36,7 @@ class MedhecoinWalletHistory extends StatelessWidget {
         subtitle: Row(
           children: [
             Text(
-              StringUtils.formatTime12(DateTime.parse(model.dateTime)),
+              formatDateTime(int.parse(model.transactionDate))["time"] ?? "---",
             ),
             const Padding(
               padding: EdgeInsets.all(3.0),
@@ -40,7 +46,8 @@ class MedhecoinWalletHistory extends StatelessWidget {
               ),
             ),
             Text(
-              StringUtils.checkToday(DateTime.parse(model.dateTime)),
+              formatDateTime(int.parse(model.transactionDate))["date"] ?? "---",
+              // StringUtils.checkToday(DateTime.parse(model.transactionDate)),
             )
           ],
         ),
@@ -51,15 +58,17 @@ class MedhecoinWalletHistory extends StatelessWidget {
             overflow: TextOverflow.ellipsis),
         trailing: RichText(
           text: TextSpan(
-            text: model.debit ? '-\u{20A6}' : '+\u{20A6}',
+            text: model.transactionType == "debit" ? '-\u{20A6}' : '+\u{20A6}',
             style: TextStyle(
               fontWeight: FontWeight.w500,
               fontSize: SizeMg.text(14),
-              color: model.debit ? AppColors.red : AppColors.green,
+              color: model.transactionType == "debit"
+                  ? AppColors.red
+                  : AppColors.green,
             ),
             children: [
               TextSpan(
-                text: StringUtils.numFormatDecimal(model.price),
+                text: StringUtils.numFormatDecimal(model.amount),
               ),
             ],
           ),

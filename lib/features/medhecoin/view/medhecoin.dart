@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:medherence/core/model/models/transaction_model.dart';
 import 'package:medherence/core/utils/size_manager.dart';
 import 'package:medherence/features/dashboard_feature/view/dashboard_view.dart';
 import 'package:medherence/features/more_features/withdrawal/view/withdrawal_view.dart';
+import 'package:medherence/features/profile/view_model/profile_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/shared_widget/buttons.dart';
@@ -23,6 +26,7 @@ class MedhecoinScreen extends StatefulWidget {
 
 class _MedhecoinScreenState extends State<MedhecoinScreen> {
   bool _amountChanged = false; // Track if amount display is changed
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Toggle function for changing amount display
   void toggleAmountChanged() {
@@ -221,55 +225,77 @@ class _MedhecoinScreenState extends State<MedhecoinScreen> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                ListView.separated(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  padding: EdgeInsets.only(
-                    top: SizeMg.height(10),
-                    bottom: SizeMg.height(16),
-                  ),
-                  itemBuilder: (ctx, index) => MedhecoinWalletHistory(
-                    model: model.walletModelList[index],
-                  ),
-                  separatorBuilder: (ctx, index) => const SizedBox(
-                    height: 10,
-                  ),
-                  itemCount: model.walletModelList.length,
-                ),
-                // Display message when transaction history is empty
-                if (model.walletModelList.isEmpty)
-                  const Center(
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 170),
-                      child: SizedBox(
-                        height: 150,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.history,
-                              color: AppColors.noWidgetText,
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'You have no transaction history',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontStyle: FontStyle.italic,
-                                color: AppColors.noWidgetText,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                buildWalletHistoryList()
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildWalletHistoryList() {
+    var _withdrawalHistory = context
+        .read<ProfileViewModel>()
+        .getWithdrawalHistory(_auth.currentUser?.uid ?? "");
+    return FutureBuilder<List<TransactionModel>>(
+      future: _withdrawalHistory,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text(
+              'Error loading transactions',
+              style: TextStyle(color: Colors.red),
+            ),
+          );
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(
+            child: Padding(
+              padding: EdgeInsets.only(top: 170),
+              child: SizedBox(
+                height: 150,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.history,
+                      color: AppColors.noWidgetText,
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'You have no transaction history',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontStyle: FontStyle.italic,
+                        color: AppColors.noWidgetText,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+
+        final walletList = snapshot.data!;
+
+        return ListView.separated(
+          shrinkWrap: true,
+          physics: const BouncingScrollPhysics(),
+          padding: EdgeInsets.only(
+            top: SizeMg.height(10),
+            bottom: SizeMg.height(16),
+          ),
+          itemBuilder: (ctx, index) => MedhecoinWalletHistory(
+            model: walletList[index],
+          ),
+          separatorBuilder: (ctx, index) => const SizedBox(height: 10),
+          itemCount: walletList.length,
+        );
+      },
     );
   }
 }

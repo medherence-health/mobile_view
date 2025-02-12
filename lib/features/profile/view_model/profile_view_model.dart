@@ -79,6 +79,33 @@ class ProfileViewModel extends ChangeNotifier {
     }
   }
 
+  Future<List<TransactionModel>> getWithdrawalHistory(String patientUid) async {
+    try {
+      // Query the patient_drug collection
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('withdrawal')
+          .where('patient_id', isEqualTo: patientUid)
+          .get(const GetOptions(source: Source.cache)); // Force offline cache
+
+      // If cache is unavailable, fallback to server
+      if (querySnapshot.docs.isEmpty) {
+        querySnapshot = await _firestore
+            .collection('withdrawal')
+            .where('patient_uid', isEqualTo: patientUid)
+            .get(const GetOptions(source: Source.server)); // Use server data
+      }
+
+      // Convert query results into a list of Drug objects
+      return querySnapshot.docs
+          .map((doc) =>
+              TransactionModel.fromMap(doc.data() as Map<String, dynamic>))
+          .toList();
+    } catch (error) {
+      print("Error fetching patient drugs: $error");
+      return [];
+    }
+  }
+
   Future<ListDrugPercent> getPatientTodayDrugs(String patientUid) async {
     List<Drug> filteredDrugList = [];
     int usedCount = 0;
