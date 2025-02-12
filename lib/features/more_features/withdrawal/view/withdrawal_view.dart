@@ -86,7 +86,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
         resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: showConfirmation == true
-              ? buildConfirmWithdrawal(model)
+              ? buildConfirmWithdrawal(model, showConfirmation)
               : buildWithdrawalForm(model, availableMedcoin),
         ),
       ),
@@ -442,7 +442,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
   }
 
   /// Builds the confirmation UI for withdrawal.
-  Widget buildConfirmWithdrawal(WalletViewModel model) {
+  Widget buildConfirmWithdrawal(WalletViewModel model, bool showConfirmation) {
     return ConfirmWithdrawal(
       amount: model.amount?.toStringAsFixed(2) ?? '-----',
       transferFee: model.transferFee.toStringAsFixed(2),

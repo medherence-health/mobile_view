@@ -189,8 +189,9 @@ class ConfirmWithdrawal extends StatelessWidget {
                   height: SizeMg.height(48),
                   buttonConfig: ButtonConfig(
                     text: 'Confirm',
-                    action: () {
-                      showDialog(
+                    action: () async {
+                      // ✅ Update the state
+                      final result = await showDialog(
                         // barrierDismissible: false,
                         context: context,
                         builder: (context) {
@@ -223,6 +224,10 @@ class ConfirmWithdrawal extends StatelessWidget {
                           );
                         },
                       );
+                      // ✅ Check the result from the dialog
+                      if (result == true) {
+                        Navigator.pop(context); // Update the parent state
+                      }
                     },
                   ),
                   width: SizeMg.screenWidth,

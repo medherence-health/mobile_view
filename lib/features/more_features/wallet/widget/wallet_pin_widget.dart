@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:medherence/core/constants/constants.dart';
 import 'package:medherence/core/model/models/transaction_model.dart';
 import 'package:medherence/core/model/models/user_data.dart';
+import 'package:medherence/features/auth/views/login_view.dart';
 import 'package:medherence/features/profile/view_model/profile_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -106,7 +107,7 @@ class _WalletPinWidgetState extends State<WalletPinWidget> {
     setState(() {
       _isLoading = false; // Hide loading
     });
-
+    showSnackBar(context, 'Successful', backgroundColor: Colors.green);
     if (res == ok) {
       Navigator.pop(context, true);
     } else {
