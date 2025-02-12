@@ -12,6 +12,7 @@ class WalletPinWidget extends StatefulWidget {
   final String transferFee;
   final String totalAmount;
   final String receiverName;
+  final String accountNumber;
   final String bankName;
   final String amountEquivalence;
   final String dateTime;
@@ -21,6 +22,7 @@ class WalletPinWidget extends StatefulWidget {
     required this.transferFee,
     required this.totalAmount,
     required this.receiverName,
+    required this.accountNumber,
     required this.bankName,
     required this.amountEquivalence,
     required this.dateTime,
@@ -44,15 +46,20 @@ class _WalletPinWidgetState extends State<WalletPinWidget> {
     super.dispose();
   }
 
-  Future<String> _fetchCurrentPin(BuildContext context) async {
-    var res = await context.watch<ProfileViewModel>().getSecurity();
-    return res.security?.pin ?? "aaaa";
+  Future<({String pin, UserData? userData})> _fetchCurrentPinAndUserData(
+      BuildContext context) async {
+    var profileViewModel = context.watch<ProfileViewModel>();
+
+    var res = await profileViewModel.getSecurity();
+    var resUserData = await profileViewModel.getUserData();
+
+    return (pin: res.security?.pin ?? "aaaa", userData: resUserData);
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<String>(
-      future: _fetchCurrentPin(context),
+    return FutureBuilder<({String pin, UserData? userData})>(
+      future: _fetchCurrentPinAndUserData(context),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -62,7 +69,8 @@ class _WalletPinWidgetState extends State<WalletPinWidget> {
           return const Center(child: Text("Failed to load PIN"));
         }
 
-        String currentPin = snapshot.data!;
+        String currentPin = snapshot.data!.pin;
+        UserData? userData = snapshot.data!.userData;
 
         return CupertinoAlertDialog(
           content: Padding(
@@ -90,10 +98,7 @@ class _WalletPinWidgetState extends State<WalletPinWidget> {
                             4,
                             (index) => Flexible(
                               child: _buildPinTextField(
-                                index,
-                                currentPin,
-                                setStateLocal,
-                              ),
+                                  index, currentPin, setStateLocal, userData),
                             ),
                           ),
                         ),
@@ -124,8 +129,8 @@ class _WalletPinWidgetState extends State<WalletPinWidget> {
 
   final ValueNotifier<String> _errorNotifier = ValueNotifier<String>("");
 
-  Widget _buildPinTextField(
-      int index, String currentPin, Function setStateLocal) {
+  Widget _buildPinTextField(int index, String currentPin,
+      Function setStateLocal, UserData? userData) {
     return CupertinoTextField(
       controller: _controllers[index],
       focusNode: index == 0 ? _focusNode : null,
@@ -149,7 +154,7 @@ class _WalletPinWidgetState extends State<WalletPinWidget> {
         }
 
         if (index == 3 && allFieldsFilled) {
-          _verifyPinAndCloseDialog(currentPin);
+          _verifyPinAndCloseDialog(currentPin, userData);
         }
 
         setStateLocal(() {});
@@ -157,16 +162,21 @@ class _WalletPinWidgetState extends State<WalletPinWidget> {
     );
   }
 
-  void _verifyPinAndCloseDialog(String currentPin, UserData userData) {
+  void _verifyPinAndCloseDialog(String currentPin, UserData? userData) async {
+    var profileViewModel = context.watch<ProfileViewModel>();
+
+    if (userData == null) {
+      error("Invalid user data");
+    }
     final enteredPin = _controllers.map((c) => c.text).join();
     var transaction = TransactionModel(
         amount: double.parse(widget.totalAmount),
         currency: "NGN",
         transactionDate: currentTimeInMilli.toString(),
-        senderId: userData.userId,
-        recipientId: userData.facilityId ?? "",
-        patientId: userData.userId,
-        hospitalId: userData.facilityId ?? "",
+        senderId: userData?.userId ?? "",
+        recipientId: userData?.facilityId ?? "",
+        patientId: userData?.userId ?? "",
+        hospitalId: userData?.facilityId ?? "",
         adherenceStatus: "Good",
         paymentMethod: "bank",
         transactionStatus: "pending",
@@ -179,14 +189,25 @@ class _WalletPinWidgetState extends State<WalletPinWidget> {
         platformChannel: "app",
         ipAddress: "",
         deviceId: "");
+
     if (enteredPin == currentPin) {
-      Navigator.pop(context, true);
-    } else {
-      _errorNotifier.value = "Incorrect PIN. Try again.";
-      for (var controller in _controllers) {
-        controller.clear();
+      var res = await profileViewModel.withdrawal(transaction, userData!);
+      if (res == ok) {
+        Navigator.pop(context, true);
+      } else {
+        error(res);
       }
-      _focusNode.requestFocus(); // Reset focus to the first field
+    } else {
+      // Reset focus to the first field
+      error("Incorrect PIN. Try again.");
     }
+  }
+
+  void error(String msg) {
+    _errorNotifier.value = msg;
+    for (var controller in _controllers) {
+      controller.clear();
+    }
+    _focusNode.requestFocus();
   }
 }

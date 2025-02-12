@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medherence/core/utils/color_utils.dart';
 import 'package:medherence/core/utils/size_manager.dart';
+import 'package:medherence/core/utils/utils.dart';
 
 import '../../../../core/shared_widget/buttons.dart';
 import '../../Biometric/widget/biometric_widget.dart';
@@ -11,6 +12,7 @@ class ConfirmWithdrawal extends StatelessWidget {
   final String transferFee;
   final String totalAmount;
   final String receiverName;
+  final String accountNumber;
   final String bankName;
   final String amountEquivalence;
   final String dateTime;
@@ -21,6 +23,7 @@ class ConfirmWithdrawal extends StatelessWidget {
     required this.transferFee,
     required this.totalAmount,
     required this.receiverName,
+    required this.accountNumber,
     required this.bankName,
     required this.amountEquivalence,
     required this.dateTime,
@@ -110,6 +113,28 @@ class ConfirmWithdrawal extends StatelessWidget {
                 padding: const EdgeInsets.all(2.0),
                 child: ListTile(
                   leading: Text(
+                    'Account Number ',
+                    style: TextStyle(
+                      color: AppColors.darkGrey,
+                      fontSize: SizeMg.text(16),
+                    ),
+                  ),
+                  trailing: Text(
+                    accountNumber,
+                    style: TextStyle(
+                      fontSize: SizeMg.text(16),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+              const Divider(
+                color: AppColors.historyBackground,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: ListTile(
+                  leading: Text(
                     'Amount',
                     style: TextStyle(
                       color: AppColors.darkGrey,
@@ -172,7 +197,17 @@ class ConfirmWithdrawal extends StatelessWidget {
                           return Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const WalletPinWidget(),
+                              WalletPinWidget(
+                                amount: amount,
+                                transferFee: transferFee,
+                                totalAmount: totalAmount,
+                                receiverName: receiverName,
+                                accountNumber: accountNumber,
+                                bankName: bankName ?? '',
+                                amountEquivalence: amountEquivalence,
+                                dateTime:
+                                    StringUtils.checkToday(DateTime.now()),
+                              ),
                               const SizedBox(height: 15),
                               Text(
                                 'Or',

@@ -229,6 +229,12 @@ class WalletViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateAccountOwnerName(String value) {
+    accountOwnerName = value;
+    // calculateTotalAmount();
+    notifyListeners();
+  }
+
   // Method to calculate the total amount
   // void calculateTotalAmount() {
   //   if (amount != null) {

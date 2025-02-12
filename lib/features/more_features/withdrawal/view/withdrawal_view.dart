@@ -114,6 +114,7 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
           var transferAmount =
               conversionRate * (userData?.medhecoinBalance ?? 0);
           availableMedcoin = (userData?.medhecoinBalance ?? 0).toInt();
+          model.updateAccountOwnerName(userData?.fullName ?? "");
 
           model.updateTotalAmount(transferAmount.toString());
           model.updateTransferFee(conversionRate.toString());
@@ -446,8 +447,8 @@ class _MedhecoinWithdrawalViewState extends State<MedhecoinWithdrawalView> {
       amount: model.amount?.toStringAsFixed(2) ?? '-----',
       transferFee: model.transferFee.toStringAsFixed(2),
       totalAmount: model.totalAmount?.toStringAsFixed(2) ?? '-----',
-      receiverName: model.accountOwnerName ??
-          'Joe Stephens ${_accountNumberController.text.trim()}',
+      accountNumber: '${_accountNumberController.text.trim()}',
+      receiverName: model.accountOwnerName ?? 'Joe Stephens ',
       bankName: model.selectedBank ?? '',
       amountEquivalence: model.amountInNaira.toStringAsFixed(2),
       dateTime: StringUtils.checkToday(DateTime.now()),

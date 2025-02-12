@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:medherence/features/more_features/wallet/view/wallet_pin_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../core/utils/size_manager.dart';
-import '../wallet/widget/wallet_pin_widget.dart';
 import '../../../core/utils/color_utils.dart';
+import '../../../core/utils/size_manager.dart';
 
 class BiometricAuthenticationView extends StatefulWidget {
   const BiometricAuthenticationView({Key? key}) : super(key: key);
@@ -96,7 +96,7 @@ class _BiometricAuthenticationViewState
     final confirmed = await showDialog<bool>(
       barrierDismissible: false,
       context: context,
-      builder: (context) => const WalletPinWidget(),
+      builder: (context) => const WalletPinView(),
     );
     if (confirmed != null && confirmed) {
       // User confirmed PIN, enable biometric authentication
