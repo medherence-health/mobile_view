@@ -335,15 +335,15 @@ class ProfileViewModel extends ChangeNotifier {
       DocumentReference docRef = _firestore.collection('withdrawal').doc();
       transaction.referenceNumber = docRef.id;
 
-      await docRef.set(transaction);
+      await docRef.set(transaction.toMap());
 
       String updateUserDataResult = await updateUserData(userData);
 
-      if (updateUserDataResult != "ok") {
+      if (updateUserDataResult != ok) {
         return "User data update failed: $updateUserDataResult";
       }
 
-      return "ok";
+      return ok;
     } catch (e) {
       return "Error processing withdrawal: ${e.toString()}";
     }
@@ -358,7 +358,7 @@ class ProfileViewModel extends ChangeNotifier {
 
       String res = await _databaseService.updateUserData(userData);
 
-      if (res != "ok") {
+      if (res != ok) {
         return "Database update failed: $res";
       }
 

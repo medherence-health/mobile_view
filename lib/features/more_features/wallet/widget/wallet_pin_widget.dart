@@ -36,6 +36,8 @@ class _WalletPinWidgetState extends State<WalletPinWidget> {
   final List<TextEditingController> _controllers =
       List.generate(4, (_) => TextEditingController());
   final FocusNode _focusNode = FocusNode();
+  final ValueNotifier<String> _errorNotifier = ValueNotifier<String>("");
+  bool _isLoading = false; // Loading state
 
   @override
   void dispose() {
@@ -44,6 +46,80 @@ class _WalletPinWidgetState extends State<WalletPinWidget> {
     }
     _focusNode.dispose();
     super.dispose();
+  }
+
+  void _verifyPinAndCloseDialog(String currentPin, UserData? userData) async {
+    var profileViewModel = context.read<ProfileViewModel>();
+    final enteredPin = _controllers.map((c) => c.text).join();
+
+    if (userData == null) {
+      error("Invalid user data");
+      return;
+    }
+    if (enteredPin != currentPin) {
+      error("Invalid pin");
+      return;
+    }
+
+    double amount;
+    double transactionFees;
+
+    try {
+      amount = double.parse(widget.totalAmount);
+      transactionFees = double.parse(widget.transferFee);
+    } catch (e) {
+      error("Invalid transaction amounts");
+      return;
+    }
+
+    var transaction = TransactionModel(
+      amount: amount,
+      currency: "NGN",
+      transactionDate: currentTimeInMilli.toString(),
+      senderId: userData.userId,
+      recipientId: userData.facilityId ?? "",
+      patientId: userData.userId,
+      hospitalId: userData.facilityId ?? "",
+      adherenceStatus: "Good",
+      paymentMethod: "bank",
+      transactionStatus: "pending",
+      transactionType: "debit",
+      referenceNumber: "",
+      fraudCheckIndicator: "",
+      transactionFees: transactionFees,
+      taxAmount: 0,
+      netAmount: 0,
+      platformChannel: "app",
+      ipAddress: "",
+      deviceId: "",
+      bankName: widget.bankName,
+      bankAccountName: widget.receiverName,
+      bankAccountNumber: widget.accountNumber,
+    );
+
+    setState(() {
+      _isLoading = true; // Show loading
+    });
+
+    var res = await profileViewModel.withdrawal(transaction, userData);
+
+    setState(() {
+      _isLoading = false; // Hide loading
+    });
+
+    if (res == ok) {
+      Navigator.pop(context, true);
+    } else {
+      error(res);
+    }
+  }
+
+  void error(String msg) {
+    _errorNotifier.value = msg;
+    for (var controller in _controllers) {
+      controller.clear();
+    }
+    _focusNode.requestFocus();
   }
 
   Future<({String pin, UserData? userData})> _fetchCurrentPinAndUserData(
@@ -79,30 +155,31 @@ class _WalletPinWidgetState extends State<WalletPinWidget> {
               height: 200,
               child: StatefulBuilder(
                 builder: (context, setStateLocal) {
-                  String validationMessage = "";
-
                   return Column(
                     children: [
                       const Text('Enter your Wallet Pin to enable fingerprint'),
                       const SizedBox(height: 16),
-                      Container(
-                        width: 200,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: List.generate(
-                            4,
-                            (index) => Flexible(
-                              child: _buildPinTextField(
-                                  index, currentPin, setStateLocal, userData),
+                      _isLoading
+                          ? const CircularProgressIndicator() // Show loading
+                          : Container(
+                              width: 200,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: List.generate(
+                                  4,
+                                  (index) => Flexible(
+                                    child: _buildPinTextField(index, currentPin,
+                                        setStateLocal, userData),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
                       const SizedBox(height: 10),
                       ValueListenableBuilder<String>(
                         valueListenable: _errorNotifier,
@@ -127,8 +204,6 @@ class _WalletPinWidgetState extends State<WalletPinWidget> {
     );
   }
 
-  final ValueNotifier<String> _errorNotifier = ValueNotifier<String>("");
-
   Widget _buildPinTextField(int index, String currentPin,
       Function setStateLocal, UserData? userData) {
     return CupertinoTextField(
@@ -140,18 +215,19 @@ class _WalletPinWidgetState extends State<WalletPinWidget> {
       decoration: const BoxDecoration(
         border: Border.fromBorderSide(BorderSide.none),
       ),
+      enabled: !_isLoading, // Disable input while loading
       inputFormatters: [
         LengthLimitingTextInputFormatter(1),
         FilteringTextInputFormatter.digitsOnly,
       ],
       onChanged: (value) {
-        bool allFieldsFilled = _controllers.every((c) => c.text.isNotEmpty);
-
         if (value.isEmpty) {
           if (index > 0) FocusScope.of(context).previousFocus();
         } else if (value.length == 1 || index < 3) {
           FocusScope.of(context).nextFocus();
         }
+
+        bool allFieldsFilled = _controllers.every((c) => c.text.isNotEmpty);
 
         if (index == 3 && allFieldsFilled) {
           _verifyPinAndCloseDialog(currentPin, userData);
@@ -160,54 +236,5 @@ class _WalletPinWidgetState extends State<WalletPinWidget> {
         setStateLocal(() {});
       },
     );
-  }
-
-  void _verifyPinAndCloseDialog(String currentPin, UserData? userData) async {
-    var profileViewModel = context.watch<ProfileViewModel>();
-
-    if (userData == null) {
-      error("Invalid user data");
-    }
-    final enteredPin = _controllers.map((c) => c.text).join();
-    var transaction = TransactionModel(
-        amount: double.parse(widget.totalAmount),
-        currency: "NGN",
-        transactionDate: currentTimeInMilli.toString(),
-        senderId: userData?.userId ?? "",
-        recipientId: userData?.facilityId ?? "",
-        patientId: userData?.userId ?? "",
-        hospitalId: userData?.facilityId ?? "",
-        adherenceStatus: "Good",
-        paymentMethod: "bank",
-        transactionStatus: "pending",
-        transactionType: "debit",
-        referenceNumber: "",
-        fraudCheckIndicator: "",
-        transactionFees: double.parse(widget.transferFee),
-        taxAmount: 0,
-        netAmount: 0,
-        platformChannel: "app",
-        ipAddress: "",
-        deviceId: "");
-
-    if (enteredPin == currentPin) {
-      var res = await profileViewModel.withdrawal(transaction, userData!);
-      if (res == ok) {
-        Navigator.pop(context, true);
-      } else {
-        error(res);
-      }
-    } else {
-      // Reset focus to the first field
-      error("Incorrect PIN. Try again.");
-    }
-  }
-
-  void error(String msg) {
-    _errorNotifier.value = msg;
-    for (var controller in _controllers) {
-      controller.clear();
-    }
-    _focusNode.requestFocus();
   }
 }

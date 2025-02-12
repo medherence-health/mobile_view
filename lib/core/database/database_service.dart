@@ -342,26 +342,29 @@ class DatabaseService {
 
   Future<String> updateUserData(UserData userData) async {
     try {
-      // Get a reference to the database.
+      // Ensure the database instance is available
       final db = await database;
+      if (db == null) return 'Error: Database is not initialized.';
 
-      // Attempt to update the user data.
+      // Convert user data to a map
+      Map<String, dynamic> userMap;
+      try {
+        userMap = userData.toMap();
+      } catch (e) {
+        return 'Error: Failed to convert user data.';
+      }
+
+      // Attempt to update the user data
       final rowsUpdated = await db.update(
         'UserData',
-        userData.toMap(),
+        userMap,
         where: 'user_id = ?',
         whereArgs: [userData.userId],
       );
 
-      // Check if any rows were updated.
-      if (rowsUpdated > 0) {
-        return ok; // Update was successful.
-      } else {
-        return 'Error: No matching user found to update.';
-      }
-    } catch (error) {
-      // Handle errors during the update process.
-      print('Error updating user data: $error');
+      return rowsUpdated > 0 ? ok : 'Error: No matching user found to update.';
+    } catch (error, stackTrace) {
+      print('Error updating user data: $error\n$stackTrace');
       return 'Error: Unable to update user data.';
     }
   }
