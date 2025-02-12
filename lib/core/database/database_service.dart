@@ -16,7 +16,7 @@ class DatabaseService {
   // Table names
   static const String userTable = "UserData";
   static const String progressTable = "Progress";
-  static const String securityTable = "Progress";
+  static const String securityTable = "Security";
   static const String monitorDrugTable = "MonitorDrug";
 
   DatabaseService._constructor();
@@ -142,7 +142,7 @@ class DatabaseService {
   // Create drug taken table
   Future<void> _createSecurity(Database db) async {
     await db.execute('''
-      CREATE TABLE $monitorDrugTable (
+      CREATE TABLE $securityTable (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         pin TEXT,
         type TEXT
