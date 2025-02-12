@@ -1,6 +1,6 @@
 class Security {
-  final String pin;
-  final String type;
+  String pin;
+  String type;
 
   Security({required this.pin, required this.type});
 

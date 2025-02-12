@@ -7,6 +7,7 @@ import 'package:medherence/core/database/database_service.dart';
 import 'package:medherence/core/model/models/drug.dart';
 import 'package:medherence/core/model/models/monitor_drug.dart';
 import 'package:medherence/core/model/models/progress.dart';
+import 'package:medherence/core/model/models/security.dart';
 import 'package:medherence/core/model/models/user_data.dart';
 import 'package:medherence/core/service/notification_service.dart';
 import 'package:medherence/features/history/view_model/filter_model.dart';
@@ -313,6 +314,18 @@ class ProfileViewModel extends ChangeNotifier {
         await _databaseService.getUserDataById(_auth.currentUser?.uid ?? "");
 
     return result.userData;
+  }
+
+  Future<SecurityResult> getSecurity() async {
+    var result = await _databaseService.getSecurity();
+
+    return result;
+  }
+
+  Future<String> updatePin(Security security) async {
+    var result = await _databaseService.updateSecurity(security);
+
+    return result;
   }
 
   void _validateForm() {
